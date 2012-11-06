@@ -1,14 +1,107 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>GameArchive</title>
-  <%= stylesheet_link_tag    "application", :media => "all" %>
-  <%= javascript_include_tag "application" %>
-  <%= csrf_meta_tags %>
+  	<title>Game Archive</title>
+	<link href='http://fonts.googleapis.com/css?family=Bitter:400,700&amp;subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+  	<%= stylesheet_link_tag    "application", :media => "all" %>
+  	<%= javascript_include_tag "application" %>
+  	<%= csrf_meta_tags %>
 </head>
 <body>
+	
+<div class="notice"><%= notice %></div>
+<div class="alert"><%= alert %></div>
 
-<%= yield %>
+<div id="responsiveHelper"><span>media type: </span></div>
+
+<div id="header">
+	<div class="container">
+		<div class="logo">
+			<a href="/">
+				<%= image_tag'logo.svg' %>
+			</a>
+		</div>
+		<div class="brief">
+			<p>Lomo sriracha farm-to-table, authentic deserunt selvage whatever tofu biodiesel thundercats wayfarers chillwave typewriter brooklyn. Mumblecore bespoke officia authentic trust fund. Nostrud bushwick velit quis echo park Austin. Pickled salvia small batch, mustache banh mi pork belly cosby sweater four loko narwhal. </p>
+		</div>
+	
+		<div class="clear"></div>
+	
+		<div class="menu">
+			<ul>
+				<li>home</li>
+				<li>about us</li>
+				<li>news</li>
+				<li>press</li>
+			</ul>
+			<ul>
+				<li>games</li>
+				<li>people</li>
+				<li>companies*</li>
+			</ul>
+			<ul>
+				<li>search</li>
+			</ul>
+			<ul>
+				<li>sign in</li>
+				<li>sign up</li>
+			</ul>
+		</div>	
+		<div class="clear"></div>
+	</div>
+</div>
+
+
+<!-- <div>
+  sign in stuff
+</div> -->
+
+
+<div id="body">
+	<div class="container">
+		<%= yield %>
+	</div>
+</div>
+
+<div id="footer">
+	<div class="container">
+		<div class="menu">
+			<ul>
+				<li>home</li>
+				<li>about us</li>
+				<li>news</li>
+				<li>press</li>
+			</ul>
+			<ul>
+				<li>games</li>
+				<li>people</li>
+				<li>companies*</li>
+			</ul>
+			<ul>
+				<li>search</li>
+			</ul>
+			<ul>
+				<li>sign in</li>
+				<li>sign up</li>
+			</ul>
+		</div>
+		
+		<div class="clear"></div>
+		
+		<div id="legal" class="grid_12">
+			<p>Ennui food truck adipisicing, vinyl high life seitan direct trade authentic. Freegan truffaut placeat, umami portland +1 cred nostrud. Trust fund locavore sunt, readymade viral art party aute skateboard PBR sriracha. Post-ironic quinoa fugiat pork belly tempor.</p>
+			<p>
+				(c) 2012, some rights reserved
+			</p>
+		</div>
+		
+		<div class="clear"></div>
+		<div id="footerLogo" class="grid_2">
+
+			<%= image_tag 'logo-grey.svg' %>
+		</div>
+	</div>
+</div>				
 
 </body>
 </html>
