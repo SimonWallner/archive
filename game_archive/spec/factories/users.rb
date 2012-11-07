@@ -3,7 +3,7 @@ FactoryGirl.define do
     name 'Test User'
     email 'example@example.com'
     password 'password'
-    password_confirmation 'password'
+    password_confirmation { |u| u.password }
     #required if the Devise Confirmable module is used
     #confirmed_at Time.now
   end
