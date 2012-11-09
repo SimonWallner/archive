@@ -4,6 +4,22 @@ Given /^I have games titled (.+)$/ do |titles|
   end
 end
 
+Given /^I have a game titled "(.*?)"$/ do |title|
+  FactoryGirl.create :game, title: title
+end
+
+When /^I edit game named "(.*?)"$/ do |title|
+  within(".game_#{title}") do
+    click_link_or_button "Edit"
+  end
+end
+
+When /^I view game named "(.*?)"$/ do |title|
+  within(".game_#{title}") do
+    click_link_or_button "Show"
+  end
+end
+
 Then /^I should see "(.*?)"$/ do |text|
   page.should have_content(text)
 end
@@ -17,18 +33,22 @@ Given /^I am on the home page$/ do
 end
 
 Then /^I go to the (.+) page$/ do |page|
-  click_link page
+  click_link_or_button page
 end
 
 Then /^I click "(.*?)"$/ do |link|
-  click_link link
-
+  click_link_or_button link
 end
 
 Then /^I fill in "(.*?)" with "(.*?)"$/ do |field, text|
   fill_in field, :with => text
 end
 
-Then /^I am on the game's page "(.*?)"$/ do |arg1|
-  pending # express the regexp above with the code you wish you had
+Then /^I can edit field with value "(.*?)"$/ do |value|
+  assert find_field("game_title").value == value
+end
+
+Given /^I am on the (.+) page of "(.*?)"$/ do |type, title|
+  game = Game.find_by_title title
+  visit "/games/#{game.id}/#{type}"
 end

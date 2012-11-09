@@ -10,7 +10,7 @@
   </tr>
 
 <% @games.each do |game| %>
-  <tr>
+  <tr class="game_<%= game.title %>">
     <td><%= game.title %></td>
     <td><%= game.description %></td>
     <td><%= link_to 'Show', game %></td>
