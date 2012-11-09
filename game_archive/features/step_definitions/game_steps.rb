@@ -16,7 +16,7 @@ end
 
 When /^I view game named "(.*?)"$/ do |title|
   within(".game_#{title}") do
-    click_link_or_button "Show"
+    click_link_or_button title
   end
 end
 

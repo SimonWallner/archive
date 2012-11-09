@@ -1,15 +1,17 @@
-<p id="notice"><%= notice %></p>
+<div id="notice"><%= notice %></div>
+<div class="layout-container">
+  <div class="column-left two-thirds">
+    <h1><%= @game.title %></h1>
 
-<p>
-  <b>Title:</b>
-  <%= @game.title %>
-</p>
-
-<p>
-  <b>Description:</b>
-  <%= @game.description %>
-</p>
-
-
-<%= link_to 'Edit', edit_game_path(@game) %> |
-<%= link_to 'Back', games_path %>
+    <div class="description">
+      <%= @game.description %>
+    </div>
+  </div>
+  <div class="column-right one-third">
+    Here stands some information about the game
+    <div class="sidebar-links">
+      <%= link_to 'Edit', edit_game_path(@game) %>
+      <%= link_to 'Back', games_path %>
+    </div>
+  </div>
+</div>

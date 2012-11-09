@@ -24,7 +24,7 @@ Scenario: go to edit game page
   Given I have a game titled "Tetris"
   And I am on the games page
   When I edit game named "Tetris"
-  Then I should see "Editing game"
+  Then I should see "Edit game"
   And I can edit field with value "Tetris"
 
 Scenario: edit game

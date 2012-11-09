@@ -1,25 +1,25 @@
-<h1>Listing games</h1>
+<div class="layout-container">
+  <h1>Games</h1>
 
-<table>
-  <tr>
-    <th>Title</th>
-    <th>Description</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+  <%= link_to 'New Game', new_game_path %>
 
-<% @games.each do |game| %>
-  <tr class="game_<%= game.title %>">
-    <td><%= game.title %></td>
-    <td><%= game.description %></td>
-    <td><%= link_to 'Show', game %></td>
-    <td><%= link_to 'Edit', edit_game_path(game) %></td>
-    <td><%= link_to 'Destroy', game, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
-<% end %>
-</table>
+  <ul id="games-list">
+    <!--<tr>
+      <th>Title</th>
+      <th>Description</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>-->
 
-<br />
-
-<%= link_to 'New Game', new_game_path %>
+    <% @games.each do |game| %>
+    <li class="game_<%= game.title %>">
+      <ul>
+          <li><%= link_to game.title, game, :class => "game-title" %></li>
+          <li><%= link_to 'Edit', edit_game_path(game) %></li>
+          <!--<td> link_to 'Destroy', game, method: :delete, data: { confirm: 'Are you sure?' } </td>-->
+      </ul>
+    </li>
+    <% end %>
+  </ul>
+</div>
