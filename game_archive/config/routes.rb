@@ -1,6 +1,7 @@
 GameArchive::Application.routes.draw do
 
   resources :developers
+  resources :games
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
