@@ -24,16 +24,12 @@ Then /^I should see "(.*?)"$/ do |text|
   page.should have_content(text)
 end
 
-Given /^I am on the games page$/ do
-  visit '/games'
-end
-
-Given /^I am on the home page$/ do
-  visit '/'
-end
-
-Then /^I go to the (.+) page$/ do |page|
-  click_link_or_button page
+Given /^I am on the (.+) page$/ do |page|
+  if page == "home"
+    visit "/"
+  else
+    visit "/#{page}"
+  end
 end
 
 Then /^I click "(.*?)"$/ do |link|

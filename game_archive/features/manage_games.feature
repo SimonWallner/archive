@@ -11,7 +11,7 @@ Scenario: show all games
 
 Scenario: create game
   Given I am on the home page
-  When I go to the games page
+  When I click "games"
   And I click "New Game"
   And I fill in "Title" with "NewGame"
   And I fill in "Description" with "new description"

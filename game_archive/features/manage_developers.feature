@@ -12,11 +12,11 @@ Feature: Manage Developers
     Scenario: update a Developers page
         Given I have a developer "Hans" with the description "toller"
         When I go to the developers page
-        Then I should see "Hans"
+        And I should see "Hans"
         And I click "Hans" 
-        Then I click Edit
-        Then i fill in titel with "Hans" and content with "untoller"
-        Then i click update developer
+        And I click "Edit"
+        And i fill in titel with "Hans" and content with "untoller"
+        And i click update developer
         Then i should see the titel
 
 
