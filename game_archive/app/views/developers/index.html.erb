@@ -1,0 +1,28 @@
+
+<h1>Developers</h1>
+</p>
+
+<div>
+
+<% @developers.each do |developer| %>
+ 	<div class="tiled_4x">
+            <a href="/developers/<%= developer.id %>">
+			<div class="tile" >
+				<%= image_tag('gagarin.jpg', :class => 'rounded teaser')%>
+                                <div class="caption"><div><%= developer.titel%></div></div>
+			</div>
+		</a>
+	</div>
+       
+        <!-- <%= developer.titel %> --!>
+        
+   <!--     <%= link_to '', developer %>
+        <%= link_to 'Edit', edit_developer_path(developer) %>
+        <%= link_to 'Destroy', developer, method: :delete, data: { confirm: 'Are you sure?' } %> --!>
+<% end %>
+</div>
+<br />
+</p>
+<div>
+    <div class = "tile" > <button><%= link_to 'New Developer', new_developer_path %></button></div>
+</div>
