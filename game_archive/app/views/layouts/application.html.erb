@@ -29,14 +29,14 @@
 	
 		<div class="menu">
 			<ul>
-				<li>home</li>
+				<li><%= link_to 'home', "/"%></li>
 				<li>about us</li>
 				<li>news</li>
 				<li>press</li>
 			</ul>
 			<ul>
 				<li>games</li>
-				<li>people</li>
+                                <li><%= link_to 'people' ,developers_path%></li>
 				<li>companies*</li>
 			</ul>
 			<ul>
@@ -65,16 +65,16 @@
 
 <div id="footer">
 	<div class="container">
-		<div class="menu">
+	    <div class="menu">
 			<ul>
-				<li>home</li>
+				<li><%= link_to 'home', "/"%></li>
 				<li>about us</li>
 				<li>news</li>
 				<li>press</li>
 			</ul>
 			<ul>
 				<li>games</li>
-				<li>people</li>
+                                <li><%= link_to 'people', developers_path%></li>
 				<li>companies*</li>
 			</ul>
 			<ul>
@@ -84,8 +84,7 @@
 				<li>sign in</li>
 				<li>sign up</li>
 			</ul>
-		</div>
-		
+		</div>	
 		<div class="clear"></div>
 		
 		<div id="legal" class="grid_12">
