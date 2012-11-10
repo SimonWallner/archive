@@ -5,7 +5,7 @@ Feature: Manage Developers
 
     Scenario: show developers
         Given I have developers named Hans, Hugo
-        When I go to the developers page
+        And I am on the developers page
         Then I should see "Hans"
         And I should see "Hugo"
 
@@ -21,7 +21,7 @@ Feature: Manage Developers
 
     Scenario: update developers page
         Given I have a developer "Hans" with the description "toller"
-        When I go to the developers page
+        And I am on the developers page
         Then I should see "Hans"
         When I click "Hans" 
         Then I should see "Hans"
@@ -35,13 +35,10 @@ Feature: Manage Developers
 
     Scenario: show developers page
         Given I have a developer named "Hans"
-        When I go to the developers page
+        And I am on the developers page
         Then I should see "Hans"
         When I click "Hans"
         Then I should see "Hans" 
-        And I should see "Hans" 
-
-    #further scenarios are, create developer page, 
 
 
 
