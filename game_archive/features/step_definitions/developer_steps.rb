@@ -1,7 +1,7 @@
 
-Given /^I have developers titled (.+)$/ do |titels|
-    titels.split(', ').each do |titel|
-        FactoryGirl.create :developer , titel:titel
+Given /^I have developers titled (.+)$/ do |names|
+    names.split(', ').each do |name|
+        FactoryGirl.create :developer , name:name
     end
 end
 
@@ -14,7 +14,7 @@ end
 #end
 
 Given /^I have a developer "(.*?)" with the description "(.*?)"$/ do |developer, content|
-    FactoryGirl.create :developer, titel:developer , content:content
+    FactoryGirl.create :developer, name:developer , description:content
 end
 
 #Then /^I click "(.*?)"$/ do |titel|
