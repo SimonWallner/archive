@@ -1,3 +1,3 @@
 class Developer < ActiveRecord::Base
-  attr_accessible :content, :titel
+  attr_accessible :description, :name
 end

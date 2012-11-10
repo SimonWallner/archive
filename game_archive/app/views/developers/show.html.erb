@@ -1,11 +1,9 @@
-
-
 <p id="notice"><%= notice %></p>
-<h1><%= @developer.titel %></h1>
+<h1><%= @developer.name %></h1>
 <p>
-  <%= @developer.content %>
+  <%= @developer.description %>
 </p>
 
 
-<button><%= link_to 'Edit', edit_developer_path(@developer) %> </button><button>
-    <%= link_to 'Back', developers_path %></button>
+<button><%= link_to 'Edit', edit_developer_path(@developer) %></button>
+<button><%= link_to 'Back', developers_path %></button>

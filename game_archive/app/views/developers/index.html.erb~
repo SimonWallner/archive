@@ -17,5 +17,5 @@
 
 <br />
 </div>
-<div class="container"><button><%= link_to 'New Developer', new_developer_path %></button><div>
+<div><button><%= link_to 'New Developer', new_developer_path %></button><div>
 

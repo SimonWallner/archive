@@ -2,7 +2,7 @@
 
 FactoryGirl.define do
   factory :developer do
-    titel "MyString"
-    content "MyText"
+    name "MyString"
+    description "MyText"
   end
 end

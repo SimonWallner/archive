@@ -3,6 +3,7 @@ class DevelopersController < ApplicationController
   # GET /developers.json
   def index
     @developers = Developer.all
+
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @developers }
@@ -43,7 +44,7 @@ class DevelopersController < ApplicationController
 
     respond_to do |format|
       if @developer.save
-        format.html { redirect_to @developer, notice: 'New Developer was successfully created.' }
+        format.html { redirect_to @developer, notice: 'Developer was successfully created.' }
         format.json { render json: @developer, status: :created, location: @developer }
       else
         format.html { render action: "new" }
