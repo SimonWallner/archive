@@ -1,12 +1,20 @@
-
-Given /^I have developers titled (.+)$/ do |names|
+Given /^I have developers named (.+)$/ do |names|
     names.split(', ').each do |name|
         FactoryGirl.create :developer , name:name
     end
 end
+Given /^I have a developer named "(.+)"$/ do |name|
+        FactoryGirl.create :developer , name:name
+end
 
-When /^I go to the developers page$/ do
-    visit '/developers'
+
+
+When /^I go to the (.+) page$/ do |pagetitle|
+    if pagetitle == "home"
+        visit "/"
+    else
+        visit "/#{pagetitle}"
+    end
 end
 
 #Then /^I should see "(.*?)"$/ do |developername|
@@ -22,7 +30,7 @@ end
 #    visit "/developers/#{developer.id}"
 #end
 
-Then /^I click button (.+)$/ do |btn|
-    find_button(btn).click
-end
+#Then /^I click button "(.+)"$/ do |btn|
+#    click_link_or_button(btn)
+#end
 
