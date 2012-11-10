@@ -5,4 +5,5 @@
 </p>
 
 <%= button_to "Edit", edit_developer_path(@developer), :method => "get" %>
+<%= button_to 'Delete', @developer, :method => "delete", data: { confirm: 'Are you sure?' } %>
 <%= button_to "Back", developers_path, :method => "get" %>
