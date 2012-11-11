@@ -1,5 +1,5 @@
 <h1>Editing developer</h1>
 
 <%= render 'form' %>
-<%= button_to "Show", @developer, :method => "get" %>
-<%= button_to 'Back', developers_path, :method => "get" %>
+<%= link_to "Show", @developer %> |
+<%= link_to 'Back', developers_path %>
