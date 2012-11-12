@@ -16,3 +16,10 @@ Given /^I am on the (.+) genre_page of "(.*?)"$/ do |type, name|
   genre = Genre.find_by_name name
   visit "/genres/#{genre.id}/#{type}"
 end
+
+
+Then /^I should see "(.+)" in the list of genres$/ do |genres|
+    genres.split(', ').each do |genre|
+       page.should have_content(genre)
+    end
+end
