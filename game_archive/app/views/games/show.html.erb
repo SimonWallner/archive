@@ -2,13 +2,20 @@
 <div class="layout-container">
   <div class="column-left two-thirds">
     <h1><%= @game.title %></h1>
-    	<div class="genre">	
-	<% @game.genres.each do |genre| %>
-		<%= genre.name %>
-    <% end %>
+
+    <div class="genre">
+    <h2>Genres</h2>
+    <ul>
+      <% @game.genres.each do |genre| %>
+          <li><%= genre.name %></li>
+      <% end %>
+    </ul>
     </div>
     <div class="description">
-      <%= @game.description %>
+      <h2>Description</h2>
+      <div>
+        <%= @game.description %>
+      </div>
     </div>
   </div>
   <div class="column-right one-third">

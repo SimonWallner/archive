@@ -17,7 +17,7 @@
       <ul>
           <li><%= link_to game.title, game, :class => "game-title" %></li>
           <li><%= link_to 'Edit', edit_game_path(game) %></li>
-          <!--<td> link_to 'Destroy', game, method: :delete, data: { confirm: 'Are you sure?' } </td>-->
+          <li><%= link_to 'Destroy', game, method: :delete, data: { confirm: 'Are you sure?' } %> </li>
       </ul>
     </li>
     <% end %>

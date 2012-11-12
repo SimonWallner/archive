@@ -16,12 +16,13 @@
     <%= f.text_field :title %>
   </div>
   
-  <div class="checkbox">
-    <%= f.label :genres %><br />
-	  <% @genres.each do |genre| %>
-	    <input type="checkbox" name="genres" f.value= <%= genre %>> <%= genre.name %><br />
-	  <% end %>
-	<br />
+  <div class="field">
+    <div class="field-label">
+      <div>Genres</div>
+      <div>You can add new genres by providing a comma-seperated list in the text-field below or you can choose from already created genres in the selection box.</div>
+    </div>
+    <%= text_field_tag 'new_genres', nil%><br/>
+    <%= f.select :genre_ids, Genre.all.collect {|x| [x.name, x.id]}, {}, :multiple => true %>
   </div>  
   
   <div class="field">

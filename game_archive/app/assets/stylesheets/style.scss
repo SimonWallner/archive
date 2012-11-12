@@ -524,3 +524,15 @@ a:hover span {
     width:100%;
   }
 }
+
+.field {
+  .field-label {
+    &>div:first-child {
+      font-size: 1em;
+    }
+
+    &>div {
+      font-size:0.8em;
+    }
+  }
+}
