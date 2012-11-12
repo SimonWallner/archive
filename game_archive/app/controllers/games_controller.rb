@@ -90,8 +90,14 @@ class GamesController < ApplicationController
   # creates new genres if necessary
   # and augments the game_params with the new genres
   def create_add_new_genres(genres_string)
+    if genres_string == nil
+      return
+    end
     Genre.create_from_string(genres_string)
     new_genres = genres_string.split ','
+    if new_genres.size == 0
+      return
+    end
     new_genres.each do |ng|
       ng.strip!
       new_genre = Genre.find_by_name(ng)
@@ -105,6 +111,9 @@ class GamesController < ApplicationController
   # creates new genres if necessary
   # and augments the game_params with the new genres
   def update_add_new_genres(genres_string, game_params)
+    if genres_string == nil
+      return
+    end
     Genre.create_from_string(genres_string)
     new_genres = genres_string.split ','
     new_genres.each do |ng|
