@@ -2,7 +2,11 @@
 <div class="layout-container">
   <div class="column-left two-thirds">
     <h1><%= @game.title %></h1>
-
+    	<div class="genre">	
+	<% @game.genres.each do |genre| %>
+		<%= genre.name %>
+    <% end %>
+    </div>
     <div class="description">
       <%= @game.description %>
     </div>
