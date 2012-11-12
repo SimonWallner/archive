@@ -19,6 +19,7 @@ Scenario: create game
   And I click "Create Game"
   Then I should see "Game was successfully created"
   And I should see "NewGame"
+  And I should see "FPS"
   And I should see "new description"
 
 Scenario: go to edit game page
@@ -32,11 +33,12 @@ Scenario: edit game
   Given I have a game titled "Tetris"
   And I am on the edit page of "Tetris"
   When I fill in "Title" with "Tetris++"
-  And I fill in "new_genres" with "FPS"
+  And I fill in "new_genres" with "RPG"
   And I fill in "Description" with "New awesome description"
   And I click "Update Game"
   Then I should see "Game was successfully updated"
   And I should see "Tetris++"
+  And I should see "RPG"
   And I should see "New awesome description"
 
 Scenario: view game
