@@ -48,3 +48,5 @@ Given /^I am on the (.+) page of "(.*?)"$/ do |type, title|
   game = Game.find_by_title title
   visit "/games/#{game.id}/#{type}"
 end
+
+

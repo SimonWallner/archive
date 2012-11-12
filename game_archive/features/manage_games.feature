@@ -43,3 +43,10 @@ Scenario: view game
   When I click "games"
   And I view game named "Tetris"
   Then I should see "Tetris"
+
+Scenario: view genres available for create game
+        Given I am on the games page
+        And I have genres named Arcade, RTS
+        When I click "New Game"
+        Then I should see "Arcade, RTS" in the list of genres
+
