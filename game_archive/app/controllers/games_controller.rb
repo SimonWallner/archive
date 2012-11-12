@@ -24,6 +24,7 @@ class GamesController < ApplicationController
   # GET /games/new
   # GET /games/new.json
   def new
+    @genres = Genre.all
     @game = Game.new
 
     respond_to do |format|
@@ -34,6 +35,7 @@ class GamesController < ApplicationController
 
   # GET /games/1/edit
   def edit
+    @genres = Genre.all
     @game = Game.find(params[:id])
   end
 
@@ -41,8 +43,8 @@ class GamesController < ApplicationController
   # POST /games.json
   def create
     @game = Game.new(params[:game])
-
-    respond_to do |format|
+    
+	respond_to do |format|
       if @game.save
         format.html { redirect_to @game, notice: 'Game was successfully created.' }
         format.json { render json: @game, status: :created, location: @game }
@@ -57,7 +59,7 @@ class GamesController < ApplicationController
   # PUT /games/1.json
   def update
     @game = Game.find(params[:id])
-
+	
     respond_to do |format|
       if @game.update_attributes(params[:game])
         format.html { redirect_to @game, notice: 'Game was successfully updated.' }
