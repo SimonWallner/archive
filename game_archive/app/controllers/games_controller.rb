@@ -98,13 +98,17 @@ class GamesController < ApplicationController
     if new_genres.size == 0
       return
     end
-    new_genres.each do |ng|
+	begin
+    new_genres.try(:each) do |ng|
       ng.strip!
       new_genre = Genre.find_by_name(ng)
       if(not @game.genres.include?(new_genre))
         @game.genres << new_genre
       end
     end
+	rescue
+		return
+	end
   end
 
   # takes the new_genres_string and the game_params string
@@ -116,12 +120,16 @@ class GamesController < ApplicationController
     end
     Genre.create_from_string(genres_string)
     new_genres = genres_string.split ','
-    new_genres.each do |ng|
+	begin
+    new_genres.try(:each) do |ng|
       ng.strip!
       new_genre = Genre.find_by_name(ng)
       if(not game_params[:genre_ids].include?(new_genre.id))
         game_params[:genre_ids].push(new_genre.id)
       end
     end
+	rescue
+		return
+	end
   end
 end
