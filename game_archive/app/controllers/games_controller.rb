@@ -106,7 +106,8 @@ class GamesController < ApplicationController
         @game.genres << new_genre
       end
     end
-	rescue
+	rescue # nil exception due to "empty" arguments such as ", , ,"
+		#redirect_to @game, notice: 'Genres nicht korrekt angegeben!'
 		return
 	end
   end
@@ -128,7 +129,8 @@ class GamesController < ApplicationController
         game_params[:genre_ids].push(new_genre.id)
       end
     end
-	rescue
+	rescue # nil exception due to "empty" arguments such as ", , ,"
+		#redirect_to @game, notice: 'Genres nicht korrekt angegeben!'
 		return
 	end
   end
