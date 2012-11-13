@@ -1,24 +1,27 @@
 
-
 <div>
-  <h2>Games</h2>
+    <h2>Games</h2>
 
-  <% @games.each do |game| %>
+    <% @games.each do |game| %>
       <div class="tiled_2x">
         <a href="/games/<%= game.id %>">
           <div class="tile" >
             <%= image_tag('dummy_teaser.jpg', :class => 'rounded teaser')%>
-            <div class="caption"><div><%= game.title %></div></div>
+            <div class="caption"><div><%= game.title %></div>
+           </div>
           </div>
         </a>
-      </div>
+        </div>
 
 
-  <% end %>
-
-
+    <% end %>
+  <div class="clear"></div>
 </div>
-<div>
 
-  <%= link_to 'New Game', new_game_path %>
+<div><br>
+<%= link_to 'New Game', new_game_path %>
 </div>
+
+
+
+

@@ -1,22 +1,25 @@
-
 <div>
-    <h1>Developers</h1>
-    </p>
+  <h1>Developers</h1>
 
 
-    <% @developers.each do |developer| %>
-        <div class="tiled_4x">
-                <a href="/developers/<%= developer.id %>">
-                <div class="tile" >
-                    <%= image_tag('gagarin.jpg', :class => 'rounded teaser')%>
-                                    <div class="caption"><div><%= developer.name %></div></div>
-                </div>
-            </a>
-        </div>
+  <% @developers.each do |developer| %>
+      <div class="tiled_4x">
+        <a href="/developers/<%= developer.id %>">
+          <div class="tile">
+            <%= image_tag('gagarin.jpg', :class => 'rounded teaser') %>
+            <div class="caption">
+              <div><%= developer.name %></div>
+            </div>
+          </div>
+        </a>
+      </div>
 
 
-    <% end %>
-
+  <% end %>
+  <div class="clear"></div>
 </div>
 
-<%= link_to "New Developer", new_developer_path %>
+<div><br />
+
+    <%= link_to "New Developer", new_developer_path %>
+</div>
