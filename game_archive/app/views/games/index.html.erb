@@ -1,5 +1,5 @@
 <div class="layout-container">
-  <h1>Games</h1>
+  <h2>Games</h2>
 
   <%= link_to 'New Game', new_game_path %>
 
@@ -16,8 +16,6 @@
     <li class="game_<%= game.title %>">
       <ul>
           <li><%= link_to game.title, game, :class => "game-title" %></li>
-          <li><%= link_to 'Edit', edit_game_path(game) %></li>
-          <li><%= link_to 'Destroy', game, method: :delete, data: { confirm: 'Are you sure?' } %> </li>
       </ul>
     </li>
     <% end %>
