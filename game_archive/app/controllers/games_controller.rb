@@ -60,7 +60,7 @@ class GamesController < ApplicationController
   def update
     @game = Game.find(params[:id])
 
-    update_add_new_genres(params[:new_genres], params[:game])
+    create_add_new_genres(params[:new_genres])
 	
     respond_to do |format|
       if @game.update_attributes(params[:game])
@@ -90,6 +90,7 @@ class GamesController < ApplicationController
   # creates new genres if necessary
   # and augments the game_params with the new genres
   def create_add_new_genres(genres_string)
+    @game.genres.clear
     if genres_string == nil
       return
     end
@@ -104,29 +105,6 @@ class GamesController < ApplicationController
       new_genre = Genre.find_by_name(ng)
       if(not @game.genres.include?(new_genre))
         @game.genres << new_genre
-      end
-    end
-	rescue # nil exception due to "empty" arguments such as ", , ,"
-		#redirect_to @game, notice: 'Genres nicht korrekt angegeben!'
-		return
-	end
-  end
-
-  # takes the new_genres_string and the game_params string
-  # creates new genres if necessary
-  # and augments the game_params with the new genres
-  def update_add_new_genres(genres_string, game_params)
-    if genres_string == nil
-      return
-    end
-    Genre.create_from_string(genres_string)
-    new_genres = genres_string.split ','
-	begin
-    new_genres.try(:each) do |ng|
-      ng.strip!
-      new_genre = Genre.find_by_name(ng)
-      if(not game_params[:genre_ids].include?(new_genre.id))
-        game_params[:genre_ids].push(new_genre.id)
       end
     end
 	rescue # nil exception due to "empty" arguments such as ", , ,"
