@@ -1,46 +1,32 @@
 Feature: Manage Developers
-    In order to make a developerpage
-    As a Contributor
+	As a developer,
+	in order to present my game to the public,
     I want to create and manage developerpages
 
-    Scenario: show developers
-        Given I have developers named Hans, Hugo
-        And I am on the developers page
-        Then I should see "Hans"
-        And I should see "Hugo"
 
-    Scenario: create developer
-        Given I am on the home page
-        When I click "people"
-        Then I click "New Developer"
-        And I fill in "Name" with "Hans"
-        And I fill in "Description" with "super programmierer"
-        And I click "Create Developer"
-        Then I should see "Developer was successfully created"
-        And I should see "Hans"
+    Scenario: show developer's page
+    	Given I have a developer Leela
+        And I am on the developer's page
+    	Then I should see their details
 
-    Scenario: update developers page
-        Given I have a developer "Hans" with the description "toller"
-        And I am on the developers page
-        Then I should see "Hans"
-        When I click "Hans" 
-        Then I should see "Hans"
-        And I should see "toller"
-        When I click "Edit"
-        And I fill in "Name" with "Hans"
-        And I fill in "Description" with "untoller"
-        And I click "Update Developer"
-        Then I should see "Hans"
-        And I should see "untoller"
-
-    Scenario: show developers page
-        Given I have a developer named "Hans"
-        And I am on the developers page
-        Then I should see "Hans"
-        When I click "Hans"
-        Then I should see "Hans" 
+    Scenario: create developer with valid data
+        Given I am on the devlopers overview page
+        When I follow the new developer link
+        And I fill in the fields with valid details and submit it
+        Then The devloper should have been created
+        And I should on the developer's page
 
 
+    Scenario: fail to create developer with empty name
+     	Given I am on the developer creation page
+     	When I leave the name field empty and submit it
+     	Then I should be notified of that the name must not be empty
 
-
+    Scenario: update developer's page with valid data
+        Given I have a developer Lori
+        And I am on her developer's page
+ 	    And I follow the edit link
+ 	    When I change the devloper's data and submit it
+        Then I should be on the devloper's page
+        And I should see the updated content
 
