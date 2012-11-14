@@ -1,29 +1,62 @@
-<div id="notice"><%= notice %></div>
-<div class="layout-container">
-  <div class="column-left two-thirds">
-    <h1><%= @game.title %></h1>
+<div class="game">
+  <div class="alpha omega teaser">
+    <%= image_tag 'dummy_teaser.jpg', :alt => 'teaser screenshot', :class => 'rounded' %>
+  </div>
+  <h1><%= @game.title %></h1>
 
-    <div class="genre">
-    <h2>Genres</h2>
-    <ul>
+  <div class="fact-box">
+    <p>
+      <strong>Developer</strong>: <a href="#">Some developer</a><br />
+      <strong>Released</strong>: 2012<br />
+      <strong>Platforms</strong>: PC, Mac, Linux, XBox360, PS3<br />
+      <strong>Publisher</strong>: <a href="#">Awesome game publisher</a><br />
+      <strong>Genre</strong>:
       <% @game.genres.each do |genre| %>
-          <li><%= genre.name %></li>
-      <% end %>
-    </ul>
-    </div>
-    <div class="description">
-      <h2>Description</h2>
-      <div>
-        <%= @game.description %>
+          <% if not genre == @game.genres.first %>,
+          <% end%>
+          <%= link_to genre.name , edit_genre_path(genre) %>
+    <% end %>
+    </p>
+
+    <p>
+      <strong>Design</strong>: Turenga Leela<br />
+      <strong>Programming</strong>: <a href="#">Bender Bending Rodruigez</a><br />
+      <strong>QA Lead</strong>: Scruffy<br />
+      <strong>EMEA Publishing</strong>: Awesome Game Publisher<br />
+      <strong>Localisation</strong>: Das Translation
+    </p>
+    <p>
+    <div>
       </div>
+    </p>
+
+  </div>
+
+  <div class="text">
+    <%= @game.description %>
+
+  </div>
+
+  <div class="clear"></div>
+  <%= link_to 'Edit', edit_game_path(@game) %> |
+  <%= link_to 'Back', games_path %> | <%= link_to 'Destroy', @game, method: :delete, data: { confirm: 'Are you sure?' } %>
+  <div class="media rounded">
+    <%= image_tag 'screenshot_1.jpg', :alt => 'Screenshot 1 alt text' %>
+    <div class="caption">
+      This is an image caption for this very screenshot
     </div>
   </div>
-  <div class="column-right one-third">
-    Here stands some information about the game
-    <div class="sidebar-links">
-      <%= link_to 'Edit', edit_game_path(@game) %>
-      <%= link_to 'Back', games_path %>
-    <%= link_to 'Destroy', @game, method: :delete, data: { confirm: 'Are you sure?' } %>
-    </div>
+
   </div>
 </div>
+
+<script>
+
+    $(document).ready(function() {
+        var target = $('div.game').offset().top - 25;
+
+        $('html, body').animate({scrollTop: target}, 1000);
+    })
+
+</script>
+

@@ -44,7 +44,7 @@ class DevelopersController < ApplicationController
 
     respond_to do |format|
       if @developer.save
-        format.html { redirect_to @developer, notice: 'Developer was successfully created.' }
+        format.html { redirect_to @developer }
         format.json { render json: @developer, status: :created, location: @developer }
       else
         format.html { render action: "new" }
@@ -60,7 +60,7 @@ class DevelopersController < ApplicationController
 
     respond_to do |format|
       if @developer.update_attributes(params[:developer])
-        format.html { redirect_to @developer, notice: 'Developer was successfully updated.' }
+        format.html { redirect_to @developer}
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
