@@ -5,7 +5,7 @@ Feature: Manage Games
 
 
     Scenario: show game's page
-    	Given I have a game and genre
+    	Given I have a game
         And I am on the game page
     	Then I should see the details of this game
 

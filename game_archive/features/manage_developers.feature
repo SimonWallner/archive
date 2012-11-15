@@ -6,7 +6,7 @@ Feature: Manage Developers
 
     Scenario: show developer's page
     	Given I have a developer Leela
-        And I am on the developer's page
+        When I am on the developer's page
     	Then I should see their details
 
     Scenario: create developer with valid data
