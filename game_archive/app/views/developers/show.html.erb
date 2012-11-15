@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <p id="notice"><%= notice %></p>
 <h1><%= @developer.name %></h1>
 <p>
@@ -10,4 +11,42 @@
 
 
 <%= link_to "Webseite von Developer","http://www.google.com" , :target => "_blank"%>
+=======
+<div class="developer">
+  <h1><%=  @developer.name %></h1>
+  <div class="fact-box">
+    <%= image_tag 'gagarin.jpg', :alt => 'Juri Alexejewitsch Gagarin', :class => 'rounded portrait' %>
+    <p>
+      <strong>Website</strong>: <span class="forceWrap"><a href="#">http://de.wikipedia.org/wiki/Juri_Alexejewitsch_Gagarin</a></span><br />
+      <strong>Twitter</strong>: @Boctok1
+    </p>
+    <p>
+      <strong>Credits:</strong><br />
+      <strong>Designer</strong>: My first pony game, My second pony game, <a href="#">Ponys going to Space</a><br />
+      <strong>Programmer</strong>: Ponys going to Space<br />
+      <strong>Special Thanks</strong>: From Russia with Love
+    </p>
+  </div>
+
+  <div class="text">
+    <%=  @developer.description   %>
+  </div>
+
+  <div class="clear"></div>
+  <%= link_to 'Edit', edit_developer_path(@developer) %> |
+  <%= link_to 'Back', developers_path %> | <%= link_to 'Destroy', @developer, method: :delete, data: { confirm: 'Are you sure?' } %>
+</div>
+
+<script>
+
+    $(document).ready(function() {
+        var target = $('div.developer').offset().top - 25;
+
+        $('html, body').animate({scrollTop: target}, 1000);
+    })
+
+</script>
+
+
+>>>>>>> 40fe9b763bf4f7e24ec1cd42f33780068e06fff0
 
