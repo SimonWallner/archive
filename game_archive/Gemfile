@@ -38,6 +38,11 @@ gem 'bcrypt-ruby', '~> 3.0.0'
 # To use debugger
 # gem 'debugger'
 
+# To use markup text format "markdown"
+gem 'redcarpet'
+gem 'albino'
+
+
 # test
 gem "rspec-rails", ">= 2.10.1", :group => [:development, :test]
 gem "factory_girl_rails", ">= 3.3.0", :group => [:development, :test]
