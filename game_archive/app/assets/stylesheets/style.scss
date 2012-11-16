@@ -449,7 +449,9 @@ div.pager {
 a:hover span {
 	background-color: $lightGrey * 0.8;
 };
-
+a.tagit-close:hover span {
+  background-color: transparent;
+};
 
 .blocked-link {
   display:block;
