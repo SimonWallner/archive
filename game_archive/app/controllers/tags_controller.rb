@@ -12,9 +12,9 @@ class TagsController < ApplicationController
       @games.collect! do |game|
         {:value => game.title, :label => game.title + ' - Game'}
       end
-      @tags = @devs.merge(@games)
+      @tags = @devs.concat(@games)
       respond_to do |format|
-        format.json { render :json => {:all => @tags}}
+        format.json { render :json => @tags}
       end
     end
   end

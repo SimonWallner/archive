@@ -106,7 +106,7 @@ $(document).ready(function() {
                 start = start.substring(0, start.lastIndexOf(self.options.trigger));
 
                 var top = self.element.scrollTop();
-                this.value = start + self.options.trigger+ui.item.label+' ' + end;
+                this.value = start + self.options.trigger+ui.item.value+' ' + end;
                 self.element.scrollTop(top);
 
                 // Create an id map so we can create a hidden version of this string with id's instead of labels.
