@@ -6,6 +6,7 @@ class GenresController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
+      format.json { render json: @genres }
     end
   end
 
@@ -16,6 +17,7 @@ class GenresController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
+      format.json { render json: @genre }
     end
   end
 
@@ -26,6 +28,7 @@ class GenresController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
+      format.json { render json: @genre }
     end
   end
 
@@ -41,15 +44,11 @@ class GenresController < ApplicationController
 
     respond_to do |format|
       if @genre.save
-<<<<<<< HEAD
-        format.html { redirect_to @genre, notice: 'Genre was successfully created.' }
-
-=======
         format.html { redirect_to @genre }
         format.json { render json: @genre, status: :created, location: @genre }
->>>>>>> 40fe9b763bf4f7e24ec1cd42f33780068e06fff0
       else
         format.html { render action: "new" }
+        format.json { render json: @genre.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -61,15 +60,11 @@ class GenresController < ApplicationController
 
     respond_to do |format|
       if @genre.update_attributes(params[:genre])
-<<<<<<< HEAD
-        format.html { redirect_to @genre, notice: 'Genre was successfully updated.' }
-
-=======
         format.html { redirect_to @genre }
         format.json { head :no_content }
->>>>>>> 40fe9b763bf4f7e24ec1cd42f33780068e06fff0
       else
         format.html { render action: "edit" }
+        format.json { render json: @genre.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -82,6 +77,7 @@ class GenresController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to genres_url }
+      format.json { head :no_content }
     end
   end
 end
