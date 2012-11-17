@@ -22,6 +22,10 @@ class LinksInNewWindow < Redcarpet::Render::HTML
 		end
 			link_t = link_title[2]
 		for i in 3..link_title.length-1
+			if link_title[i].length>20
+				link_end = "/..."
+				break
+			end
 			link_t += "/" + link_title[i]			
 		end
 			link_t +=link_end
