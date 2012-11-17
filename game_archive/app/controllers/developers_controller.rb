@@ -6,6 +6,7 @@ class DevelopersController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
+      format.json { render json: @developers }
     end
   end
 
@@ -16,6 +17,7 @@ class DevelopersController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
+      format.json { render json: @developer }
     end
   end
 
@@ -26,6 +28,7 @@ class DevelopersController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
+      format.json { render json: @developer }
     end
   end
 
@@ -41,14 +44,11 @@ class DevelopersController < ApplicationController
 
     respond_to do |format|
       if @developer.save
-<<<<<<< HEAD
-        format.html { redirect_to @developer, notice: 'Developer was successfully created.' }
-=======
         format.html { redirect_to @developer }
         format.json { render json: @developer, status: :created, location: @developer }
->>>>>>> 40fe9b763bf4f7e24ec1cd42f33780068e06fff0
       else
         format.html { render action: "new" }
+        format.json { render json: @developer.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -60,15 +60,11 @@ class DevelopersController < ApplicationController
 
     respond_to do |format|
       if @developer.update_attributes(params[:developer])
-<<<<<<< HEAD
-        format.html { redirect_to @developer, notice: 'Developer was successfully updated.' }
-
-=======
         format.html { redirect_to @developer}
         format.json { head :no_content }
->>>>>>> 40fe9b763bf4f7e24ec1cd42f33780068e06fff0
       else
         format.html { render action: "edit" }
+        format.json { render json: @developer.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -81,6 +77,7 @@ class DevelopersController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to developers_url }
+      format.json { head :no_content }
     end
   end
 end

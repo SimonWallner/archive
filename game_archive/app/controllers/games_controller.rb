@@ -6,6 +6,7 @@ class GamesController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
+      format.json { render json: @games }
     end
   end
 
@@ -16,6 +17,7 @@ class GamesController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
+      format.json { render json: @game }
     end
   end
 
@@ -26,6 +28,7 @@ class GamesController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
+      format.json { render json: @game }
     end
   end
 
@@ -43,14 +46,11 @@ class GamesController < ApplicationController
 
 	respond_to do |format|
       if @game.save
-<<<<<<< HEAD
-        format.html { redirect_to @game, notice: 'Game was successfully created.' }
-=======
         format.html { redirect_to @game}
         format.json { render json: @game, status: :created, location: @game }
->>>>>>> 40fe9b763bf4f7e24ec1cd42f33780068e06fff0
       else
         format.html { render action: "new" }
+        format.json { render json: @game.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -64,15 +64,11 @@ class GamesController < ApplicationController
 	
     respond_to do |format|
       if @game.update_attributes(params[:game])
-<<<<<<< HEAD
-        format.html { redirect_to @game, notice: 'Game was successfully updated.' }
-
-=======
         format.html { redirect_to @game}
         format.json { head :no_content }
->>>>>>> 40fe9b763bf4f7e24ec1cd42f33780068e06fff0
       else
         format.html { render action: "edit" }
+        format.json { render json: @game.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -85,6 +81,7 @@ class GamesController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to games_url }
+      format.json { head :no_content }
     end
   end
 
