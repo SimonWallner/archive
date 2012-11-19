@@ -1,33 +1,29 @@
 #    Scenario: show developer's page
-Given /^I have a developer Leela$/ do
-  @newDeveloper=FactoryGirl.create :developer , name:"Leela"
+Given /^I have a developer (.+)$/ do |dev_name|
+  @givenDeveloper=FactoryGirl.create :developer , name:dev_name
 end
-When /^I am on the developer's page$/ do
-  visit "/#{"developers"}"
+And /^I am on the developers overview page$/ do
+  visit developers_path
 end
-Then /^I should see their details$/ do
-  page.should have_content(@newDeveloper.name)
+Then /^I should see the developers name in the list of developers$/ do
+  page.should have_content(@givenDeveloper.name)
 end
-
-
 
 #    Scenario: create developer with valid data
-Given /^I am on the devlopers overview page$/ do
-  visit "/#{"developers"}"
-end
 When /^I follow the new developer link$/ do
   click_link_or_button "New Developer"
 end
 When /^I fill in the fields with valid details and submit it$/ do
-  fill_in("developer_name", :with => "Hans")
-  fill_in("developer_description", :with => "New Developer: Hans")
+
+  @devHans=FactoryGirl.create :developer , name:"Hans", description:"great programmer"
+
+  fill_in("developer_name", :with => @devHans.name)
+  fill_in("developer_description", :with => @devHans.description)
   click_button "Create Developer"
-  @devHans=FactoryGirl.create :developer , name:"Hans", description:"New Developer: Hans"
+
 end
-Then /^The devloper should have been created$/ do
-  page.should have_content("Developer was successfully created.")
-end
-Then /^I should on the developer's page$/ do
+
+Then /^I should see the details of the newly created developer$/ do
   page.should have_content(@devHans.name)
   page.should have_content(@devHans.description)
 end
@@ -35,7 +31,7 @@ end
 
 #    Scenario: fail to create developer with empty name
 Given /^I am on the developer creation page$/ do
-  visit "/developers/#{"new"} "
+  visit new_developer_path
 end
 When /^I leave the name field empty and submit it$/ do
   fill_in("developer_name", :with => "")
@@ -49,31 +45,36 @@ end
 
 
 #    Scenario: update developer's page with valid data
-Given /^I have a developer Lori/ do
-  @updateDev=FactoryGirl.create :developer, name: "Lori"
-end
-Given /^I am on her developer's page$/ do
-  visit "/developers/#{@updateDev.id}"
+
+Given /^I am on the detail page of the given developer$/ do
+  visit developer_path(@givenDeveloper)
 end
 And /^I follow the edit link$/ do
   click_link_or_button "Edit"
-  visit "/developers/#{@updateDev.id}/#{"edit"}"
 end
-When /^I change the devloper's data and submit it$/ do
-  fill_in("developer_name", :with => "DevName")
-  fill_in("developer_description", :with => "DevDesc")
+When /^I change the developer's data and submit it$/ do
+
+  @givenDeveloper.name = "Bert"
+  @givenDeveloper.description = "not so great programmer"
+
+  fill_in("developer_name", :with => @givenDeveloper.name)
+  fill_in("developer_description", :with => @givenDeveloper.description)
   click_button "Update Developer"
-  @updateDev.name ="DevName"
-  @updateDev.description="DevDesc"
+
 end
-Then /^I should be on the devloper's page$/ do
-  visit "/developers/#{@updateDev.id}"
+
+
+Then /^I should be on the detail page of the given developer$/ do
+  visit developer_path(@givenDeveloper)
 end
+
+
 Then /^I should see the updated content$/ do
-  page.has_xpath?('.//p[@id="notice"]', :text => 'Developer was successfully updated.')
-  page.should have_content(@updateDev.name)
-  page.should have_content(@updateDev.description)
+  page.should have_content(@givenDeveloper.name)
+  page.should have_content(@givenDeveloper.description)
 end
+
+
 
 
 
