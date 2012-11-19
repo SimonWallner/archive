@@ -71,7 +71,8 @@ And /^I change the game's data and submit it$/ do
 
   @givenGame.title="newGameTitle"
   @givenGame.description= "newGameDesc"
-  @givenGenre.name="newGenre"
+  @givenGenre=FactoryGirl.create :genre , name:"Jump and Run and Hit"
+
 
   fill_in("game_title", :with => @givenGame.title)
   fill_in("game_description", :with => @givenGame.description)
