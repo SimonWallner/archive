@@ -21,9 +21,10 @@
       <div>Genres</div>
       <div>You can add new genres by providing a comma-seperated list in the text-field below or you can choose from already created genres in the selection box.</div>
     </div>
-
-     <%= text_field_tag 'new_genres', nil%><br />
-     <%= f.select :genre_ids, Genre.all.collect {|x| [x.name, x.id]}, {}, :multiple => true %>
+    <br/>
+    <script type="text/javascript">var genreTags = ["<%= Genre.all.collect {|x| x.name}.join('", "').html_safe%>"];</script>
+    <%= text_field_tag 'new_genres', @game.genres.all.collect {|x| x.name}.join(', ')%>
+    <br/>
 
   </div>
   
