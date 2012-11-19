@@ -83,3 +83,47 @@ Then /^I should see the two paragraphs$/ do
     counter.should == @nr_paragraphs
   end
 end
+
+When /^I create a game with (.+)$/ do |fill|
+  title = "GameABC"
+  fill_in("game_title", :with => title)
+
+  if fill == "a long link without a name"
+    markup_text = 'http://46.163.119.27:8086/secure/RapidBoard.jspa?rapidView=1&view=detail&selectedIssue=GA-35'
+  elsif fill == "a short link without a name"
+    markup_text = 'http://www.google.com/'
+  elsif fill == "a link with a name"
+    markup_text = '[Google](http://www.google.com/)'
+  end
+
+  fill_in("game_description", :with => markup_text)
+  click_link_or_button "Create Game"
+
+  @game = Game.find_by_title title
+end
+
+Then /^I should see the game$/ do
+  page.should have_content(@game.title)
+end
+
+Then /^I should see a short link without protocol and trailing backspace$/ do
+  page.should have_selector(".game .text a")
+  link_val = find(".game .text a").text
+  assert (not link_val.start_with?("http://"))
+  assert (not link_val.end_with?("/"))
+end
+
+Then /^I should see a long link shortened without protocol$/ do
+  page.should have_selector(".game .text a")
+  link_val = find(".game .text a").text
+  assert (not link_val.start_with?("http://"))
+  assert (link_val.end_with?("..."))
+  assert (link_val.length <= 30)
+end
+
+Then /^I should see the link as a name$/ do
+  page.should have_selector(".game .text a")
+  link = find(".game .text a")
+  assert (link.text == "Google")
+  assert (link['href'] == "http://www.google.com/")
+end
