@@ -65,7 +65,7 @@ end
 
 
 Then /^I should be on the detail page of the given developer$/ do
-  visit developer_path(@givenDeveloper)
+  current_path.should == developer_path(@givenDeveloper)
 end
 
 

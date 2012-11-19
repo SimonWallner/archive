@@ -29,5 +29,5 @@ Feature: Manage Games
     And I am on the detail page of the game
     When I follow the edit link of game page
     And I change the game's data and submit it
-    Then I should be on the game's page
-    And I should see the updated game content
+    Then I should see the updated game content
+    And I should be on the detail page of the given game

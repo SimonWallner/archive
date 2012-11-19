@@ -56,8 +56,6 @@ Then /^I should be notified of that the name of game must not be empty$/ do
 end
 
 
-
-
 #   Scenario: update game's page with valid data
 Given /^I am on the detail page of the game$/ do
   visit game_path(@givenGame)
@@ -82,8 +80,8 @@ And /^I change the game's data and submit it$/ do
 
 
 end
-Then /^I should be on the game's page$/ do
-  visit "/games/#{@givenGame.id}"
+Then /^I should be on the detail page of the given game$/ do
+  current_path.should == game_path(@givenGame)
 end
 Then /^I should see the updated game content$/ do
   page.should have_content(@givenGame.title)
