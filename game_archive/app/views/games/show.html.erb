@@ -14,7 +14,7 @@
       <% @game.genres.each do |genre| %>
           <% if not genre == @game.genres.first %>,
           <% end%>
-          <%= link_to genre.name , edit_genre_path(genre) %>
+          <%= genre.name%>
     <% end %>
     </p>
 

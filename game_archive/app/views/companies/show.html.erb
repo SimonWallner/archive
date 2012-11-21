@@ -1,0 +1,38 @@
+<div class="company">
+  <h1><%=  @company.name %></h1>
+  <div class="fact-box">
+    <%= image_tag 'gagarin.jpg', :alt => 'Juri Alexejewitsch Gagarin', :class => 'rounded portrait' %>
+    <p>
+	  
+      <strong>Legal Name</strong>: studio radiolaris interactive entertainment GmbH <br />
+      <strong>Location</strong>: Vienna, Austria<br />
+      <strong>Founded:</strong>: June 2009, Vienna, Austria <br />
+      <strong>Closed</strong>: July 2010, merged with Broken Rules</a><br />
+	<p>
+	</p>	
+      <strong>Website</strong>: <span class="forceWrap"><a href="#">http://radiolaris.com</a></span><br />
+	  <strong>Social Media</strong>: twitter: https://twitter.com/radiolaris <br />
+	  <strong>Projects</strong>: Radio Flare - 2008<br />
+    </p>
+  </div>
+
+  <div class="text">
+    <%= markdown(@company.description) %>
+  </div>
+
+  <div class="clear"></div>
+  <%= link_to 'Edit', edit_company_path(@company) %> |
+  <%= link_to 'Back', companies_path %> | <%= link_to 'Destroy', @company, method: :delete, data: { confirm: 'Are you sure?' } %>
+</div>
+
+<script>
+
+    $(document).ready(function() {
+        var target = $('div.company').offset().top - 25;
+
+        $('html, body').animate({scrollTop: target}, 1000);
+    })
+
+</script>
+
+

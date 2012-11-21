@@ -1,4 +1,6 @@
 GameArchive::Application.routes.draw do
+  resources :companies
+
   resources :genres
 
   resources :developers

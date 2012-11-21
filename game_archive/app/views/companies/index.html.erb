@@ -1,0 +1,25 @@
+<div>
+  <h1>Companies</h1>
+
+
+  <% @companies.each do |company| %>
+      <div class="tiled_4x">
+        <a href="/companies/<%= company.id %>">
+          <div class="tile">
+            <%= image_tag('gagarin.jpg', :class => 'rounded teaser') %>
+            <div class="caption">
+              <div><%= company.name %></div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+
+  <% end %>
+  <div class="clear"></div>
+</div>
+
+<div><br />
+
+    <%= link_to "New Company", new_company_path %>
+</div>
