@@ -2,7 +2,7 @@
 Given /^I have a developer (.+)$/ do |dev_name|
   @givenDeveloper=FactoryGirl.create :developer , name:dev_name
 end
-And /^I am on the developers overview page$/ do
+Given /^I am on the developers overview page$/ do
   visit developers_path
 end
 Then /^I should see the developers name in the list of developers$/ do
