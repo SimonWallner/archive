@@ -41,7 +41,7 @@ gem 'bcrypt-ruby', '~> 3.0.0'
 # To use markup text format "markdown"
 gem 'redcarpet'
 gem 'albino'
-
+gem 'carrierwave'
 
 # test
 gem "rspec-rails", ">= 2.10.1", :group => [:development, :test]
