@@ -1,4 +1,6 @@
 class GenresController < ApplicationController
+  before_filter :authenticate_user!, except: [:index, :show]
+
   # GET /genres
   # GET /genres.json
   def index

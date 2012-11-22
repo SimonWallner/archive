@@ -69,5 +69,13 @@ module GameArchive
       g.view_specs false
       g.helper_specs false
     end
+
+    # for heroku deployment
+    # forcing your application to not access the DB or load models when precompiling your assets.
+    config.assets.initialize_on_precompile = false
+
+    # passwords won't be written to log files
+    config.filter_parameters += [:password, :password_confirmation]
+
   end
 end

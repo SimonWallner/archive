@@ -19,7 +19,9 @@
   <div class="clear"></div>
 </div>
 
-<div><br />
+<% if user_signed_in? %>
+    <div><br/>
 
-    <%= link_to "New Developer", new_developer_path %>
-</div>
+        <%= link_to "New Developer", new_developer_path %>
+    </div>
+<% end %>

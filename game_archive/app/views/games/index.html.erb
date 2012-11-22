@@ -18,9 +18,11 @@
   <div class="clear"></div>
 </div>
 
-<div><br>
-<%= link_to 'New Game', new_game_path %>
-</div>
+<% if user_signed_in? %>
+    <div><br>
+    <%= link_to 'New Game', new_game_path %>
+    </div>
+<% end %>
 
 
 

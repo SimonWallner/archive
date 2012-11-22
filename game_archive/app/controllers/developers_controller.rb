@@ -1,4 +1,6 @@
 class DevelopersController < ApplicationController
+  before_filter :authenticate_user!, except: [:index, :show]
+
   # GET /developers
   # GET /developers.json
   def index
