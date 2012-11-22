@@ -6,7 +6,7 @@
       <div class="tiled_2x">
         <a href="/games/<%= game.id %>">
           <div class="tile" >
-            <%= image_tag game.image_url.to_s %>
+            <%= image_tag game.image_url(:tiled_2x).to_s, :class => "tiled_2x_img" %>
             <div class="caption"><div><%= game.title %></div>
            </div>
           </div>

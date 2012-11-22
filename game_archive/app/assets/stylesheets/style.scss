@@ -267,7 +267,6 @@ div.tiled_2x {
 
 div.tiled_4x {
 	width: (100% - (3 * $tileGap)) / 4;
-      height: auto;
 	
 	@media #{$large} {
 		&:nth-child(4n+2) {
@@ -550,11 +549,7 @@ a.tagit-close:hover span {
 
 
 #new_genres, #game_genre_ids, #game_description , #game_title, #developer_description , #developer_name{
-  width: 25em;
+  width: 50%;
 }
 
-.tiled_4x_img {
 
-  height: 166px;
-
-}

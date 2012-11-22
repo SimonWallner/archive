@@ -1,6 +1,6 @@
 <div class="game">
-  <div class="alpha omega teaser">
-    <%= image_tag @game.image_url.to_s %>
+  <div class="top_game_pic">
+    <%= image_tag @game.image_url(:top_game).to_s%>
 
   </div>
   <h1><%= @game.title %></h1>

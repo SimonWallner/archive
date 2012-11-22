@@ -6,7 +6,7 @@
       <div class="tiled_4x">
         <a href="/companies/<%= company.id %>">
           <div class="tile">
-            <%= image_tag (company.image_url.to_s) , :class => "tiled_4x_img" %>
+            <%= image_tag (company.image_url(:tiled_4x).to_s) , :class => "tiled_4x_img" %>
             <div class="caption">
               <div><%= company.name %></div>
             </div>

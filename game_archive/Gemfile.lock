@@ -128,6 +128,7 @@ GEM
     rdoc (3.12)
       json (~> 1.4)
     redcarpet (2.2.2)
+    rmagick (2.13.1)
     rspec (2.11.0)
       rspec-core (~> 2.11.0)
       rspec-expectations (~> 2.11.0)
@@ -191,6 +192,7 @@ DEPENDENCIES
   launchy (>= 2.1.0)
   rails (= 3.2.8)
   redcarpet
+  rmagick
   rspec-rails (>= 2.10.1)
   sass-rails (~> 3.2.3)
   sqlite3
