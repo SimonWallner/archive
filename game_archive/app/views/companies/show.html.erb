@@ -1,7 +1,7 @@
 <div class="company">
   <h1><%=  @company.name %></h1>
   <div class="fact-box">
-    <%= image_tag @company.image_url(:tiled_4x).to_s %>
+    <%= image_tag @company.image_url(:tiled_4x).to_s , :class => "media rounded"%>
     <p>
 	  
       <strong>Legal Name</strong>: studio radiolaris interactive entertainment GmbH <br />

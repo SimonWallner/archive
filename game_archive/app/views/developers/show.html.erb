@@ -1,7 +1,9 @@
 <div class="developer">
   <h1><%=  @developer.name %></h1>
   <div class="fact-box">
-    <%= image_tag @developer.image_url(:tiled_4x).to_s %>
+
+    <%= image_tag @developer.image_url(:tiled_4x).to_s, :class => "media rounded" %>
+
     <p>
       <strong>Website</strong>: <span class="forceWrap"><a href="#">http://de.wikipedia.org/wiki/Juri_Alexejewitsch_Gagarin</a></span><br />
       <strong>Twitter</strong>: @Boctok1
