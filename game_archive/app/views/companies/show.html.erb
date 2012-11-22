@@ -1,7 +1,7 @@
 <div class="company">
   <h1><%=  @company.name %></h1>
   <div class="fact-box">
-    <%= image_tag 'gagarin.jpg', :alt => 'Juri Alexejewitsch Gagarin', :class => 'rounded portrait' %>
+    <%= image_tag @company.image_url.to_s %>
     <p>
 	  
       <strong>Legal Name</strong>: studio radiolaris interactive entertainment GmbH <br />

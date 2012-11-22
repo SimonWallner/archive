@@ -259,11 +259,15 @@ div.tiled_2x {
 		padding-left: 0px;
 		padding-right: 0px;
 		float: clear;
+
 	}
 }
 
+
+
 div.tiled_4x {
 	width: (100% - (3 * $tileGap)) / 4;
+      height: auto;
 	
 	@media #{$large} {
 		&:nth-child(4n+2) {
@@ -315,6 +319,7 @@ div.tile {
 		top: 0px;
 		left: 0px;
 		width: 100%;
+
 		background-color: rgba(255, 255, 255, 0.3);
 		color: $darkGrey;
 		font-size: 2em;
@@ -548,3 +553,8 @@ a.tagit-close:hover span {
   width: 25em;
 }
 
+.tiled_4x_img {
+
+  height: 166px;
+
+}
