@@ -63,7 +63,9 @@ end
 
 
 When /^I follow the edit link of game page$/ do
-  click_link_or_button "Edit"
+  within(".game") do
+    click_link_or_button "Edit"
+  end
 end
 And /^I change the game's data and submit it$/ do
 

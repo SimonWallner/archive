@@ -50,10 +50,11 @@ Given /^I am on the detail page of the given developer$/ do
   visit developer_path(@givenDeveloper)
 end
 And /^I follow the edit link$/ do
-  click_link_or_button "Edit"
+  within(".developer") do
+    click_link_or_button "Edit"
+  end
 end
 When /^I change the developer's data and submit it$/ do
-
   @givenDeveloper.name = "Bert"
   @givenDeveloper.description = "not so great programmer"
 

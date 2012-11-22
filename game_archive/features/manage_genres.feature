@@ -9,12 +9,14 @@ Scenario: show all genres
   Then I should see the genres
 
 Scenario: create genre
-  Given I am on the genre create page
+  Given I am signed in as User
+  And I am on the genre create page
   When I create a valid genre
   Then I should see the created genre
 
 Scenario: edit genre
-  Given I have a genre named RTS
+  Given I am signed in as User
+  And I have a genre named RTS
   And I am on the edit page of the genre
   When I update the genre
   Then I should see the new values
