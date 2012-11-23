@@ -27,7 +27,7 @@ Feature: Manage Games
     Given I have a game Tetris
     And I have a genre named "Puzzle"
     And I am on the detail page of the game
-    When I follow the edit link of game page
+    When I follow the edit link
     And I change the game's data and submit it
     Then I should see the updated game content
     And I should be on the detail page of the given game

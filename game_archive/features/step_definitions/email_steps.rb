@@ -1,4 +1,4 @@
-# Commonly used email steps
+# Commonly used email steps                                                 And I fill in the fields with valid details
 #
 # To add your own steps make a custom_email_steps.rb
 # The provided methods are:

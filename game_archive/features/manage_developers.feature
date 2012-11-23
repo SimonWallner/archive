@@ -12,7 +12,7 @@ Feature: Manage Developers
   Scenario: create developer with valid data
     Given I am on the developers overview page
     When I follow the new developer link
-    And I fill in the fields with valid details and submit it
+    And I fill in the fields for the developer with valid details and submit it
     Then I should see the details of the newly created developer
 
 
