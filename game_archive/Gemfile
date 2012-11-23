@@ -58,6 +58,4 @@ gem "yard", ">= 0.8.3"
 #authentication
 gem "devise", ">= 2.1.0"
 
-
-
-
+#
