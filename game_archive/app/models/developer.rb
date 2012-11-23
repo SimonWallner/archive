@@ -1,6 +1,17 @@
 class Developer < ActiveRecord::Base
-  attr_accessible :description, :name
+  require 'file_size_validator'
+
+  attr_accessible :description, :name , :image
+
   validates :name, :presence => true
+
+
+  mount_uploader :image , ImageUploader
+
+  validates :image,
+            :file_size => {
+                :maximum => 0.4.megabytes.to_i
+            }
 
   def to_json
     ActiveSupport::JSON.encode({

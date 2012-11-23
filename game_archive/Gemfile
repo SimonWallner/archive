@@ -21,7 +21,7 @@ group :assets do
 end
 
 gem 'jquery-rails'
-
+gem 'rmagick'
 # To use ActiveModel has_secure_password
 gem 'bcrypt-ruby', '~> 3.0.0'
 
@@ -41,7 +41,7 @@ gem 'bcrypt-ruby', '~> 3.0.0'
 # To use markup text format "markdown"
 gem 'redcarpet'
 gem 'albino'
-
+gem 'carrierwave'
 
 # test
 gem "rspec-rails", ">= 2.10.1", :group => [:development, :test]
@@ -57,3 +57,5 @@ gem "yard", ">= 0.8.3"
 
 #authentication
 gem "devise", ">= 2.1.0"
+
+#

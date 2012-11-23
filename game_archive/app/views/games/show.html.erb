@@ -1,6 +1,7 @@
 <div class="game">
-  <div class="alpha omega teaser">
-    <%= image_tag 'dummy_teaser.jpg', :alt => 'teaser screenshot', :class => 'rounded' %>
+  <div class="media rounded">
+    <%= image_tag @game.image_url(:top_game).to_s, :class => "media rounded"%>
+
   </div>
   <h1><%= @game.title %></h1>
 

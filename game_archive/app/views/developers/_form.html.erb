@@ -1,4 +1,4 @@
-<%= form_for(@developer) do |f| %>
+<%= form_for @developer, :html => {:multipart => true} do |f| %>
   <% if @developer.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@developer.errors.count, "error") %> prohibited this developer from being saved:</h2>
@@ -18,6 +18,10 @@
   <div class="field">
     <%= f.label :description %><br />
     <%= f.text_area :description  %>
+  </div>
+  <div class="field">
+    <%= f.label :image, 'Choose profile picture' %><br />
+    <%= f.file_field :image %>
   </div>
   <div class="actions">
     <%= f.submit %>
