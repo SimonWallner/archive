@@ -13,7 +13,7 @@ $.fn.getCursorPosition = function() {
     return pos;
 }
 $(document).ready(function() {
-    var txts = $('#game_description, #developer_description');
+    var txts = $('#game_description, #developer_description, #company_description');
     $(txts).before('<textarea id="txtdummy" style="position:absolute;visibility:hidden;"></textarea> ');
     $(txts).parent().append('<input type="hidden" name="mentioned_ids" id="mentioned_ids" value=""/>');
     $(txts).bind("keyup",function(){
@@ -106,7 +106,7 @@ $(document).ready(function() {
                 start = start.substring(0, start.lastIndexOf(self.options.trigger));
 
                 var top = self.element.scrollTop();
-                this.value = start + self.options.trigger+ui.item.value+' ' + end;
+                this.value = start + ui.item.value +' ' + end;
                 self.element.scrollTop(top);
 
                 // Create an id map so we can create a hidden version of this string with id's instead of labels.
@@ -194,7 +194,7 @@ $(document).ready(function() {
 
                 if(this.stopIndex == contents.lastIndexOf(this.options.trigger) && term.length > this.stopLength) { term = ''; }
 
-                if(term.length > 0) {
+                if(term.length >= 0) {
                     // Updates the hidden field to check if a name was removed so that we can put them back in the list.
                     this.updateHidden();
                     return this._search(term);

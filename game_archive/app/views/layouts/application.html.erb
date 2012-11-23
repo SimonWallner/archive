@@ -5,7 +5,7 @@
 	<link href='http://fonts.googleapis.com/css?family=Bitter:400,700&amp;subset=latin,latin-ext' rel='stylesheet' type='text/css'>
     <link href='http://code.jquery.com/ui/1.9.1/themes/base/jquery-ui.css' rel='stylesheet' type='text/css'>
   	<%= stylesheet_link_tag    "application", :media => "all" %>
-  	<%= javascript_include_tag "application" %>
+  	<%= javascript_include_tag "application", controller_name %>
   	<%= csrf_meta_tags %>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 </head>

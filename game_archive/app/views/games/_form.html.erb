@@ -21,7 +21,7 @@
       Genres
     </div>
     <script type="text/javascript">var genreTags = ["<%= Genre.all.collect {|x| x.name}.join('", "').html_safe%>"];</script>
-    <%= text_field_tag 'new_genres', @game.genres.all.collect {|x| x.name}.join(', ')%>
+    <%= text_field_tag 'new_genres', @game.genres.all.collect {|x| x.name}.append(params[:new_genres]).join(', ')%>
     <br/>
 
   </div>

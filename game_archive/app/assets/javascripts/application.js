@@ -15,6 +15,5 @@
 //= require jquery_ujs
 //= require tag-it.js
 //= require at_autocomplete.js
-//= require_tree .
 
 
