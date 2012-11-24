@@ -7,6 +7,10 @@ When /^I follow the new developer link$/ do
   click_link_or_button "New Developer"
 end
 
+When /^I follow the new company link$/ do
+  click_link_or_button "New Company"
+end
+
 When /^I follow the edit link$/ do
   click_link_or_button "Edit"
 end
@@ -14,6 +18,10 @@ end
 
 Given /^I am on the edit page of the given developer$/ do
   visit edit_developer_path(@givenDeveloper)
+end
+
+Given /^I am on the edit page of the given company$/ do
+  visit edit_developer_path(@givenCompany)
 end
 
 Given /^I am on the edit page of the given game$/ do
@@ -25,6 +33,10 @@ end
 
 Given /^I am on the genre create page$/ do
   visit new_genre_path
+end
+
+Given /^I am on the companies overview page$/ do
+  visit companies_path
 end
 
 Given /^I am on the developers overview page$/ do
@@ -54,7 +66,7 @@ When /^I submit it$/ do
   rescue Capybara::ElementNotFound
     puts "Update Developer not found"
   end
-
+  
   begin
     if find_button("Create Developer")
       click_button "Create Developer"
@@ -63,6 +75,7 @@ When /^I submit it$/ do
   rescue Capybara::ElementNotFound
     puts "Create Developer not found"
   end
+  
   begin
     if find_button("Create Game")
       click_button "Create Game"
