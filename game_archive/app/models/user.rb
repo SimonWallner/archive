@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  VALID_PASSWORD_PATTERN = /\A.*(?=[a-z])(?=.*[A-Z])(?=.*[0-9]).*\z/
+  VALID_PASSWORD_PATTERN = /\A.*(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).*\z/
 
   validates :password, format: {
       :with => VALID_PASSWORD_PATTERN,

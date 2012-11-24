@@ -19,7 +19,9 @@
   <div class="clear"></div>
 </div>
 
-<div><br />
+<% if user_signed_in? %>
+    <div><br />
 
-    <%= link_to "New Company", new_company_path %>
-</div>
+        <%= link_to "New Company", new_company_path %>
+    </div>
+<% end %>
