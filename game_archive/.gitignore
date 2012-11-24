@@ -17,3 +17,6 @@
 .DS_Store
 
 .idea
+
+# image uploads
+/public/uploads/*
