@@ -20,6 +20,8 @@ require 'spec_helper'
 
 describe GenresController do
 
+  login_user
+
   # This should return the minimal set of attributes required to create a valid
   # Genre. As you add validations to Genre, be sure to
   # update the return value of this method accordingly.
@@ -39,7 +41,7 @@ describe GenresController do
   describe "GET index" do
     it "assigns all genres as @genres" do
       genre = Genre.create! valid_attributes
-      get :index, {}, valid_session
+      get :index, {}
       assigns(:genres).should eq([genre])
     end
   end
@@ -47,14 +49,14 @@ describe GenresController do
   describe "GET show" do
     it "assigns the requested genre as @genre" do
       genre = Genre.create! valid_attributes
-      get :show, {:id => genre.to_param}, valid_session
+      get :show, {:id => genre.to_param}
       assigns(:genre).should eq(genre)
     end
   end
 
   describe "GET new" do
     it "assigns a new genre as @genre" do
-      get :new, {}, valid_session
+      get :new, {}
       assigns(:genre).should be_a_new(Genre)
     end
   end
@@ -62,7 +64,7 @@ describe GenresController do
   describe "GET edit" do
     it "assigns the requested genre as @genre" do
       genre = Genre.create! valid_attributes
-      get :edit, {:id => genre.to_param}, valid_session
+      get :edit, {:id => genre.to_param}
       assigns(:genre).should eq(genre)
     end
   end
@@ -71,18 +73,18 @@ describe GenresController do
     describe "with valid params" do
       it "creates a new Genre" do
         expect {
-          post :create, {:genre => valid_attributes}, valid_session
+          post :create, {:genre => valid_attributes}
         }.to change(Genre, :count).by(1)
       end
 
       it "assigns a newly created genre as @genre" do
-        post :create, {:genre => valid_attributes}, valid_session
+        post :create, {:genre => valid_attributes}
         assigns(:genre).should be_a(Genre)
         assigns(:genre).should be_persisted
       end
 
       it "redirects to the created genre" do
-        post :create, {:genre => valid_attributes}, valid_session
+        post :create, {:genre => valid_attributes}
         response.should redirect_to(Genre.last)
       end
     end
@@ -91,14 +93,14 @@ describe GenresController do
       it "assigns a newly created but unsaved genre as @genre" do
         # Trigger the behavior that occurs when invalid params are submitted
         Genre.any_instance.stub(:save).and_return(false)
-        post :create, {:genre => {}}, valid_session
+        post :create, {:genre => {}}
         assigns(:genre).should be_a_new(Genre)
       end
 
       it "re-renders the 'new' template" do
         # Trigger the behavior that occurs when invalid params are submitted
         Genre.any_instance.stub(:save).and_return(false)
-        post :create, {:genre => {}}, valid_session
+        post :create, {:genre => {}}
         response.should render_template("new")
       end
     end
@@ -113,18 +115,18 @@ describe GenresController do
         # receives the :update_attributes message with whatever params are
         # submitted in the request.
         Genre.any_instance.should_receive(:update_attributes).with({'these' => 'params'})
-        put :update, {:id => genre.to_param, :genre => {'these' => 'params'}}, valid_session
+        put :update, {:id => genre.to_param, :genre => {'these' => 'params'}}
       end
 
       it "assigns the requested genre as @genre" do
         genre = Genre.create! valid_attributes
-        put :update, {:id => genre.to_param, :genre => valid_attributes}, valid_session
+        put :update, {:id => genre.to_param, :genre => valid_attributes}
         assigns(:genre).should eq(genre)
       end
 
       it "redirects to the genre" do
         genre = Genre.create! valid_attributes
-        put :update, {:id => genre.to_param, :genre => valid_attributes}, valid_session
+        put :update, {:id => genre.to_param, :genre => valid_attributes}
         response.should redirect_to(genre)
       end
     end
@@ -134,7 +136,7 @@ describe GenresController do
         genre = Genre.create! valid_attributes
         # Trigger the behavior that occurs when invalid params are submitted
         Genre.any_instance.stub(:save).and_return(false)
-        put :update, {:id => genre.to_param, :genre => {}}, valid_session
+        put :update, {:id => genre.to_param, :genre => {}}
         assigns(:genre).should eq(genre)
       end
 
@@ -142,7 +144,7 @@ describe GenresController do
         genre = Genre.create! valid_attributes
         # Trigger the behavior that occurs when invalid params are submitted
         Genre.any_instance.stub(:save).and_return(false)
-        put :update, {:id => genre.to_param, :genre => {}}, valid_session
+        put :update, {:id => genre.to_param, :genre => {}}
         response.should render_template("edit")
       end
     end
@@ -152,13 +154,13 @@ describe GenresController do
     it "destroys the requested genre" do
       genre = Genre.create! valid_attributes
       expect {
-        delete :destroy, {:id => genre.to_param}, valid_session
+        delete :destroy, {:id => genre.to_param}
       }.to change(Genre, :count).by(-1)
     end
 
     it "redirects to the genres list" do
       genre = Genre.create! valid_attributes
-      delete :destroy, {:id => genre.to_param}, valid_session
+      delete :destroy, {:id => genre.to_param}
       response.should redirect_to(genres_url)
     end
   end

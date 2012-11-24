@@ -52,4 +52,9 @@ RSpec.configure do |config|
   end
 
   Capybara.javascript_driver = :webkit
+
+  RSpec.configure do |config|
+    config.include Devise::TestHelpers, :type => :controller
+    config.extend ControllerMacros, :type => :controller
+  end
 end

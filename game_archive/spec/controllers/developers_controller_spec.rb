@@ -20,6 +20,8 @@ require 'spec_helper'
 
 describe DevelopersController do
 
+  login_user
+
   # This should return the minimal set of attributes required to create a valid
   # Developer. As you add validations to Developer, be sure to
   # update the return value of this method accordingly.
@@ -39,7 +41,7 @@ describe DevelopersController do
   describe "GET index" do
     it "assigns all developers as @developers" do
       developer = Developer.create! valid_attributes
-      get :index, {}, valid_session
+      get :index, {}
       assigns(:developers).should eq([developer])
     end
   end
@@ -47,14 +49,14 @@ describe DevelopersController do
   describe "GET show" do
     it "assigns the requested developer as @developer" do
       developer = Developer.create! valid_attributes
-      get :show, {:id => developer.to_param}, valid_session
+      get :show, {:id => developer.to_param}
       assigns(:developer).should eq(developer)
     end
   end
 
   describe "GET new" do
     it "assigns a new developer as @developer" do
-      get :new, {}, valid_session
+      get :new, {}
       assigns(:developer).should be_a_new(Developer)
     end
   end
@@ -62,7 +64,7 @@ describe DevelopersController do
   describe "GET edit" do
     it "assigns the requested developer as @developer" do
       developer = Developer.create! valid_attributes
-      get :edit, {:id => developer.to_param}, valid_session
+      get :edit, {:id => developer.to_param}
       assigns(:developer).should eq(developer)
     end
   end
@@ -71,18 +73,18 @@ describe DevelopersController do
     describe "with valid params" do
       it "creates a new Developer" do
         expect {
-          post :create, {:developer => valid_attributes}, valid_session
+          post :create, {:developer => valid_attributes}
         }.to change(Developer, :count).by(1)
       end
 
       it "assigns a newly created developer as @developer" do
-        post :create, {:developer => valid_attributes}, valid_session
+        post :create, {:developer => valid_attributes}
         assigns(:developer).should be_a(Developer)
         assigns(:developer).should be_persisted
       end
 
       it "redirects to the created developer" do
-        post :create, {:developer => valid_attributes}, valid_session
+        post :create, {:developer => valid_attributes}
         response.should redirect_to(Developer.last)
       end
     end
@@ -91,14 +93,14 @@ describe DevelopersController do
       it "assigns a newly created but unsaved developer as @developer" do
         # Trigger the behavior that occurs when invalid params are submitted
         Developer.any_instance.stub(:save).and_return(false)
-        post :create, {:developer => {}}, valid_session
+        post :create, {:developer => {}}
         assigns(:developer).should be_a_new(Developer)
       end
 
       it "re-renders the 'new' template" do
         # Trigger the behavior that occurs when invalid params are submitted
         Developer.any_instance.stub(:save).and_return(false)
-        post :create, {:developer => {}}, valid_session
+        post :create, {:developer => {}}
         response.should render_template("new")
       end
     end
@@ -113,18 +115,18 @@ describe DevelopersController do
         # receives the :update_attributes message with whatever params are
         # submitted in the request.
         Developer.any_instance.should_receive(:update_attributes).with({'these' => 'params'})
-        put :update, {:id => developer.to_param, :developer => {'these' => 'params'}}, valid_session
+        put :update, {:id => developer.to_param, :developer => {'these' => 'params'}}
       end
 
       it "assigns the requested developer as @developer" do
         developer = Developer.create! valid_attributes
-        put :update, {:id => developer.to_param, :developer => valid_attributes}, valid_session
+        put :update, {:id => developer.to_param, :developer => valid_attributes}
         assigns(:developer).should eq(developer)
       end
 
       it "redirects to the developer" do
         developer = Developer.create! valid_attributes
-        put :update, {:id => developer.to_param, :developer => valid_attributes}, valid_session
+        put :update, {:id => developer.to_param, :developer => valid_attributes}
         response.should redirect_to(developer)
       end
     end
@@ -134,7 +136,7 @@ describe DevelopersController do
         developer = Developer.create! valid_attributes
         # Trigger the behavior that occurs when invalid params are submitted
         Developer.any_instance.stub(:save).and_return(false)
-        put :update, {:id => developer.to_param, :developer => {}}, valid_session
+        put :update, {:id => developer.to_param, :developer => {}}
         assigns(:developer).should eq(developer)
       end
 
@@ -142,7 +144,7 @@ describe DevelopersController do
         developer = Developer.create! valid_attributes
         # Trigger the behavior that occurs when invalid params are submitted
         Developer.any_instance.stub(:save).and_return(false)
-        put :update, {:id => developer.to_param, :developer => {}}, valid_session
+        put :update, {:id => developer.to_param, :developer => {}}
         response.should render_template("edit")
       end
     end
@@ -152,13 +154,13 @@ describe DevelopersController do
     it "destroys the requested developer" do
       developer = Developer.create! valid_attributes
       expect {
-        delete :destroy, {:id => developer.to_param}, valid_session
+        delete :destroy, {:id => developer.to_param}
       }.to change(Developer, :count).by(-1)
     end
 
     it "redirects to the developers list" do
       developer = Developer.create! valid_attributes
-      delete :destroy, {:id => developer.to_param}, valid_session
+      delete :destroy, {:id => developer.to_param}
       response.should redirect_to(developers_url)
     end
   end
