@@ -3,6 +3,8 @@ class ApplicationController < ActionController::Base
   protected
   
   def authenticate_inviter!
-    current_user.admin?
+    if current_user.admin?
+		return current_user
+	end
   end
 end
