@@ -1,4 +1,5 @@
 GameArchive::Application.routes.draw do
+
   devise_for :users, skip: :registrations
   devise_scope :user do
     resource :registration,
@@ -10,6 +11,8 @@ GameArchive::Application.routes.draw do
       get :cancel
     end
   end
+
+  resources :companies
 
   resources :genres
 
