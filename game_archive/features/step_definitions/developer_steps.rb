@@ -33,7 +33,7 @@ end
 When /^I leave the name field empty and submit it$/ do
   fill_in("developer_name", :with => "")
   fill_in("developer_description", :with => "")
-  click_button "Create Developer"
+  click_link_or_button "Create Developer"
 end
 Then /^I should be notified of that the name must not be empty$/ do
   page.should have_content("Name can't be blank")
