@@ -3,8 +3,6 @@ class ApplicationController < ActionController::Base
   protected
   
   def authenticate_inviter!
-    if current_user.admin?
-		return current_user
-	end
+	(current_user.nil?) ? redirect_to(root_path) : (redirect_to(root_path) unless current_user.admin?)
   end
 end
