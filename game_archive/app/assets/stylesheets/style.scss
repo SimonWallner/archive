@@ -545,4 +545,32 @@ a.tagit-close:hover span {
   }
 }
 
+// Listing of genres
+div.all-genres {
+  width: 310px;
+  display: inline;
+  float: right;
+  margin: 20px auto;
+  background: #3D3D3F;
+  color: #ffffff;
+  border-radius: 15px;
+  margin-top: 8px;
+  min-height : 140px;
+  max-height : 460px;
 
+  h3 {
+    padding-top:20px;
+    text-align: center;
+    border:none;
+    border-bottom: 1px solid #ffffff;
+  }
+
+  div{
+    padding-left:20px;
+    padding-bottom:20px;
+    padding-top:20px;
+    width: 270px;
+    word-spacing:8pt;
+  }
+
+}

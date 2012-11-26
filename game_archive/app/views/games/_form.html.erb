@@ -11,6 +11,20 @@
     </div>
   <% end %>
 
+
+    <div class="all-genres">
+      <h3>All Genres</h3>
+      <div id="all-genres-list" >
+        <% Genre.all.each do |genre| %>
+            <tr>
+              <span><%= genre.name %></span>
+
+            </tr>
+        <% end %>
+      </div>
+    </div>
+
+
   <div class="field">
     <%= f.label :title %><br />
     <%= f.text_field :title %>

@@ -32,3 +32,9 @@ Feature: Manage Companies
     Then I should be on the detail page of the given company
     And I should see the updated content
 
+  Scenario: fail to update game with empty name
+    Given I have a company Lori
+	And I am on the detail page of the given company
+    And I follow the edit link
+    When I leave the name of company field empty and submit it
+    Then I should be notified of that the name of company must not be empty
