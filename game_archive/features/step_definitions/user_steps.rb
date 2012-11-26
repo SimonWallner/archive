@@ -106,6 +106,7 @@ end
 
 Then /^I should be on the sign up page$/ do
   assert_equal current_path, accept_user_invitation_path
+end
 
 Given /^I am on the login page$/ do
   visit "/users/sign_in"
