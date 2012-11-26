@@ -1,4 +1,3 @@
-@Active
 Feature: reset password
   As a user,
   in order to access my account again,

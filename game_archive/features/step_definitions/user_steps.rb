@@ -10,6 +10,7 @@ Given /^I am signed in as (.+)$/ do |role|
 
   if role == 'Admin'
     @user.toggle :admin
+    @user.save!
   end
 
   visit '/users/sign_in'
@@ -81,13 +82,14 @@ Given /^I am on the login page$/ do
   visit "/users/sign_in"
 end
 
-def reset_password(user)
+def reset_password
   visit "/users/password/new"
 
-  fill_in "user_email", :with => user.email
+  fill_in "user_email", :with => @user.email
   click_link_or_button "Send me reset password instructions"
   URI.parse(current_url).path.should == "/users/sign_in"
-  user.reset_password_token.should_not == nil
+  @user = User.find_by_email @user.email
+  @user.reset_password_token.should_not == nil
 end
 
 def have_received_pwd_reset(user)
@@ -97,7 +99,7 @@ def have_received_pwd_reset(user)
 end
 
 When /^I reset my password$/ do
-  reset_password @user
+  reset_password
 end
 
 Given /^I have a user$/ do
@@ -109,7 +111,7 @@ Then /^I should receive an email with password reset instructions$/ do
 end
 
 Given /^I have received a password reset email$/ do
-  reset_password @user
+  reset_password
   have_received_pwd_reset @user
 end
 
@@ -125,10 +127,54 @@ When /^I set my new password$/ do
 end
 
 Then /^I am signed in$/ do
-  assert user_signed_in?
-  current_user.should == @user
+  page.should have_content("Edit")
+  page.should have_content("Logout")
 end
 
 Then /^I am on the home page$/ do
   URI.parse(current_url).path.should == "/"
+end
+
+When /^I enter the invitation url$/ do
+  visit '/users/invitation/new'
+end
+
+Then /^No invitation should be sent$/ do
+  assert (not User.exists?(:email => @email))
+end
+
+When /^I follow the send invite link$/ do
+  click_link_or_button 'Send Invitation'
+end
+
+When /^I enter a valid email$/ do
+  @email = "new@new.at"
+  fill_in "user_email", :with => @email
+  click_link_or_button "Send an invitation"
+end
+
+When /^I enter an invalid email$/ do
+  @email = "asf"
+  fill_in "user_email", :with => @email
+  click_link_or_button "Send an invitation"
+end
+When /^I enter an already used email$/ do
+  @email = "new@new.at"
+  FactoryGirl.create(:user, :email => @email)
+  fill_in "user_email", :with => @email
+  click_link_or_button "Send an invitation"
+end
+
+Then /^Invitation should be sent$/ do
+  assert (User.exists?(:email => @email))
+end
+
+Then /^I should be on the invite page$/ do
+  URI.parse(current_url).path.should == "/users/invitation"
+end
+
+Then /^I should see an email already used error$/ do
+  within("#error_explanation") do
+    page.should have_content("Email has already been taken")
+  end
 end

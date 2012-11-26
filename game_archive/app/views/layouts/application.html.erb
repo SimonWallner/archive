@@ -95,7 +95,7 @@
               <% if user_signed_in? %>
                   <% if current_user.admin? %>
                       <li>
-                        ADMIN
+                        <%= link_to('Send Invitation', new_user_invitation_path) %>
                       </li>
                   <% end %>
                   <li>
