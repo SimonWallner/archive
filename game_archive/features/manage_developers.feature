@@ -35,6 +35,6 @@ Feature: Manage Developers
   Scenario: fail to update developer with empty name
     Given I have a developer Lori
 	And I am on the detail page of the given developer
-    And I follow the developer edit link
-    When I leave the name field empty and submit it
+    When I follow the developer edit link
+    And I set the name field empty and submit it
     Then I should be notified of that the name must not be empty

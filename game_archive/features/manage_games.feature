@@ -21,7 +21,7 @@ Feature: Manage Games
 
   Scenario: fail to create game with empty name
     Given I am on the game creation page
-    When I leave the name of games  field empty and submit it
+    When I leave the name of games field empty and submit it
     Then I should be notified of that the name of game must not be empty
 
 
@@ -38,5 +38,5 @@ Feature: Manage Games
     Given I have a game Tetris
 	And I am on the detail page of the game
     When I follow the game edit link
-    And I leave the name of games field empty and submit it
+    And I set the name of games field empty and submit it
     Then I should be notified of that the name of game must not be empty

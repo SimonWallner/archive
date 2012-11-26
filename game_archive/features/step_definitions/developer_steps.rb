@@ -53,6 +53,12 @@ When /^I follow the developer edit link$/ do
   end
 end
 
+When /^I set the name field empty and submit it$/ do
+  fill_in("developer_name", :with => "")
+  fill_in("developer_description", :with => "")
+  click_button "Update Developer"
+end
+
 When /^I change the developer's data and submit it$/ do
 
   @update_name = "Bert"
