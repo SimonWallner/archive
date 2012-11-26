@@ -34,3 +34,10 @@ Feature: Manage Games
     And I change the game's data and submit it
     Then I should see the updated game content
     And I should be on the detail page of the given game
+	
+  Scenario: fail to update game with empty name
+    Given I have a game Tetris
+	And I am on the detail page of the game
+    When I follow the edit link
+    And I leave the name of games field empty and submit it
+    Then I should be notified of that the name of game must not be empty
