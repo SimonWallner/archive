@@ -31,7 +31,7 @@ Feature: Manage Companies
     Then I should be on the detail page of the given company
     And I should see the updated content
 
-  Scenario: fail to update game with empty name
+  Scenario: fail to update company with empty name
     Given I have a company Lori
 	And I am on the detail page of the given company
     And I follow the company edit link

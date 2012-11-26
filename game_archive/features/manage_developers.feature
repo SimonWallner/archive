@@ -1,4 +1,3 @@
-@active
 Feature: Manage Developers
   As a developer,
   in order to present my game to the public,
