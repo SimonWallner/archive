@@ -105,7 +105,8 @@ end
 
 Then /^I should be on the sign up page$/ do
   assert_equal current_path, accept_user_invitation_path
-
+end
+  
 Given /^I am on the login page$/ do
   visit "/users/sign_in"
 end
@@ -145,6 +146,21 @@ end
 When /^I follow the reset link$/ do
   link = ("/users/password/edit?reset_password_token=" + @user.reset_password_token)
   visit link
+end
+
+When /^I sign up with a short password$/ do
+  fill_in "user_password", :with => "aA1a"
+  fill_in "user_password_confirmation", :with => "aA1a"
+end
+
+When /^I sign up with a weak password$/ do
+  fill_in "user_password", :with => "aaaaaaaaaa"
+  fill_in "user_password_confirmation", :with => "aaaaaaaaaa"
+end
+
+When /^I sign up with passwords not matching$/ do
+  fill_in "user_password", :with => "aA1aaaaaa"
+  fill_in "user_password_confirmation", :with => "aA1aaaaab"
 end
 
 When /^I set my new password$/ do
