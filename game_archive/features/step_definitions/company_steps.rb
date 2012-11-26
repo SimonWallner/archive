@@ -40,7 +40,11 @@ Then /^I should be notified of that the name of company must not be empty$/ do
   page.should have_content("Name can't be blank")
 end
 
-
+When /^I set the name of company field empty and submit it$/ do
+  fill_in("company_name", :with => "")
+  fill_in("company_description", :with => "")
+  click_button "Update Company"
+end
 
 #    Scenario: update company's page with valid data
 

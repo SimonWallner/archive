@@ -39,7 +39,7 @@ end
 
 #   Scenario: fail to create game with empty name
 
-When /^I leave the name of games  field empty and submit it$/ do
+When /^I leave the name of games field empty and submit it$/ do
   fill_in("game_title", :with => "")
   fill_in("game_description", :with => "")
   fill_in("new_genres", :with => "")
@@ -50,8 +50,16 @@ Then /^I should be notified of that the name of game must not be empty$/ do
   page.should have_content("Title can't be blank")
 end
 
+When /^I set the name of games field empty and submit it$/ do
+  fill_in("game_title", :with => "")
+  fill_in("game_description", :with => "")
+  fill_in("new_genres", :with => "")
+  #select('genre1', :from => "game_genre_ids")
+  click_button "Update Game"
+end
 
-#   Scenario: update game's page with valid data
+
+#   Scenarios: update game's page
 Given /^I am on the detail page of the game$/ do
   visit game_path(@givenGame)
 end
