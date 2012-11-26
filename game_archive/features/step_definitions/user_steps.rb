@@ -6,8 +6,7 @@ Given /^I am signed in as (.+)$/ do |role|
 
   email = 'user@user.com'
   @pwd = 'aA1aaaaaa'
-  @user = User.new(:email => email, :password => @pwd, :password_confirmation => @pwd)
-  @user.save!
+  @user = User.create!(:email => email, :password => @pwd, :password_confirmation => @pwd)
 
   if role == 'Admin'
     @user.toggle :admin
@@ -106,4 +105,59 @@ end
 
 Then /^I should be on the sign up page$/ do
   assert_equal current_path, accept_user_invitation_path
+
+Given /^I am on the login page$/ do
+  visit "/users/sign_in"
+end
+
+def reset_password(user)
+  visit "/users/password/new"
+
+  fill_in "user_email", :with => user.email
+  click_link_or_button "Send me reset password instructions"
+  URI.parse(current_url).path.should == "/users/sign_in"
+  user.reset_password_token.should_not == nil
+end
+
+def have_received_pwd_reset(user)
+  mail = ActionMailer::Base.deliveries.last
+  mail['to'].to_s.should == user.email
+  mail['subject'].to_s.should == "Reset password instructions"
+end
+
+When /^I reset my password$/ do
+  reset_password @user
+end
+
+Given /^I have a user$/ do
+  @user = FactoryGirl.create :user
+end
+
+Then /^I should receive an email with password reset instructions$/ do
+  have_received_pwd_reset @user
+end
+
+Given /^I have received a password reset email$/ do
+  reset_password @user
+  have_received_pwd_reset @user
+end
+
+When /^I follow the reset link$/ do
+  link = ("/users/password/edit?reset_password_token=" + @user.reset_password_token)
+  visit link
+end
+
+When /^I set my new password$/ do
+  fill_in "user_password", :with => "aA1aaaa"
+  fill_in "user_password_confirmation", :with => "aA1aaaa"
+  click_link_or_button "Change my password"
+end
+
+Then /^I am signed in$/ do
+  assert user_signed_in?
+  current_user.should == @user
+end
+
+Then /^I am on the home page$/ do
+  URI.parse(current_url).path.should == "/"
 end

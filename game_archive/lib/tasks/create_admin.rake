@@ -5,8 +5,7 @@ namespace :db do
                          password: "aA1aaaa",
                          password_confirmation: "aA1aaaa",
                          firstname: "admin",
-                         lastname: "admin",
-						 invitation_token: nil )
+                         lastname: "admin")
     admin.toggle!(:admin)
   end
 
