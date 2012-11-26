@@ -45,7 +45,7 @@
               <% if user_signed_in? %>
                   <% if current_user.admin? %>
                     <li>
-                        ADMIN
+                        <%= link_to('Send Invitation', new_user_invitation_path) %>
                     </li>
                   <% end %>
                   <li>
@@ -65,6 +65,8 @@
 	</div>
 </div>
 
+<%= flash[:notice] %>
+<%=  flash[:alert] %>
 
 <div id="body">
 	<div class="container">
