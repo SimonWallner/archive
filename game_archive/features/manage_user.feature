@@ -8,25 +8,27 @@ Feature: create user account
     And I am not signed in
     When I go to the sign up form
 	And I enter and repeat a password 
-    Then I should see the edit user page
+	And I click on the sign up button
+    Then I should be on the home page
 	
   Scenario: registration as existing user
-	Given I am invited but already registered
+	Given I am invited 
+	And I am already registered
 	And I am not signed in
 	When I go to the sign up form
-	Then I should see a message with already registered
+	Then I should be on the sign up page
 	
   Scenario: registration with invalid token
 	Given I am not invited
 	And I am not signed in
 	When I go to the sign up form
-	Then I should see a message with not invited
+	Then I should be on the home page
 
   Scenario: set valid password
     Given I am invited
     And I am not signed in
-    And I am on the sign up page
-    When I sign up with a valid password
+    When I go to the sign up form
+    And I enter and repeat a password 
     Then I should be on the home page
     And I should be signed in
 	

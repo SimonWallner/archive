@@ -77,3 +77,33 @@ Then /^I should see an error$/ do
     page.should have_content("Current password is invalid")
   end
 end
+
+Given /^I am invited$/ do
+  @user = User.invite!(:email => "valid@email.com")
+end
+
+Given /^I am already registered$/ do
+  @user.accept_invitation!
+end
+
+Given /^I am not invited$/ do
+  @user = User.new
+end
+
+When /^I go to the sign up form$/ do
+  visit accept_user_invitation_path(:invitation_token => @user.invitation_token)
+end
+
+When /^I enter and repeat a password$/ do
+  newpassword = "bB2bbbbbb"
+  fill_in "user_password", :with => newpassword
+  fill_in "user_password_confirmation", :with => newpassword
+end
+
+When /^I click on the sign up button$/ do
+  click_link_or_button "Set my password"
+end
+
+Then /^I should be on the sign up page$/ do
+  assert_equal current_path, accept_user_invitation_path
+end
