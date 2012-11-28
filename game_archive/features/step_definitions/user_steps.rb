@@ -35,13 +35,43 @@ Given /^I am on the user edit page$/ do
   go_to_edit_page
 end
 
-When /^I change my data$/ do
+When /^I change all my data$/ do
   newpassword = "bB2bbbbbb"
   @newDetails = FactoryGirl.build :user, email: "new@user.at", firstname: "newfirst", lastname: "newlast", password: newpassword
 
   fill_in "user_email", :with => @newDetails.email
   fill_in "user_password", :with => newpassword
   fill_in "user_password_confirmation", :with => newpassword
+  fill_in "user_firstname", :with => @newDetails.firstname
+  fill_in "user_lastname", :with => @newDetails.lastname
+  @pwdSet = true
+end
+
+When /^I change a valid password$/ do
+  newpassword = "bB2bbbb"
+  fill_in "user_password", :with => newpassword
+  fill_in "user_password_confirmation", :with => newpassword
+  @pwdSet = "valid"
+end
+
+When /^I change a too short password$/ do
+  newpassword = "bbb"
+  fill_in "user_password", :with => newpassword
+  fill_in "user_password_confirmation", :with => newpassword
+  @pwdSet = "too_short"
+end
+
+When /^I change an invalid password$/ do
+  newpassword = "12345678"
+  fill_in "user_password", :with => newpassword
+  fill_in "user_password_confirmation", :with => newpassword
+  @pwdSet = "invalid"
+end
+
+When /^I change all my data except my password$/ do
+  @newDetails = FactoryGirl.build :user, email: "new@user.at", firstname: "newfirst", lastname: "newlast", password: "not_nedded"
+
+  fill_in "user_email", :with => @newDetails.email
   fill_in "user_firstname", :with => @newDetails.firstname
   fill_in "user_lastname", :with => @newDetails.lastname
 end
@@ -56,10 +86,12 @@ Then /^I should be on the home page$/ do
 end
 
 Then /^The data has been updated$/ do
-  @user = User.find_by_email @newDetails.email
-  @user.email.should == @newDetails.email
-  @user.firstname.should == @newDetails.firstname
-  @user.lastname.should == @newDetails.lastname
+  if @pwdSet == nil || @pwdSet == false
+    @user = User.find_by_email @newDetails.email
+    @user.email.should == @newDetails.email
+    @user.firstname.should == @newDetails.firstname
+    @user.lastname.should == @newDetails.lastname
+  end
 end
 
 When /^I provide the wrong password$/ do
@@ -72,10 +104,7 @@ Then /^I should be on the user edit page$/ do
 end
 
 Then /^I should see an error$/ do
-  error = find("#error_explanation")
-  within(error) do
-    page.should have_content("Current password is invalid")
-  end
+  page.should have_selector("#error_explanation")
 end
 
 Given /^I am invited$/ do

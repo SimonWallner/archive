@@ -1,3 +1,4 @@
+@active
 Feature: update account credentials
   As a user,
   just so,
@@ -11,12 +12,16 @@ Feature: update account credentials
   Scenario Outline: changing data
     Given I am signed in as User
     And I am on the user edit page
-    When I change my data
+    When I change <data>
     And I provide the <password> password
     Then I should be <where>
     And <see>
 
     Examples:
-    | password | where | see |
-    | correct  | on the home page | The data has been updated |
-    | wrong    | on the user edit page | I should see an error |
+    | data | password | where | see |
+    | all my data | correct  | on the home page | The data has been updated |
+    | all my data | wrong    | on the user edit page | I should see an error |
+    | a valid password | correct | on the home page  | The data has been updated |
+    | a too short password | correct | on the user edit page  | I should see an error |
+    | an invalid password | correct | on the user edit page  | I should see an error |
+    | all my data except my password | correct | on the home page  | The data has been updated |
