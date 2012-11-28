@@ -1,4 +1,3 @@
-@active
 Feature: create user account
   As a visitor,
   in order to contribute content,

@@ -3,14 +3,14 @@ Feature: account invites
   in order to get more contributors,
   I want to send out invites for user accounts.
 
-  Scenario: send invitation when not signed in
+  Scenario: fail to send invitation when not signed in
     Given I am not signed in
     And I am on the home page
     When I enter the invitation url
     Then I should be on the home page
     And No invitation should be sent
 
-  Scenario: send invitation when signed in with normal user
+  Scenario: fail to send invitation when signed in with normal user
     Given I am signed in as User
     And I am on the home page
     When I enter the invitation url

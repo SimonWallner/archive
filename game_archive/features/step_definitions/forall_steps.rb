@@ -23,8 +23,9 @@ Given /^I am on the edit page of the given game$/ do
   visit edit_game_path(@givenGame)
 end
 
-
-
+Given /^I am on the home page$/ do
+  visit "/"
+end
 
 Given /^I am on the genre create page$/ do
   visit new_genre_path

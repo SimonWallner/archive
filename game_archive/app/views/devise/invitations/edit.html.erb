@@ -10,21 +10,21 @@
   <p><%= f.label :password_confirmation %><br />
   <%= f.password_field :password_confirmation %></p>
 
-  <div>
+  <p>
     <%= f.label :firstname %><br />
-    <p>
+    <div class="input-description">
       Always use your real name. We check them on a regular basis and delete accounts with wrong information.
-    </p>
+    </div>
     <%= f.text_field :firstname %>
-  </div>
+  </p>
 
-  <div>
+  <p>
     <%= f.label :lastname %><br />
-    <p>
+    <div class="input-description">
       Always use your real name. We check them on a regular basis and delete accounts with wrong information.
-    </p>
+    </div>
     <%= f.text_field :lastname %>
-  </div>
+  </p>
 
   <p><%= f.submit t("devise.invitations.edit.submit_button") %></p>
 <% end %>
