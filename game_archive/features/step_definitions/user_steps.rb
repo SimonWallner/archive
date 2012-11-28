@@ -194,19 +194,9 @@ When /^I sign up with passwords not matching$/ do
   fill_in "user_password_confirmation", :with => "aA1aaaaab"
 end
 
-When /^I set my new password$/ do
-  fill_in "user_password", :with => "aA1aaaa"
-  fill_in "user_password_confirmation", :with => "aA1aaaa"
-  click_link_or_button "Change my password"
-end
-
 Then /^I am signed in$/ do
   page.should have_content("Edit")
   page.should have_content("Logout")
-end
-
-Then /^I am on the home page$/ do
-  URI.parse(current_url).path.should == "/"
 end
 
 When /^I enter the invitation url$/ do
@@ -251,4 +241,71 @@ Then /^I should see an email already used error$/ do
   within("#error_explanation") do
     page.should have_content("Email has already been taken")
   end
+end
+
+When /^I enter my email$/ do
+  fill_in "user_email", :with => @user.email
+  click_link_or_button "Send me reset password instructions"
+  URI.parse(current_url).path.should == "/users/sign_in"
+  @user = User.find_by_email @user.email
+  @user.reset_password_token.should_not == nil
+end
+
+When /^I enter an email which does not belong to a user$/ do
+  fill_in "user_email", :with => "hadasdsad@example.com"
+  click_link_or_button "Send me reset password instructions"
+  URI.parse(current_url).path.should == "/users/password"
+  @user = User.find_by_email @user.email
+  @user.reset_password_token.should == nil
+end
+
+Then /^I should not see an error$/ do
+  page.should_not have_selector("#error_explanation")
+end
+
+When /^I set a valid password$/ do
+  fill_in "user_password", :with => "aA1aaaa"
+  fill_in "user_password_confirmation", :with => "aA1aaaa"
+  click_link_or_button "Change my password"
+end
+
+When /^I set an invalid password$/ do
+  fill_in "user_password", :with => "abcefghij"
+  fill_in "user_password_confirmation", :with => "abcefghij"
+  click_link_or_button "Change my password"
+end
+
+Then /^I should be on the password page$/ do
+  URI.parse(current_url).path.should == "/users/password"
+end
+
+When /^I set a too short password$/ do
+  fill_in "user_password", :with => "aaa"
+  fill_in "user_password_confirmation", :with => "aaa"
+  click_link_or_button "Change my password"
+end
+
+When /^I leave the password blank$/ do
+  fill_in "user_password", :with => ""
+  fill_in "user_password_confirmation", :with => ""
+  click_link_or_button "Change my password"
+end
+
+When /^I set a wrong confirmation password$/ do
+  fill_in "user_password", :with => "aA1aaaa"
+  fill_in "user_password_confirmation", :with => "aB1aaaa"
+  click_link_or_button "Change my password"
+end
+
+Given /^I am on the reset password page$/ do
+  visit "/users/password/new"
+end
+
+Then /^I should be signed in$/ do
+  page.should have_content("Edit")
+  page.should have_content("Logout")
+end
+
+Then /^I should not be signed in$/ do
+  page.should have_content("Login")
 end

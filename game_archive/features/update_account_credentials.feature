@@ -1,4 +1,3 @@
-@active
 Feature: update account credentials
   As a user,
   just so,

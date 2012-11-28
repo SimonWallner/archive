@@ -1,3 +1,4 @@
+@active
 Feature: create user account
   As a visitor,
   in order to contribute content,
@@ -12,8 +13,7 @@ Feature: create user account
     Then I should be on the home page
 	
   Scenario: registration as existing user
-	Given I am invited 
-	And I am already registered
+	Given I am invited
 	And I am not signed in
 	When I go to the sign up form
 	Then I should be on the sign up page
