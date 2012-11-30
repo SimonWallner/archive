@@ -17,13 +17,15 @@ Feature: As a developer,
           And I am on the games overview page
           When I follow the new game link
           And I fill in the fields with valid details for a game
-          And I fill in the first field with a youtube embed code
+          And I fill in the first video field with a youtube embed code
           Then I should not see a second field for the embed code
           When I click the add video button
-          Then I should see a second filed for the embed code
-          When I fill in the second field with a youtube embed code
+          Then I should see a second field for the embed code
+          When I fill in the second video field with a youtube embed code
           And I submit it
           Then I should see the embedded videos on the details page of the game
+
+
 
 
 
