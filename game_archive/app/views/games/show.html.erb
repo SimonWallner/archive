@@ -1,6 +1,13 @@
 <div class="game">
   <div class="media rounded">
-    <%= image_tag @game.image_url(:top_game).to_s, :class => "media rounded"%>
+    <%=
+        imguploader = ImageUploader.new
+
+        if not @game.image_url == imguploader.default_url
+            image_tag @game.image_url(:top_game).to_s, :class => "media rounded"
+        end
+
+    %>
 
   </div>
   <h1><%= @game.title %></h1>

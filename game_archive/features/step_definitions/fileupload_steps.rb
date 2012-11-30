@@ -51,7 +51,7 @@ Then /^I should see the picture on the details page of the (.+)$/ do |type|
 
     id =   Developer.find_by_name(@new_name).id.to_s
    version = "tiled_4x"
-    upload_to_path = "uploads/developer/image/" + id + "/" + version + "_Luigi.png"
+    upload_to_path = "uploads/developer/image/" + id + "/Luigi.png"
 
   elsif type == "game"
 
@@ -71,7 +71,7 @@ Then /^I should see the picture on the details page of the (.+)$/ do |type|
     end
     id =   Company.find_by_name(@new_company).id.to_s
     version = "tiled_4x"
-    upload_to_path = "uploads/company/image/" + id + "/" + version + "_bowser.jpg"
+    upload_to_path = "uploads/company/image/" + id + "/bowser.jpg"
 
 
   end
