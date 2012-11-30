@@ -46,6 +46,7 @@ class GamesController < ApplicationController
     @game = Game.new(params[:game])
     create_add_new_genres(params[:new_genres])
 
+
 	respond_to do |format|
       if @game.save
         format.html { redirect_to @game}

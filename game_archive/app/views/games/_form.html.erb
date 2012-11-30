@@ -51,17 +51,28 @@
     <div class="field">
       <%= f.label 'Choose videos to embed' %><br />
 
+      <% for video in @game.videos %>
+           <%=fields_for "game[video_attributes][]", video do|video_form| %>
+            <p>
+              Video: <%= video_form.text_area :embedcode %>
+
+            </p>
+          <% end %>
+
+
+    <% end %>
+
     <!-- iterate through all the available videos for a game and create a field for them
 
        @game.videos.each() do |video|
 
            <f.text_area :video mit id!? > <remove button>
 
-        end
+        end   -->
 
-        <f.text_are :empty > <add button>
 
-    -->
+
+
     </div>
 
   <div class="actions">
