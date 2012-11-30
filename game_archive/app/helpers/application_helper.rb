@@ -33,5 +33,16 @@ class LinksInNewWindow < Redcarpet::Render::HTML
         link_t +=link_end
       "<a target=\"_blank\" href=\"#{link}\">#{link_t}</a>"
     end
+end
+
+  # returns an array of MixedField Objects which fit the given type
+  def get_mixed_fields(object, type)
+    if type == nil || object == nil
+      return
+    end
+
+    mf = object.mixed_fields
+    return mf.find_all {|i| i.type.name == type.to_s}
   end
+
 end

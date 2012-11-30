@@ -46,6 +46,8 @@ class GamesController < ApplicationController
     @game = Game.new(params[:game])
     create_add_new_genres(params[:new_genres])
 
+    create_add_new_mixed_fields(params[:new_developers], MixedFieldType.find_by_name("Developer"))
+
 	respond_to do |format|
       if @game.save
         format.html { redirect_to @game}
@@ -63,7 +65,9 @@ class GamesController < ApplicationController
     @game = Game.find(params[:id])
 
     create_add_new_genres(params[:new_genres])
-	
+
+    create_add_new_mixed_fields(params[:new_developers], MixedFieldType.find_by_name("Developer"))
+
     respond_to do |format|
       if @game.update_attributes(params[:game])
         format.html { redirect_to @game}
@@ -101,17 +105,135 @@ class GamesController < ApplicationController
     if new_genres.size == 0
       return
     end
-	begin
-    new_genres.try(:each) do |ng|
-      ng.strip!
-      new_genre = Genre.find_by_name(ng)
-      if(not @game.genres.include?(new_genre))
-        @game.genres << new_genre
+    begin
+      new_genres.try(:each) do |ng|
+        ng.strip!
+        new_genre = Genre.find_by_name(ng)
+        if not @game.genres.include?(new_genre)
+          @game.genres << new_genre
+        end
       end
+    rescue # nil exception due to "empty" arguments such as ", , ,"
+      #redirect_to @game, notice: 'Genres nicht korrekt angegeben!'
+      return
     end
-	rescue # nil exception due to "empty" arguments such as ", , ,"
-		#redirect_to @game, notice: 'Genres nicht korrekt angegeben!'
-		return
-	end
+  end
+
+  # takes 2 arguments:
+  # mixed_field_string represents the string which is sent from the client, which represents a mixed field
+  # mixed_field_type represents the mixed_field_type object
+  def create_add_new_mixed_fields(mixed_field_string, mixed_field_type)
+    logger.debug "create mixed fields"
+    @game.mixed_fields.clear
+    if mixed_field_string == nil || mixed_field_type == nil
+      logger.debug "mf returning"
+      return
+    end
+
+    new_mixed_fields = mixed_field_string.split ','
+    logger.debug(new_mixed_fields.size.to_s + " mixed fields to add for " + @game.title)
+    if new_mixed_fields.size == 0
+      return
+    end
+
+    begin
+      new_mixed_fields.try(:each) do |nf|
+        create_mixed_field_entity nf, mixed_field_type
+      end
+    rescue
+      return
+    end
+  end
+
+  # takes a string and creates a correct mixed field entry
+  # strings can look as followed:
+  # "dev:[developer_id]:[additional_info]"
+  # "comp:[company_id]:[additional_info]"
+  # "[other_name]:[additional_info]"
+  # where
+  # [developer_id] and [company_id] reflect a correct developer or company id
+  # [other_name] can be any string representing a company or developer not created in the system (yet)
+  # [additional_info] can be any string, which represents additional text. OPTIONAL
+  def create_mixed_field_entity(mixed_field_entity, mixed_field_type)
+    if mixed_field_type == nil || mixed_field_entity == nil
+      return
+    end
+    mixed_field_entity.strip!
+    mfe_array = mixed_field_entity.split ':'
+    if mfe_array.size < 1
+      return
+    end
+
+    # check if type is specified
+    elem0 = mfe_array[0].strip
+    if elem0 == "dev" || elem0 == "comp"
+      create_referenced_mixed_field_entity mfe_array, mixed_field_type, elem0
+    else
+      create_text_mixed_field_entity mfe_array, mixed_field_type
+    end
+  end
+
+  # takes 3 arguments
+  # mixed_field_array is an array with information about the mixed field (as specified before create_mixed_field_entity)
+  # mixed_field_type is the type object as stored in mixed_field_type
+  # reference_type is either "dev" or "comp" which stands for developer and company
+  # creates the mixed_field entry with the given data if successful
+  # returns nothing if not successful
+  def create_referenced_mixed_field_entity(mixed_field_array, mixed_field_type, reference_type)
+    if mixed_field_array == nil || mixed_field_type == nil || reference_type == nil ||  mixed_field_array.size < 2
+      return
+    end
+
+    id = mixed_field_array[1].strip
+    if mixed_field_array.size >= 3
+      additional_info = mixed_field_array[2].strip
+    end
+
+    if reference_type == "dev"
+      logger.debug "dev mixed field"
+      begin
+        developer = Developer.find id
+        logger.debug "developer found: " + developer.name
+      rescue ResourceNotFound
+        # no developer for given id found
+        logger.debug "no developer for id #{id} found"
+        return
+      end
+      mf = MixedField.new(:developer_id => developer.id, :type_id => mixed_field_type.id, :additionalInfo => additional_info, :game_id => @game.id)
+      logger.debug "mf id: " + mf.id
+      mf.save
+      logger.debug "saved dev"
+    elsif reference_type == "comp"
+      logger.debug "comp mixed field"
+      begin
+        company = Company.find id
+      rescue ResourceNotFound
+        # no developer for given id found
+        logger.debug "no company for id #{id} found"
+        return
+      end
+      mf = MixedField.new(:company_id => developer.id, :type_id => mixed_field_type.id, :additionalInfo => additional_info, :game_id => @game.id)
+      mf.save
+    end
+
+    if mf == nil
+      logger.debug "could not save Mixed Field"
+    else
+      logger.debug "saved Mixed Field " + mf.id
+    end
+  end
+
+  def create_text_mixed_field_entity(mixed_field_array, mixed_field_type)
+    if mixed_field_array == nil || mixed_field_type == nil || mixed_field_array.size < 1
+      return
+    end
+    logger.debug "text mixed field"
+
+    text = mixed_field_array[0].strip
+    if mixed_field_array.size >= 2
+      additional_info = mixed_field_array[1].strip
+    end
+    mf = MixedField.new :notFound => text, :game_id => @game.id, :additionalInfo => additional_info, :type_id => mixed_field_type.id
+    mf.save
   end
 end
