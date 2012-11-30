@@ -8,12 +8,12 @@ When /^I fill in the fields with valid details for a (.+)$/ do |type|
     fill_in("game_title", :with => @new_game)
   elsif type == "company"
     @new_company = "BowseruCo"
-    fill_in("company_name", :with => @new_game)
+    fill_in("company_name", :with => @new_company)
   end
 
 end
 
-When /^I choose a valid file for a "(.+)"$/ do |type|
+When /^I choose a valid file for a (.+)$/ do |type|
 
   if type == "developer"
 
@@ -66,8 +66,8 @@ Then /^I should see the picture on the details page of the (.+)$/ do |type|
 
   elsif type == "company"
 
-    if @new_name == nil
-      #@new_company = @givenCompany.name
+    if @new_company == nil
+      @new_company =  @givenCompany.name
     end
     id =   Company.find_by_name(@new_company).id.to_s
     version = "tiled_4x"
@@ -84,7 +84,7 @@ Then /^I should see the picture on the details page of the (.+)$/ do |type|
 
 end
 
-When /^I choose a file that is too big for a "(.+)"$/ do  |type|
+When /^I choose a file that is too big for a (.+)$/ do  |type|
 
   if type == "developer"
 
@@ -108,6 +108,34 @@ When /^I choose a file that is too big for a "(.+)"$/ do  |type|
 
 end
 
+When /^I choose a filetype that it not allowed for a (.+)$/ do  |type|
+  if type == "developer"
+
+    tag = 'developer_image'
+
+
+  elsif type == "game"
+
+    tag = 'game_image'
+
+
+  elsif type == "company"
+
+    tag = 'company_image'
+
+
+  end
+
+  path = "#{Rails.root}/features/testpics/notallowed.rb"
+  attach_file(tag,path)
+
+end
+
+
 Then /^I should be notified on that the Image is too big$/ do
   page.should have_content("Image is too big")
+end
+
+Then /^I should be notified on that the file is not an image file$/ do
+  page.should have_content("You are not allowed to upload")
 end
