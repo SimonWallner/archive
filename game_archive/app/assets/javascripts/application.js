@@ -16,6 +16,7 @@
 //= require tag-it.js
 //= require at_autocomplete.js
 //= require notification.js
+//= require general_functions.js
 
 
 

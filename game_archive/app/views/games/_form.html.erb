@@ -48,7 +48,13 @@
       <%= f.label :image, 'Choose profile picture' %><br />
       <%= f.file_field :image %>
   </div>
-
+  <div>
+  <%= submit_tag "Add Field", :type => 'button',
+      :onclick => 'addField(this,["Developer","Publisher","Distributor","Credits","Platform",
+                                  "Release Dates","Mode","Media","External Links","Aggregate Scores",
+                                  "Review Scores","Genres","Tags","Series","Userdefined"]);'
+  %>
+  </div>
   <div class="field">
     <div class="field-label">
       Developers
