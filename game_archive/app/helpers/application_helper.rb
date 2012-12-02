@@ -40,9 +40,8 @@ end
     if type == nil || object == nil
       return
     end
-
     mf = object.mixed_fields
-    return mf.find_all {|i| i.type.name == type.to_s}
+    return mf.find_all {|i| i.mixed_field_type.name == type.to_s }
   end
 
 end

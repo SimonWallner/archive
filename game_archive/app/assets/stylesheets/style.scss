@@ -370,6 +370,10 @@ div.fact-box {
 			width: 33%;
 		}
 	}
+
+    .fact>div:first-child {
+      font-weight: bold;
+    }
 	
 	p {
 		margin-bottom: 1em;

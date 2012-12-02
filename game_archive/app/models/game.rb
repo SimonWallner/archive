@@ -7,7 +7,7 @@ class Game < ActiveRecord::Base
 
   has_many :mixed_fields
   has_and_belongs_to_many :genres
-  accepts_nested_attributes_for :genres, :mixed_fields
+  accepts_nested_attributes_for :genres
 
   mount_uploader :image , ImageUploader
 

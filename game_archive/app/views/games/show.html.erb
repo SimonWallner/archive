@@ -7,17 +7,18 @@
 
   <div class="fact-box">
     <p>
-      <strong>Developer</strong>:
-      <%= render "fact", :type => :developer, :object => @game %>
+      <%= render "fact", :type => :Developer, :object => @game %>
       <strong>Released</strong>: 2012<br />
       <strong>Platforms</strong>: PC, Mac, Linux, XBox360, PS3<br />
-      <strong>Publisher</strong>: <a href="#">Awesome game publisher</a><br />
+      <%= render "fact", :type => :Publisher, :object => @game %>
+      <%= render "fact", :type => :Distributor, :object => @game %>
       <strong>Genre</strong>:
       <% @game.genres.each do |genre| %>
           <% if not genre == @game.genres.first %>,
           <% end%>
           <%= genre.name%>
-    <% end %>
+      <% end %>
+      <%= render "fact", :type => :Credits, :object => @game %>
     </p>
 
     <p>
