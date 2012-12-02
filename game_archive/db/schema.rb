@@ -59,17 +59,17 @@ ActiveRecord::Schema.define(:version => 20121130132608) do
     t.integer  "game_id"
     t.integer  "developer_id"
     t.integer  "company_id"
-    t.string   "notFound"
-    t.string   "additionalInfo"
-    t.integer  "type_id"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
+    t.string   "not_found"
+    t.string   "additional_info"
+    t.integer  "mixed_field_type_id"
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
   end
 
   add_index "mixed_fields", ["company_id"], :name => "index_mixed_fields_on_company_id"
   add_index "mixed_fields", ["developer_id"], :name => "index_mixed_fields_on_developer_id"
   add_index "mixed_fields", ["game_id"], :name => "index_mixed_fields_on_game_id"
-  add_index "mixed_fields", ["type_id"], :name => "index_mixed_fields_on_type_id"
+  add_index "mixed_fields", ["mixed_field_type_id"], :name => "index_mixed_fields_on_mixed_field_type_id"
 
   create_table "users", :force => true do |t|
     t.string   "email",                                :default => "", :null => false

@@ -4,7 +4,7 @@ When /^I enter valid game data$/ do
 end
 
 When /^I enter a developer field with a developer$/ do
-  fill_in "new_developers", :with => "dev:#{@givenDeveloper.id}:dev"
+  fill_in "new_developers", :with => "@dev:#{@givenDeveloper.id}:dev"
   click_link_or_button "Create Game"
 end
 
@@ -18,3 +18,4 @@ end
 Then /^I should see the developer field$/ do
   page.should have_content(@givenDeveloper.name)
 end
+

@@ -46,10 +46,13 @@ class GamesController < ApplicationController
     @game = Game.new(params[:game])
     create_add_new_genres(params[:new_genres])
 
-    create_add_new_mixed_fields(params[:new_developers], MixedFieldType.find_by_name("Developer"))
-
 	respond_to do |format|
       if @game.save
+        create_add_new_mixed_fields(params[:new_developers], MixedFieldType.find_by_name("Developer"))
+        create_add_new_mixed_fields(params[:new_publishers], MixedFieldType.find_by_name("Publisher"))
+        create_add_new_mixed_fields(params[:new_distributors], MixedFieldType.find_by_name("Distributor"))
+        create_add_new_mixed_fields(params[:new_credits], MixedFieldType.find_by_name("Credits"))
+
         format.html { redirect_to @game}
         format.json { render json: @game, status: :created, location: @game }
       else
@@ -66,10 +69,13 @@ class GamesController < ApplicationController
 
     create_add_new_genres(params[:new_genres])
 
-    create_add_new_mixed_fields(params[:new_developers], MixedFieldType.find_by_name("Developer"))
-
     respond_to do |format|
       if @game.update_attributes(params[:game])
+        create_add_new_mixed_fields(params[:new_developers], MixedFieldType.find_by_name("Developer"))
+        create_add_new_mixed_fields(params[:new_publishers], MixedFieldType.find_by_name("Publisher"))
+        create_add_new_mixed_fields(params[:new_distributors], MixedFieldType.find_by_name("Distributor"))
+        create_add_new_mixed_fields(params[:new_credits], MixedFieldType.find_by_name("Credits"))
+
         format.html { redirect_to @game}
         format.json { head :no_content }
       else
@@ -124,12 +130,16 @@ class GamesController < ApplicationController
   # mixed_field_type represents the mixed_field_type object
   def create_add_new_mixed_fields(mixed_field_string, mixed_field_type)
     logger.debug "create mixed fields"
-    @game.mixed_fields.clear
+    #easy way -> needs to be improved later (versioning)
+    remove_all_mixed_fields @game, mixed_field_type
+    #remove text mixed fields
+    #remove_text_mixed_fields @game
+    #reload game due to possibly removed mixed fields
+    @game = Game.find @game.id
     if mixed_field_string == nil || mixed_field_type == nil
       logger.debug "mf returning"
       return
     end
-
     new_mixed_fields = mixed_field_string.split ','
     logger.debug(new_mixed_fields.size.to_s + " mixed fields to add for " + @game.title)
     if new_mixed_fields.size == 0
@@ -166,7 +176,7 @@ class GamesController < ApplicationController
 
     # check if type is specified
     elem0 = mfe_array[0].strip
-    if elem0 == "dev" || elem0 == "comp"
+    if elem0 == "@dev" || elem0 == "@comp"
       create_referenced_mixed_field_entity mfe_array, mixed_field_type, elem0
     else
       create_text_mixed_field_entity mfe_array, mixed_field_type
@@ -176,7 +186,7 @@ class GamesController < ApplicationController
   # takes 3 arguments
   # mixed_field_array is an array with information about the mixed field (as specified before create_mixed_field_entity)
   # mixed_field_type is the type object as stored in mixed_field_type
-  # reference_type is either "dev" or "comp" which stands for developer and company
+  # reference_type is either "@dev" or "@comp" which stands for developer and company
   # creates the mixed_field entry with the given data if successful
   # returns nothing if not successful
   def create_referenced_mixed_field_entity(mixed_field_array, mixed_field_type, reference_type)
@@ -189,7 +199,7 @@ class GamesController < ApplicationController
       additional_info = mixed_field_array[2].strip
     end
 
-    if reference_type == "dev"
+    if reference_type == "@dev"
       logger.debug "dev mixed field"
       begin
         developer = Developer.find id
@@ -199,11 +209,23 @@ class GamesController < ApplicationController
         logger.debug "no developer for id #{id} found"
         return
       end
-      mf = MixedField.new(:developer_id => developer.id, :type_id => mixed_field_type.id, :additionalInfo => additional_info, :game_id => @game.id)
-      logger.debug "mf id: " + mf.id
-      mf.save
-      logger.debug "saved dev"
-    elsif reference_type == "comp"
+
+      begin
+        mf = get_mixed_field @game, developer, mixed_field_type
+        if mf == nil
+          mf = MixedField.new
+        end
+        mf.mixed_field_type_id= mixed_field_type.id
+        mf.additional_info= additional_info
+        mf.game_id= @game.id
+        mf.developer_id= developer.id
+        mf.save
+        logger.debug "saved mixed field: " + mf.id.to_s
+      rescue Exception => e
+        logger.warn "something went wrong when trying to create mixed field: " + e.message
+      end
+
+    elsif reference_type == "@comp"
       logger.debug "comp mixed field"
       begin
         company = Company.find id
@@ -212,14 +234,21 @@ class GamesController < ApplicationController
         logger.debug "no company for id #{id} found"
         return
       end
-      mf = MixedField.new(:company_id => developer.id, :type_id => mixed_field_type.id, :additionalInfo => additional_info, :game_id => @game.id)
-      mf.save
-    end
 
-    if mf == nil
-      logger.debug "could not save Mixed Field"
-    else
-      logger.debug "saved Mixed Field " + mf.id
+      begin
+        mf = get_mixed_field @game, company, mixed_field_type
+        if mf == nil
+          mf = MixedField.new
+        end
+        mf.mixed_field_type_id= mixed_field_type.id
+        mf.additional_info= additional_info
+        mf.game_id= @game.id
+        mf.company_id= company.id
+        mf.save
+        logger.debug "saved mixed field: " + mf.id.to_s
+      rescue Exception => e
+        logger.warn "something went wrong when trying to create mixed field: " + e.message
+      end
     end
   end
 
@@ -233,7 +262,61 @@ class GamesController < ApplicationController
     if mixed_field_array.size >= 2
       additional_info = mixed_field_array[1].strip
     end
-    mf = MixedField.new :notFound => text, :game_id => @game.id, :additionalInfo => additional_info, :type_id => mixed_field_type.id
-    mf.save
+
+    begin
+      mf = MixedField.new
+      mf.mixed_field_type_id= mixed_field_type.id
+      mf.additional_info= additional_info
+      mf.game_id= @game.id
+      mf.not_found= text
+      mf.save
+      logger.debug "saved mixed field: " + mf.id.to_s
+    rescue Exception => e
+      logger.warn "something went wrong when trying to create mixed field: " + e.message
+    end
+  end
+
+  # checks if for the given game a mixed field is already present
+  # returns it if present otherwise returns nil
+  def get_mixed_field(game, relation, type)
+    if game == nil || relation == nil || type == nil
+      return nil
+    end
+
+    mfs = game.mixed_fields
+    begin
+      if relation.is_a? Company
+        logger.debug "relation is a company"
+        #returns the record which matches the provided attributes
+        return MixedField.where(:game_id => game.id, :company_id => relation.id, :mixed_field_type_id => type.id).first
+      elsif relation.is_a? Developer
+        logger.debug "relation is a developer"
+        #returns the record which matches the provided attributes
+        return MixedField.where(:game_id => game.id, :developer_id => relation.id, :mixed_field_type_id => type.id).first
+      else
+        # nothing
+        logger.debug "unknown relation"
+        return nil
+      end
+    rescue RecordNotFound
+      # do nothing here
+      logger.debug "no record found"
+    end
+    return nil
+  end
+
+  def remove_text_mixed_fields(game)
+    if game == nil
+      return
+    end
+    deleted = MixedField.where(["game_id = ? AND (NOT (not_found = NULL))", game.id]).delete_all
+    logger.debug deleted.to_s + " text mixed fields deleted"
+  end
+
+  def remove_all_mixed_fields(game, mixed_field_type)
+    if game == nil
+      return
+    end
+    mfs = MixedField.where(:game_id => game.id, :mixed_field_type_id => mixed_field_type.id).delete_all
   end
 end

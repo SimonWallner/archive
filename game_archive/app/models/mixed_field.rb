@@ -1,9 +1,10 @@
 class MixedField < ActiveRecord::Base
+  validates_presence_of :game_id, :mixed_field_type
 
   belongs_to :developer
   belongs_to :company
-  belongs_to :type
+  belongs_to :mixed_field_type
   belongs_to :game
 
-  attr_accessible :additionalInfo, :notFound, :developer, :company, :type, :game, :game_id, :developer_id, :company_id, :type_id
+  attr_accessible :additional_info, :not_found
 end
