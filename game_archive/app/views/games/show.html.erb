@@ -7,18 +7,18 @@
 
   <div class="fact-box">
     <p>
-      <%= render "fact", :type => :Developer, :object => @game %>
+      <%= render :template => "facts/_mixed_field", :locals => { :type => :Developer, :object => @game, :label => "Developer" } %>
       <strong>Released</strong>: 2012<br />
       <strong>Platforms</strong>: PC, Mac, Linux, XBox360, PS3<br />
-      <%= render "fact", :type => :Publisher, :object => @game %>
-      <%= render "fact", :type => :Distributor, :object => @game %>
+      <%= render :template => "facts/_mixed_field", :locals => { :type => :Publisher, :object => @game, :label => "Publisher" } %>
+      <%= render :template => "facts/_mixed_field", :locals => { :type => :Distributor, :object => @game, :label => "Distributor" } %>
       <strong>Genre</strong>:
       <% @game.genres.each do |genre| %>
           <% if not genre == @game.genres.first %>,
           <% end%>
           <%= genre.name%>
       <% end %>
-      <%= render "fact", :type => :Credits, :object => @game %>
+      <%= render :template => "facts/_mixed_field", :locals => { :type => :Credits, :object => @game, :label => "Credits" } %>
     </p>
 
     <p>

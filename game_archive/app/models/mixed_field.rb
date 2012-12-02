@@ -1,4 +1,5 @@
 class MixedField < ActiveRecord::Base
+  validates_presence_of :game_id, :mixed_field_type
 
   belongs_to :developer
   belongs_to :company
