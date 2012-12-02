@@ -18,3 +18,4 @@ end
 Then /^I should see the developer field$/ do
   page.should have_content(@givenDeveloper.name)
 end
+

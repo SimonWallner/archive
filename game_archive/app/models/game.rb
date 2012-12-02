@@ -1,15 +1,13 @@
 class Game < ActiveRecord::Base
   require 'file_size_validator'
-  attr_accessible :description, :title, :image
+  attr_accessible :description, :title, :image, :mixed_fields
   #see if this is needed  :genres, :genre_ids ,
 
   validates :title, :presence => true
 
   has_many :mixed_fields
-  accepts_nested_attributes_for :mixed_fields
-
   has_and_belongs_to_many :genres
-  accepts_nested_attributes_for :genres
+  accepts_nested_attributes_for :genres, :mixed_fields
 
   mount_uploader :image , ImageUploader
 

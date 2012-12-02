@@ -46,10 +46,10 @@ class GamesController < ApplicationController
     @game = Game.new(params[:game])
     create_add_new_genres(params[:new_genres])
 
-    create_add_new_mixed_fields(params[:new_developers], MixedFieldType.find_by_name("Developer"))
-
 	respond_to do |format|
       if @game.save
+        @game = Game.find params[:id]
+        create_add_new_mixed_fields(params[:new_developers], MixedFieldType.find_by_name("Developer"))
         format.html { redirect_to @game}
         format.json { render json: @game, status: :created, location: @game }
       else
@@ -66,10 +66,9 @@ class GamesController < ApplicationController
 
     create_add_new_genres(params[:new_genres])
 
-    create_add_new_mixed_fields(params[:new_developers], MixedFieldType.find_by_name("Developer"))
-
     respond_to do |format|
       if @game.update_attributes(params[:game])
+        create_add_new_mixed_fields(params[:new_developers], MixedFieldType.find_by_name("Developer"))
         format.html { redirect_to @game}
         format.json { head :no_content }
       else
@@ -129,6 +128,7 @@ class GamesController < ApplicationController
       logger.debug "mf returning"
       return
     end
+
 
     new_mixed_fields = mixed_field_string.split ','
     logger.debug(new_mixed_fields.size.to_s + " mixed fields to add for " + @game.title)
@@ -199,7 +199,21 @@ class GamesController < ApplicationController
         logger.debug "no developer for id #{id} found"
         return
       end
-      mf = MixedField.new(:developer_id => developer.id, :type_id => mixed_field_type.id, :additionalInfo => additional_info, :game_id => @game.id)
+      logger.debug "create mixed field"
+      logger.debug "dev id " + developer.id.to_s
+      logger.debug "type id " + mixed_field_type.id.to_s
+      logger.debug "additional info: " + additional_info
+      logger.debug "game id: " + @game.id.to_s
+      e = MixedField.exists? :game_id => @game.id
+      logger.debug e.to_s
+
+      mf = MixedField.new
+      logger.debug "mf: " + mf
+      #(:mixed_field_type_id => mixed_field_type.id, :additional_info => additional_info, :game_id => @game.id, :developer_id => developer.id, :company_id => nil, :not_found => nil)
+      mf.mixed_field_type_id= mixed_field_type.id
+      mf.additional_info= additional_info
+      mf.game_id= @game.id
+      mf.developer_id= developer.id
       logger.debug "mf id: " + mf.id
       mf.save
       logger.debug "saved dev"
@@ -212,7 +226,7 @@ class GamesController < ApplicationController
         logger.debug "no company for id #{id} found"
         return
       end
-      mf = MixedField.new(:company_id => developer.id, :type_id => mixed_field_type.id, :additionalInfo => additional_info, :game_id => @game.id)
+      mf = MixedField.new(:company_id => developer.id, :mixed_field_type_id => mixed_field_type.id, :additional_info => additional_info, :game_id => @game.id, :developer_id => nil, :not_found => nil)
       mf.save
     end
 
@@ -233,7 +247,7 @@ class GamesController < ApplicationController
     if mixed_field_array.size >= 2
       additional_info = mixed_field_array[1].strip
     end
-    mf = MixedField.new :notFound => text, :game_id => @game.id, :additionalInfo => additional_info, :type_id => mixed_field_type.id
+    mf = MixedField.new :not_found => text, :game_id => @game.id, :additional_info => additional_info, :mixed_field_type_id => mixed_field_type.id, :company_id => nil, :developer_id => nil
     mf.save
   end
 end
