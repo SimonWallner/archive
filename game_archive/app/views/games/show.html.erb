@@ -8,7 +8,7 @@
   <div class="fact-box">
     <p>
       <%= render :template => "facts/_mixed_field", :locals => { :type => :Developer, :object => @game, :label => "Developer" } %>
-      <strong>Released</strong>: 2012<br />
+      <%= render :template => "facts/_dates", :locals => { :object => @game.release_dates, :label => "Release Dates" } %>
       <strong>Platforms</strong>: PC, Mac, Linux, XBox360, PS3<br />
       <%= render :template => "facts/_mixed_field", :locals => { :type => :Publisher, :object => @game, :label => "Publisher" } %>
       <%= render :template => "facts/_mixed_field", :locals => { :type => :Distributor, :object => @game, :label => "Distributor" } %>

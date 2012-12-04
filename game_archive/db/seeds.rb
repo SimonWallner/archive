@@ -8,7 +8,7 @@
 
 
 # create the default MixedFieldTypes
-MixedFieldType.create! :name => "Developer"
-MixedFieldType.create! :name => "Publisher"
-MixedFieldType.create! :name => "Distributor"
-MixedFieldType.create! :name => "Credits"
+MixedFieldType.create :name => "Developer"
+MixedFieldType.create :name => "Publisher"
+MixedFieldType.create :name => "Distributor"
+MixedFieldType.create :name => "Credits"
