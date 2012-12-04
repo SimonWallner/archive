@@ -559,6 +559,20 @@ a.tagit-close:hover span {
   }
 }
 
+.radiobutton {
+	.field-label {
+    &>div:first-child {
+      font-size: 1em;
+      width: 0em;
+    }
+
+    &>div {
+      font-size:0.8em;
+	  width: 2em;
+    }
+  }
+}
+
 // Listing of genres
 div.all-genres {
   
