@@ -45,6 +45,7 @@ class GamesController < ApplicationController
   def create
     @game = Game.new(params[:game])
     create_add_new_genres(params[:new_genres])
+    create_add_new_release_dates(params[:new_release_dates])
 
 	respond_to do |format|
       if @game.save
@@ -68,6 +69,7 @@ class GamesController < ApplicationController
     @game = Game.find(params[:id])
 
     create_add_new_genres(params[:new_genres])
+    create_add_new_release_dates(params[:new_release_dates])
 
     respond_to do |format|
       if @game.update_attributes(params[:game])
@@ -122,6 +124,20 @@ class GamesController < ApplicationController
     rescue # nil exception due to "empty" arguments such as ", , ,"
       #redirect_to @game, notice: 'Genres nicht korrekt angegeben!'
       return
+    end
+  end
+
+  def create_add_new_release_dates(rd_string)
+    @game.release_dates.clear
+    if rd_string == nil
+      logger.debug "rdstring nil"
+      return
+    end
+    logger.debug "create rds from string"
+    rds = ReleaseDate.create_from_string(rd_string)
+    rds.each do |rd|
+      logger.debug rd
+      @game.release_dates.push rd
     end
   end
 
@@ -314,7 +330,7 @@ class GamesController < ApplicationController
   end
 
   def remove_all_mixed_fields(game, mixed_field_type)
-    if game == nil
+    if game == nil || mixed_field_type == nil
       return
     end
     mfs = MixedField.where(:game_id => game.id, :mixed_field_type_id => mixed_field_type.id).delete_all
