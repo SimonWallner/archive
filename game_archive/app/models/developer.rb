@@ -6,6 +6,8 @@ class Developer < ActiveRecord::Base
   validates :name, :presence => true
 
 
+  has_many :mixed_fields
+
   mount_uploader :image , ImageUploader
 
   validates :image,

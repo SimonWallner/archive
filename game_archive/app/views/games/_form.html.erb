@@ -31,23 +31,48 @@
   </div>
   
   <div class="field">
-    <div class="field-label">
-      Genres
-    </div>
-    <script type="text/javascript">var genreTags = ["<%= Genre.all.collect {|x| x.name}.join('", "').html_safe%>"];</script>
-    <%= text_field_tag 'new_genres', @game.genres.all.collect {|x| x.name}.append(params[:new_genres]).join(', ')%>
-    <br/>
-
-  </div>
-  
-  <div class="field">
     <%= f.label :description %><br />
     <%= f.text_area :description %>
   </div>
-    <div class="field">
+  <div class="field">
       <%= f.label :image, 'Choose profile picture' %><br />
       <%= f.file_field :image %>
+  </div>
+  <div>
+  <%= submit_tag "Add Field", :type => 'button',
+      :onclick => 'addField(this,["Developer","Publisher","Distributor","Credits","Platform",
+                                  "Release Dates","Mode","Media","External Links","Aggregate Scores",
+                                  "Review Scores","Genres","Tags","Series","Userdefined"]);'
+  %>
+  </div>
+  <div class="field">
+    <div class="field-label">
+      Developers
     </div>
+    <%= text_field_tag 'new_developers' %>
+  </div>
+
+    <div class="field">
+      <div class="field-label">
+        Publisher
+      </div>
+      <%= text_field_tag 'new_publishers' %>
+    </div>
+
+    <div class="field">
+      <div class="field-label">
+        Distributor
+      </div>
+      <%= text_field_tag 'new_distributors' %>
+    </div>
+
+    <div class="field">
+      <div class="field-label">
+        Credits
+      </div>
+      <%= text_field_tag 'new_credits' %>
+    </div>
+
   <div class="actions">
     <%= f.submit %>
   </div>

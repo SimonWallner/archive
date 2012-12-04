@@ -17,6 +17,7 @@
 //= require tooltipsy.min.js
 //= require at_autocomplete.js
 //= require notification.js
+//= require general_functions.js
 
 $(document).ready(function() {
     $("textarea").parent().append(

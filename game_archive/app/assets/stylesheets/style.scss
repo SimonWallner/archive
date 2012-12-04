@@ -357,32 +357,29 @@ div.text {
     }
 }
 
-div.fact-box {  
-  
- 
-  @media #{$large} {
-    width: 32%;
-    display: inline;
-    float: right;
-  }
-  
-  @media #{$mid} {
-    img {
-      float: right;
-      width: 33%;
-    }
-  }
-  
-  p {
-    margin-bottom: 1em;
-  }
-  
-   
-   
-}
 
-div.fact-box > p:first-of-type{
-  padding-top:1em;
+div.fact-box {	
+	@media #{$large} {
+		width: 32%;
+		display: inline;
+		float: right;
+	}
+	
+	@media #{$mid} {
+		img {
+			float: right;
+			width: 33%;
+		}
+	}
+
+    .fact>div:first-child {
+      font-weight: bold;
+    }
+	
+	p {
+		margin-bottom: 1em;
+	}
+
 }
 
 div.game {

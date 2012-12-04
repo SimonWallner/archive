@@ -19,6 +19,11 @@
     <%= f.label :description %><br />
     <%= f.text_area :description  %>
   </div>
+  <div>
+  <%= submit_tag "Add Field", :type => 'button',
+      :onclick => 'addField(this,["External Links","Userdefined"]);'
+  %>
+  </div>
   <div class="field">
     <%= f.label :image, 'Choose profile picture' %><br />
     <%= f.file_field :image %>
