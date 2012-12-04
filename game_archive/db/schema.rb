@@ -42,11 +42,37 @@ ActiveRecord::Schema.define(:version => 20121204123112) do
     t.integer "genre_id"
   end
 
+  create_table "games_media", :id => false, :force => true do |t|
+    t.integer "game_id"
+    t.integer "medium_id"
+  end
+
+  create_table "games_modes", :id => false, :force => true do |t|
+    t.integer "game_id"
+    t.integer "mode_id"
+  end
+
+  create_table "games_platforms", :id => false, :force => true do |t|
+    t.integer "game_id"
+    t.integer "platform_id"
+  end
+
+  create_table "games_tags", :id => false, :force => true do |t|
+    t.integer "game_id"
+    t.integer "tag_id"
+  end
+
   create_table "genres", :force => true do |t|
     t.string   "name"
     t.string   "description"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
+  end
+
+  create_table "media", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "mixed_field_types", :force => true do |t|
@@ -71,6 +97,19 @@ ActiveRecord::Schema.define(:version => 20121204123112) do
   add_index "mixed_fields", ["game_id"], :name => "index_mixed_fields_on_game_id"
   add_index "mixed_fields", ["mixed_field_type_id"], :name => "index_mixed_fields_on_mixed_field_type_id"
 
+  create_table "modes", :force => true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  create_table "platforms", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "release_dates", :force => true do |t|
     t.integer  "year"
     t.integer  "month"
@@ -82,6 +121,12 @@ ActiveRecord::Schema.define(:version => 20121204123112) do
   end
 
   add_index "release_dates", ["game_id"], :name => "index_release_dates_on_game_id"
+
+  create_table "tags", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "users", :force => true do |t|
     t.string   "email",                                :default => "", :null => false

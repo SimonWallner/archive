@@ -79,7 +79,55 @@
       </div>
       <%= text_field_tag 'new_release_dates' %>
     </div>
+  <div class="field">
+    <div class="field-label">
+      Genres
+    </div>
+    <script type="text/javascript">var genreTags = ["<%= Genre.all.collect {|x| x.name}.join('", "').html_safe%>"];</script>
+    <%= text_field_tag 'new_genres', @game.genres.all.collect {|x| x.name}.append(params[:new_genres]).join(', ')%>
+    <br/>
 
+  </div>
+  
+  <div class="field">
+    <div class="field-label">
+      Platforms
+    </div>
+    <script type="text/javascript">var platformTags = ["<%= Platform.all.collect {|x| x.name}.join('", "').html_safe%>"];</script>
+    <%= text_field_tag 'new_platforms', @game.platforms.all.collect {|x| x.name}.append(params[:new_platforms]).join(', ')%>
+    <br/>
+
+  </div>
+  
+  <div class="field">
+    <div class="field-label">
+      Media
+    </div>
+    <script type="text/javascript">var mediumTags = ["<%= Medium.all.collect {|x| x.name}.join('", "').html_safe%>"];</script>
+    <%= text_field_tag 'new_media', @game.media.all.collect {|x| x.name}.append(params[:new_platforms]).join(', ')%>
+    <br/>
+
+  </div>
+
+    <div class="field">
+    <div class="field-label">
+      Modes
+    </div>
+    <script type="text/javascript">var modeTags = ["<%= Mode.all.collect {|x| x.name}.join('", "').html_safe%>"];</script>
+    <%= text_field_tag 'new_modes', @game.modes.all.collect {|x| x.name}.append(params[:new_platforms]).join(', ')%>
+    <br/>
+
+  </div>
+  
+  <div class="field">
+    <div class="field-label">
+      Tags
+    </div>
+    <script type="text/javascript">var tagTags = ["<%= Tag.all.collect {|x| x.name}.join('", "').html_safe%>"];</script>
+    <%= text_field_tag 'new_tags', @game.tags.all.collect {|x| x.name}.append(params[:new_platforms]).join(', ')%>
+    <br/>
+
+  </div>
 
 
   <div class="actions">

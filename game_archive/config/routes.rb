@@ -20,6 +20,13 @@ GameArchive::Application.routes.draw do
 
   resources :games
 
+  resources :tags
+
+  resources :media
+
+  resources :modes
+
+  resources :platforms
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
