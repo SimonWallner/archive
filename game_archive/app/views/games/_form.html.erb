@@ -31,16 +31,6 @@
   </div>
   
   <div class="field">
-    <div class="field-label">
-      Genres
-    </div>
-    <script type="text/javascript">var genreTags = ["<%= Genre.all.collect {|x| x.name}.join('", "').html_safe%>"];</script>
-    <%= text_field_tag 'new_genres', @game.genres.all.collect {|x| x.name}.append(params[:new_genres]).join(', ')%>
-    <br/>
-
-  </div>
-  
-  <div class="field">
     <%= f.label :description %><br />
     <%= f.text_area :description %>
   </div>
