@@ -343,6 +343,8 @@ div.more {
 
 
 div.text {
+  margin-bottom: 1em;
+
   @media #{$large} {
     border-right-width: 1px;
     border-right-style: solid;
@@ -358,7 +360,9 @@ div.text {
 }
 
 
-div.fact-box {	
+div.fact-box {
+  margin-bottom: 1em;
+
 	@media #{$large} {
 		width: 32%;
 		display: inline;

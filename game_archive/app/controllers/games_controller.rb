@@ -46,6 +46,7 @@ class GamesController < ApplicationController
     @game = Game.new(params[:game])
     create_add_new_token(params[:new_genres], params[:new_platforms], params[:new_media], params[:new_modes], params[:new_tags])
     create_add_new_release_dates(params[:new_release_dates])
+    Field.create_add_new_field(@game, params[:new_fields])
 
 	respond_to do |format|
       if @game.save
@@ -71,6 +72,7 @@ class GamesController < ApplicationController
 
     create_add_new_token(params[:new_genres], params[:new_platforms], params[:new_media], params[:new_modes], params[:new_tags])
     create_add_new_release_dates(params[:new_release_dates])
+    Field.create_add_new_field(@game, params[:new_fields])
 
     respond_to do |format|
       if @game.update_attributes(params[:game])
@@ -106,6 +108,7 @@ class GamesController < ApplicationController
   # creates new genres if necessary
   # and augments the game_params with the new genres
   def create_add_new_token(genres_string, platforms_string, media_string, modes_string, tags_string)
+    return nil
     @game.genres.clear
     @game.platforms.clear
     @game.media.clear

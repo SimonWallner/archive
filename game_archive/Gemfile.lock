@@ -196,6 +196,7 @@ DEPENDENCIES
   email_spec (>= 1.2.1)
   factory_girl_rails (>= 3.3.0)
   jquery-rails
+  json
   launchy (>= 2.1.0)
   mini_magick
   rails (= 3.2.8)

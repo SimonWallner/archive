@@ -3,9 +3,10 @@ class Company < ActiveRecord::Base
   attr_accessible :description, :name, :image
 
   has_many :mixed_fields
+  has_many :fields, :inverse_of => :company
+  accepts_nested_attributes_for :fields
 
   validates :name, :presence => true
-
 
   mount_uploader :image , ImageUploader
 

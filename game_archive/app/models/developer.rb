@@ -5,8 +5,9 @@ class Developer < ActiveRecord::Base
 
   validates :name, :presence => true
 
-
   has_many :mixed_fields
+  has_many :fields, :inverse_of => :developer
+  accepts_nested_attributes_for :fields
 
   mount_uploader :image , ImageUploader
 

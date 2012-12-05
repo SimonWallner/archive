@@ -6,10 +6,8 @@
   <h1><%= @game.title %></h1>
 
   <div class="fact-box">
-    <p>
       <%= render :template => "facts/_mixed_field", :locals => { :type => :Developer, :object => @game, :label => "Developer" } %>
       <%= render :template => "facts/_dates", :locals => { :object => @game.release_dates, :label => "Release Dates" } %>
-      <strong>Platforms</strong>: PC, Mac, Linux, XBox360, PS3<br />
       <%= render :template => "facts/_mixed_field", :locals => { :type => :Publisher, :object => @game, :label => "Publisher" } %>
       <%= render :template => "facts/_mixed_field", :locals => { :type => :Distributor, :object => @game, :label => "Distributor" } %>
       <strong>Genre</strong>:
@@ -20,20 +18,11 @@
       <% end %>
       <%= render :template => "facts/_mixed_field", :locals => { :type => :Series, :object => @game, :label => "Series" } %>
       <%= render :template => "facts/_mixed_field", :locals => { :type => :Credits, :object => @game, :label => "Credits" } %>
-    </p>
-
-    <p>
-      <strong>Design</strong>: Turenga Leela<br />
-      <strong>Programming</strong>: <a href="#">Bender Bending Rodruigez</a><br />
-      <strong>QA Lead</strong>: Scruffy<br />
-      <strong>EMEA Publishing</strong>: Awesome Game Publisher<br />
-      <strong>Localisation</strong>: Das Translation
-    </p>
-    <p>
-    <div>
-      </div>
-    </p>
-
+      <%= render :template => "facts/_mixed_field", :locals => { :type => :Distributor, :object => @game, :label => "Distributor" } %>
+      <%= render :template => "facts/_standard", :locals => { :object => @game, :label => "External Links" } %>
+      <%= render :template => "facts/_standard", :locals => { :object => @game, :label => "Aggregate Scores" } %>
+      <%= render :template => "facts/_standard", :locals => { :object => @game, :label => "Review Scores" } %>
+      <%= render :template => "facts/_user_defined", :locals => { :object => @game } %>
   </div>
 
   <div class="text">
