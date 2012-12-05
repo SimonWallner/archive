@@ -6,9 +6,8 @@ class Game < ActiveRecord::Base
   validates :title, :presence => true
 
   has_many :mixed_fields
-  has_many :release_dates
+  has_many :release_dates, :inverse_of => :game
   has_and_belongs_to_many :genres
-  #has_many :mixed_fields, :foreign_key => :series_game_id
   accepts_nested_attributes_for :genres, :release_dates
 
   mount_uploader :image , ImageUploader

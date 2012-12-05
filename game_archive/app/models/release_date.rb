@@ -1,10 +1,10 @@
 class ReleaseDate < ActiveRecord::Base
-  validates_presence_of :game_id, :year
+  validates_presence_of :game, :year
   validates :year, :numericality => { :greater_than_or_equal_to => 1900 }
   validates_with MonthValidator
   validates_with DayValidator
 
-  belongs_to :game
+  belongs_to :game, :inverse_of => :release_dates
   attr_accessible :additional_info, :day, :month, :year
 
   # string form:

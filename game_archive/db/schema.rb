@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121204123112) do
+ActiveRecord::Schema.define(:version => 20121205112450) do
 
   create_table "companies", :force => true do |t|
     t.string   "name"
@@ -64,12 +64,14 @@ ActiveRecord::Schema.define(:version => 20121204123112) do
     t.integer  "mixed_field_type_id"
     t.datetime "created_at",          :null => false
     t.datetime "updated_at",          :null => false
+    t.integer  "series_game_id"
   end
 
   add_index "mixed_fields", ["company_id"], :name => "index_mixed_fields_on_company_id"
   add_index "mixed_fields", ["developer_id"], :name => "index_mixed_fields_on_developer_id"
   add_index "mixed_fields", ["game_id"], :name => "index_mixed_fields_on_game_id"
   add_index "mixed_fields", ["mixed_field_type_id"], :name => "index_mixed_fields_on_mixed_field_type_id"
+  add_index "mixed_fields", ["series_game_id"], :name => "index_mixed_fields_on_series_game_id"
 
   create_table "release_dates", :force => true do |t|
     t.integer  "year"

@@ -53,6 +53,7 @@ class GamesController < ApplicationController
         create_add_new_mixed_fields(params[:new_publishers], MixedFieldType.find_by_name("Publisher"))
         create_add_new_mixed_fields(params[:new_distributors], MixedFieldType.find_by_name("Distributor"))
         create_add_new_mixed_fields(params[:new_credits], MixedFieldType.find_by_name("Credits"))
+        create_add_new_mixed_fields(params[:new_series], MixedFieldType.find_by_name("Series"))
 
         format.html { redirect_to @game}
         format.json { render json: @game, status: :created, location: @game }
@@ -77,6 +78,7 @@ class GamesController < ApplicationController
         create_add_new_mixed_fields(params[:new_publishers], MixedFieldType.find_by_name("Publisher"))
         create_add_new_mixed_fields(params[:new_distributors], MixedFieldType.find_by_name("Distributor"))
         create_add_new_mixed_fields(params[:new_credits], MixedFieldType.find_by_name("Credits"))
+        create_add_new_mixed_fields(params[:new_series], MixedFieldType.find_by_name("Series"))
 
         format.html { redirect_to @game}
         format.json { head :no_content }
@@ -173,11 +175,12 @@ class GamesController < ApplicationController
 
   # takes a string and creates a correct mixed field entry
   # strings can look as followed:
-  # "dev:[developer_id]:[additional_info]"
-  # "comp:[company_id]:[additional_info]"
+  # "@dev:[developer_id]:[additional_info]"
+  # "@comp:[company_id]:[additional_info]"
+  # "@game:[game_id]:[additional_info]"
   # "[other_name]:[additional_info]"
   # where
-  # [developer_id] and [company_id] reflect a correct developer or company id
+  # [developer_id], [company_id] and [game_id] reflect a correct developer, company or game id
   # [other_name] can be any string representing a company or developer not created in the system (yet)
   # [additional_info] can be any string, which represents additional text. OPTIONAL
   def create_mixed_field_entity(mixed_field_entity, mixed_field_type)
@@ -192,7 +195,7 @@ class GamesController < ApplicationController
 
     # check if type is specified
     elem0 = mfe_array[0].strip
-    if elem0 == "@dev" || elem0 == "@comp"
+    if elem0 == "@dev" || elem0 == "@comp" || elem0 == "@game"
       create_referenced_mixed_field_entity mfe_array, mixed_field_type, elem0
     else
       create_text_mixed_field_entity mfe_array, mixed_field_type
@@ -240,7 +243,30 @@ class GamesController < ApplicationController
       rescue Exception => e
         logger.warn "something went wrong when trying to create mixed field: " + e.message
       end
+    elsif reference_type == "@game"
+      logger.debug "game series mixed field"
+      begin
+        game = Game.find id
+      rescue ResourceNotFound
+        # no game found
+        logger.debug "no game for #{id} found"
+        return
+      end
 
+      begin
+        mf = get_mixed_field @game, game, mixed_field_type
+        if mf == nil
+          mf = MixedField.new
+        end
+        mf.mixed_field_type_id= mixed_field_type.id
+        mf.additional_info= additional_info
+        mf.game_id= @game.id
+        mf.series_game_id= game.id
+        mf.save
+        logger.debug "saved mixed field: " + mf.id.to_s
+      rescue Exception => e
+        logger.warn "something went wrong when trying to create mixed field: " + e.message
+      end
     elsif reference_type == "@comp"
       logger.debug "comp mixed field"
       begin
@@ -309,6 +335,9 @@ class GamesController < ApplicationController
         logger.debug "relation is a developer"
         #returns the record which matches the provided attributes
         return MixedField.where(:game_id => game.id, :developer_id => relation.id, :mixed_field_type_id => type.id).first
+      elsif relation.is_a? Game
+        logger.debug "relation is a game"
+        return MixedField.where(:game_id => game.id, :series_game_id => relation.id, :mixed_field_type_id => type.id).first
       else
         # nothing
         logger.debug "unknown relation"

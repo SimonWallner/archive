@@ -18,6 +18,7 @@
           <% end%>
           <%= genre.name%>
       <% end %>
+      <%= render :template => "facts/_mixed_field", :locals => { :type => :Series, :object => @game, :label => "Series" } %>
       <%= render :template => "facts/_mixed_field", :locals => { :type => :Credits, :object => @game, :label => "Credits" } %>
     </p>
 
