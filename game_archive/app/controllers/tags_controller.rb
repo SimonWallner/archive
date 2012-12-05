@@ -14,8 +14,12 @@ class TagsController < ApplicationController
             {:value => 'comp:' + comp.name + ',', :label => comp.name + ' - Company'}
           end
           @tags = @devs.concat(@comps)
-        else
-
+        elsif params[:type] == 'game'
+          @games = Game.where("title LIKE ?", "#{params[:term]}%")
+          @games.collect! do |game|
+            {:value => game.title + ',', :label => game.title + ' - Game'}
+          end
+          @tags = @games
         end
       else
 
@@ -23,12 +27,10 @@ class TagsController < ApplicationController
       @devs.collect! do |dev|
         {:value => '[' + dev.name + '](' + developer_url(dev) + ')', :label => dev.name + ' - Developer'}
       end
-
       @games = Game.where("title LIKE ?", "#{params[:term]}%")
       @games.collect! do |game|
         {:value => '[' + game.title + '](' + game_url(game) + ')', :label => game.title + ' - Game'}
       end
-
       @comps = Company.where("name LIKE ?", "#{params[:term]}%")
       @comps.collect! do |comp|
         {:value => '[' + comp.name + '](' + company_url(comp) + ')', :label => comp.name + ' - Company'}
@@ -39,10 +41,16 @@ class TagsController < ApplicationController
       @tags = @tags.concat(@comps)
 
       end
+    elsif params[:type] == 'all'
+      if params[:field] == 'genres'
+        @tags = Genre.all.collect {|x| x.name}
+      else
 
-      respond_to do |format|
-        format.json { render :json => @tags}
       end
+    end
+
+    respond_to do |format|
+      format.json { render :json => @tags}
     end
   end
   # GET /tags

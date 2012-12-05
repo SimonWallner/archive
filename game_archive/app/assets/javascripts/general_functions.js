@@ -12,7 +12,7 @@ function addField(button_element, types){
 }
 
 function addConcreteField(select_element){
-    $(select_element).parent().find('input').remove();
+    $(select_element).parent().find('> :not(select:first)').remove();
     var field_name = $(select_element).val();
     var input_field_name = 'new_' + field_name.replace(' ','_');
     if(input_field_name.lastIndexOf('s') !== (input_field_name.length - 1))
