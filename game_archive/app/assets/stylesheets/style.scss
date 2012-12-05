@@ -354,9 +354,18 @@ div.text {
     ul {
       list-style: disc;
       margin-left: 1.5em;
+      
     }
+    
+    ol{list-style-type:decimal; }
+
+h3{
+  padding-bottom:1em;
+}
 }
 
+
+ 
 div.fact-box {  
   
  
@@ -652,19 +661,6 @@ img.full_markdown_help {
  
 
 
-div.text{ 
-ul { list-style-type: lower-roman; }
-ul ul { list-style-type: lower-alpha; }
-ul ul ul { list-style-type: lower-roman;  }
-ul ul  ul ul  { list-style-type: lower-alpha; }
-ul ul ul  ul ul { list-style-type:circle; }
-
-ol{list-style-type:decimal; }
-
-h3{
-  padding-bottom:1em;
-}
-}
-
+ 
 
  
