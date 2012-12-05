@@ -16,7 +16,7 @@ Given /^I am on the edit page of the given developer$/ do
 end
 
 Given /^I am on the edit page of the given company$/ do
-  visit edit_developer_path(@givenCompany)
+  visit edit_company_path(@givenCompany)
 end
 
 Given /^I am on the edit page of the given game$/ do
