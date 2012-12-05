@@ -11,14 +11,52 @@
     </div>
   <% end %>
 
-
-    <div class="all-genres">
+    <div id="all_genres_div" class="all">
       <h3>All Genres</h3>
-      <div id="all-genres-list" >
+      <div >
         <% Genre.all.each do |genre| %>
             <tr>
               <span><%= genre.name %></span>
-
+            </tr>
+        <% end %>
+      </div>
+    </div>
+    <div id="all_platform_div" class="all">
+      <h3>All Platforms</h3>
+      <div >
+        <% Platform.all.each do |platform| %>
+            <tr>
+              <span><%= platform.name %></span>
+            </tr>
+        <% end %>
+      </div>
+    </div>
+    <div id="all_mode_div" class="all">
+      <h3>All Modes</h3>
+      <div >
+        <% Mode.all.each do |mode| %>
+            <tr>
+              <span><%= mode.name %></span>
+            </tr>
+        <% end %>
+      </div>
+    </div>
+    <div id="all_media_div" class="all">
+      <h3>All Media</h3>
+      <div >
+        <% Medium.all.each do |medium| %>
+            <tr>
+              <span><%= medium.name %></span>
+            </tr>
+        <% end %>
+      </div>
+    </div>
+    <div id="all_tags_div" class="all">
+      <h3>All Tags</h3>
+      <div >
+        <% Tag.all.each do |tag| %>
+            <tr>
+              <span><%= tag.name %></span>
             </tr>
         <% end %>
       </div>
@@ -39,12 +77,14 @@
       <%= f.file_field :image %>
   </div>
   <div>
-  <%= submit_tag "Add Field", :type => 'button',
+  <div class="newFieldsDiv"><script type="text/javascript">loadfields('<%= game_url %>.json');</script></div>
+    <%= submit_tag "Add Field", :type => 'button', :id => 'addFieldButton' ,
       :onclick => 'addField(this,["Developer","Publisher","Distributor","Credits","Platform",
                                   "Release Dates","Mode","Media","External Links","Aggregate Scores",
                                   "Review Scores","Genres","Tags","Series","Userdefined"]);'
   %>
   </div>
+    <!--
   <div class="field">
     <div class="field-label">
       Developers
@@ -86,7 +126,7 @@
       </div>
       <%= text_field_tag 'new_series' %>
     </div>
-
+         -->
 
 
   <div class="actions">

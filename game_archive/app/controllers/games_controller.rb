@@ -69,7 +69,7 @@ class GamesController < ApplicationController
   def update
     @game = Game.find(params[:id])
 
-    create_add_new_token(params[:new_genres], params[:new_platforms], params[:new_media], params[:new_modes], params[:new_tags])
+    create_add_new_token(params[:new_genres], params[:new_platforms], params[:new_medias], params[:new_modes], params[:new_tags])
     create_add_new_release_dates(params[:new_release_dates])
 
     respond_to do |format|

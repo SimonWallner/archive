@@ -60,7 +60,9 @@ $(document).ready(function() {
                 '</dl>' +
           '">'
     );
-    $(".full_markdown_help").tooltipsy();
+    $(".full_markdown_help").tooltipsy({delay: 600});
+
+    $(".all").hide();
 });
 
 

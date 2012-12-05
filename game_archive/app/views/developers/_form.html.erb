@@ -20,7 +20,8 @@
     <%= f.text_area :description  %>
   </div>
   <div>
-  <%= submit_tag "Add Field", :type => 'button',
+    <div class="newFieldsDiv"><script type="text/javascript">loadfields('<%= developer_url%>.json');</script></div>
+    <%= submit_tag "Add Field", :type => 'button', :id => 'addFieldButton' ,
       :onclick => 'addField(this,["External Links","Userdefined"]);'
   %>
   </div>

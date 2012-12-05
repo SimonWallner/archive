@@ -33,7 +33,7 @@ function at_autocomp(dummyname, elements_selector, source) {
 }
 $(document).ready(function() {
     var txts = $('#game_description, #developer_description, #company_description');
-    at_autocomp('desc_dummy', txts, '/tags.json');
+    at_autocomp('desc_dummy', txts, '/ajax.json');
 });
 
 
