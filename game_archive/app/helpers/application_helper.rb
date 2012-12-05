@@ -49,4 +49,25 @@ end
     return mf.find_all {|i| i.mixed_field_type.name == type.to_s }
   end
 
+  # returns a formatted date with additional info
+  def format_date(date)
+    if date == nil
+      return ""
+    end
+
+    formatted_date = ""
+    if date.day != nil
+      formatted_date = formatted_date + date.day.to_s + "."
+    end
+    if date.month != nil
+      formatted_date = formatted_date + date.month.to_s + "."
+    end
+    if date.year != nil
+      formatted_date = formatted_date + date.year.to_s
+    end
+    if date.additional_info != nil
+      formatted_date = formatted_date + " - " + date.additional_info
+    end
+    return formatted_date
+  end
 end

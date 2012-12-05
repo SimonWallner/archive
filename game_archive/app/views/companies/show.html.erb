@@ -1,9 +1,18 @@
 <div class="company">
   <h1><%=  @company.name %></h1>
   <div class="fact-box">
-    <%= image_tag @company.image_url(:tiled_4x).to_s , :class => "media rounded"%>
+    <%=
+
+         imguploader = ImageUploader.new
+
+        if not @company.image_url.to_s == imguploader.default_url
+
+            image_tag @company.image_url.to_s , :class => "media rounded"
+
+        end
+    %>
     <p>
-	  
+
       <strong>Legal Name</strong>: studio radiolaris interactive entertainment GmbH <br />
       <strong>Location</strong>: Vienna, Austria<br />
       <strong>Founded:</strong>: June 2009, Vienna, Austria <br />

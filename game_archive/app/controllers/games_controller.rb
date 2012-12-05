@@ -44,7 +44,8 @@ class GamesController < ApplicationController
   # POST /games.json
   def create
     @game = Game.new(params[:game])
-    create_add_new_genres(params[:new_genres])
+	create_add_new_token(params[:new_genres], params[:new_platforms], params[:new_media], params[:new_modes], params[:new_tags])
+    create_add_new_release_dates(params[:new_release_dates])
 
 	respond_to do |format|
       if @game.save
@@ -67,7 +68,8 @@ class GamesController < ApplicationController
   def update
     @game = Game.find(params[:id])
 
-    create_add_new_genres(params[:new_genres])
+    create_add_new_token(params[:new_genres], params[:new_platforms], params[:new_media], params[:new_modes], params[:new_tags])
+	create_add_new_release_dates(params[:new_release_dates])
 
     respond_to do |format|
       if @game.update_attributes(params[:game])
@@ -101,27 +103,95 @@ class GamesController < ApplicationController
   # takes the new_genres_string and the game_params string
   # creates new genres if necessary
   # and augments the game_params with the new genres
-  def create_add_new_genres(genres_string)
-    @game.genres.clear
-    if genres_string == nil
-      return
-    end
+   def create_add_new_token(genres_string, platforms_string, media_string, modes_string, tags_string)
+	@game.genres.clear
+	@game.platforms.clear
+	@game.media.clear
+	@game.modes.clear
+	@game.tags.clear
+	
     Genre.create_from_string(genres_string)
-    new_genres = genres_string.split ','
-    if new_genres.size == 0
+	Platform.create_from_string(platforms_string)
+	Medium.create_from_string(media_string)
+	Mode.create_from_string(modes_string)
+	Tag.create_from_string(tags_string)
+	
+	new_genres = genres_string.split ','
+	
+    begin
+		a='Genre'
+		new_genres.try(:each) do |ng|
+		  ng.strip!
+		  new_genre = a.find_by_name(ng)
+		  if(not @game.genres.include?(new_genre))
+				@game.genres << new_genre
+		  end
+		end
+		rescue # nil exception due to "empty" arguments such as ", , ,"
+			#redirect_to @game, notice: 'Genres nicht korrekt angegeben!'			
+	end
+
+	    new_platforms = platforms_string.split ','
+	begin
+		new_platforms.try(:each) do |np|
+			np.strip!
+			new_platform = Platform.find_by_name(np)
+			if(not @game.platforms.include?(new_platform))
+				@game.platforms << new_platform
+			end
+		end
+		rescue 
+	end
+	
+	    new_media = media_string.split ','
+	begin
+		new_media.try(:each) do |nm|
+			nm.strip!
+			new_medium = Medium.find_by_name(nm)
+			if(not @game.media.include?(new_medium))
+				@game.media << new_medium
+			end
+		end
+		rescue 
+	end
+	
+	    new_modes = modes_string.split ','
+	begin
+		new_modes.try(:each) do |nm|
+			nm.strip!
+			new_mode = Mode.find_by_name(nm)
+			if(not @game.modes.include?(new_mode))
+				@game.modes << new_mode
+			end
+		end
+		rescue	
+	end
+		   
+	   new_tags = tags_string.split ','
+	begin
+		new_tags.try(:each) do |nt|
+			nt.strip!
+			new_tag = Tag.find_by_name(nt)
+			if(not @game.tags.include?(new_tag))
+				@game.tags << new_tag
+			end
+		end
+		rescue 
+	end
+	
+  end
+
+  def create_add_new_release_dates(rd_string)
+    @game.release_dates.clear
+    if rd_string == nil
+      logger.debug "rdstring nil"
       return
     end
-    begin
-      new_genres.try(:each) do |ng|
-        ng.strip!
-        new_genre = Genre.find_by_name(ng)
-        if not @game.genres.include?(new_genre)
-          @game.genres << new_genre
-        end
-      end
-    rescue # nil exception due to "empty" arguments such as ", , ,"
-      #redirect_to @game, notice: 'Genres nicht korrekt angegeben!'
-      return
+    logger.debug "create rds from string"
+    rds = ReleaseDate.create_from_string(rd_string)
+    rds.each do |rd|
+      logger.debug rd
+      @game.release_dates.push rd
     end
   end
 
@@ -314,7 +384,7 @@ class GamesController < ApplicationController
   end
 
   def remove_all_mixed_fields(game, mixed_field_type)
-    if game == nil
+    if game == nil || mixed_field_type == nil
       return
     end
     mfs = MixedField.where(:game_id => game.id, :mixed_field_type_id => mixed_field_type.id).delete_all

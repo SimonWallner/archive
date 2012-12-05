@@ -1,6 +1,13 @@
 <div class="game">
   <div class="media rounded">
-    <%= image_tag @game.image_url(:top_game).to_s, :class => "media rounded"%>
+    <%=
+        imguploader = ImageUploader.new
+
+        if not @game.image_url == imguploader.default_url
+            image_tag @game.image_url(:top_game).to_s, :class => "media rounded"
+        end
+
+    %>
 
   </div>
   <h1><%= @game.title %></h1>
@@ -8,16 +15,40 @@
   <div class="fact-box">
     <p>
       <%= render :template => "facts/_mixed_field", :locals => { :type => :Developer, :object => @game, :label => "Developer" } %>
-      <strong>Released</strong>: 2012<br />
-      <strong>Platforms</strong>: PC, Mac, Linux, XBox360, PS3<br />
+      <%= render :template => "facts/_dates", :locals => { :object => @game.release_dates, :label => "Release Dates" } %>
+      <strong>Platforms</strong>: 	  
+	  <% @game.platforms.each do |platform| %>
+          <% if not platform == @game.platforms.first %>,
+          <% end%>
+          <%= platform.name%>
+      <% end %>
       <%= render :template => "facts/_mixed_field", :locals => { :type => :Publisher, :object => @game, :label => "Publisher" } %>
       <%= render :template => "facts/_mixed_field", :locals => { :type => :Distributor, :object => @game, :label => "Distributor" } %>
-      <strong>Genre</strong>:
+      <strong>Genres</strong>:
       <% @game.genres.each do |genre| %>
           <% if not genre == @game.genres.first %>,
           <% end%>
           <%= genre.name%>
+      <% end %><br />
+      <strong>Modes</strong>:
+	  <% @game.modes.each do |mode| %>
+          <% if not mode == @game.modes.first %>,
+          <% end%>
+          <%= mode.name%>
+      <% end %><br />
+	  <strong>Media</strong>:
+	  <% @game.media.each do |medium| %>
+          <% if not medium == @game.media.first %>,
+          <% end%>
+          <%= medium.name%>
+      <% end %><br />
+      <strong>Tags</strong>:
+      <% @game.tags.each do |tag| %>
+          <% if not tag == @game.tags.first %>,
+          <% end%>
+          <%= tag.name%>
       <% end %>
+	  
       <%= render :template => "facts/_mixed_field", :locals => { :type => :Credits, :object => @game, :label => "Credits" } %>
     </p>
 
