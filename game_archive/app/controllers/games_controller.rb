@@ -108,7 +108,6 @@ class GamesController < ApplicationController
   # creates new genres if necessary
   # and augments the game_params with the new genres
   def create_add_new_token(genres_string, platforms_string, media_string, modes_string, tags_string)
-    return nil
     @game.genres.clear
     @game.platforms.clear
     @game.media.clear

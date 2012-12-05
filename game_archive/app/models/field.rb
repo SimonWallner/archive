@@ -17,8 +17,8 @@ class Field < ActiveRecord::Base
       return
     end
     object.fields.clear
-    if field_string == nil
-      logger.debug "field_string not provided"
+    if field_string == nil || field_string.length < 2
+      logger.debug "field_string not provided or to short"
       return
     end
 
