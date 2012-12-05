@@ -1,5 +1,7 @@
 module ApplicationHelper
 	require 'redcarpet'
+
+  PREDEFINED_FIELDS = ["External Links", "Aggregate Scores", "Review Scores"]
 	
 	def markdown(text)
 
@@ -47,6 +49,23 @@ end
       return mf
     end
     return mf.find_all {|i| i.mixed_field_type.name == type.to_s }
+  end
+
+  def get_field(object, name)
+    if object == nil || name == nil
+      return Array.new
+    end
+    f = object.fields
+    return f.find_all { |i| i.name == name }
+  end
+
+  def get_user_fields(object)
+    if object == nil
+      return Array.new
+    end
+
+    f = object.fields
+    return f.find_all { |i| not PREDEFINED_FIELDS.include?(i.name) }
   end
 
   # returns a formatted date with additional info

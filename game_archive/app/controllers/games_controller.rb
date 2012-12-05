@@ -44,8 +44,9 @@ class GamesController < ApplicationController
   # POST /games.json
   def create
     @game = Game.new(params[:game])
-    create_add_new_token(params[:new_genres], params[:new_platforms], params[:new_media], params[:new_modes], params[:new_tags])
+    create_add_new_token(params[:new_genres], params[:new_platforms], params[:new_medias], params[:new_modes], params[:new_tags])
     create_add_new_release_dates(params[:new_release_dates])
+    Field.create_add_new_field(@game, params[:new_fields])
 
 	respond_to do |format|
       if @game.save
@@ -71,6 +72,7 @@ class GamesController < ApplicationController
 
     create_add_new_token(params[:new_genres], params[:new_platforms], params[:new_medias], params[:new_modes], params[:new_tags])
     create_add_new_release_dates(params[:new_release_dates])
+    Field.create_add_new_field(@game, params[:new_fields])
 
     respond_to do |format|
       if @game.update_attributes(params[:game])

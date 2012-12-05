@@ -1,9 +1,13 @@
-<div class="fact">
-  <div>
-    <%= label.to_s %>:
-  </div>
-  <ul>
-    <% field.each do |f| %>
-    <% end %>
-  </ul>
-</div>
+<% fields = get_field(object, label.to_s) %>
+<% if fields.any? %>
+	<div class="fact">
+	  <div>
+	    <%= label.to_s %>:
+	  </div>
+	  <div>
+	    <% fields.each do |f| %>
+	        <%= f.content %>&nbsp;
+	    <% end %>
+	  </div>
+	</div>
+<% end %>
