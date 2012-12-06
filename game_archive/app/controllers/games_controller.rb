@@ -123,14 +123,13 @@ class GamesController < ApplicationController
    
      
     begin
-      a='Genre'
   if genres_string == nil  
       return
     end
       new_genres = genres_string.split ','
       new_genres.try(:each) do |ng|
         ng.strip!
-        new_genre = a.find_by_name(ng)
+        new_genre = Genre.find_by_name(ng)
         if(not @game.genres.include?(new_genre))
           @game.genres << new_genre
         end
