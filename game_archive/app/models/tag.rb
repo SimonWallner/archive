@@ -4,6 +4,13 @@ class Tag < ActiveRecord::Base
   has_and_belongs_to_many :games
   
     def Tag.create_from_string(tags_string)
+      
+                        if tags_string == nil  
+      logger.debug "no tag to create"
+      return
+    end
+    
+    
     tags_string.strip!
     tags = tags_string.split ','
     tags_to_return = Array.new
