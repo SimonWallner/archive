@@ -7,37 +7,21 @@ Then /^I should see the title of the game in a list of games$/ do
   page.should have_content(@givenGame.title)
 end
 
- 
-
-
-
 #   Scenario: create game and genres with valid data
 
-When /^I fill in the fields of game and genres with valid details and submit it$/ do
-
-  @createGame=FactoryGirl.create :game
-  
+When /^I fill in the fields of game and genres with valid details and submit it$/ do 
   @new_game_title="Mario"
   @new_game_description= "awesome"  
   fill_in("game_title", :with => @new_game_title)
-  fill_in("game_description", :with => @new_game_description)
-  
-  @createGame.genres.name="genreName"
-  
-  
- 
+  fill_in("game_description", :with => @new_game_description)  
   click_button "Create Game"
-
 end
 
 
 Then /^I should see the details of the newly created game$/ do
   page.should have_content(@new_game_title)
-  page.should have_content(@new_game_description)
- 
+  page.should have_content(@new_game_description) 
 end
-
-
 
 #   Scenario: fail to create game with empty name
 
@@ -74,12 +58,8 @@ When /^I change the game's data and submit it$/ do
 
   @update_game_title="newGameTitle"
   @update_game_description= "newGameDesc"
- 
-
-
   fill_in("game_title", :with => @update_game_title)
-  fill_in("game_description", :with =>  @update_game_description)
- 
+  fill_in("game_description", :with =>  @update_game_description) 
   click_button "Update Game"
 end
 Then /^I should be on the detail page of the given game$/ do
