@@ -7,8 +7,8 @@ class AdminpromoteController < ApplicationController
 	authenticate_user!
 	respond_to do |format| 
 		# search for user
-		if params[:email] != ''
-			p = params[:email]
+		if params[:user_email] != ''
+			p = params[:user_email]
 			@user = User.find_by_email(p)
 		elsif params[:firstname] != '' and params[:lastname] != '' # funktioniert noch nicht
 			p = params[:firstname]
