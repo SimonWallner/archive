@@ -20,27 +20,12 @@
     <%= f.text_area :description %>
   </div>
     <div>
-      <div class="newFieldsDiv"><script type="text/javascript">loadfields('<%= company_url %>.json');</script></div>
+      <div class="newFieldsDiv"><script type="text/javascript">loadfields('<%= begin company_url rescue '' end %>.json');</script></div>
       <%= submit_tag "Add Field", :type => 'button', :id => 'addFieldButton' ,
                    :onclick => 'addField(this,["Official Name","Location","Founded","Defunct","External Links","Userdefined"]);'
     %>
     </div>
-    <div class="field">
-      <%= f.label :image, 'Choose profile picture' %><br />
-      <%= f.file_field :image %>
-    </div>
 
-    <div class="field">
-      <%= f.label :official_name %><br />
-      <%= f.text_field :official_name %>
-    </div>
-
-    <div class="field">
-      <div class="field-label">
-        Locations
-      </div>
-      <%= text_field_tag 'new_locations' %>
-    </div>
   <div class="actions">
     <%= f.submit %>
   </div>

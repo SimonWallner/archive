@@ -78,7 +78,7 @@
       <%= f.file_field :image %>
   </div>
   <div>
-  <div class="newFieldsDiv"><script type="text/javascript">loadfields('<%= game_url %>.json');</script></div>
+  <div class="newFieldsDiv"><script type="text/javascript">loadfields('<%= begin game_url rescue '' end %>.json');</script></div>
     <%= submit_tag "Add Field", :type => 'button', :id => 'addFieldButton' ,
       :onclick => 'addField(this,["Developer","Publisher","Distributor","Credits","Platform",
                                   "Release Dates","Mode","Media","External Links","Aggregate Scores",
