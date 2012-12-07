@@ -51,12 +51,10 @@
     <div class="field">
       <!-- iterate through all the available videos for a game and create a field for them
 
-  @game.videos.each() do |video|
-
       <f.text_area :video mit id!? > <remove button>
 
    end   -->
-      <%= f.label 'Choose videos to embed' %><br /><br />
+      <%= f.label 'Post Video Embed links here (youtube or vimeo only)' %><br /><br />
       <%= f.fields_for :videos do |builder| %>
 
           <%= render :partial => 'video_fields', :locals => {:builder => builder} %>

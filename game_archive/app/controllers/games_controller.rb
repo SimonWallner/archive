@@ -27,8 +27,6 @@ class GamesController < ApplicationController
   # GET /games/new.json
   def new
     @game = Game.new
-    3.times {@game.videos.build}
-
 
     respond_to do |format|
       format.html # new.html.erb

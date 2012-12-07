@@ -55,28 +55,17 @@
 
     <% for video in @game.videos %>
       <div class="media rounded">
-            <%=h video.embedcode  %>
+            <%=h @str = embed_video(video.embedcode)
+               if @str
+                 @str.html_safe
+               end
+            %>
       </div>
 
     <% end %>
 
 
   <div class="media rounded">
-    <!-- insert loopiteration through videos and parse
-
-        for all @game.videos
-        parse video.embedcode for vimeo or youtube
-        if youtube
-            then youtube.embed
-        else
-            vimeo.embed
-
-    -->
-
-    <%=  @str = youtube_embed('http://youtu.be/7N5OhNplEd4')
-         @str.html_safe
-
-    %>
   </div>
 
 
