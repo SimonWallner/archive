@@ -45,11 +45,35 @@
 
   </div>
 
+
+
   <div class="clear"></div>
   <% if user_signed_in? %>
     <%= link_to 'Edit', edit_game_path(@game) %> |
   <% end %>
   <%= link_to 'Back', games_path %>
+  <div class="media rounded">
+
+
+
+    <!-- insert loopiteration through videos and parse
+
+        for all @game.videos
+        parse video.embedcode for vimeo or youtube
+        if youtube
+            then youtube.embed
+        else
+            vimeo.embed
+
+    -->
+
+    <%=  @str = youtube_embed('http://youtu.be/7N5OhNplEd4')
+         @str.html_safe
+
+    %>
+  </div>
+
+
   <div class="media rounded">
     <%= image_tag 'screenshot_1.jpg', :alt => 'Screenshot 1 alt text' %>
     <div class="caption">
