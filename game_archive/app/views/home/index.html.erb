@@ -1,139 +1,65 @@
-<div>
+<div class="about_home">
 	<h1>About us</h1>
 	<p>Lomo sriracha farm-to-table, authentic deserunt selvage whatever tofu biodiesel thundercats wayfarers chillwave typewriter brooklyn. Mumblecore bespoke officia authentic trust fund. Nostrud bushwick velit quis echo park Austin. Pickled salvia small batch, mustache banh mi pork belly cosby sweater four loko narwhal.</p>
 	<div class="more"><a href="#">more...</a></div>
 </div>
 
-<div>
+<div class="news_home">
 	<h1>News</h1>
 	<p><strong>September 3rd, 2012</strong> &mdash; Lomo sriracha farm-to-table, authentic deserunt selvage whatever tofu biodiesel thundercats wayfarers chillwave typewriter brooklyn. Mumblecore bespoke officia authentic trust fund. Nostrud bushwick velit quis echo park Austin. Pickled salvia small batch, mustache banh mi pork belly cosby sweater four loko narwhal.</p>
 	<div class="more"><a href = "#">more...</a></div>
 </div>
 
-<div>
-
-	<h1>Games Link</h1>
-	<div class="tiled_2x">
-		<a href="/games/1">
-			<div class="tile">
-				<%= image_tag('dummy_teaser.jpg', :class => 'rounded teaser')%>
-				<div class="caption"><div>This is a game</div></div>
-			</div>
-		</a>
-	</div>
+<div class="games_home">
+	<h1>Games</h1>
 	
-	<div class="tiled_2x">
-		<a href="/games/1">
-			<div class="tile">
-				<%= image_tag('dummy_teaser.jpg', :class => 'rounded teaser')%>
-				<div class="caption"><div>This is a game</div></div>
-			</div>
-		</a>
-	</div>
-	
-	<div class="tiled_2x">
-		<a href="/games/1">
-			<div class="tile">
-				<%= image_tag('dummy_teaser.jpg', :class => 'rounded teaser')%>
-				<div class="caption"><div>This is a game</div></div>
-			</div>
-		</a>
-	</div>
-	
-	<div class="tiled_2x">
-		<a href="/games/1">
-			<div class="tile">
-				<%= image_tag('dummy_teaser.jpg', :class => 'rounded teaser')%>
-				<div class="caption"><div>This is a game</div></div>
-			</div>
-		</a>
-	</div>
-	
-	<div class="tiled_2x">
-		<a href="/games/1">
-			<div class="tile">
-				<%= image_tag('dummy_teaser.jpg', :class => 'rounded teaser')%>
-				<div class="caption"><div>This is a game</div></div>
-			</div>
-		</a>
-	</div>
+	<h3>Newest 5</h3>
+	<% Game.find(:all, :limit => 5, :order => 'created_at DESC').each do |game| %>
+		<div class="tiled_2x">
+			<a href="/games/<%= game.id %>">
+				<div class="tile">
+					<%= image_tag(game.image, :class => 'rounded teaser')%>
+					<div class="caption"><div>This is a game</div></div>
+				</div>
+			</a>
+		</div>
+	<% end %>
 	
 	<div class="clear"></div>
 </div>
 
-<div>
-	<h1>People Links</h1>
+<div class="companies_home">
+	<h1>Companies</h1>
+	
+	<h3>Newest 5</h3>
+	<% Company.find(:all, :limit => 5, :order => 'created_at DESC').each do |com| %>
+		<div class="tiled_2x">
+			<a href="/companies/<%= com.id %>">
+				<div class="tile">
+					<%= image_tag(com.image, :class => 'rounded teaser')%>
+					<div class="caption"><div>This is a company</div></div>
+				</div>
+			</a>
+		</div>
+	<% end %>
+	
+	<div class="clear"></div>
+</div>
 
-	<div class="tiled_4x">
-		<a href="/developers/1">
-			<div class="tile" >
-				<%= image_tag('gagarin.jpg', :class => 'rounded teaser')%>
-				<div class="caption"><div>Juri Alexejewitsch Gagarin</div></div>
-			</div>
-		</a>
-	</div>
+<div class="developers_home">
+	<h1>People</h1>
 	
-	<div class="tiled_4x">
-		<a href="/developers/1">
-			<div class="tile" >
-				<%= image_tag('gagarin.jpg', :class => 'rounded teaser')%>
-				<div class="caption"><div>Juri Alexejewitsch Gagarin</div></div>
-			</div>
-		</a>
-	</div>
-	
-	<div class="tiled_4x">
-		<a href="/developers/1">
-			<div class="tile" >
-				<%= image_tag('gagarin.jpg', :class => 'rounded teaser')%>
-				<div class="caption"><div>Juri Alexejewitsch Gagarin</div></div>
-			</div>
-		</a>
-	</div>
-	
-	<div class="tiled_4x">
-		<a href="/developers/1">
-			<div class="tile" > <%= image_tag('gagarin.jpg', :class => 'rounded teaser')%>
-				<div class="caption"><div>Juri Alexejewitsch Gagarin</div></div>
-			</div>
-		</a>
-	</div>
-	
-	<div class="tiled_4x">
-		<a href="/developers/1">
-			<div class="tile" >
-				<%= image_tag('gagarin.jpg', :class => 'rounded teaser')%>
-				<div class="caption"><div>Juri Alexejewitsch Gagarin</div></div>
-			</div>
-		</a>
-	</div>
-	
-	<div class="tiled_4x">
-		<a href="/developers/1">
-			<div class="tile" >
-				<%= image_tag('gagarin.jpg', :class => 'rounded teaser')%>
-				<div class="caption"><div>Juri Alexejewitsch Gagarin</div></div>
-			</div>
-		</a>
-	</div>
-
-	<div class="tiled_4x">
-		<a href="/developers/1">
-			<div class="tile" >
-				<%= image_tag('gagarin.jpg', :class => 'rounded teaser')%>
-				<div class="caption"><div>Juri Alexejewitsch Gagarin</div></div>
-			</div>
-		</a>
-	</div>
-	
-	<div class="tiled_4x">
-		<a href="/developers/1">
-			<div class="tile" >
-				<%= image_tag('gagarin.jpg', :class => 'rounded teaser')%>
-				<div class="caption"><div>Juri Alexejewitsch Gagarin</div></div>
-			</div>
-		</a>
-	</div>
+	<h3>Newest 5</h3>
+	<% Developer.find(:all, :limit => 5, :order => 'created_at DESC').each do |dev| %>
+		<div class="tiled_4x">
+			<a href="/developers/<%= dev.id %>">
+				<div class="tile">
+					<%= image_tag(dev.image, :class => 'rounded teaser')%>
+					<div class="caption"><div>This is a developer</div></div>
+				</div>
+			</a>
+		</div>
+	<% end %>
 	
 	<div class="clear"></div>
 </div>
