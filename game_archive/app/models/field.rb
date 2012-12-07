@@ -45,4 +45,8 @@ class Field < ActiveRecord::Base
     end
   end
 
+  def as_json(options={})
+    { :type => { :MixedFieldType => :name } }
+  end
+
 end

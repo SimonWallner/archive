@@ -19,7 +19,7 @@ class GamesController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render json: @game }
+      format.json { render :json => @game.to_json(:include => [:mixed_fields, :release_dates, :fields, :genres, :platforms, :media, :modes, :tags ]) }
     end
   end
 

@@ -15,14 +15,3 @@ Feature: Use Javascript
     And I click the autocomplete for "Coolgame"
     And I submit the game update
     Then I should have a link to Coolgame
-
-  @javascript
-  Scenario: insert new genres
-    Given I am signed in as User
-    And I have a game Tetris
-    And I have a genre named Puzzle
-    And I am on the detail page of the game
-    When I follow the game edit link
-    And I input "Pu" in the tag_input field
-    And I click the autocomplete for "Puzzle"
-    Then I should have genre "Puzzle" added

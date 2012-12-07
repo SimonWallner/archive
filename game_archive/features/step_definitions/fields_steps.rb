@@ -8,6 +8,13 @@ When /^I enter a developer field with a developer$/ do
   click_link_or_button "Create Game"
 end
 
+When /^I add the field (.*)$/ do |str|
+  click_link_or_button "Add Field"
+  sleep(1)
+  select(str, :from => "$('.newField')")
+  sleep(1)
+end
+
 Then /^The data should be saved$/ do
   g = Game.find_by_title @game_title
   g.should_not == nil

@@ -13,11 +13,56 @@ function loadfields(jsonurl){
     else
         usedfields = developersfields;
 
-
     $.getJSON(jsonurl, function(data){
         jQuery.each(data, function(i, val) {
-            if($.inArray(i,['platform','mode','media', 'genres', 'tags']))
-               ; //todo load fields
+            if($.inArray(i,['platform','mode','media', 'genres', 'tags']) >= 0){
+                addField($('#addFieldButton'), usedfields);
+                var select_elem = $('div.newFieldsDiv').find('select:last');
+                select_elem.find('option[value="'+i+'"]').attr('selected', true);
+
+                var str = '';
+                for (var x = 0; x < val.length; x++)
+                    str = str + val[x].name + ',';
+                str = str.substr(0, str.length -1);
+
+                addConcreteField(select_elem, false, str);
+
+            }else if($.inArray(i,['release_dates']) >= 0){
+                addField($('#addFieldButton'), usedfields);
+                var select_elem = $('div.newFieldsDiv').find('select:last');
+                select_elem.find('option[value="release dates"]').attr('selected', true);
+
+                for (var x = 0; x < val.length; x++){
+                    addConcreteField(select_elem, false);
+                    $('#year_release_date'+(x+1)).val(val[x].year);
+                    $('#month_release_date'+(x+1)).val(val[x].month);
+                    $('#day_release_date'+(x+1)).val(val[x].day);
+                    $('#text_release_date'+(x+1)).val(val[x].additional_info);
+                }
+
+            }else if($.inArray(i,['fields']) >= 0){
+                for (var x = 0; x < val.length; x++){
+                    addField($('#addFieldButton'), usedfields);
+                    var select_elem = $('div.newFieldsDiv').find('select:last');
+                    select_elem.find('option[value="userdefined"]').attr('selected', true);
+                    addConcreteField(select_elem, false);
+
+                    $('#name_userdefined'+(x+1)).val(val[x].name);
+                    $('#content_userdefined'+(x+1)).val(val[x].content);
+                }
+
+            } else if($.inArray(i,['mixed_fields']) >= 0){
+                for (var x = 0; x < val.length; x++){
+                    addField($('#addFieldButton'), usedfields);
+                    var select_elem = $('div.newFieldsDiv').find('select:last');
+                    select_elem.find('option[text="'+val[i].type+'"]').attr('selected', true);
+                    addConcreteField(select_elem, false);
+
+                    $('#name_userdefined'+(x+1)).val(val[x].name);
+                    $('#content_userdefined'+(x+1)).val(val[x].content);
+                }
+            }
+
         });
     });
 }
@@ -37,7 +82,8 @@ function addField(button_element, types){
 }
 var anzDateInputs=0;
 var anzUserDefined=0;
-function addConcreteField(select_element, deletecurrent){
+function addConcreteField(select_element, deletecurrent){addConcreteField(select_element, deletecurrent, false)}
+function addConcreteField(select_element, deletecurrent, value){
     if(deletecurrent)
         $(select_element).parent().find('> :not(select:first)').remove();
     var field_name = $(select_element).val();
@@ -48,24 +94,24 @@ function addConcreteField(select_element, deletecurrent){
         $(select_element).parent().remove();
 
     }else if($.inArray(field_name,['series']) >= 0){                                                 // game references + add info
-        $(select_element).parent().append('<input id="'+input_field_name+'" name="'+input_field_name+'" type="text">');
+        $(select_element).parent().append('<textarea cols="40" rows="3" id="'+input_field_name+'" name="'+input_field_name+'">' +
+            (value ? value : '') +
+            '</textarea>');
         $('#'+input_field_name).autocomplete({source: '/ajax.json?type=game'});
-
-    }else if($.inArray(field_name,['official name']) >= 0){                                                 // game references + add info
-        $(select_element).parent().append('<input id="'+input_field_name+'" name="'+input_field_name+'" type="text">');
 
     }else if($.inArray(field_name,['release dates']) >= 0){                                           // dates
         anzDateInputs++;
         var html = '<div class="release_dates_div" id="release_dates_div">';
         html = html + addDateInput('release_date'+anzDateInputs);
         html = html + '<input id="text_release_date'+anzDateInputs+'" name="input_field_name'+anzDateInputs+'" type="text">';
-        html = html + '<button type="button" onclick="addConcreteField(this,false);" value="release dates"> + </button></div>'
+        html = html + '<button type="button" onclick="addConcreteField(this,false);" value="release dates"> + </button></div>';
         $(select_element).parent().append(html);
 
     }else if($.inArray(field_name,['platform','mode','media', 'genres', 'tags']) >= 0){              // tokenlists
         $.getJSON('/ajax.json?type=all&field='+field_name, function(data){
             var availableTags = data;
-            $(select_element).parent().append('<input id="'+input_field_name+'" name="'+input_field_name+'" type="text">');
+            $(select_element).parent().append('<input id="'+input_field_name+'" name="'+input_field_name+'" type="text" value="' +
+                (value ? value : '') + '">');
             $('#'+input_field_name).tagit({caseSensitive: false, availableTags: availableTags, allowSpaces: true});
 
             $('#'+input_field_name+'_input').focus(function() {
@@ -88,17 +134,18 @@ function addConcreteField(select_element, deletecurrent){
     }else if($.inArray(field_name,['official name']) >= 0){                                          // normal input
         $(select_element).parent().append('<input id="'+field_name.replace(' ','_')+'" name="'+field_name.replace(' ','_')+'">');
 
-    }else if($.inArray(field_name,['location']) >= 0){                                               // textarea
-        $(select_element).parent().append('<textarea cols="40" rows="3" id="'+field_name+'" name="'+field_name+'"></textarea>');
-
     }else if($.inArray(field_name,['defunct','founded']) >= 0){                                      // date + string
-        $(select_element).parent().append('<textarea cols="40" rows="3" id="'+field_name+'" name="'+field_name+'"></textarea>');
+        $(select_element).parent().append(addDateInput(field_name));
+        if(field_name == 'defunct')
+            $(select_element).parent().append('<input id="text_'+field_name+'" name="text_'+field_name+'" type="text">');
 
-    }else if($.inArray(field_name,['external links', 'aggregate scores', 'review scores']) >= 0){    // external links only
+    }else if($.inArray(field_name,['external links', 'aggregate scores', 'review scores', 'location']) >= 0){    // external links only
         $(select_element).parent().append('<textarea cols="40" rows="3" id="'+input_field_name+'" name="'+input_field_name+'"></textarea>');
 
     }else if($.inArray(field_name,['developer','publisher','distributor','credits']) >= 0){          // dev/comp references + add info
-        $(select_element).parent().append('<textarea cols="40" rows="3" id="'+input_field_name+'" name="'+input_field_name+'"></textarea>');
+        $(select_element).parent().append('<textarea cols="40" rows="3" id="'+input_field_name+'" name="'+input_field_name+'">' +
+            (value ? value : '') +
+            '</textarea>');
         $('#'+input_field_name).autocomplete({source: '/ajax.json?type=developer'});
     }
 }

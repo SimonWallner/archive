@@ -99,19 +99,19 @@ ActiveRecord::Schema.define(:version => 20121205154230) do
     t.integer  "game_id"
     t.integer  "developer_id"
     t.integer  "company_id"
-    t.string   "not_found"
-    t.string   "additional_info"
-    t.integer  "mixed_field_type_id"
-    t.datetime "created_at",          :null => false
-    t.datetime "updated_at",          :null => false
+    t.string   "notFound"
+    t.string   "additionalInfo"
+    t.integer  "type_id"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
     t.integer  "series_game_id"
   end
 
   add_index "mixed_fields", ["company_id"], :name => "index_mixed_fields_on_company_id"
   add_index "mixed_fields", ["developer_id"], :name => "index_mixed_fields_on_developer_id"
   add_index "mixed_fields", ["game_id"], :name => "index_mixed_fields_on_game_id"
-  add_index "mixed_fields", ["mixed_field_type_id"], :name => "index_mixed_fields_on_mixed_field_type_id"
   add_index "mixed_fields", ["series_game_id"], :name => "index_mixed_fields_on_series_game_id"
+  add_index "mixed_fields", ["type_id"], :name => "index_mixed_fields_on_type_id"
 
   create_table "modes", :force => true do |t|
     t.string   "name"
