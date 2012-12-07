@@ -1,10 +1,10 @@
 class AdminpromoteController < ApplicationController
   def promote
-	authenticate_user!
+	authenticate_admin!
   end
   
   def update
-	authenticate_user!
+	authenticate_admin!
 	respond_to do |format| 
 		# search for user
 		if params[:user_email] != ''
