@@ -52,10 +52,16 @@
     <%= link_to 'Edit', edit_game_path(@game) %> |
   <% end %>
   <%= link_to 'Back', games_path %>
+
+    <% for video in @game.videos %>
+      <div class="media rounded">
+            <%=h video.embedcode  %>
+      </div>
+
+    <% end %>
+
+
   <div class="media rounded">
-
-
-
     <!-- insert loopiteration through videos and parse
 
         for all @game.videos

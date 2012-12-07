@@ -49,31 +49,25 @@
       <%= f.file_field :image %>
     </div>
     <div class="field">
-      <%= f.label 'Choose videos to embed' %><br />
+      <!-- iterate through all the available videos for a game and create a field for them
 
-      <% for video in @game.videos %>
-           <%=fields_for "game[video_attributes][]", video do|video_form| %>
-            <p>
-              Video: <%= video_form.text_area :embedcode %>
+  @game.videos.each() do |video|
 
-            </p>
-          <% end %>
+      <f.text_area :video mit id!? > <remove button>
 
+   end   -->
+      <%= f.label 'Choose videos to embed' %><br /><br />
+      <%= f.fields_for :videos do |builder| %>
 
-    <% end %>
+          <%= render :partial => 'video_fields', :locals => {:builder => builder} %>
 
-    <!-- iterate through all the available videos for a game and create a field for them
-
-       @game.videos.each() do |video|
-
-           <f.text_area :video mit id!? > <remove button>
-
-        end   -->
-
-
+      <%end %>
+      <p><%= link_to_add_video_fields "Add Video", f, :videos %></p>
 
 
     </div>
+
+
 
   <div class="actions">
     <%= f.submit %>

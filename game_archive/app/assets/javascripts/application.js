@@ -17,6 +17,7 @@
 //= require tooltipsy.min.js
 //= require at_autocomplete.js
 //= require notification.js
+//= require videoembed.js
 
 $(document).ready(function() {
     $("textarea").parent().append(
@@ -61,6 +62,8 @@ $(document).ready(function() {
     );
     $(".full_markdown_help").tooltipsy();
 });
+
+
 
 
 

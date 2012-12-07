@@ -27,6 +27,8 @@ class GamesController < ApplicationController
   # GET /games/new.json
   def new
     @game = Game.new
+    3.times {@game.videos.build}
+
 
     respond_to do |format|
       format.html # new.html.erb
@@ -43,6 +45,8 @@ class GamesController < ApplicationController
   # POST /games
   # POST /games.json
   def create
+
+
     @game = Game.new(params[:game])
     create_add_new_genres(params[:new_genres])
 
