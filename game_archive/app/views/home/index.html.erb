@@ -18,7 +18,7 @@
 		<div class="tiled_2x">
 			<a href="/games/<%= game.id %>">
 				<div class="tile">
-					<%= image_tag(game.image, :class => 'rounded teaser')%>
+					<%= image_tag(game.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
 					<div class="caption"><div>This is a game</div></div>
 				</div>
 			</a>
@@ -36,7 +36,7 @@
 		<div class="tiled_2x">
 			<a href="/companies/<%= com.id %>">
 				<div class="tile">
-					<%= image_tag(com.image, :class => 'rounded teaser')%>
+					<%= image_tag(com.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
 					<div class="caption"><div>This is a company</div></div>
 				</div>
 			</a>
@@ -54,7 +54,7 @@
 		<div class="tiled_4x">
 			<a href="/developers/<%= dev.id %>">
 				<div class="tile">
-					<%= image_tag(dev.image, :class => 'rounded teaser')%>
+					<%= image_tag(dev.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
 					<div class="caption"><div>This is a developer</div></div>
 				</div>
 			</a>
