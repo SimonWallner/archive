@@ -1,6 +1,6 @@
 class Company < ActiveRecord::Base
   require 'file_size_validator'
-  attr_accessible :description, :name, :image
+  attr_accessible :description, :name, :image, :official_name
 
   has_many :locations, :inverse_of => :company
   has_many :mixed_fields

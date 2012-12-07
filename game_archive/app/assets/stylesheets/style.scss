@@ -376,7 +376,7 @@ div.fact-box {
 		}
 	}
 
-    .fact>div:first-child {
+    .fact>div:first-child, .fact>span.label {
       font-weight: bold;
     }
 	
