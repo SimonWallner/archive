@@ -11,7 +11,7 @@ class Field < ActiveRecord::Base
 
   # create new user defined field
   # content will be parsed as markdown with just links
-  def Field.create_add_new_field(object, field_string)
+  def Field.create_add_new_fields(object, field_string)
     if object == nil || object.fields == nil
       logger.debug "no object passed where fields can be attached to"
       return

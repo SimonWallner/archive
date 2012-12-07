@@ -28,6 +28,12 @@
       <%= f.label :image, 'Choose profile picture' %><br />
       <%= f.file_field :image %>
     </div>
+    <div class="field">
+      <div class="field-label">
+        Locations
+      </div>
+      <%= text_field_tag 'new_locations' %>
+    </div>
   <div class="actions">
     <%= f.submit %>
   </div>
