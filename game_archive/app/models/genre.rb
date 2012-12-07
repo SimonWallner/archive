@@ -8,6 +8,12 @@ class Genre < ActiveRecord::Base
   # if genre has not already been created a new genre with the given name is created
   # otherwise if genre with the name has already been created, nothing is done
   def Genre.create_from_string(genres_string)
+    
+ if genres_string == nil  
+      logger.debug "no genres to create"
+      return
+    end
+    
     genres_string.strip!
     genres = genres_string.split ','
     genres_to_return = Array.new

@@ -4,6 +4,11 @@ class Mode < ActiveRecord::Base
   has_and_belongs_to_many :games
   
     def Mode.create_from_string(modes_string)
+             if modes_string == nil  
+      logger.debug "no mode to create"
+      return
+    end
+    
     modes_string.strip!
     modes = modes_string.split ','
     modes_to_return = Array.new

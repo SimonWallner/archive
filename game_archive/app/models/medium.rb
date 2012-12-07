@@ -4,6 +4,12 @@ class Medium < ActiveRecord::Base
   has_and_belongs_to_many :games
   
     def Medium.create_from_string(media_string)
+      
+       if media_string == nil  
+      logger.debug "no medium to create"
+      return
+    end
+    
     media_string.strip!
     media = media_string.split ','
     media_to_return = Array.new

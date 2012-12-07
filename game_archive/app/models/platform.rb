@@ -4,6 +4,12 @@ class Platform < ActiveRecord::Base
   has_and_belongs_to_many :games
   
     def Platform.create_from_string(platforms_string)
+      
+                   if platforms_string == nil  
+      logger.debug "no platform to create"
+      return
+    end
+    
     platforms_string.strip!
     platforms = platforms_string.split ','
     platforms_to_return = Array.new

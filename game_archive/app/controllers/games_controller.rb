@@ -118,25 +118,34 @@ class GamesController < ApplicationController
     Platform.create_from_string(platforms_string)
     Medium.create_from_string(media_string)
     Mode.create_from_string(modes_string)
-    Tag.create_from_string(tags_string)
-
-    new_genres = genres_string.split ','
-
+    Tag.create_from_string(tags_string)    
+ 
+   
+     
     begin
-      a='Genre'
+  if genres_string == nil  
+      return
+    end
+      new_genres = genres_string.split ','
       new_genres.try(:each) do |ng|
         ng.strip!
-        new_genre = a.find_by_name(ng)
+        new_genre = Genre.find_by_name(ng)
         if(not @game.genres.include?(new_genre))
           @game.genres << new_genre
         end
       end
     rescue # nil exception due to "empty" arguments such as ", , ,"
-           #redirect_to @game, notice: 'Genres nicht korrekt angegeben!'
+           #redirect_to @game, notice: 'Genres nicht korrekt angegeben!' 
     end
 
-    new_platforms = platforms_string.split ','
+
+
+ 
     begin
+        if platforms_string == nil  
+      return
+    end
+       new_platforms = platforms_string.split ','
       new_platforms.try(:each) do |np|
         np.strip!
         new_platform = Platform.find_by_name(np)
@@ -147,8 +156,12 @@ class GamesController < ApplicationController
     rescue
     end
 
-    new_media = media_string.split ','
+
     begin
+   if media_string == nil  
+      return
+    end
+        new_media = media_string.split ','
       new_media.try(:each) do |nm|
         nm.strip!
         new_medium = Medium.find_by_name(nm)
@@ -159,8 +172,12 @@ class GamesController < ApplicationController
     rescue
     end
 
-    new_modes = modes_string.split ','
+
     begin
+     if modes_string == nil  
+      return
+    end
+        new_modes = modes_string.split ','
       new_modes.try(:each) do |nm|
         nm.strip!
         new_mode = Mode.find_by_name(nm)
@@ -171,8 +188,12 @@ class GamesController < ApplicationController
     rescue
     end
 
-    new_tags = tags_string.split ','
+
     begin
+   if tags_string == nil  
+      return
+    end
+        new_tags = tags_string.split ','
       new_tags.try(:each) do |nt|
         nt.strip!
         new_tag = Tag.find_by_name(nt)
