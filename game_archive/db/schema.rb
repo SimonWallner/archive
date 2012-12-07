@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121123143041) do
+ActiveRecord::Schema.define(:version => 20121207151435) do
 
   create_table "companies", :force => true do |t|
     t.string   "name"
@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(:version => 20121123143041) do
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
     t.string   "image"
+    t.integer  "popularity"
   end
 
   create_table "developers", :force => true do |t|
@@ -27,6 +28,7 @@ ActiveRecord::Schema.define(:version => 20121123143041) do
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
     t.string   "image"
+    t.integer  "popularity"
   end
 
   create_table "games", :force => true do |t|
@@ -35,6 +37,7 @@ ActiveRecord::Schema.define(:version => 20121123143041) do
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
     t.string   "image"
+    t.integer  "popularity"
   end
 
   create_table "games_genres", :id => false, :force => true do |t|

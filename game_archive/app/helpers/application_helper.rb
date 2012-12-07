@@ -1,6 +1,16 @@
 module ApplicationHelper
 	require 'redcarpet'
 	
+	# amount displayed newest entries
+	def getAmountNewest()
+		return 5
+	end
+	
+	# amount displayed most popular entries
+	def getAmountPopular()
+		return 5
+	end
+	
 	def markdown(text)
 
 		rndr = LinksInNewWindow.new(:filter_html => true, :no_images => true, :hard_wrap => true)

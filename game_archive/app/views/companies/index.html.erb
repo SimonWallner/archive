@@ -1,22 +1,33 @@
 <div>
-  <h1>Companies</h1>
-
-
-  <% @companies.each do |company| %>
-      <div class="tiled_4x">
-        <a href="/companies/<%= company.id %>">
-          <div class="tile">
-            <%= image_tag (company.image_url(:tiled_4x).to_s) , :class => "media rounded" %>
-            <div class="caption">
-              <div><%= company.name %></div>
-            </div>
-          </div>
-        </a>
-      </div>
-
-
-  <% end %>
-  <div class="clear"></div>
+  <h2>Companies</h2>
+	
+	<h3>Newest <%= getAmountNewest %></h3>
+	<% Company.find(:all, :limit => getAmountNewest, :order => 'created_at DESC').each do |com| %>
+		<div class="tiled_2x">
+			<a href="/companies/<%= com.id %>">
+				<div class="tile">
+					<%= image_tag(com.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
+					<div class="caption"><div><%= com.name %></div></div>
+				</div>
+			</a>
+		</div>
+	<% end %>
+	
+	<div class="clear"></div>
+	
+	<h3>Most Popular <%= getAmountPopular %></h3>
+	<% Company.find(:all, :limit => getAmountPopular, :order => 'popularity DESC').each do |com| %>
+		<div class="tiled_2x">
+			<a href="/companies/<%= com.id %>">
+				<div class="tile">
+					<%= image_tag(com.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
+					<div class="caption"><div><%= com.name %></div></div>
+				</div>
+			</a>
+		</div>
+	<% end %>
+	
+	<div class="clear"></div>
 </div>
 
 <% if user_signed_in? %>

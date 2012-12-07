@@ -1,6 +1,6 @@
 class Company < ActiveRecord::Base
   require 'file_size_validator'
-  attr_accessible :description, :name  , :image
+  attr_accessible :description, :name  , :image, :popularity
   validates :name, :presence => true
 
 

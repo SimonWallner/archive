@@ -16,6 +16,10 @@ class CompaniesController < ApplicationController
   # GET /companies/1.json
   def show
     @company = Company.find(params[:id])
+	if @company.popularity == nil 
+		@company.update_attribute!(:popularity, 0)
+	end
+	@company.increment!(:popularity)
 
     respond_to do |format|
       format.html # show.html.erb
@@ -43,6 +47,7 @@ class CompaniesController < ApplicationController
   # POST /companies.json
   def create
     @company = Company.new(params[:company])
+	@company.popularity = 0
 
     respond_to do |format|
       if @company.save

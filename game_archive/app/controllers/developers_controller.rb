@@ -16,6 +16,10 @@ class DevelopersController < ApplicationController
   # GET /developers/1.json
   def show
     @developer = Developer.find(params[:id])
+	if @developer.popularity == nil 
+		@developer.update_attribute!(:popularity, 0)
+	end
+	@developer.increment!(:popularity)
 
     respond_to do |format|
       format.html # show.html.erb
@@ -43,6 +47,7 @@ class DevelopersController < ApplicationController
   # POST /developers.json
   def create
     @developer = Developer.new(params[:developer])
+	@developer.popularity = 0
 
     respond_to do |format|
       if @developer.save

@@ -1,22 +1,33 @@
 <div>
-  <h1>Developers</h1>
-
-
-  <% @developers.each do |developer| %>
-      <div class="tiled_4x">
-        <a href="/developers/<%= developer.id %>">
-          <div class="tile">
-            <%= image_tag developer.image_url(:tiled_4x).to_s, :class => "media rounded" %>
-            <div class="caption">
-              <div><%= developer.name %></div>
-            </div>
-          </div>
-        </a>
-      </div>
-
-
-  <% end %>
-  <div class="clear"></div>
+  <h2>People</h2>
+	
+	<h3>Newest <%= getAmountNewest %></h3>
+	<% Developer.find(:all, :limit => getAmountNewest, :order => 'created_at DESC').each do |dev| %>
+		<div class="tiled_4x">
+			<a href="/developers/<%= dev.id %>">
+				<div class="tile">
+					<%= image_tag(dev.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
+					<div class="caption"><div><%= dev.name %></div></div>
+				</div>
+			</a>
+		</div>
+	<% end %>
+	
+	<div class="clear"></div>
+	
+	<h3>Most Popular <%= getAmountPopular %></h3>
+	<% Developer.find(:all, :limit => getAmountPopular, :order => 'popularity DESC').each do |dev| %>
+		<div class="tiled_4x">
+			<a href="/developers/<%= dev.id %>">
+				<div class="tile">
+					<%= image_tag(dev.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
+					<div class="caption"><div><%= dev.name %></div></div>
+				</div>
+			</a>
+		</div>
+	<% end %>
+	
+	<div class="clear"></div>
 </div>
 
 <% if user_signed_in? %>

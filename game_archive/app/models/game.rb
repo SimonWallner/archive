@@ -1,6 +1,6 @@
 class Game < ActiveRecord::Base
   require 'file_size_validator'
-  attr_accessible :description, :title, :genres, :genre_ids , :image
+  attr_accessible :description, :title, :genres, :genre_ids , :image, :popularity
 
   validates :title, :presence => true
 
