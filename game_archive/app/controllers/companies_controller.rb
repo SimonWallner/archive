@@ -17,7 +17,7 @@ class CompaniesController < ApplicationController
   def show
     @company = Company.find(params[:id])
 	if @company.popularity == nil 
-		@company.update_attribute!(:popularity, 0)
+		@company.popularity = 0
 	end
 	@company.increment!(:popularity)
 
