@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121207113805) do
+ActiveRecord::Schema.define(:version => 20121207120548) do
 
   create_table "companies", :force => true do |t|
     t.string   "name"
@@ -21,6 +21,29 @@ ActiveRecord::Schema.define(:version => 20121207113805) do
     t.string   "image"
     t.string   "official_name"
   end
+
+  create_table "company_defuncts", :force => true do |t|
+    t.integer  "company_id"
+    t.integer  "day"
+    t.integer  "month"
+    t.integer  "year"
+    t.string   "additional_info"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
+
+  add_index "company_defuncts", ["company_id"], :name => "index_company_defuncts_on_company_id"
+
+  create_table "company_foundeds", :force => true do |t|
+    t.integer  "company_id"
+    t.integer  "day"
+    t.integer  "month"
+    t.integer  "year"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "company_foundeds", ["company_id"], :name => "index_company_foundeds_on_company_id"
 
   create_table "developers", :force => true do |t|
     t.string   "name"
