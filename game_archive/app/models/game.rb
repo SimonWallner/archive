@@ -19,9 +19,4 @@ class Game < ActiveRecord::Base
                 :maximum => 0.4.megabytes.to_i
             }
 
-  #def video_attributes=(video_attributes)
-  #  video_attributes.each do |attributes|
-  #    videos.build(attributes)
-  #  end
-  #end
 end
