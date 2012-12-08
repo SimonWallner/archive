@@ -17,7 +17,7 @@ class DevelopersController < ApplicationController
   def show
     @developer = Developer.find(params[:id])
 	if @developer.popularity == nil 
-		@developer.update_attribute!(:popularity, 0)
+		@developer.popularity = 0
 	end
 	@developer.increment!(:popularity)
 

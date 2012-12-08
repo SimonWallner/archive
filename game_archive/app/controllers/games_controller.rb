@@ -17,7 +17,7 @@ class GamesController < ApplicationController
   def show
     @game = Game.find(params[:id])
 	if @game.popularity == nil 
-		@game.update_attribute!(:popularity, 0)
+		@game.popularity = 0
 	end
 	@game.increment!(:popularity)
 	
