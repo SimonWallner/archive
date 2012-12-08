@@ -96,7 +96,7 @@ Feature: Promote Admin
 		Then I should be on the promote admin page
 	
 	Scenario: fail to promote user without having administrator rights
-		Given I am signed in
+		Given I am signed in as user
 		And I have a user who is not admin
 		When I enter the promote admin page adress
 		Then I should be on the home page
