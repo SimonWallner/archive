@@ -309,3 +309,76 @@ end
 Then /^I should not be signed in$/ do
   page.should have_content("Login")
 end
+
+# Promote Admin Steps
+Given /^I have a user who is admin$/ do
+	email = 'test@user.com'
+	@pwd = 'aA1aaaaaa'
+	@firstname = 'test'
+	@lastname = 'user'
+	@user = User.create!(:email => email, :password => @pwd, :password_confirmation => @pwd, :firstname => @firstname, :lastname => @lastname)
+	@user.toggle!(:admin)
+end
+
+Given /^I have a user who is not admin$/ do
+	email = 'test@user.com'
+	@pwd = 'aA1aaaaaa'
+	@firstname = 'test'
+	@lastname = 'user'
+	@user = User.create!(:email => email, :password => @pwd, :password_confirmation => @pwd, :firstname => @firstname, :lastname => @lastname)
+end
+
+When /^I go to the promote admin page$/ do
+	click_link_or_button "Promote/Demote Admin"
+end
+
+When /^I enter a valid user email adress$/ do
+	
+	fill_in "email", :with => 'test@user.com'
+end
+
+When /^I enter a user email$/ do
+	fill_in "email", :with => 'test@user.com'
+end
+
+When /^I enter an invalid email adress$/ do
+	fill_in "email", :with => 'test@invalid.com'
+end
+
+When /^I enter an admin email$/ do
+	fill_in "email", :with => 'user@user.com'
+end
+
+When /^I enter a valid full name$/ do
+	fill_in "firstname", :with => 'test'
+	fill_in "lastname", :with => 'user'
+end
+
+When /^I enter an invalid full name$/ do
+	fill_in "firstname", :with => 'invalid'
+	fill_in "lastname", :with => 'name'
+end
+
+When /^I enter only a firstname$/ do
+	fill_in "firstname", :with => 'test'
+end
+
+When /^I select Promote$/ do
+	choose "todo_promote"
+end
+
+When /^I select Demote$/ do
+	choose "todo_demote"
+end
+
+When /^I press the Save button$/ do
+	click_link_or_button "Save"
+end
+
+When /^I enter the promote admin page adress$/ do
+	visit "/adminpromote/promote"
+end
+
+Then /^I should be on the promote admin page$/ do
+	URI.parse(current_url).path.should == "/adminpromote/promote"
+end

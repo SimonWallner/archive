@@ -1,10 +1,10 @@
 <h1>Promote / Demote admin</h1>
-<p>Enter the name or email adress of a user and choose weather to promote or demote.</p>
+<p>Enter the full name or email adress of a user and choose weather to promote or demote.</p>
 
 <%= form_tag ({:controller => "adminpromote", :action => "update"}) do %>
   <div class="field">
-    <%= label_tag :email %><br />
-    <%= text_field_tag :email %>
+    <%= label_tag :user_email %><br />
+    <%= text_field_tag :user_email %>
   </div>
   
   <div class="field">
@@ -18,10 +18,11 @@
   </div>
   
   <div class="radiobutton">
-	<%= radio_button_tag(:action, "promote") %>
-	<%= label_tag(:action_promote, "Promote") %>
-	<%= radio_button_tag(:action, "demote") %>
-	<%= label_tag(:action_demote, "Demote") %>
+	<%= radio_button_tag(:todo, 'promote', true) %>
+	<%= label_tag(:todo_promote, "Promote") %>
+	<%= radio_button_tag(:todo, 'demote', false) %>
+	<%= label_tag(:todo_demote, "Demote") %>
+	
   </div>
   
   <div class="actions">

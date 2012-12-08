@@ -16,7 +16,11 @@ class GamesController < ApplicationController
   # GET /games/1.json
   def show
     @game = Game.find(params[:id])
-
+	if @game.popularity == nil 
+		@game.update_attribute!(:popularity, 0)
+	end
+	@game.increment!(:popularity)
+	
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @game }
@@ -46,6 +50,7 @@ class GamesController < ApplicationController
 
 
     @game = Game.new(params[:game])
+	@game.popularity = 0
     create_add_new_genres(params[:new_genres])
 
 
