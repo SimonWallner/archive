@@ -75,7 +75,7 @@ function loadfields(jsonurl){
 }
 
 function addField(button_element, types){
-    var html = '<div class="addedField"><select class="newField">';
+    var html = '<div class="addedField"><select class="newField" id="newFieldId">';
     $.each(types, function(index, value) {
         if(value)
             html = html + '<option value="'+value.toLowerCase()+'">' + value + '</option>';
