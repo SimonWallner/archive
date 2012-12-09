@@ -18,6 +18,7 @@ class CompaniesController < ApplicationController
     @company = Company.find(params[:id])
 	if @company.popularity == nil 
 		@company.popularity = 0
+		@company.save
 	end
 	@company.increment!(:popularity)
 

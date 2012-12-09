@@ -13,6 +13,7 @@
 <div class="games_home">
 	<h1>Games</h1>
 	
+	<div class="games_newest">
 	<h3>Newest <%= getAmountNewest %></h3>
 	<% Game.find(:all, :limit => getAmountNewest, :order => 'created_at DESC').each do |game| %>
 		<div class="tiled_2x">
@@ -24,9 +25,11 @@
 			</a>
 		</div>
 	<% end %>
+	</div>
 	
 	<div class="clear"></div>
 	
+	<div class="games_most_popular">
 	<h3>Most Popular <%= getAmountPopular %></h3>
 	<% Game.find(:all, :limit => getAmountPopular, :order => 'popularity DESC').each do |game| %>
 		<div class="tiled_2x">
@@ -38,9 +41,11 @@
 			</a>
 		</div>
 	<% end %>
+	</div>
 	
 	<div class="clear"></div>
 	
+	<div class="games_random">
 	<h3>Did you already know...</h3>
 	<div>
 		<% game = Game.order("RANDOM()").first %>
@@ -53,6 +58,7 @@
 			</a>
 		<% end %>
 	</div>
+	</div>
 	
 	<div class="clear"></div>
 </div>
@@ -60,6 +66,7 @@
 <div class="companies_home">
 	<h1>Companies</h1>
 	
+	<div class="companies_newest">
 	<h3>Newest <%= getAmountNewest %></h3>
 	<% Company.find(:all, :limit => getAmountNewest, :order => 'created_at DESC').each do |com| %>
 		<div class="tiled_2x">
@@ -71,9 +78,11 @@
 			</a>
 		</div>
 	<% end %>
+	</div>
 	
 	<div class="clear"></div>
 	
+	<div class="companies_most_popular">
 	<h3>Most Popular <%= getAmountPopular %></h3>
 	<% Company.find(:all, :limit => getAmountPopular, :order => 'popularity DESC').each do |com| %>
 		<div class="tiled_2x">
@@ -85,9 +94,11 @@
 			</a>
 		</div>
 	<% end %>
+	</div>
 	
 	<div class="clear"></div>
 	
+	<div class="companies_random">
 	<h3>Did you already know...</h3>
 	<div>
 		<% com = Company.order("RANDOM()").first %>
@@ -100,6 +111,7 @@
 			</a>
 		<% end %>
 	</div>
+	</div>
 	
 	<div class="clear"></div>
 </div>
@@ -107,6 +119,7 @@
 <div class="developers_home">
 	<h1>People</h1>
 	
+	<div class="developers_newest">
 	<h3>Newest <%= getAmountNewest %></h3>
 	<% Developer.find(:all, :limit => getAmountNewest, :order => 'created_at DESC').each do |dev| %>
 		<div class="tiled_4x">
@@ -118,9 +131,11 @@
 			</a>
 		</div>
 	<% end %>
+	</div>
 	
 	<div class="clear"></div>
 	
+	<div class="developers_most_popular">
 	<h3>Most Popular <%= getAmountPopular %></h3>
 	<% Developer.find(:all, :limit => getAmountPopular, :order => 'popularity DESC').each do |dev| %>
 		<div class="tiled_4x">
@@ -132,9 +147,11 @@
 			</a>
 		</div>
 	<% end %>
+	</div>
 	
 	<div class="clear"></div>
 	
+	<div class="developers_random">
 	<h3>Did you already know...</h3>
 	<div>
 		<% dev = Developer.order("RANDOM()").first %>
@@ -146,6 +163,7 @@
 				</div>
 			</a>
 		<% end %>
+	</div>
 	</div>
 	
 	<div class="clear"></div>

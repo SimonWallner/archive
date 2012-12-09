@@ -1,6 +1,7 @@
 <div>
   <h2>People</h2>
 	
+	<div class="developers_newest">
 	<h3>Newest <%= getAmountNewest %></h3>
 	<% Developer.find(:all, :limit => getAmountNewest, :order => 'created_at DESC').each do |dev| %>
 		<div class="tiled_4x">
@@ -12,9 +13,11 @@
 			</a>
 		</div>
 	<% end %>
+	</div>
 	
 	<div class="clear"></div>
 	
+	<div class="developers_most_popular">
 	<h3>Most Popular <%= getAmountPopular %></h3>
 	<% Developer.find(:all, :limit => getAmountPopular, :order => 'popularity DESC').each do |dev| %>
 		<div class="tiled_4x">
@@ -26,6 +29,7 @@
 			</a>
 		</div>
 	<% end %>
+	</div>
 	
 	<div class="clear"></div>
 </div>

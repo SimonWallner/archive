@@ -18,6 +18,7 @@ class GamesController < ApplicationController
     @game = Game.find(params[:id])
 	if @game.popularity == nil 
 		@game.popularity = 0
+		@game.save
 	end
 	@game.increment!(:popularity)
 	

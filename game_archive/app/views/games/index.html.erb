@@ -2,6 +2,7 @@
 <div>
     <h2>Games</h2>
 	
+	<div class="games_newest">
 	<h3>Newest <%= getAmountNewest %></h3>
 	<% Game.find(:all, :limit => getAmountNewest, :order => 'created_at DESC').each do |game| %>
 		<div class="tiled_2x">
@@ -13,9 +14,11 @@
 			</a>
 		</div>
 	<% end %>
+	</div>
 	
 	<div class="clear"></div>
 	
+	<div class="games_most_popular">
 	<h3>Most Popular <%= getAmountPopular %></h3>
 	<% Game.find(:all, :limit => getAmountPopular, :order => 'popularity DESC').each do |game| %>
 		<div class="tiled_2x">
@@ -27,6 +30,7 @@
 			</a>
 		</div>
 	<% end %>
+	</div>
 	
 	<div class="clear"></div>
 </div>
