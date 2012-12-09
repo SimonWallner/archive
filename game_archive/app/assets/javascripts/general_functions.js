@@ -55,13 +55,28 @@ function loadfields(jsonurl){
 
             } else if($.inArray(i,['mixed_fields']) >= 0){
                 for (var x = 0; x < val.length; x++){
-                    addField($('#addFieldButton'), usedfields);
-                    var select_elem = $('div.newFieldsDiv').find('select:last');
-                    select_elem.find('option[text="'+val[i].type+'"]').attr('selected', true);
-                    addConcreteField(select_elem, false);
+                    var type = val[x]['mixed_field_type'].name.toLowerCase();
+                    var input_field_name = 'new_' + type.replace(' ','_');
+                    if(input_field_name.lastIndexOf('s') !== (input_field_name.length - 1))
+                        input_field_name = input_field_name + 's';
 
-                    $('#name_userdefined'+(x+1)).val(val[x].name);
-                    $('#content_userdefined'+(x+1)).val(val[x].content);
+                    if($('#'+input_field_name).length == 0){
+                        addField($('#addFieldButton'), usedfields);
+                        var select_elem = $('div.newFieldsDiv').find('select:last');
+                        select_elem.find('option[value="'+type+'"]').attr('selected', true);
+                        addConcreteField(select_elem, false);
+                        $('#'+input_field_name).val('');
+                    }
+                    var valstr = ''
+                    if(val[x].company_id)
+                        valstr = valstr + '@comp:' + val[x].company_id;
+                    else if(val[x].developer_id)
+                        valstr = valstr + '@dev:' + val[x].developer_id;
+                    else if(val[x].series_game_id)
+                        valstr = valstr + '@game:' + val[x].series_game_id;
+                    valstr = valstr + ':' + (val[x].additional_info ? val[x].additional_info : '') + ',';
+
+                    $('#'+input_field_name).val($('#'+input_field_name).val()+valstr);
                 }
             }  else if($.inArray(i,['official_name']) >= 0 && val && val != 'null'){
                 addField($('#addFieldButton'), usedfields);
@@ -105,7 +120,7 @@ function addConcreteField(select_element, deletecurrent, value){
         $(select_element).parent().append('<textarea cols="40" rows="3" id="'+input_field_name+'" name="'+input_field_name+'">' +
             (value ? value : '') +
             '</textarea>');
-        $('#'+input_field_name).autocomplete({source: '/ajax.json?type=game'});
+        at_autocomp(input_field_name+'_dummy', $('#'+input_field_name), '/ajax.json?type=game');
 
     }else if($.inArray(field_name,['release dates']) >= 0){                                           // dates
         anzDateInputs++;

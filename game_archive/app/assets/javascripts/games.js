@@ -1,7 +1,7 @@
 $(document).ready(function() {
    $('form').append(
        '<input type="hidden" name="new_release_dates" id="new_release_dates" value="" />'+
-       '<input type="hidden" name="new_userdefined_fields" id="new_userdefined_fields" value="" />'
+       '<input type="hidden" name="new_fields" id="new_fields" value="" />'
    );
 
     $('form').submit(function () {
@@ -24,7 +24,7 @@ $(document).ready(function() {
         userdefstring = '[' + userdefstring.substr(0,userdefstring.length-1) + ']';
 
         $('#new_release_dates').val(datestring);
-        $('#new_userdefined_fields').val(userdefstring);
+        $('#new_fields').val(userdefstring);
         return true;
     });
 
