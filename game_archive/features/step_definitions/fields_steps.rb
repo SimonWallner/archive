@@ -89,10 +89,17 @@ And /^should create game$/ do
 #page.should have_content(@allDateText)
 end
 
+ When /^The data be saved$/ do
+  Game.count.should eq 1
+end
  
  
-Then /^I enter field of Release Dates without day$/ do
-  
+ Then /^I should see the saved field$/ do
+#page.should have_content(@textDeveloper)
+end
+
+
+Then /^I enter field of Release Dates without day$/ do 
  
   within(".newFieldsDiv .addedField") do    
     @day = "nil"
@@ -116,6 +123,13 @@ Then /^I enter field of Release Dates without day$/ do
     #page.should have_content("Release dates day must be between 1 and 30")       
 end
 
+
+ 
+ Then /^I should see error for day$/ do 
+   #page.should have_content("Release dates day must be between 1 and 30") 
+ end
+ 
+ 
 And /^I enter field of Release Dates without month$/ do
  
   within(".newFieldsDiv .addedField") do    
@@ -126,7 +140,7 @@ And /^I enter field of Release Dates without month$/ do
     @allDateText=@day +":" +@month+":" + @year+":" + @additionalDate 
     select("Release Dates", :from => 'newFieldId')    
       within(".release_dates_div") do              
-        select(@month, :from => 'month_release_date1')
+        select(@day, :from => 'day_release_date1')
         fill_in "year_release_date1", :with => @year
         fill_in "text_release_date1", :with => @additionalDate
         sleep(1) 
@@ -140,6 +154,11 @@ And /^I enter field of Release Dates without month$/ do
 
 end
 
+ 
+ Then /^I should see error for month$/ do 
+   #page.should have_content("Release dates day must be between 1 and 30") 
+   click_link_or_button "Back"
+ end
  
  
  When /^I enter field with token list "(.*?)"$/ do |fill|

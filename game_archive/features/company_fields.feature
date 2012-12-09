@@ -16,9 +16,7 @@ Feature:
     And I enter company field with "Founded"
     And I enter company field with "Defunct"     
     And should create company 
-    When The data of company be saved
-    Then I should see the saved company field   
-    
+    When The data of company be saved 
     
     
     

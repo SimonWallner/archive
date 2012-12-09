@@ -39,11 +39,19 @@ Feature:
       
     
   @javascript
-  Scenario: add game field with invalid data of Release Dates
+  Scenario: add Release Dates without day
     Given I am on the game creation page
     When I enter valid game data 
-    Then I enter field of Release Dates without day
-    And I enter field of Release Dates without month 
+    Then I enter field of Release Dates without day 
+    Then I should see error for day
+    
+    
+  @javascript
+  Scenario: add Release Dates without month
+    Given I am on the game creation page
+    When I enter valid game data 
+    Then I enter field of Release Dates without month
+    Then I should see error for month
     
     
      
