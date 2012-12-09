@@ -19,7 +19,7 @@ class DevelopersController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render json: @developer }
+      format.json { render :json => @developer.to_json(:include => [:mixed_fields, :fields ]) }
     end
   end
 

@@ -7,17 +7,17 @@ class AjaxController < ApplicationController
         if params[:type] == 'developer'
           @devs = Developer.where("name LIKE ?", "#{params[:term]}%")
           @devs.collect! do |dev|
-            {:value => 'dev:' + dev.name + ',', :label => dev.name + ' - Developer'}
+            {:value => '@dev:' + dev.id.to_s + ':additional-info,', :label => dev.name + ' - Developer'}
           end
           @comps = Company.where("name LIKE ?", "#{params[:term]}%")
           @comps.collect! do |comp|
-            {:value => 'comp:' + comp.name + ',', :label => comp.name + ' - Company'}
+            {:value => '@comp:' + comp.id.to_s + ':additional-info,', :label => comp.name + ' - Company'}
           end
           @tags = @devs.concat(@comps)
         elsif params[:type] == 'game'
           @games = Game.where("title LIKE ?", "#{params[:term]}%")
           @games.collect! do |game|
-            {:value => game.title + ',', :label => game.title + ' - Game'}
+            {:value => '@game:' + game.id.to_s + ':additional-info,', :label => game.title + ' - Game'}
           end
           @tags = @games
         end

@@ -20,7 +20,7 @@
 //= require general_functions.js
 
 $(document).ready(function() {
-    $("textarea").parent().append(
+    $("textarea:not([id^='game_video'])").parent().append(
          '<img style="width: 32px; height: 32px;" class="full_markdown_help" alt="Help" src="/assets/help.png" title="' +
                 '<dl>\n' +
                 '<dt>PARAGRAPHS and LINE BREAKS</dt>\n' +

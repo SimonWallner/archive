@@ -15,11 +15,4 @@ class Developer < ActiveRecord::Base
             :file_size => {
                 :maximum => 0.4.megabytes.to_i
             }
-
-  def to_json
-    ActiveSupport::JSON.encode({
-    :value => id ,
-    :label => name
-    })
-  end
 end

@@ -660,12 +660,11 @@ div.newFieldsDiv{
     input{
       width: auto;
     }
-    input.year{
-      width: 3em;
-    }
   }
 }
-
+ input.year{
+   width: 3em;
+ }
 
 div.text{ 
 ul { list-style-type: lower-roman; }

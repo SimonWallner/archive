@@ -15,7 +15,9 @@ function loadfields(jsonurl){
 
     $.getJSON(jsonurl, function(data){
         jQuery.each(data, function(i, val) {
-            if($.inArray(i,['platform','mode','media', 'genres', 'tags']) >= 0){
+            if($.inArray(i,['platforms','modes','media', 'genres', 'tags']) >= 0 && val.length > 0){
+                if($.inArray(i,['platforms','modes']) >= 0)
+                    i = i.substr(0, i.length -1);
                 addField($('#addFieldButton'), usedfields);
                 var select_elem = $('div.newFieldsDiv').find('select:last');
                 select_elem.find('option[value="'+i+'"]').attr('selected', true);
@@ -27,7 +29,7 @@ function loadfields(jsonurl){
 
                 addConcreteField(select_elem, false, str);
 
-            }else if($.inArray(i,['release_dates']) >= 0){
+            }else if($.inArray(i,['release_dates']) >= 0 && val.length > 0){
                 addField($('#addFieldButton'), usedfields);
                 var select_elem = $('div.newFieldsDiv').find('select:last');
                 select_elem.find('option[value="release dates"]').attr('selected', true);
@@ -61,6 +63,11 @@ function loadfields(jsonurl){
                     $('#name_userdefined'+(x+1)).val(val[x].name);
                     $('#content_userdefined'+(x+1)).val(val[x].content);
                 }
+            }  else if($.inArray(i,['official_name']) >= 0 && val && val != 'null'){
+                addField($('#addFieldButton'), usedfields);
+                var select_elem = $('div.newFieldsDiv').find('select:last');
+                select_elem.find('option[value="official name"]').attr('selected', true);
+                addConcreteField(select_elem, false, val);
             }
 
         });
@@ -132,7 +139,8 @@ function addConcreteField(select_element, deletecurrent, value){
         at_autocomp(field_name+'_dummy', $('#'+input_field_name), '/ajax.json');
 
     }else if($.inArray(field_name,['official name']) >= 0){                                          // normal input
-        $(select_element).parent().append('<input id="'+field_name.replace(' ','_')+'" name="'+field_name.replace(' ','_')+'">');
+        $(select_element).parent().append('<input id="'+field_name.replace(' ','_')+'" name="'+field_name.replace(' ','_')+ 'value="' +
+            (value ? value : '') + '">');
 
     }else if($.inArray(field_name,['defunct','founded']) >= 0){                                      // date + string
         $(select_element).parent().append(addDateInput(field_name));
@@ -146,7 +154,7 @@ function addConcreteField(select_element, deletecurrent, value){
         $(select_element).parent().append('<textarea cols="40" rows="3" id="'+input_field_name+'" name="'+input_field_name+'">' +
             (value ? value : '') +
             '</textarea>');
-        $('#'+input_field_name).autocomplete({source: '/ajax.json?type=developer'});
+        at_autocomp(input_field_name+'_dummy', $('#'+input_field_name), '/ajax.json?type=developer');
     }
 }
 
