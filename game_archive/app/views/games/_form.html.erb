@@ -45,9 +45,34 @@
     <%= f.text_area :description %>
   </div>
     <div class="field">
-      <%= f.label :image, 'Choose profile picture' %><br />
+      <%= f.label :image, 'Choose profile picture' %><br /> <br/>
+      currently chosen: "<%= imguploader = ImageUploader.new
+          if not @game.image_url == imguploader.default_url
+           File.basename @game.image.to_s
+          end %>"<br/><br/>
       <%= f.file_field :image %>
     </div>
+    <div class="field">
+      <!-- iterate through all the available videos for a game and create a field for them
+
+      <f.text_area :video mit id!? > <remove button>
+
+   end   -->
+      <%= f.label 'Post Video Embed links here (youtube or vimeo only)' %><br /><br />
+      <div id="videos" >
+      <%= f.fields_for :videos do |builder| %>
+
+          <%= render :partial => 'video_fields', :locals => {:builder => builder} %>
+
+      <%end %>
+      <p><%= link_to_add_video_fields "Add Video", f, :videos %></p>
+      </div>
+
+
+    </div>
+
+
+
   <div class="actions">
     <%= f.submit %>
   </div>

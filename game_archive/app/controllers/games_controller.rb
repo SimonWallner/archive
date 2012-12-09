@@ -47,9 +47,12 @@ class GamesController < ApplicationController
   # POST /games
   # POST /games.json
   def create
+
+
     @game = Game.new(params[:game])
 	@game.popularity = 0
     create_add_new_genres(params[:new_genres])
+
 
 	respond_to do |format|
       if @game.save

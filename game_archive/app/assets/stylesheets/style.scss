@@ -672,7 +672,12 @@ img.full_markdown_help {
 .tooltipsy dt:nth-child(n+2) {
   padding-top: 5px;
 }
- 
+
+ form.edit_game label, form.new_game label,form.edit_company label,form.new_company label,form.edit_developer label,form.new_developer label  {
+
+   font-weight: bold;
+
+ }
 
 
  
