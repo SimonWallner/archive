@@ -75,6 +75,7 @@ function loadfields(jsonurl){
 }
 
 function addField(button_element, types){
+    $('#newFieldId').removeAttr('id');
     var html = '<div class="addedField"><select class="newField" id="newFieldId">';
     $.each(types, function(index, value) {
         if(value)
