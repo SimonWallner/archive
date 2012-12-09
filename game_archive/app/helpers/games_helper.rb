@@ -9,7 +9,7 @@ module GamesHelper
       youtube_id = $5
     end
 
-    return %Q{<iframe title="YouTube video player" width="688" height="349" src="http://www.youtube.com/embed/#{ youtube_id }" frameborder="0" allowfullscreen></iframe>}
+    return %Q{<iframe name="youtube" width="688" height="349" src="http://www.youtube.com/embed/#{ youtube_id }" frameborder="0" allowfullscreen></iframe>}
   end
 
   def vimeo_embed(vimeo_url)
@@ -19,7 +19,7 @@ module GamesHelper
       vimeo_id = $1
     end
 
-   return %Q{<iframe src="http://player.vimeo.com/video/#{vimeo_id}" width="688" height="349"  webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe> }
+   return %Q{<iframe name="vimeo" src="http://player.vimeo.com/video/#{vimeo_id}" width="688" height="349"  webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe> }
 
   end
 
