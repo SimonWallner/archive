@@ -46,10 +46,10 @@
   </div>
     <div class="field">
       <%= f.label :image, 'Choose profile picture' %><br /> <br/>
-      <ul><li>currently chosen: "<%= imguploader = ImageUploader.new
+      currently chosen: "<%= imguploader = ImageUploader.new
           if not @game.image_url == imguploader.default_url
            File.basename @game.image.to_s
-          end %>"</li></ol></br>
+          end %>"<br/><br/>
       <%= f.file_field :image %>
     </div>
     <div class="field">

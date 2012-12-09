@@ -673,11 +673,11 @@ img.full_markdown_help {
   padding-top: 5px;
 }
 
-label {
+ form.edit_game label, form.new_game label,form.edit_company label,form.new_company label,form.edit_developer label,form.new_developer label  {
 
-  font-weight: bold;
+   font-weight: bold;
 
-}
+ }
 
 
  
