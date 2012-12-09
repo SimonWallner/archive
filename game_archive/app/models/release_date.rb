@@ -40,4 +40,30 @@ class ReleaseDate < ActiveRecord::Base
 
     return rdArray
   end
+  
+  
+ 
+    
+    def ReleaseDate.check_from_string(rd_string)
+    rds = Array.new
+    rd_string.strip!
+    rds = rd_string.split(':') 
+    rds.each do |rd| 
+    if rd == "nil"
+      return nil 
+    else
+      rd.strip!   
+      year = rds[2].strip.to_i
+      month = rds[1].strip.to_i
+      day = rds[0].strip.to_i
+      if rds.size == 4
+        additional_info = rds[3].strip
+      end
+  end 
+    end
+return 1
+
+  end   
+  
+  
 end
