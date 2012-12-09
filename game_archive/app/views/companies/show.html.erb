@@ -12,7 +12,9 @@
         end
     %>
 
-        <%= render :template => "facts/_single", :locals => { :fact => @company.official_name, :label => "Official Name" } %>
+	    <%= render :template => "facts/_single", :locals => { :fact => @company.official_name, :label => "Official Name" } %>
+	    <%= render :template => "facts/_single", :locals => { :fact => format_date(@company.founded), :label => "Founded" } %>
+	    <%= render :template => "facts/_single", :locals => { :fact => format_date(@company.defunct), :label => "Defunct" } %>
         <%= render :template => "facts/_name_addinfo", :locals => { :object => @company.locations, :label => "Locations" } %>
         <%= render :template => "facts/_standard", :locals => { :object => @company, :label => "External Links" } %>
         <%= render :template => "facts/_credits", :locals => { :object => @company } %>

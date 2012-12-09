@@ -25,7 +25,10 @@
                    :onclick => 'addField(this,["Official Name","Location","Founded","Defunct","External Links","Userdefined"]);'
     %>
     </div>
-
+    <div class="field">
+      <%= f.label :image, 'Choose profile picture' %><br />
+      <%= f.file_field :image %>
+    </div>
   <div class="actions">
     <%= f.submit %>
   </div>

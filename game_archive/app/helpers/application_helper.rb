@@ -94,8 +94,12 @@ module ApplicationHelper
     if date.year != nil
       formatted_date = formatted_date + date.year.to_s
     end
-    if date.additional_info != nil
-      formatted_date = formatted_date + " - " + date.additional_info
+    begin
+      if date.additional_info != nil
+        formatted_date = formatted_date + " - " + date.additional_info
+      end
+    rescue
+      # do nothing here
     end
     return formatted_date
   end
