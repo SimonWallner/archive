@@ -18,6 +18,7 @@ class DevelopersController < ApplicationController
     @developer = Developer.find(params[:id])
 	if @developer.popularity == nil 
 		@developer.popularity = 0
+		@developer.save
 	end
 	@developer.increment!(:popularity)
 
