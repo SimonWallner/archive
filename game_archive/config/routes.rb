@@ -24,6 +24,10 @@ GameArchive::Application.routes.draw do
   resources :games do
       resources :videos
     end
+  resources :games do
+      resources :screenshots
+    end
+
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

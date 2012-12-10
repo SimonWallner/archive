@@ -69,11 +69,14 @@
   </div>
 
 
-  <div class="media rounded">
-    <%= image_tag 'screenshot_1.jpg', :alt => 'Screenshot 1 alt text' %>
-    <div class="caption">
-      This is an image caption for this very screenshot
-    </div>
+    <% @game.screenshots.each do |screenshot| %>
+         <div class = "media rounded"><%=  image_tag screenshot.image_url.to_s, :class => "media rounded"  %></div>
+
+       <% end%>
+
+
+
+
   </div>
 
   </div>

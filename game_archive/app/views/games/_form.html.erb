@@ -46,10 +46,10 @@
   </div>
     <div class="field">
       <%= f.label :image, 'Choose profile picture' %><br /> <br/>
-      currently chosen: "<%= imguploader = ImageUploader.new
+      <%= imguploader = ImageUploader.new
           if not @game.image_url == imguploader.default_url
            File.basename @game.image.to_s
-          end %>"<br/><br/>
+          end %><br/>
       <%= f.file_field :image %>
     </div>
     <div class="field">
@@ -58,7 +58,7 @@
       <f.text_area :video mit id!? > <remove button>
 
    end   -->
-      <%= f.label 'Post Video Embed links here (youtube or vimeo only)' %><br /><br />
+      <%= f.label 'Post Video Embed links here (youtube or vimeo)' %><br /><br />
       <div id="videos" >
       <%= f.fields_for :videos do |builder| %>
 
@@ -66,7 +66,22 @@
 
       <%end %>
       <p><%= link_to_add_video_fields "Add Video", f, :videos %></p>
-      </div>
+      </div><br/>
+
+      <div class="field">
+
+    <%= f.label 'Upload Screenshots' %><br /><br />
+    <div id="screenshots" >
+
+      <%= f.fields_for :screenshots do |builder| %>
+
+
+          <%= render :partial => 'screenshot_fields', :locals => {:builder => builder} %>
+
+
+      <%end%>
+      <p><%= link_to_add_screenshot_fields "Add Screenshot", f, :screenshots %></p>
+    </div>
 
 
     </div>

@@ -18,6 +18,7 @@
 //= require at_autocomplete.js
 //= require notification.js
 //= require videoembed.js
+//= require screenshot.js
 
 $(document).ready(function() {
     $("textarea:not([id^='game_video'])").parent().append(
