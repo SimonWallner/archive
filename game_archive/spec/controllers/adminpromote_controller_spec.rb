@@ -3,9 +3,9 @@ require 'spec_helper'
 describe AdminpromoteController do
 
   describe "GET 'promote'" do
-    it "returns http success" do
+    it "returns http not success if not admin" do
       get 'promote'
-      response.should be_success
+      response.should_not be_success
     end
   end
 
