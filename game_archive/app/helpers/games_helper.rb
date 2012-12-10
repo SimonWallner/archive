@@ -17,6 +17,9 @@ module GamesHelper
 
     if vimeo_url[/player\.vimeo\.com\/video\/([0-9]*)/]
       vimeo_id = $1
+    elsif vimeo_url[/vimeo\.com\/([0-9]*)/]
+      vimeo_id = $1
+      puts vimeo_id
     end
 
    return %Q{<iframe name="vimeo" src="http://player.vimeo.com/video/#{vimeo_id}" width="688" height="349"  webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe> }
@@ -27,9 +30,10 @@ module GamesHelper
 
     if (url [/youtu\.be\/([^\?]*)/]) or (url [/^.*((v\/)|(embed\/)|(watch\?))\??v?=?([^\&\?]*).*/])
       youtube_embed(url)
-    elsif url[/player\.vimeo\.com\/video\/([0-9]*)/]
+    elsif url[/player\.vimeo\.com\/video\/([0-9]*)/] or url[/vimeo\.com\/([0-9]*)/]
       vimeo_embed(url)
-
+    else
+      return nil
     end
 
   end
