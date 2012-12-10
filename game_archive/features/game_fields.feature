@@ -6,6 +6,7 @@ Feature:
   Background:
     Given I am signed in as User
    
+
   @javascript
   Scenario: add game field data with valid data
     Given I am on the game creation page
@@ -23,9 +24,9 @@ Feature:
     And should create game 
     When The data be saved
     Then I should see the saved field
-    
+     
   
- @javascript
+   @javascript
   Scenario: add game field with token list
     Given I am on the game creation page
     When I enter valid game data  
@@ -33,16 +34,20 @@ Feature:
     And I enter field with token list "Mode" 
     And I enter field with token list "Media" 
     And I enter field with token list "Genres"
-    And I enter field with token list "Tags"   
-    When The token list data be saved 
+    And I enter field with token list "Tags" 
+    And should create game with token list  
+    When The token list data be saved   
     Then I should see the saved token list data  
+  
+
       
     
   @javascript
   Scenario: add Release Dates without day
     Given I am on the game creation page
     When I enter valid game data 
-    Then I enter field of Release Dates without day 
+    Then I enter field of Release Dates without day
+    And should create game 
     Then I should see error for day
     
     
