@@ -10,11 +10,10 @@ class AdminpromoteController < ApplicationController
 		if params[:user_email] != ''
 			p = params[:user_email]
 			@user = User.find_by_email(p)
-		elsif params[:firstname] != '' and params[:lastname] != '' # funktioniert noch nicht
+		elsif params[:firstname] != '' and params[:lastname] != ''
 			p = params[:firstname]
 			q = params[:lastname]
 			@user = User.find(:all, :conditions => ["firstname = ? and lastname = ?", p, q]).first
-			#@user = User.find_by_firstname_and_lastname(p, q)
 		else
 			format.html { redirect_to "/adminpromote/promote", notice: 'you must enter either a mail adress or a full user name!' }
 		end
