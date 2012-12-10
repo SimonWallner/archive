@@ -1,26 +1,10 @@
 module GamesHelper
 
-  def youtube_embed(youtube_url)
-    if youtube_url[/youtu\.be\/([^\?]*)/]
-      youtube_id = $1
-    else
-      # Regex from # http://stackoverflow.com/questions/3452546/javascript-regex-how-to-get-youtube-video-id-from-url/4811367#4811367
-      youtube_url[/^.*((v\/)|(embed\/)|(watch\?))\??v?=?([^\&\?]*).*/]
-      youtube_id = $5
-    end
-
+  def youtube_embed(youtube_id)
     return %Q{<iframe name="youtube" width="688" height="349" src="http://www.youtube.com/embed/#{ youtube_id }" frameborder="0" allowfullscreen></iframe>}
   end
 
-  def vimeo_embed(vimeo_url)
-    #extract id from url
-
-    if vimeo_url[/player\.vimeo\.com\/video\/([0-9]*)/]
-      vimeo_id = $1
-    elsif vimeo_url[/vimeo\.com\/([0-9]*)/]
-      vimeo_id = $1
-      puts vimeo_id
-    end
+  def vimeo_embed(vimeo_id)
 
    return %Q{<iframe name="vimeo" src="http://player.vimeo.com/video/#{vimeo_id}" width="688" height="349"  webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe> }
 
@@ -28,10 +12,14 @@ module GamesHelper
 
   def embed_video(url)
 
-    if (url [/youtu\.be\/([^\?]*)/]) or (url [/^.*((v\/)|(embed\/)|(watch\?))\??v?=?([^\&\?]*).*/])
-      youtube_embed(url)
-    elsif url[/player\.vimeo\.com\/video\/([0-9]*)/] or url[/vimeo\.com\/([0-9]*)/]
-      vimeo_embed(url)
+    if url[/youtu\.be\/([^\?]*)/]
+      youtube_embed($1)
+    elsif url[/^.*((v\/)|(embed\/)|(watch\?))\??v?=?([^\&\?]*).*/]
+      youtube_embed($5)
+    elsif url[/player\.vimeo\.com\/video\/([0-9]*)/]
+      vimeo_embed($1)
+    elsif url[/vimeo\.com\/([0-9]*)/]
+      vimeo_embed($1)
     else
       return nil
     end
