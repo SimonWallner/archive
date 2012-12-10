@@ -10,12 +10,36 @@
       <%= render :template => "facts/_dates", :locals => { :object => @game.release_dates, :label => "Release Dates" } %>
       <%= render :template => "facts/_mixed_field", :locals => { :type => :Publisher, :object => @game, :label => "Publisher" } %>
       <%= render :template => "facts/_mixed_field", :locals => { :type => :Distributor, :object => @game, :label => "Distributor" } %>
-      <strong>Genre</strong>:
-      <% @game.genres.each do |genre| %>
-          <% if not genre == @game.genres.first %>,
-          <% end%>
-          <%= genre.name%>
-      <% end %>
+	  <% if @game.genres.any? %>
+		  <strong>Genre</strong>:
+		  <% @game.genres.each do |genre| %>
+			  <%= genre.name%>
+		  <% end %></br>
+	  <% end %>
+	  <% if @game.platforms.any? %>
+		  <strong>Platform</strong>:
+		  <% @game.platforms.each do |platform| %>
+			  <%= platform.name%>
+		  <% end %></br>
+	  <% end %>
+	  <% if @game.modes.any? %>
+		  <strong>Mode</strong>:
+		  <% @game.modes.each do |mode| %>
+			  <%= mode.name%>
+		  <% end %></br>
+	  <% end %> 
+	  <% if @game.media.any? %>
+		  <strong>Media</strong>:
+		  <% @game.media.each do |medium| %>
+			  <%= medium.name%>
+		  <% end %></br>
+	  <% end %> 
+	  <% if @game.tags.any? %>
+		  <strong>Tag</strong>:
+		  <% @game.tags.each do |tag| %>
+			  <%= tag.name%>
+		  <% end %></br>
+	  <% end %>
       <%= render :template => "facts/_mixed_field", :locals => { :type => :Series, :object => @game, :label => "Series" } %>
       <%= render :template => "facts/_mixed_field", :locals => { :type => :Credits, :object => @game, :label => "Credits" } %>
       <%= render :template => "facts/_mixed_field", :locals => { :type => :Distributor, :object => @game, :label => "Distributor" } %>
