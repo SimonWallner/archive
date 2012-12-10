@@ -57,52 +57,52 @@ When /^I submit it$/ do
   begin
     if find_button("Update Developer")
       click_button "Update Developer"
-      #puts "Clicked Update Developer"
+      puts "Clicked Update Developer"
     end
   rescue Capybara::ElementNotFound
-    puts "Update Developer not found"
+    #puts "Update Developer not found"
   end
   
   begin
     if find_button("Create Developer")
       click_button "Create Developer"
-     # puts "Clicked Create Developer"
+      puts "Clicked Create Developer"
     end
   rescue Capybara::ElementNotFound
-    puts "Create Developer not found"
+    #puts "Create Developer not found"
   end
   
   begin
     if find_button("Create Game")
       click_button "Create Game"
-      #puts "Clicked Create Game"
+      puts "Clicked Create Game"
     end
   rescue Capybara::ElementNotFound
-    puts "Create Game not found"
+    #puts "Create Game not found"
   end
   begin
     if find_button("Update Game")
       click_button "Update Game"
-      #puts "Clicked Update Game"
+      puts "Clicked Update Game"
     end
   rescue Capybara::ElementNotFound
-    puts "Update Game not found"
+    #puts "Update Game not found"
   end
   begin
     if find_button("Update Company")
       click_button "Update Company"
-     # puts "Clicked Update Company"
+      puts "Clicked Update Company"
     end
   rescue Capybara::ElementNotFound
-    puts "Update Company not found"
+    #puts "Update Company not found"
   end
   begin
     if find_button("Create Company")
       click_button "Create Company"
-      #puts "Clicked Create Company"
+      puts "Clicked Create Company"
     end
   rescue Capybara::ElementNotFound
-    puts "Create Company not found"
+    #puts "Create Company not found"
   end
 
 
