@@ -9,13 +9,18 @@ When /^I choose (?:a|an|another) (.*) screenshot for a game$/ do |type|
     filename_array = [filename1,filename2,filename3]
 
     @filename = filename_array.sample
+
   elsif type == "invalid"
     @filename = "notallowed.rb"
+  elsif type == "big"
+    @filename = "marioverybig.jpg"
   else
     @filename = ""
   end
 
   path = "#{Rails.root}/features/testpics/#{@filename}"
+
+
 
   click_link_or_button('Add Screenshot')
   sleep(0.2)
@@ -26,13 +31,18 @@ When /^I choose (?:a|an|another) (.*) screenshot for a game$/ do |type|
     attach_file(tag,path)
 
   end
+
 end
 
-Then /^I should see the screenshot on the details page of the game$/ do
+Then /^I should (.*) the screenshot on the details page of the game$/ do |type|
   id =   Game.find_by_title(@new_game).id.to_s
   upload_to_path = "uploads/screenshot/image/" + id + "/#{@filename}"
 
-  page.should have_selector("img[src$='#{upload_to_path}']")
+  if type == "see"
+    page.should have_selector("img[src$='#{upload_to_path}']")
+  elsif type == "not see"
+    page.should_not have_selector("img[src$='#{upload_to_path}']")
+  end
 
 end
 
@@ -49,6 +59,15 @@ Then /^I should see the (\d+) screenshots on the details page of the game$/ do |
     raise 'Not the right number of screenshots on the page!!!'
   end
 end
+
+When /^I remove the screenshot$/ do
+  within(:css, "#screenshots") do
+    click_link_or_button('remove')
+    sleep(0.2)
+  end
+end
+
+
 
 
 

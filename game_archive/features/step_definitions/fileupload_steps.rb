@@ -120,7 +120,8 @@ end
 
 
 Then /^I should be notified on that the Image is too big$/ do
-  page.should have_content("Image is too big")
+  sleep(5)
+  page.should have_content("is too big")
 end
 
 Then /^I should be notified on that the file is not an image file$/ do
