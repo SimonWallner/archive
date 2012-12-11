@@ -120,7 +120,7 @@ end
 
 
 Then /^I should be notified on that the Image is too big$/ do
-  sleep(5)
+  sleep(0.2)
   page.should have_content("is too big")
 end
 
