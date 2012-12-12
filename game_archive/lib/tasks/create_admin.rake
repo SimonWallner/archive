@@ -7,6 +7,7 @@ namespace :db do
                          firstname: "admin",
                          lastname: "admin")
     admin.toggle!(:admin)
+	admin.blocked = false
   end
 
   desc "drop default admin account"
