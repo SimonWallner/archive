@@ -4,8 +4,8 @@
 	
 	<div class="games_featured">
 		<h3>Featured</h3>
-		<% games = Game.find(:all, :limit => getAmountNewest, :order => 'created_at DESC')[0..7] %>
-		<% games.concat(Game.find(:all, :limit => getAmountPopular, :order => 'popularity DESC')[0..7]) %>
+		<% games = Game.find(:all, :limit => getAmountFeatured, :order => 'created_at DESC')[0..7] %>
+		<% games.concat(Game.find(:all, :limit => getAmountFeatured, :order => 'popularity DESC')[0..7]) %>
 		<% #games = removeDoubleEntries(games) %>
 		<% games[0..7].each do |game| %>
 			<div class="tiled_2x">
