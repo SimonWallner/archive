@@ -1,5 +1,24 @@
 <p class="videofields">
   <!-- builder.label :embedcode, "Video" -->
+  <%
+     marker, id = parse_video_id_marker builder.object.embedcode.to_s
+
+     if marker =="vimeo"
+       vimeo_video_json_url     = "http://vimeo.com/api/v2/video/%s.json" % id   # API call
+
+       # Parse the JSON and extract the thumbnail_large url
+       thumbnail_image_location = JSON.parse(open(vimeo_video_json_url).read).first['thumbnail_large'] rescue nil
+
+        %><img class="thumb" src="<%=thumbnail_image_location %>"></img><br/><%
+
+     elsif marker == "youtube"
+        %><img class="thumb" src="http://img.youtube.com/vi/<%= id %>/mqdefault.jpg"></img><br/><%
+
+     end
+
+  %>
+
+
   <%= builder.text_area :embedcode, :rows => 3 %><br/>
   <%= link_to_remove_video_fields "remove" , builder %>
 </p>

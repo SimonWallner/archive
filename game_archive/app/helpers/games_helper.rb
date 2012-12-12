@@ -12,18 +12,30 @@ module GamesHelper
 
   def embed_video(url)
 
-    if url[/youtu\.be\/([^\?]*)/]
-      youtube_embed($1)
-    elsif url[/^.*((v\/)|(embed\/)|(watch\?))\??v?=?([^\&\?]*).*/]
-      youtube_embed($5)
-    elsif url[/player\.vimeo\.com\/video\/([0-9]*)/]
-      vimeo_embed($1)
-    elsif url[/vimeo\.com\/([0-9]*)/]
-      vimeo_embed($1)
+    marker, id = parse_video_id_marker(url)
+
+    if marker == "vimeo"
+      vimeo_embed id
+    elsif marker == "youtube"
+      youtube_embed id
     else
       return nil
     end
+  end
 
+
+  def parse_video_id_marker(url)
+    if url[/youtu\.be\/([^\?]*)/]
+      return "youtube", $1
+    elsif url[/^.*((v\/)|(embed\/)|(watch\?))\??v?=?([^\&\?]*).*/]
+      return "youtube", $5
+    elsif url[/player\.vimeo\.com\/video\/([0-9]*)/]
+      return "vimeo", $1
+    elsif url[/vimeo\.com\/([0-9]*)/]
+      return "vimeo", $1
+    else
+      return nil, nil
+    end
   end
 
   def link_to_remove_video_fields(name, f)
