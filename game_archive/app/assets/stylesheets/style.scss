@@ -394,16 +394,17 @@ div.fact-box > p:first-of-type{
   padding-top:1em;
 }
 
-div.games_newest,
-div.developers_newest,
-div.companies_newest,
-div.games_most_popular,
-div.developers_most_popular,
-div.companies_most_popular,
+div.games_featured,
+div.developers_featured,
+div.companies_featured,
+div.games_all,
+div.developers_all,
+div.companies_all,
 div.games_random,
 div.developers_random,
 div.companies_random {
-
+	margin-top: 1.2em;
+    margin-bottom: 1.2em;
 }
 
 div.game {

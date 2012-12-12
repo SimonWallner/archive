@@ -1,0 +1,31 @@
+<h1>Manage users</h1>
+<p>Enter the full name or email adress of a user and choose what to do.</p>
+
+<%= form_tag ({:controller => "users", :action => "update"}) do %>
+  <div class="field">
+    <%= label_tag :user_email %><br />
+    <%= text_field_tag :user_email %>
+  </div>
+  
+  <div class="field">
+    <%= label_tag :firstname %><br />
+    <%= text_field_tag :firstname %>
+  </div>
+  
+  <div class="field">
+    <%= label_tag :lastname %><br />
+    <%= text_field_tag :lastname %>
+  </div>
+  
+  <div class="radiobutton">
+	<%= radio_button_tag(:todo, 'promote', true) %>
+	<%= label_tag(:todo_promote, "Promote") %>
+	<%= radio_button_tag(:todo, 'demote', false) %>
+	<%= label_tag(:todo_demote, "Demote") %>
+	
+  </div>
+  
+  <div class="actions">
+    <br /><%= submit_tag("Save") %><br />
+  </div>
+<% end %>

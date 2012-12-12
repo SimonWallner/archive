@@ -1,38 +1,24 @@
 <div>
   <h2>Companies</h2>
 	
-	<div class="companies_newest">
-	<h3>Newest <%= getAmountNewest %></h3>
-	<% Company.find(:all, :limit => getAmountNewest, :order => 'created_at DESC').each do |com| %>
-		<div class="tiled_2x">
-			<a href="/companies/<%= com.id %>">
-				<div class="tile">
-					<%= image_tag(com.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
-					<div class="caption"><div><%= com.name %></div></div>
-				</div>
-			</a>
-		</div>
-	<% end %>
+	<div class="companies_featured">
+		<h3>Featured</h3>
+		<% coms = Company.find(:all, :limit => getAmountNewest, :order => 'created_at DESC')[0..7] %>
+		<% coms.concat(Company.find(:all, :limit => getAmountPopular, :order => 'popularity DESC')[0..7]) %>
+		<% #coms = removeDoubleEntries(coms) %>
+		<% coms[0..7].each do |com| %>
+			<div class="tiled_2x">
+				<a href="/companies/<%= com.id %>">
+					<div class="tile">
+						<%= image_tag(com.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
+						<div class="caption"><div><%= com.name %></div></div>
+					</div>
+				</a>
+			</div>
+		<% end %>
 	</div>
 	
 	<div class="clear"></div>
-	
-	<div class="companies_most_popular">
-	<h3>Most Popular <%= getAmountPopular %></h3>
-	<% Company.find(:all, :limit => getAmountPopular, :order => 'popularity DESC').each do |com| %>
-		<div class="tiled_2x">
-			<a href="/companies/<%= com.id %>">
-				<div class="tile">
-					<%= image_tag(com.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
-					<div class="caption"><div><%= com.name %></div></div>
-				</div>
-			</a>
-		</div>
-	<% end %>
-	</div>
-	
-	<div class="clear"></div>
-</div>
 
 <% if user_signed_in? %>
     <div><br />
@@ -40,3 +26,7 @@
         <%= link_to "New Company", new_company_path %>
     </div>
 <% end %>
+
+	<div class="companies_all"></div>
+	
+</div>

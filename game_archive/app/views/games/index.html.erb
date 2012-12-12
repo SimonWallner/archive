@@ -2,44 +2,34 @@
 <div>
     <h2>Games</h2>
 	
-	<div class="games_newest">
-	<h3>Newest <%= getAmountNewest %></h3>
-	<% Game.find(:all, :limit => getAmountNewest, :order => 'created_at DESC').each do |game| %>
-		<div class="tiled_2x">
-			<a href="/games/<%= game.id %>">
-				<div class="tile">
-					<%= image_tag(game.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
-					<div class="caption"><div><%= game.title %></div></div>
-				</div>
-			</a>
-		</div>
-	<% end %>
+	<div class="games_featured">
+		<h3>Featured</h3>
+		<% games = Game.find(:all, :limit => getAmountNewest, :order => 'created_at DESC')[0..7] %>
+		<% games.concat(Game.find(:all, :limit => getAmountPopular, :order => 'popularity DESC')[0..7]) %>
+		<% #games = removeDoubleEntries(games) %>
+		<% games[0..7].each do |game| %>
+			<div class="tiled_2x">
+				<a href="/games/<%= game.id %>">
+					<div class="tile">
+						<%= image_tag(game.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
+						<div class="caption"><div><%= game.title %></div></div>
+					</div>
+				</a>
+			</div>
+		<% end %>
 	</div>
 	
 	<div class="clear"></div>
-	
-	<div class="games_most_popular">
-	<h3>Most Popular <%= getAmountPopular %></h3>
-	<% Game.find(:all, :limit => getAmountPopular, :order => 'popularity DESC').each do |game| %>
-		<div class="tiled_2x">
-			<a href="/games/<%= game.id %>">
-				<div class="tile">
-					<%= image_tag(game.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
-					<div class="caption"><div><%= game.title %></div></div>
-				</div>
-			</a>
-		</div>
-	<% end %>
-	</div>
-	
-	<div class="clear"></div>
-</div>
 
 <% if user_signed_in? %>
     <div><br>
     <%= link_to 'New Game', new_game_path %>
     </div>
 <% end %>
+
+	<div class="games_all"></div>
+	
+</div>
 
 
 

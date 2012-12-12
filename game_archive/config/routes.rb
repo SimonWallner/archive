@@ -1,7 +1,7 @@
 GameArchive::Application.routes.draw do
 
-  get "adminpromote/promote"
-  post "adminpromote/update"
+  get "users/manage"
+  post "users/update"
 
   devise_for :users, skip: :registrations
   devise_scope :user do

@@ -1,38 +1,25 @@
 <div>
   <h2>People</h2>
 	
-	<div class="developers_newest">
-	<h3>Newest <%= getAmountNewest %></h3>
-	<% Developer.find(:all, :limit => getAmountNewest, :order => 'created_at DESC').each do |dev| %>
-		<div class="tiled_4x">
-			<a href="/developers/<%= dev.id %>">
-				<div class="tile">
-					<%= image_tag(dev.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
-					<div class="caption"><div><%= dev.name %></div></div>
-				</div>
-			</a>
-		</div>
-	<% end %>
+	<div class="developers_featured">
+		<h3>Featured</h3>
+		<% devs = Developer.find(:all, :limit => getAmountNewest, :order => 'created_at DESC')[0..7] %>
+		<% devs.concat(Developer.find(:all, :limit => getAmountPopular, :order => 'popularity DESC')[0..7]) %>
+		<% #devs = removeDoubleEntries(devs) %>
+		<% devs[0..7].each do |dev| %>
+			<div class="tiled_4x">
+				<a href="/developers/<%= dev.id %>">
+					<div class="tile">
+						<%= image_tag(dev.image_url(:tiled_4x).to_s, :class => 'rounded teaser')%>
+						<div class="caption"><div><%= dev.name %></div></div>
+					</div>
+				</a>
+			</div>
+		<% end %>
 	</div>
 	
 	<div class="clear"></div>
-	
-	<div class="developers_most_popular">
-	<h3>Most Popular <%= getAmountPopular %></h3>
-	<% Developer.find(:all, :limit => getAmountPopular, :order => 'popularity DESC').each do |dev| %>
-		<div class="tiled_4x">
-			<a href="/developers/<%= dev.id %>">
-				<div class="tile">
-					<%= image_tag(dev.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
-					<div class="caption"><div><%= dev.name %></div></div>
-				</div>
-			</a>
-		</div>
-	<% end %>
-	</div>
-	
-	<div class="clear"></div>
-</div>
+
 
 <% if user_signed_in? %>
     <div><br/>
@@ -40,3 +27,7 @@
         <%= link_to "New Developer", new_developer_path %>
     </div>
 <% end %>
+
+	<div class="developers_all"></div>
+
+</div>
