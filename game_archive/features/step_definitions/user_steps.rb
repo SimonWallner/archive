@@ -329,7 +329,7 @@ Given /^I have a user who is not admin$/ do
 end
 
 When /^I go to the promote admin page$/ do
-	click_link_or_button "Promote/Demote Admin"
+	click_link_or_button "Manage Users"
 end
 
 When /^I enter a valid user email adress$/ do
@@ -376,9 +376,9 @@ When /^I press the Save button$/ do
 end
 
 When /^I enter the promote admin page adress$/ do
-	visit "/adminpromote/promote"
+	visit "/users/manage"
 end
 
 Then /^I should be on the promote admin page$/ do
-	URI.parse(current_url).path.should == "/adminpromote/promote"
+	URI.parse(current_url).path.should == "/users/manage"
 end
