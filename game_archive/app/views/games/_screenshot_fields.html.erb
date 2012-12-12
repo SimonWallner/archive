@@ -1,6 +1,12 @@
 <p class="screenshotfields">
   <%= builder.label :image, (File.basename builder.object.image_url.to_s) %>  <br/>
-  <%= builder.file_field :image %><br />
+  <%= if builder.object.image_url
+        image_tag builder.object.image_url.to_s, :class => 'thumb'
+      end
+  %>
+
+   <br/>
+<%= builder.file_field :image %><br />
   <%= link_to_remove_screenshot_fields "remove" , builder %>
 </p>
 
