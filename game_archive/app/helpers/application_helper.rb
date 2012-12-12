@@ -3,12 +3,24 @@ module ApplicationHelper
 	
 	# amount displayed newest entries
 	def getAmountNewest()
-		return 5
+		return 8
 	end
 	
 	# amount displayed most popular entries
 	def getAmountPopular()
-		return 5
+		return 8
+	end
+	
+	def removeDoubleEntries(list)
+		if list.length > 0
+			ret = Array.new
+			list.each do |elem|
+				if not ret.include?(elem)
+					ret.insert(elem)
+				end
+			end
+		end
+		return ret
 	end
 	
 	def markdown(text)

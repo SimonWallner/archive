@@ -13,34 +13,21 @@
 <div class="games_home">
 	<h1>Games</h1>
 	
-	<div class="games_newest">
-	<h3>Newest <%= getAmountNewest %></h3>
-	<% Game.find(:all, :limit => getAmountNewest, :order => 'created_at DESC').each do |game| %>
-		<div class="tiled_2x">
-			<a href="/games/<%= game.id %>">
-				<div class="tile">
-					<%= image_tag(game.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
-					<div class="caption"><div><%= game.title %></div></div>
-				</div>
-			</a>
-		</div>
-	<% end %>
-	</div>
-	
-	<div class="clear"></div>
-	
-	<div class="games_most_popular">
-	<h3>Most Popular <%= getAmountPopular %></h3>
-	<% Game.find(:all, :limit => getAmountPopular, :order => 'popularity DESC').each do |game| %>
-		<div class="tiled_2x">
-			<a href="/games/<%= game.id %>">
-				<div class="tile">
-					<%= image_tag(game.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
-					<div class="caption"><div><%= game.title %></div></div>
-				</div>
-			</a>
-		</div>
-	<% end %>
+	<div class="games_featured">
+		<% games = Game.find(:all, :limit => getAmountNewest, :order => 'created_at DESC')[0..7] %>
+		<% games.concat(Game.find(:all, :limit => getAmountPopular, :order => 'popularity DESC')[0..7]) %>
+		<% #games = removeDoubleEntries(games) %>
+		<% games[0..7].each do |game| %>
+			<div class="tiled_2x">
+				<a href="/games/<%= game.id %>">
+					<div class="tile">
+						<%= image_tag(game.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
+						<div class="caption"><div><%= game.title %></div></div>
+					</div>
+				</a>
+			</div>
+		<% end %>
+		<div class="more"><a href="games/">more...</a></div>
 	</div>
 	
 	<div class="clear"></div>
@@ -50,12 +37,14 @@
 	<div>
 		<% game = Game.order("RANDOM()").first %>
 		<% if game != nil %>
+			<div class="tiled_2x">
 			<a href="/games/<%= game.id %>">
 				<div class="tile">
 					<%= image_tag(game.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
 					<div class="caption"><div><%= game.title %></div></div>
 				</div>
 			</a>
+			</div>
 		<% end %>
 	</div>
 	</div>
@@ -66,34 +55,21 @@
 <div class="companies_home">
 	<h1>Companies</h1>
 	
-	<div class="companies_newest">
-	<h3>Newest <%= getAmountNewest %></h3>
-	<% Company.find(:all, :limit => getAmountNewest, :order => 'created_at DESC').each do |com| %>
-		<div class="tiled_2x">
-			<a href="/companies/<%= com.id %>">
-				<div class="tile">
-					<%= image_tag(com.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
-					<div class="caption"><div><%= com.name %></div></div>
-				</div>
-			</a>
-		</div>
-	<% end %>
-	</div>
-	
-	<div class="clear"></div>
-	
-	<div class="companies_most_popular">
-	<h3>Most Popular <%= getAmountPopular %></h3>
-	<% Company.find(:all, :limit => getAmountPopular, :order => 'popularity DESC').each do |com| %>
-		<div class="tiled_2x">
-			<a href="/companies/<%= com.id %>">
-				<div class="tile">
-					<%= image_tag(com.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
-					<div class="caption"><div><%= com.name %></div></div>
-				</div>
-			</a>
-		</div>
-	<% end %>
+	<div class="companies_featured">
+		<% coms = Company.find(:all, :limit => getAmountNewest, :order => 'created_at DESC')[0..7] %>
+		<% coms.concat(Company.find(:all, :limit => getAmountPopular, :order => 'popularity DESC')[0..7]) %>
+		<% #coms = removeDoubleEntries(coms) %>
+		<% coms[0..7].each do |com| %>
+			<div class="tiled_2x">
+				<a href="/companies/<%= com.id %>">
+					<div class="tile">
+						<%= image_tag(com.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
+						<div class="caption"><div><%= com.name %></div></div>
+					</div>
+				</a>
+			</div>
+		<% end %>
+		<div class="more"><a href="companies/">more...</a></div>
 	</div>
 	
 	<div class="clear"></div>
@@ -103,12 +79,14 @@
 	<div>
 		<% com = Company.order("RANDOM()").first %>
 		<% if com != nil %>
+			<div class="tiled_2x">
 			<a href="/companies/<%= com.id %>">
 				<div class="tile">
 					<%= image_tag(com.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
 					<div class="caption"><div><%= com.name %></div></div>
 				</div>
 			</a>
+			</div>
 		<% end %>
 	</div>
 	</div>
@@ -119,34 +97,21 @@
 <div class="developers_home">
 	<h1>People</h1>
 	
-	<div class="developers_newest">
-	<h3>Newest <%= getAmountNewest %></h3>
-	<% Developer.find(:all, :limit => getAmountNewest, :order => 'created_at DESC').each do |dev| %>
-		<div class="tiled_4x">
-			<a href="/developers/<%= dev.id %>">
-				<div class="tile">
-					<%= image_tag(dev.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
-					<div class="caption"><div><%= dev.name %></div></div>
-				</div>
-			</a>
-		</div>
-	<% end %>
-	</div>
-	
-	<div class="clear"></div>
-	
-	<div class="developers_most_popular">
-	<h3>Most Popular <%= getAmountPopular %></h3>
-	<% Developer.find(:all, :limit => getAmountPopular, :order => 'popularity DESC').each do |dev| %>
-		<div class="tiled_4x">
-			<a href="/developers/<%= dev.id %>">
-				<div class="tile">
-					<%= image_tag(dev.image_url(:tiled_4x).to_s, :class => 'rounded teaser')%>
-					<div class="caption"><div><%= dev.name %></div></div>
-				</div>
-			</a>
-		</div>
-	<% end %>
+	<div class="developers_featured">
+		<% devs = Developer.find(:all, :limit => getAmountNewest, :order => 'created_at DESC')[0..7] %>
+		<% devs.concat(Developer.find(:all, :limit => getAmountPopular, :order => 'popularity DESC')[0..7]) %>
+		<% #devs = removeDoubleEntries(devs) %>
+		<% devs[0..7].each do |dev| %>
+			<div class="tiled_4x">
+				<a href="/developers/<%= dev.id %>">
+					<div class="tile">
+						<%= image_tag(dev.image_url(:tiled_4x).to_s, :class => 'rounded teaser')%>
+						<div class="caption"><div><%= dev.name %></div></div>
+					</div>
+				</a>
+			</div>
+		<% end %>
+		<div class="more"><a href="developers/">more...</a></div>
 	</div>
 	
 	<div class="clear"></div>
@@ -156,12 +121,14 @@
 	<div>
 		<% dev = Developer.order("RANDOM()").first %>
 		<% if dev != nil %>
+			<div class="tiled_4x">
 			<a href="/developers/<%= dev.id %>">
 				<div class="tile">
-					<%= image_tag(dev.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
+					<%= image_tag(dev.image_url(:tiled_4x).to_s, :class => 'rounded teaser')%>
 					<div class="caption"><div><%= dev.name %></div></div>
 				</div>
 			</a>
+			</div>
 		<% end %>
 	</div>
 	</div>
