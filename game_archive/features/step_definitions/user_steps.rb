@@ -12,6 +12,7 @@ Given /^I am signed in as (.+)$/ do |role|
   if role == 'Admin'
     @user.toggle :admin
   end
+  @user.blocked = false
   @user.save!
 
   visit '/users/sign_in'
@@ -359,6 +360,10 @@ end
 
 Then /^I should not be signed in$/ do
   page.should have_content("Login")
+end
+
+Then /^an invitation should be sent$/ do
+  assert (User.exists?(:email => @email))
 end
 
 # Promote Admin Steps
