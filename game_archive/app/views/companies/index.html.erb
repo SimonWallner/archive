@@ -3,8 +3,8 @@
 	
 	<div class="companies_featured">
 		<h3>Featured</h3>
-		<% coms = Company.find(:all, :limit => getAmountNewest, :order => 'created_at DESC')[0..7] %>
-		<% coms.concat(Company.find(:all, :limit => getAmountPopular, :order => 'popularity DESC')[0..7]) %>
+		<% coms = Company.find(:all, :limit => getAmountFeatured, :order => 'created_at DESC')[0..7] %>
+		<% coms.concat(Company.find(:all, :limit => getAmountFeatured, :order => 'popularity DESC')[0..7]) %>
 		<% #coms = removeDoubleEntries(coms) %>
 		<% coms[0..7].each do |com| %>
 			<div class="tiled_2x">

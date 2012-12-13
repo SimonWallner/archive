@@ -216,6 +216,8 @@ ActiveRecord::Schema.define(:version => 20121212135445) do
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
     t.string   "unconfirmed_email"
+    t.boolean  "blocked"
+    t.string   "note"
   end
 
   add_index "users", ["confirmation_token"], :name => "index_users_on_confirmation_token", :unique => true

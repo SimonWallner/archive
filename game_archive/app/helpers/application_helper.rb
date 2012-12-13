@@ -1,13 +1,8 @@
 module ApplicationHelper
 	require 'redcarpet'
 	
-	# amount displayed newest entries
-	def getAmountNewest()
-		return 8
-	end
-	
-	# amount displayed most popular entries
-	def getAmountPopular()
+	# amount displayed featured entries
+	def getAmountFeatured()
 		return 8
 	end
 	
