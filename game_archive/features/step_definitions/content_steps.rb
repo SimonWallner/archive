@@ -148,6 +148,24 @@ Given /^I have a selection of games$/ do
 	@game6=FactoryGirl.create :game , title:"Game 6"
 	@game6.popularity = 2
 	@game6.save
+	@game7=FactoryGirl.create :game , title:"Game 7"
+	@game7.popularity = 1
+	@game7.save
+	@game8=FactoryGirl.create :game , title:"Game 8"
+	@game8.popularity = 2
+	@game8.save
+	@game9=FactoryGirl.create :game , title:"Game 9"
+	@game9.popularity = 4
+	@game9.save
+	@game10=FactoryGirl.create :game , title:"Game 10"
+	@game10.popularity = 5
+	@game10.save
+	@game11=FactoryGirl.create :game , title:"Game 11"
+	@game11.popularity = 6
+	@game11.save
+	@game12=FactoryGirl.create :game , title:"Game 12"
+	@game12.popularity = 2
+	@game12.save
 end
 
 Given /^I have a selection of developers$/ do
@@ -196,21 +214,20 @@ When /^I am on the Home Page$/ do
 	visit "/"
 end
 
-Then /^I should see a selection of games sorted by Newest$/ do
-	within 'div.games_newest' do
-		page.should have_no_content(@game1.title)
-		page.should have_content(@game2.title)
-		page.should have_content(@game3.title)
-		page.should have_content(@game4.title)
+Then /^I should see a selection of games sorted by Newest and Most Popular$/ do
+	within 'div.games_featured' do
 		page.should have_content(@game5.title)
 		page.should have_content(@game6.title)
+		page.should have_content(@game9.title)
+		page.should have_content(@game10.title)
+		page.should have_content(@game11.title)
+		page.should have_content(@game12.title)
 	end
 	
 end
 
-Then /^I should see a selection of developers sorted by Newest$/ do
-	within 'div.developers_newest' do
-		page.should have_no_content(@dev1.name)
+Then /^I should see a selection of developers sorted by Newest and Most Popular$/ do
+	within 'div.developers_featured' do
 		page.should have_content(@dev2.name)
 		page.should have_content(@dev3.name)
 		page.should have_content(@dev4.name)
@@ -219,42 +236,8 @@ Then /^I should see a selection of developers sorted by Newest$/ do
 	end
 end
 
-Then /^I should see a selection of companies sorted by Newest$/ do
-	within 'div.companies_newest' do
-		page.should have_no_content(@com1.name)
-		page.should have_content(@com2.name)
-		page.should have_content(@com3.name)
-		page.should have_content(@com4.name)
-		page.should have_content(@com5.name)
-		page.should have_content(@com6.name)
-	end
-end
-
-Then /^I should see a selection of games sorted by Most Popular$/ do
-	within 'div.games_most_popular' do
-		page.should have_no_content(@game1.title)
-		page.should have_content(@game2.title)
-		page.should have_content(@game3.title)
-		page.should have_content(@game4.title)
-		page.should have_content(@game5.title)
-		page.should have_content(@game6.title)
-	end
-end
-
-Then /^I should see a selection of developers sorted by Most Popular$/ do
-	within 'div.developers_most_popular' do
-		page.should have_no_content(@dev1.name)
-		page.should have_content(@dev2.name)
-		page.should have_content(@dev3.name)
-		page.should have_content(@dev4.name)
-		page.should have_content(@dev5.name)
-		page.should have_content(@dev6.name)
-	end
-end
-
-Then /^I should see a selection of companies sorted by Most Popular$/ do
-	within 'div.companies_most_popular' do
-		page.should have_no_content(@com1.name)
+Then /^I should see a selection of companies sorted by Newest and Most Popular$/ do
+	within 'div.companies_featured' do
 		page.should have_content(@com2.name)
 		page.should have_content(@com3.name)
 		page.should have_content(@com4.name)
@@ -278,6 +261,23 @@ end
 Then /^I should see a random company pick$/ do
 	within 'div.companies_random' do
 		page.should have_content("Company")
+	end
+end
+
+Then /^I should see all games$/ do
+	within 'div.games_all' do
+		page.should have_content(@game1.title)
+		page.should have_content(@game2.title)
+		page.should have_content(@game3.title)
+		page.should have_content(@game4.title)
+		page.should have_content(@game5.title)
+		page.should have_content(@game6.title)
+		page.should have_content(@game7.title)
+		page.should have_content(@game8.title)
+		page.should have_content(@game9.title)
+		page.should have_content(@game10.title)
+		page.should have_content(@game11.title)
+		page.should have_content(@game12.title)
 	end
 end
 
