@@ -10,8 +10,10 @@ GameArchive::Application.routes.draw do
              path: 'users',
              controller: 'devise/registrations',
              as: :user_registration do
-              end
+    end
   end
+
+
 #      path_names: { new: 'sign_up' },
 
 
