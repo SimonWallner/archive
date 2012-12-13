@@ -4,17 +4,18 @@ end
 
 Given /^I am signed in as (.+)$/ do |role|
 
-  email = 'user@user.com'
+  @email = 'user@user.com'
   @pwd = 'aA1aaaaaa'
-  @user = User.create!(:email => email, :password => @pwd, :password_confirmation => @pwd)
-
+  @user = User.new(:email => @email, :password => @pwd, :password_confirmation => @pwd)
+  @user.confirm!
+  @user.email.should == @email
   if role == 'Admin'
     @user.toggle :admin
-    @user.save!
   end
+  @user.save!
 
   visit '/users/sign_in'
-  fill_in 'user_email', :with => email
+  fill_in 'user_email', :with => @email
   fill_in 'user_password', :with => @pwd
   click_link_or_button 'Sign in'
 end
@@ -37,7 +38,8 @@ end
 
 When /^I change all my data$/ do
   newpassword = "bB2bbbbbb"
-  @newDetails = FactoryGirl.build :user, email: "new@user.at", firstname: "newfirst", lastname: "newlast", password: newpassword
+  @newDetails = FactoryGirl.build :confirmed_user, email: "new@user.at", firstname: "newfirst", lastname: "newlast", password: newpassword
+  @newDetails.should_not == nil
 
   fill_in "user_email", :with => @newDetails.email
   fill_in "user_password", :with => newpassword
@@ -69,16 +71,37 @@ When /^I change an invalid password$/ do
 end
 
 When /^I change all my data except my password$/ do
-  @newDetails = FactoryGirl.build :user, email: "new@user.at", firstname: "newfirst", lastname: "newlast", password: "not_nedded"
+  @newDetails = FactoryGirl.build :confirmed_user, email: "new@user.at", firstname: "newfirst", lastname: "newlast", password: "not_nedded"
+  @newDetails.should_not == nil
 
   fill_in "user_email", :with => @newDetails.email
   fill_in "user_firstname", :with => @newDetails.firstname
   fill_in "user_lastname", :with => @newDetails.lastname
+  @pwdSet = false
+end
+
+def provide_correct_password
+  fill_in "user_current_password", :with => @pwd
+end
+
+def update_form
+  click_link_or_button "Update"
 end
 
 When /^I provide the correct password$/ do
-  fill_in "user_current_password", :with => @pwd
-  click_link_or_button "Update"
+  provide_correct_password
+  update_form
+end
+
+When /^I confirm my email$/ do
+  @user.reload
+  @user.confirm!
+  @email_confirmed = true
+end
+
+When /^I don't confirm my email$/ do
+  # do nothing
+  @email_confirmed = false
 end
 
 Then /^I should be on the home page$/ do
@@ -86,9 +109,15 @@ Then /^I should be on the home page$/ do
 end
 
 Then /^The data has been updated$/ do
+  #save_and_open_page
   if @pwdSet == nil || @pwdSet == false
-    @user = User.find_by_email @newDetails.email
-    @user.email.should == @newDetails.email
+    @user.reload
+    if @email_confirmed
+      @user.email.should == @newDetails.email
+    else
+      @user.email.should == @email
+      @user.unconfirmed_email.should = @newDetails.email
+    end
     @user.firstname.should == @newDetails.firstname
     @user.lastname.should == @newDetails.lastname
   end
@@ -96,7 +125,7 @@ end
 
 When /^I provide the wrong password$/ do
   fill_in "user_current_password", :with => (@pwd + "A")
-  click_link_or_button "Update"
+  update_form
 end
 
 Then /^I should be on the user edit page$/ do
@@ -117,6 +146,28 @@ end
 
 Given /^I am not invited$/ do
   @user = User.new
+end
+
+When /^I change my email$/ do
+  @newEmail = "new@example.com"
+  fill_in "user_email", :with => @newEmail
+  provide_correct_password
+  update_form
+end
+
+Then /^I should receive an email with confirmation instructions$/ do
+  mail = ActionMailer::Base.deliveries.last
+  mail['to'].to_s.should == @newEmail
+  mail['subject'].to_s.should == "Confirmation instructions"
+end
+
+Then /^The email has not changed yet$/ do
+  @user.email.should_not == @newEmail
+  @user.email.should == @email
+end
+
+Then /^My email has been updated$/ do
+  @user.email.should == @newEmail
 end
 
 When /^I go to the sign up form$/ do

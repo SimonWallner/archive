@@ -11,16 +11,40 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121209223441) do
+ActiveRecord::Schema.define(:version => 20121212135445) do
 
   create_table "companies", :force => true do |t|
     t.string   "name"
     t.text     "description"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
     t.string   "image"
+    t.string   "official_name"
     t.integer  "popularity"
   end
+
+  create_table "company_defuncts", :force => true do |t|
+    t.integer  "company_id"
+    t.integer  "day"
+    t.integer  "month"
+    t.integer  "year"
+    t.string   "additional_info"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
+
+  add_index "company_defuncts", ["company_id"], :name => "index_company_defuncts_on_company_id"
+
+  create_table "company_foundeds", :force => true do |t|
+    t.integer  "company_id"
+    t.integer  "day"
+    t.integer  "month"
+    t.integer  "year"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "company_foundeds", ["company_id"], :name => "index_company_foundeds_on_company_id"
 
   create_table "developers", :force => true do |t|
     t.string   "name"
@@ -30,6 +54,20 @@ ActiveRecord::Schema.define(:version => 20121209223441) do
     t.string   "image"
     t.integer  "popularity"
   end
+
+  create_table "fields", :force => true do |t|
+    t.string   "name"
+    t.text     "content"
+    t.integer  "game_id"
+    t.integer  "company_id"
+    t.integer  "developer_id"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
+
+  add_index "fields", ["company_id"], :name => "index_fields_on_company_id"
+  add_index "fields", ["developer_id"], :name => "index_fields_on_developer_id"
+  add_index "fields", ["game_id"], :name => "index_fields_on_game_id"
 
   create_table "games", :force => true do |t|
     t.string   "title"
@@ -45,12 +83,97 @@ ActiveRecord::Schema.define(:version => 20121209223441) do
     t.integer "genre_id"
   end
 
+  create_table "games_media", :id => false, :force => true do |t|
+    t.integer "game_id"
+    t.integer "medium_id"
+  end
+
+  create_table "games_modes", :id => false, :force => true do |t|
+    t.integer "game_id"
+    t.integer "mode_id"
+  end
+
+  create_table "games_platforms", :id => false, :force => true do |t|
+    t.integer "game_id"
+    t.integer "platform_id"
+  end
+
+  create_table "games_tags", :id => false, :force => true do |t|
+    t.integer "game_id"
+    t.integer "tag_id"
+  end
+
   create_table "genres", :force => true do |t|
     t.string   "name"
     t.string   "description"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
   end
+
+  create_table "locations", :force => true do |t|
+    t.string   "name"
+    t.string   "additional_info"
+    t.integer  "company_id"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
+
+  add_index "locations", ["company_id"], :name => "index_locations_on_company_id"
+
+  create_table "media", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "mixed_field_types", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "mixed_fields", :force => true do |t|
+    t.integer  "game_id"
+    t.integer  "developer_id"
+    t.integer  "company_id"
+    t.string   "not_found"
+    t.string   "additional_info"
+    t.integer  "mixed_field_type_id"
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
+    t.integer  "series_game_id"
+  end
+
+  add_index "mixed_fields", ["company_id"], :name => "index_mixed_fields_on_company_id"
+  add_index "mixed_fields", ["developer_id"], :name => "index_mixed_fields_on_developer_id"
+  add_index "mixed_fields", ["game_id"], :name => "index_mixed_fields_on_game_id"
+  add_index "mixed_fields", ["mixed_field_type_id"], :name => "index_mixed_fields_on_mixed_field_type_id"
+  add_index "mixed_fields", ["series_game_id"], :name => "index_mixed_fields_on_series_game_id"
+
+  create_table "modes", :force => true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  create_table "platforms", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "release_dates", :force => true do |t|
+    t.integer  "year"
+    t.integer  "month"
+    t.integer  "day"
+    t.string   "additional_info"
+    t.integer  "game_id"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
+
+  add_index "release_dates", ["game_id"], :name => "index_release_dates_on_game_id"
 
   create_table "screenshots", :force => true do |t|
     t.string   "image"
@@ -60,6 +183,12 @@ ActiveRecord::Schema.define(:version => 20121209223441) do
   end
 
   add_index "screenshots", ["game_id"], :name => "index_screenshots_on_game_id"
+
+  create_table "tags", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "users", :force => true do |t|
     t.string   "email",                                :default => "", :null => false
@@ -83,8 +212,13 @@ ActiveRecord::Schema.define(:version => 20121209223441) do
     t.integer  "invitation_limit"
     t.integer  "invited_by_id"
     t.string   "invited_by_type"
+    t.string   "confirmation_token"
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
+    t.string   "unconfirmed_email"
   end
 
+  add_index "users", ["confirmation_token"], :name => "index_users_on_confirmation_token", :unique => true
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["invitation_token"], :name => "index_users_on_invitation_token"
   add_index "users", ["invited_by_id"], :name => "index_users_on_invited_by_id"
