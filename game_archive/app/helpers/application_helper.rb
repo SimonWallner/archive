@@ -25,16 +25,17 @@ module ApplicationHelper
 	
 	def markdown(text)
 
-		rndr = LinksInNewWindow.new(:filter_html => true, :no_images => true, :hard_wrap => true)
+		rndr = CustomLinkRenderer.new(:filter_html => true, :no_images => true, :hard_wrap => true)
 		markdown = Redcarpet::Markdown.new(rndr, :space_after_headers => true, :autolink => true)
 		markdown.render(text).html_safe
 		
   end
 
-  class LinksInNewWindow < Redcarpet::Render::HTML
+  class CustomLinkRenderer < Redcarpet::Render::HTML
       def link(link, title, alt_text)
-        "<a target=\"_blank\" href=\"#{link}\">#{alt_text}</a>"
+        "<a href=\"#{link}\">#{alt_text}</a>"
       end
+
       def autolink(link, link_type)
         if link[-1] =='/'
           link=link[0..-1]
@@ -54,7 +55,7 @@ module ApplicationHelper
           link_t += "/" + link_title[i]
         end
           link_t +=link_end
-        "<a target=\"_blank\" href=\"#{link}\">#{link_t}</a>"
+        "<a href=\"#{link}\">#{link_t}</a>"
         end
   end
 
