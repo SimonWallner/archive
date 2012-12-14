@@ -25,15 +25,15 @@ class AjaxController < ApplicationController
 
         @devs = Developer.where("name LIKE ?", "#{params[:term]}%")
         @devs.collect! do |dev|
-          {:value => '[' + dev.name + '](' + developer_url(dev) + ')', :label => dev.name + ' - Developer'}
+          {:value => '[' + dev.name + '](' + developer_path(dev) + ')', :label => dev.name + ' - Developer'}
         end
         @games = Game.where("title LIKE ?", "#{params[:term]}%")
         @games.collect! do |game|
-          {:value => '[' + game.title + '](' + game_url(game) + ')', :label => game.title + ' - Game'}
+          {:value => '[' + game.title + '](' + game_path(game) + ')', :label => game.title + ' - Game'}
         end
         @comps = Company.where("name LIKE ?", "#{params[:term]}%")
         @comps.collect! do |comp|
-          {:value => '[' + comp.name + '](' + company_url(comp) + ')', :label => comp.name + ' - Company'}
+          {:value => '[' + comp.name + '](' + company_path(comp) + ')', :label => comp.name + ' - Company'}
         end
 
         @tags = @devs
