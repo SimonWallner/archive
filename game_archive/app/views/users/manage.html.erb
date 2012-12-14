@@ -22,7 +22,15 @@
 	<%= label_tag(:todo_promote, "Promote") %>
 	<%= radio_button_tag(:todo, 'demote', false) %>
 	<%= label_tag(:todo_demote, "Demote") %>
-	
+	<%= radio_button_tag(:todo, 'block', false) %>
+	<%= label_tag(:todo_block, "Block") %>
+	<%= radio_button_tag(:todo, 'unblock', false) %>
+	<%= label_tag(:todo_unblock, "Unblock") %>
+  </div>
+  
+  <div class="field">
+	<%= label_tag :reason %><br />
+    <%= text_field_tag :reason %>
   </div>
   
   <div class="actions">

@@ -6,7 +6,7 @@ Feature: update account credentials
   Scenario: try changing data when not signed in
     Given I am not signed in
     When I enter edit user url
-    Then I should be redirected to the sign in page
+    Then I should be on the home page
 
   Scenario Outline: changing data
     Given I am signed in as User
