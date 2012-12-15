@@ -58,3 +58,18 @@ Feature: update account credentials
     Then I should be on the home page
     And The data has been updated
 
+
+  Scenario: changing email address and receive receive confirmation email
+    Given I am signed in as User
+    And I am on the user edit page
+    When I change my email
+    Then I should receive an email with confirmation instructions
+    And The email has not changed yet
+
+  Scenario: changing email address and confirm new email
+    Given I am signed in as User
+    And I am on the user edit page
+    When I change my email
+    And I confirm my email
+    Then My email has been updated
+
