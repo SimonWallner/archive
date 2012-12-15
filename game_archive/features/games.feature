@@ -6,7 +6,7 @@ Feature: Manage Games
   Background:
     Given I am signed in as User
 
-  Scenario: successfully show a detail page of a gamee
+  Scenario: successfully show the overview page for games
     Given I have a game Tetris
     And I am on the games overview page
     Then I should see the title of the game in a list of games
@@ -19,7 +19,7 @@ Feature: Manage Games
     And I should see the details of the newly created game
 
 
-  Scenario: fail to create game with empty name
+  Scenario: fail to create game due to empty name
     Given I am on the game creation page
     When I leave the name of games field empty and submit it
     Then I should be notified of that the name of game must not be empty

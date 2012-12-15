@@ -6,19 +6,19 @@ Feature: Manage Companies
   Background:
     Given I am signed in as User
 
-  Scenario: show companies page
+  Scenario: successfully show companies overview page
     Given I have a company Leela
     And I am on the companies overview page
     Then I should see the companies name in the list of companies
 
-  Scenario: create company with valid data
+  Scenario: successfully create company with valid data
     Given I am on the companies overview page
     When I follow the new company link
     And I fill in the fields for the company with valid details and submit it
     Then I should see the details of the newly created company
 
 
-  Scenario: fail to create company with empty name
+  Scenario: fail to create company due to empty name
     Given I am on the company creation page
     When I leave the name of company field empty and submit it
     Then I should be notified of that the name of company must not be empty
@@ -31,7 +31,7 @@ Feature: Manage Companies
     Then I should be on the detail page of the given company
     And I should see the updated content
 
-  Scenario: fail to update company with empty name
+  Scenario: fail to update company due to empty name
     Given I have a company Lori
 	And I am on the detail page of the given company
     And I follow the company edit link

@@ -3,7 +3,6 @@ Feature: Structure Content
   As a contributor
   I want to use simplified markup ("markdown") for general text on the developer page
 
-
   Scenario: create title
     Given I am signed in as User
     And I am on the developer creation page

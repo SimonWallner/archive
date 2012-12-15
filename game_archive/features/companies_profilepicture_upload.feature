@@ -12,7 +12,6 @@ Feature: Profile Picture File Upload
     And I submit it
     Then I should see the picture on the details page of the company
 
-
     Scenario: unsuccessfully upload picture too big for company
     Given I am signed in as User
     And I am on the companies overview page

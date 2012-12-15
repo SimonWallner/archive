@@ -6,7 +6,7 @@ Feature: Manage Developers
   Background:
     Given I am signed in as User
 
-  Scenario: show developers page
+  Scenario: show developers overview page
     Given I have a developer Leela
     And I am on the developers overview page
     Then I should see the developers name in the list of developers
@@ -18,7 +18,7 @@ Feature: Manage Developers
     Then I should see the details of the newly created developer
 
 
-  Scenario: fail to create developer with empty name
+  Scenario: fail to create developer due to empty name
     Given I am on the developer creation page
     When I leave the name field empty and submit it
     Then I should be notified of that the name must not be empty
@@ -31,7 +31,7 @@ Feature: Manage Developers
     Then I should be on the detail page of the given developer
     And I should see the updated content
 
-  Scenario: fail to update developer with empty name
+  Scenario: fail to update developer due to empty name
     Given I have a developer Lori
 	And I am on the detail page of the given developer
     When I follow the developer edit link
