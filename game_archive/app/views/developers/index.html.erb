@@ -3,8 +3,8 @@
 	
 	<div class="developers_featured">
 		<h3>Featured</h3>
-		<% devs = Developer.find(:all, :limit => getAmountNewest, :order => 'created_at DESC')[0..7] %>
-		<% devs.concat(Developer.find(:all, :limit => getAmountPopular, :order => 'popularity DESC')[0..7]) %>
+		<% devs = Developer.find(:all, :limit => getAmountFeatured, :order => 'created_at DESC')[0..7] %>
+		<% devs.concat(Developer.find(:all, :limit => getAmountFeatured, :order => 'popularity DESC')[0..7]) %>
 		<% #devs = removeDoubleEntries(devs) %>
 		<% devs[0..7].each do |dev| %>
 			<div class="tiled_4x">

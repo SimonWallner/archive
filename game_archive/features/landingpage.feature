@@ -4,36 +4,21 @@ Feature: Landingpage
 	I want to see a selection of games, companies, and people on the landing page.
 	random pick, 5 newest, also overview pages for games, developers, companies
 	
-	Scenario: View newest Games on Home Page
+	Scenario: View featured Games on Home Page
 		Given I have a selection of games
 		When I am on the Home Page
-		Then I should see a selection of games sorted by Newest
+		Then I should see a selection of games sorted by Newest and Most Popular
 	
-	Scenario: View newest Developers on Home Page
+	Scenario: View featured Developers on Home Page
 		Given I have a selection of developers
 		When I am on the Home Page
-		Then I should see a selection of developers sorted by Newest
+		Then I should see a selection of developers sorted by Newest and Most Popular
 	
-	Scenario: View newest Companies on Home Page
+	Scenario: View featured Companies on Home Page
 		Given I have a selection of companies
 		When I am on the Home Page
-		Then I should see a selection of companies sorted by Newest
+		Then I should see a selection of companies sorted by Newest and Most Popular
 	
-	Scenario: View most popular Games on Home Page
-		Given I have a selection of games
-		When I am on the Home Page
-		Then I should see a selection of games sorted by Most Popular
-	
-	Scenario: View most popular Developers on Home Page
-		Given I have a selection of developers
-		When I am on the Home Page
-		Then I should see a selection of developers sorted by Most Popular
-	
-	Scenario: View most popular Companies on Home Page
-		Given I have a selection of companies
-		When I am on the Home Page
-		Then I should see a selection of companies sorted by Most Popular
-		
 	Scenario: View random Game on Home Page
 		Given I have a selection of games
 		When I am on the Home Page
@@ -49,12 +34,12 @@ Feature: Landingpage
 		When I am on the Home Page
 		Then I should see a random company pick
 		
-	Scenario: View newest Games on Games Page
+	Scenario: View featured Games on Games Page
 		Given I have a selection of games
 		When I am on the Games Overview Page
-		Then I should see a selection of games sorted by Newest
+		Then I should see a selection of games sorted by Newest and Most Popular
 		
-	Scenario: View most popular Games on Games Page
+	Scenario: View all Games on Games Page
 		Given I have a selection of games
 		When I am on the Games Overview Page
-		Then I should see a selection of games sorted by Most Popular
+		Then I should see all games
