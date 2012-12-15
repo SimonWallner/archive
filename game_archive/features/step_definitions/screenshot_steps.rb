@@ -1,23 +1,7 @@
 When /^I choose (?:a|an|another) (.*) screenshot for a game$/ do |type|
 
-  if type == "valid"
 
-    filename1 = "diablo3.jpeg"
-    filename2 = "halo4.jpg"
-    filename3 = "Luigi.png"
-
-    filename_array = [filename1,filename2,filename3]
-
-    @filename = filename_array.sample
-
-  elsif type == "invalid"
-    @filename = "notallowed.rb"
-  elsif type == "big"
-    @filename = "marioverybig.jpg"
-  else
-    @filename = ""
-  end
-
+  @filename = choose_filename_by_type(type)
   attach_screenshot(@filename)
 
 end

@@ -1,6 +1,22 @@
 #   Scenario: show game's page
-Given /^I have a game (.+)$/ do |game_name|
+Given /^I have a game (.*)$/ do |game_name|
   @givenGame=FactoryGirl.create :game , title:game_name
+
+end
+
+Given /^I have a (.*) to the given game$/ do |addition|
+
+  if addition == "screenshot"
+
+    visit edit_game_path(@givenGame)
+
+    fill_in_name("game")
+    @filename = choose_filename_by_type("valid")
+    attach_screenshot(@filename)
+    submit_any_button
+
+  end
+
 end
 
 Then /^I should see the title of the game in a list of games$/ do

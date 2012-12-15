@@ -48,3 +48,25 @@ def check_screenshot_count(screenshotcount)
     raise 'Not the right number of screenshots on the page!!!'
   end
 end
+
+
+def choose_filename_by_type(type)
+
+  if type == "valid"
+
+    filename1 = "diablo3.jpeg"
+    filename2 = "halo4.jpg"
+    filename3 = "Luigi.png"
+
+    filename_array = [filename1,filename2,filename3]
+
+    return filename_array.sample
+
+  elsif type == "invalid"
+    return "notallowed.rb"
+  elsif type == "big"
+    return "marioverybig.jpg"
+  else
+    return ""
+  end
+end

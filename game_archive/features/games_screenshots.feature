@@ -48,12 +48,7 @@ Feature: As a developer,
    Scenario: Remove already uploaded screenshot from game
      Given I am signed in as User
      And I have a game Tetris
-     And I am on the detail page of the game
-     When I follow the game edit link
-     And I fill in the fields with valid details for a game
-     And I choose a valid screenshot for a game
-     And I submit it
-     Then I should see the screenshot on the details page of the game
+     And I have a screenshot to the given game
      When I follow the game edit link
      And I remove the screenshot
      And I submit it
