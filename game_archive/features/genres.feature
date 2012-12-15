@@ -1,0 +1,22 @@
+Feature: Manage Genres
+  In order to manage genres
+  As a contributor
+  I want to create, update and view genres
+
+Scenario: show all genres
+  Given I have genres named Indie, Shooter
+  And I am on the genres page
+  Then I should see the genres
+
+Scenario: create genre
+  Given I am signed in as User
+  And I am on the genre create page
+  When I create a valid genre
+  Then I should see the created genre
+
+Scenario: edit genre
+  Given I am signed in as User
+  And I have a genre named RTS
+  And I am on the edit page of the genre
+  When I update the genre
+  Then I should see the new values
