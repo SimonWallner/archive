@@ -8,19 +8,53 @@ Feature: update account credentials
     When I enter edit user url
     Then I should be redirected to the sign in page
 
-  Scenario Outline: changing data
+  Scenario: successfully change account data
     Given I am signed in as User
     And I am on the user edit page
-    When I change <data>
-    And I provide the <password> password
-    Then I should be <where>
-    And <see>
+    When I change all my data
+    And I provide the correct password
+    Then I should be on the home page
+    And The data has been updated
 
-    Examples:
-    | data | password | where | see |
-    | all my data | correct  | on the home page | The data has been updated |
-    | all my data | wrong    | on the user edit page | I should see an error |
-    | a valid password | correct | on the home page  | The data has been updated |
-    | a too short password | correct | on the user edit page  | I should see an error |
-    | an invalid password | correct | on the user edit page  | I should see an error |
-    | all my data except my password | correct | on the home page  | The data has been updated |
+  Scenario: unsuccessfully change account data due to wrong password
+    Given I am signed in as User
+    And I am on the user edit page
+    When I change all my data
+    And I provide the wrong password
+    Then I should be on the user edit page
+    And I should see an error
+
+  Scenario: unsuccessfully change account data due to wrong password
+    Given I am signed in as User
+    And I am on the user edit page
+    When I change a valid password
+    And I provide the correct password
+    Then I should be on the home page
+    And The data has been updated
+
+
+  Scenario: unsuccessfully change account data due to a too short password
+    Given I am signed in as User
+    And I am on the user edit page
+    When I change a too short password
+    And I provide the correct password
+    Then I should be on the user edit page
+    And I should see an error
+
+
+  Scenario: unsuccessfully change account data due to an invalid password
+    Given I am signed in as User
+    And I am on the user edit page
+    When I change an invalid password
+    And I provide the correct password
+    Then I should be on the user edit page
+    And I should see an error
+
+  Scenario: successfully change all data except the password
+    Given I am signed in as User
+    And I am on the user edit page
+    When I change all my data except my password
+    And I provide the correct password
+    Then I should be on the home page
+    And The data has been updated
+

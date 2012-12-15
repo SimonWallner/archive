@@ -3,33 +3,70 @@ Feature: reset password
   in order to access my account again,
   I want to reset my password via email.
 
-  Scenario Outline: get email to reset password
+  Scenario : get email to reset password
     Given I have a user
     And I am not signed in
     And I am on the reset password page
-    When <email>
-    Then <result>
+    When I enter my email
+    Then I should receive an email with password reset instructions
 
-    Examples:
-    | email | result |
-    | I enter my email | I should receive an email with password reset instructions |
-    | I enter an email which does not belong to a user | I should see an error      |
+  Scenario : fail to get email to reset password due to an email that does not belong to any user
+    Given I have a user
+    And I am not signed in
+    And I am on the reset password page
+    When I enter an email which does not belong to a user
+    Then I should see an error
 
 
-  Scenario Outline: follow reset instructions
+  Scenario: successfully follow reset instructions and set new password
     Given I have a user
     And I am not signed in
     And I have received a password reset email
     When I follow the reset link
-    And <action>
-    Then I should <signedin>
-    And <where>
-    And <error>
+    And I set a valid password
+    Then I should be signed in
+    And I should be on the home page
 
-    Examples:
-    | action | signedin | where | error |
-    | I set a valid password | be signed in | I should be on the home page | I should not see an error |
-    | I set an invalid password   | not be signed in | I should be on the password page | I should see an error |
-    | I set a too short password  | not be signed in | I should be on the password page | I should see an error |
-    | I leave the password blank  | not be signed in | I should be on the password page | I should see an error |
-    | I set a wrong confirmation password | not be signed in | I should be on the password page | I should see an error |
+
+  Scenario: follow reset instructions and fail to change password due to an invalid password
+    Given I have a user
+    And I am not signed in
+    And I have received a password reset email
+    When I follow the reset link
+    And I set an invalid password
+    Then I should not be signed in
+    And I should be on the password page
+    And I should see an error
+
+
+  Scenario: follow reset instructions and fail to change password due to a password that is too short
+    Given I have a user
+    And I am not signed in
+    And I have received a password reset email
+    When I follow the reset link
+    And I set a too short password
+    Then I should not be signed in
+    And I should be on the password page
+    And I should see an error
+
+  Scenario: follow reset instructions and fail to change password due to a password that is blank
+    Given I have a user
+    And I am not signed in
+    And I have received a password reset email
+    When I follow the reset link
+    And I leave the password blank
+    Then I should not be signed in
+    And I should be on the password page
+    And I should see an error
+
+  Scenario: follow reset instructions and fail to change password due to a password that is blank
+    Given I have a user
+    And I am not signed in
+    And I have received a password reset email
+    When I follow the reset link
+    And I set a wrong confirmation password
+    Then I should not be signed in
+    And I should be on the password page
+    And I should see an error
+
+
