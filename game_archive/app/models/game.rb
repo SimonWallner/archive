@@ -6,6 +6,8 @@ class Game < ActiveRecord::Base
 
   validates :title, :presence => true
 
+  has_many :reportblockcontent
+  
   has_many :videos, :dependent => :destroy
   accepts_nested_attributes_for :videos, :reject_if => lambda { |a| a[:embedcode].blank? }, :allow_destroy => true
 

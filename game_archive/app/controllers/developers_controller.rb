@@ -1,6 +1,9 @@
 class DevelopersController < ApplicationController
-  before_filter :authenticate_user!, except: [:index, :show]
-
+  before_filter :authenticate_user!, except: [:index, :show, :report]
+  before_filter only: [:edit, :show] { |c| c.block_content_visitor 1 } 
+  before_filter only: [:edit] { |c| c.block_content_user 1 }
+  before_filter :authenticate_admin!, only: [:block]
+  
   # GET /developers
   # GET /developers.json
   def index
@@ -16,6 +19,7 @@ class DevelopersController < ApplicationController
   # GET /developers/1.json
   def show
     @developer = Developer.find(params[:id])
+	@reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(1,params[:id])
 	if @developer.popularity == nil 
 		@developer.popularity = 0
 		@developer.save
@@ -44,6 +48,18 @@ class DevelopersController < ApplicationController
     @developer = Developer.find(params[:id])
   end
 
+   # GET /games/1/report
+  def report
+	@reportblockcontent =Reportblockcontent.new
+    @developer = Developer.find(params[:id])	
+  end
+  
+  # GET /games/1/block
+  def block
+	@reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(1,params[:id])
+    @developer = Developer.find(params[:id])
+  end
+  
   # POST /developers
   # POST /developers.json
   def create
@@ -65,7 +81,10 @@ class DevelopersController < ApplicationController
   # PUT /developers/1.json
   def update
     @developer = Developer.find(params[:id])
-
+	if (params[:reportblockcontent])
+		Reportblockcontent.create_from_string(1,params[:id], params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
+	end
+	
     respond_to do |format|
       if @developer.update_attributes(params[:developer])
         format.html { redirect_to @developer}
