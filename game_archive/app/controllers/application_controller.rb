@@ -28,14 +28,6 @@ class ApplicationController < ActionController::Base
 			end
 			redirect_to root_path
 		end
-		if (@reportblockcontent.status== 2) and (current_user.nil?)
-			if @reportblockcontent.reason
-				flash[:alert] = "The content has been locked due to: " + @reportblockcontent.reason
-			else
-				flash[:alert] = "The content has been locked."
-			end
-			redirect_to root_path
-		end
 	end
   end
   
