@@ -1,5 +1,5 @@
 class GamesController < ApplicationController
-  before_filter :authenticate_user!, except: [:index, :show, :report]
+  before_filter :authenticate_user!, except: [:index, :show, :report, :update]
   before_filter only: [:edit, :show] { |c| c.block_content_visitor 0 } 
   before_filter only: [:edit] { |c| c.block_content_user 0 }   
   before_filter :authenticate_admin!, only: [:block]
