@@ -1,4 +1,4 @@
-Feature: Use Javascript
+  Feature: Use Javascript
   In order to make easy inputs
   As a contributor
   I want to use javascript to aid me
