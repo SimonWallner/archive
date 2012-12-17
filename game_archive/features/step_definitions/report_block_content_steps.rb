@@ -29,11 +29,11 @@ Given /^I have a (.*) company$/ do |blockedorlocked|
   @givenReportblockcontent=FactoryGirl.create :reportblockcontent, content_type:2 ,status:status, content_id:@givenCompany.id
 end
 
-When /^I follow the (.*) link$/ do |button|
+When /^I follow the (.*) content link$/ do |button|
     click_link_or_button button
 end
 
-When /^I press the (.*) button$/ do |blockedorlocked|
+When /^I press the (.*) button in Report page$/ do |blockedorlocked|
 	click_link_or_button blockedorlocked
 end
 

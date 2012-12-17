@@ -68,7 +68,7 @@
 				<% if @reportblockcontent.status !=2%>
 					<%= link_to 'Edit', edit_game_path(@game) %> |
 				<% end %>
-				<% if @reportblockcontent.status ==0%>
+				<% if @reportblockcontent.status !=1%>
 					<%= link_to 'Report', report_game_path(@game) %> |
 				<% end %>
 			<% else%>
@@ -78,7 +78,7 @@
 		<% end %>
 	<% else%>
 		<% if @reportblockcontent %>
-			<% if @reportblockcontent.status ==0%>
+			<% if @reportblockcontent.status !=1%>
 				<%= link_to 'Report', report_game_path(@game) %> |
 			<% end %>
 		<% else%>

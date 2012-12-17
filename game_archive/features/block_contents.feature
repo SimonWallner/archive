@@ -7,7 +7,7 @@ Feature: Lock Page /Block Content
     Given I am signed in as Admin
 	And I have a game Tetris
     And I am on the detail page of the game
-    When I follow the Block link
+    When I follow the Block content link
 	And I fill a reason  
 	And I select Block and submit it
     Then I should be on the detail page of the given game
@@ -16,7 +16,7 @@ Feature: Lock Page /Block Content
     Given I am signed in as Admin
 	And I have a game Tetris
     And I am on the detail page of the game
-    When I follow the Block link
+    When I follow the Block content link
 	And I fill a reason  
 	And I select Lock and submit it
     Then I should be on the detail page of the given game
@@ -25,23 +25,23 @@ Feature: Lock Page /Block Content
     Given I am signed in as Admin
 	And I have a blocked game
 	And I am on the detail page of the game
-    When I follow the Remove Block link
-	And I press the Remove Block button
+    When I follow the Remove Block content link
+	And I press the Remove Block button in Report page
     Then I should be on the detail page of the given game
 
   Scenario: Admin remove lock game's page with valid data
     Given I am signed in as Admin
 	And I have a locked game
 	And I am on the detail page of the game
-    When I follow the Remove Lock link
-	And I press the Remove Lock button
+    When I follow the Remove Lock content link
+	And I press the Remove Lock button in Report page
     Then I should be on the detail page of the given game
 	
   Scenario: Admin block developer's page with valid data
     Given I am signed in as Admin
 	And I have a developer Leela
 	And I am on the detail page of the given developer
-    When I follow the Block link
+    When I follow the Block content link
 	And I fill a reason  
 	And I select Block and submit it
     Then I should be on the detail page of the given developer
@@ -50,7 +50,7 @@ Feature: Lock Page /Block Content
     Given I am signed in as Admin
 	And I have a developer Leela
 	And I am on the detail page of the given developer
-    When I follow the Block link
+    When I follow the Block content link
 	And I fill a reason  
 	And I select Lock and submit it
     Then I should be on the detail page of the given developer
@@ -59,23 +59,23 @@ Feature: Lock Page /Block Content
     Given I am signed in as Admin
 	And I have a blocked developer
 	And I am on the detail page of the given developer
-    When I follow the Remove Block link
-	And I press the Remove Block button
+    When I follow the Remove Block content link
+	And I press the Remove Block button in Report page
     Then I should be on the detail page of the given developer
 
   Scenario: Admin remove lock developer's page with valid data
     Given I am signed in as Admin
 	And I have a locked developer
 	And I am on the detail page of the given developer
-    When I follow the Remove Lock link
-	And I press the Remove Lock button
+    When I follow the Remove Lock content link
+	And I press the Remove Lock button in Report page
     Then I should be on the detail page of the given developer
 	
   Scenario: Admin block company's page with valid data
     Given I am signed in as Admin
 	And I have a company Leela
 	And I am on the detail page of the given company
-    When I follow the Block link
+    When I follow the Block content link
 	And I fill a reason  
 	And I select Block and submit it
     Then I should be on the detail page of the given company
@@ -85,7 +85,7 @@ Feature: Lock Page /Block Content
     Given I am signed in as Admin
 	And I have a company Tetris
 	And I am on the detail page of the given company
-    When I follow the Block link
+    When I follow the Block content link
 	And I fill a reason  
 	And I select Lock and submit it
     Then I should be on the detail page of the given company
@@ -95,8 +95,8 @@ Feature: Lock Page /Block Content
     Given I am signed in as Admin
 	And I have a blocked company
 	And I am on the detail page of the given company
-    When I follow the Remove Block link
-	And I press the Remove Block button
+    When I follow the Remove Block content link
+	And I press the Remove Block button in Report page
     Then I should be on the detail page of the given company
 
 
@@ -104,8 +104,8 @@ Feature: Lock Page /Block Content
     Given I am signed in as Admin
 	And I have a locked company
 	And I am on the detail page of the given company
-    When I follow the Remove Lock link
-	And I press the Remove Lock button
+    When I follow the Remove Lock content link
+	And I press the Remove Lock button in Report page
     Then I should be on the detail page of the given company
 	
   Scenario: User can not edit locked game

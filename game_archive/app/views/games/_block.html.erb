@@ -40,10 +40,10 @@
 			<%=  text_field( :reportblockcontent, :reason, :value => nil )%>
 			</div>	
 			<div class="radiobutton">
-			<%= radio_button("reportblockcontent", "status", "2") %>
-				<%= label_tag(:Lock, "Lock Game") %>
-			<%= radio_button("reportblockcontent", "status", "1") %>
-				<%= label_tag(:Block, "Block Game") %>
+			<%= radio_button("reportblockcontent", "status", 2) %>
+				<%= label_tag(:status, "Lock Game") %>
+			<%= radio_button("reportblockcontent", "status", 1) %>
+				<%= label_tag(:status, "Block Game") %>
 			</div></br>  
 			<%= f.submit 'Save' %> </br></br>
 		<% end %> 	  
@@ -53,10 +53,10 @@
 		<%=  text_field( :reportblockcontent, :reason)%>
 	  </div>  
 	  <div class="radiobutton">
-		<%= radio_button("reportblockcontent", "status", "2") %>
-			<%= label_tag(:Lock, "Lock Game") %>
-		<%= radio_button("reportblockcontent", "status", "1") %>
-			<%= label_tag(:Block, "Block Game") %>
+		<%= radio_button("reportblockcontent", "status", 2) %>
+			<%= label_tag(:status, "Lock Game") %>
+		<%= radio_button("reportblockcontent", "status", 1) %>
+			<%= label_tag(:status, "Block Game") %>
 	  </div></br>  
 	  <%= f.submit 'Save' %> </br></br>
   <% end %> 
