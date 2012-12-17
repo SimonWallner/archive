@@ -17,13 +17,19 @@ Feature: reset password
     When I enter an email which does not belong to a user
     Then I should see an error
 
+  Scenario: successfully follow reset instruction link
+    Given I have a user
+    And I am not signed in
+    And I have received a password reset email
+    When I follow the reset link
+    Then I should be on the reset password page
 
   Scenario: successfully follow reset instructions and set new password
     Given I have a user
     And I am not signed in
     And I have received a password reset email
     When I follow the reset link
-    And I set a valid password
+    When I set a valid password
     Then I should be signed in
     And I should be on the home page
 

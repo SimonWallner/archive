@@ -94,17 +94,6 @@ When /^I provide the correct password$/ do
   update_form
 end
 
-When /^I confirm my email$/ do
-  @user.reload
-  @user.confirm!
-  @email_confirmed = true
-end
-
-When /^I don't confirm my email$/ do
-  # do nothing
-  @email_confirmed = false
-end
-
 Then /^I should be on the home page$/ do
   URI.parse(current_url).path.should == "/"
 end
@@ -133,6 +122,11 @@ Then /^I should be on the user edit page$/ do
   page.should have_content("Edit User")
 end
 
+Then /^I should be on the reset password page$/ do
+  page.should have_content("Change your password")
+  URI.parse(current_url).path.should == "/users/password/edit"
+end
+
 Then /^I should see an error$/ do
   page.should have_selector("#error_explanation")
 end
@@ -157,9 +151,7 @@ When /^I change my email$/ do
 end
 
 Then /^I should receive an email with confirmation instructions$/ do
-  mail = ActionMailer::Base.deliveries.last
-  mail['to'].to_s.should == @newEmail
-  mail['subject'].to_s.should == "Confirmation instructions"
+  mail_sent? :to => @newEmail, :subject => "Confirmation instructions"
 end
 
 Then /^The email has not changed yet$/ do
@@ -203,27 +195,21 @@ def reset_password
   @user.reset_password_token.should_not == nil
 end
 
-def have_received_pwd_reset(user)
-  mail = ActionMailer::Base.deliveries.last
-  mail['to'].to_s.should == user.email
-  mail['subject'].to_s.should == "Reset password instructions"
+def have_received_pwd_reset
+  mail_sent? :to => @user.email, :subject => "Reset password instructions"
 end
 
 When /^I reset my password$/ do
   reset_password
 end
 
-Given /^I have a user$/ do
-  @user = FactoryGirl.create :user
-end
-
 Then /^I should receive an email with password reset instructions$/ do
-  have_received_pwd_reset @user
+  have_received_pwd_reset
 end
 
 Given /^I have received a password reset email$/ do
   reset_password
-  have_received_pwd_reset @user
+  have_received_pwd_reset
 end
 
 When /^I follow the reset link$/ do
