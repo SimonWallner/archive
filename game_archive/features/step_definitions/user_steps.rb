@@ -1,19 +1,3 @@
-def go_to_edit_page
-  visit "/users/edit"
-end
-
-When /^I enter edit user url$/ do
-  go_to_edit_page
-end
-
-Then /^I should be redirected to the sign in page$/ do
-  URI.parse(current_url).path.should == "/users/sign_in"
-end
-
-Given /^I am on the user edit page$/ do
-  go_to_edit_page
-end
-
 When /^I change all my data$/ do
   newpassword = "bB2bbbbbb"
   @newDetails = FactoryGirl.build :confirmed_user, email: "new@user.at", firstname: "newfirst", lastname: "newlast", password: newpassword
@@ -97,15 +81,6 @@ When /^I provide the wrong password$/ do
   update_form
 end
 
-Then /^I should be on the user edit page$/ do
-  page.should have_content("Edit User")
-end
-
-Then /^I should be on the reset password page$/ do
-  page.should have_content("Change your password")
-  URI.parse(current_url).path.should == "/users/password/edit"
-end
-
 Then /^I should see an error$/ do
   page.should have_selector("#error_explanation")
 end
@@ -142,10 +117,6 @@ Then /^My email has been updated$/ do
   @user.email.should == @newEmail
 end
 
-When /^I go to the sign up form$/ do
-  visit accept_user_invitation_path(:invitation_token => @user.invitation_token)
-end
-
 When /^I enter and repeat a password$/ do
   newpassword = "bB2bbbbbb"
   fill_in "user_password", :with => newpassword
@@ -156,16 +127,8 @@ When /^I click on the sign up button$/ do
   click_link_or_button "Set my password"
 end
 
-Then /^I should be on the sign up page$/ do
-  assert_equal current_path, accept_user_invitation_path
-end
-
-Given /^I am on the login page$/ do
-  visit "/users/sign_in"
-end
-
 def reset_password
-  visit "/users/password/new"
+  visit_reset_password_page
 
   fill_in "user_email", :with => @user.email
   click_link_or_button "Send me reset password instructions"
@@ -191,11 +154,6 @@ Given /^I have received a password reset email$/ do
   have_received_pwd_reset
 end
 
-When /^I follow the reset link$/ do
-  link = ("/users/password/edit?reset_password_token=" + @user.reset_password_token)
-  visit link
-end
-
 When /^I sign up with a short password$/ do
   fill_in "user_password", :with => "aA1a"
   fill_in "user_password_confirmation", :with => "aA1a"
@@ -214,10 +172,6 @@ end
 Then /^I am signed in$/ do
   page.should have_content("Edit")
   page.should have_content("Logout")
-end
-
-When /^I enter the invitation url$/ do
-  visit '/users/invitation/new'
 end
 
 Then /^No invitation should be sent$/ do
@@ -248,10 +202,6 @@ end
 
 Then /^Invitation should be sent$/ do
   assert (User.exists?(:email => @email))
-end
-
-Then /^I should be on the invite page$/ do
-  URI.parse(current_url).path.should == "/users/invitation"
 end
 
 Then /^I should see an email already used error$/ do
@@ -292,10 +242,6 @@ When /^I set an invalid password$/ do
   click_link_or_button "Change my password"
 end
 
-Then /^I should be on the password page$/ do
-  URI.parse(current_url).path.should == "/users/password"
-end
-
 When /^I set a too short password$/ do
   fill_in "user_password", :with => "aaa"
   fill_in "user_password_confirmation", :with => "aaa"
@@ -312,10 +258,6 @@ When /^I set a wrong confirmation password$/ do
   fill_in "user_password", :with => "aA1aaaa"
   fill_in "user_password_confirmation", :with => "aB1aaaa"
   click_link_or_button "Change my password"
-end
-
-Given /^I am on the reset password page$/ do
-  visit "/users/password/new"
 end
 
 Then /^I should be signed in$/ do
@@ -378,12 +320,4 @@ end
 
 When /^I press the Save button$/ do
 	click_link_or_button "Save"
-end
-
-When /^I enter the promote admin page adress$/ do
-	visit "/users/manage"
-end
-
-Then /^I should be on the promote admin page$/ do
-	URI.parse(current_url).path.should == "/users/manage"
 end

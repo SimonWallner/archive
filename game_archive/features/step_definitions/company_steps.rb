@@ -27,9 +27,6 @@ end
 
 
 #    Scenario: fail to create company with empty name
-Given /^I am on the company creation page$/ do
-  visit new_company_path
-end
 When /^I leave the name of company field empty and submit it$/ do
   fill_in("company_name", :with => "")
   fill_in("company_description", :with => "")
@@ -48,10 +45,6 @@ end
 
 #    Scenario: update company's page with valid data
 
-Given /^I am on the detail page of the given company$/ do
-  visit company_path(@givenCompany)
-end
-
 When /^I change the company's data and submit it$/ do
 
   @update_name = "Blizzard"
@@ -61,11 +54,6 @@ When /^I change the company's data and submit it$/ do
   fill_in("company_description", :with => @update_description)
   click_button "Update Company"
 
-end
-
-
-Then /^I should be on the detail page of the given company$/ do
-  current_path.should == company_path(@givenCompany)
 end
 
 Given /^I follow the company edit link$/ do
