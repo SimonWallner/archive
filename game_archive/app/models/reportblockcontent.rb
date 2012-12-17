@@ -5,6 +5,9 @@ class Reportblockcontent < ActiveRecord::Base
   belongs_to :developers
   belongs_to :companies
   
+# content_type: 0 => game 	1 => developer 	2 => company
+# status: 		0 => report 1 => block		2 => lock
+#
   def Reportblockcontent.create_from_string(ctype, cid, reason, content_status, email, admin_id)
 	@rbcontent =Reportblockcontent.find_all_by_content_type_and_content_id(ctype,cid)
 	

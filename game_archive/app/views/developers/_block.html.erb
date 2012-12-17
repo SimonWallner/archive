@@ -41,9 +41,9 @@
 			</div>	
 			<div class="radiobutton">
 			<%= radio_button('reportblockcontent', 'status', 2) %>
-				<%= label_tag(:status, "Lock Developer") %>
+				<%= label_tag(:lock, "Lock Developer") %>
 			<%= radio_button('reportblockcontent', 'status', 1) %>
-				<%= label_tag(:status, "Block Developer") %>
+				<%= label_tag(:block, "Block Developer") %>
 			</div></br>  
 			<%= f.submit 'Save' %> </br></br>
 		<% end %> 	  
@@ -54,9 +54,9 @@
 	  </div>  
 	  <div class="radiobutton">
 		<%= radio_button('reportblockcontent', 'status', 2) %>
-			<%= label_tag(:status, "Lock Developer") %>
+			<%= label_tag(:lock, "Lock Developer") %>
 		<%= radio_button('reportblockcontent', 'status', 1) %>
-			<%= label_tag(:status, "Block Developer") %>
+			<%= label_tag(:block, "Block Developer") %>
 	  </div></br>  
 	  <%= f.submit 'Save' %> </br></br>
   <% end %> 
