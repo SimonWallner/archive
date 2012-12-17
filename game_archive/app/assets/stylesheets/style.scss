@@ -699,7 +699,16 @@ img.full_markdown_help {
   font-weight: normal;
 }
 
+table{
+  border-collapse:collapse;
+  background-color: #f5f5f5;
+}
 
+table, tr, td{
+  
+  border: 1px solid black;
+  padding:5px;
+}
  
 
  

@@ -1,6 +1,18 @@
 <h1>Manage users</h1>
 <p>Enter the full name or email adress of a user and choose what to do.</p>
 
+<div class="container">
+<h3>registered users</h3>
+<table>
+<tr><td><b>first name</b></td><td><b>last name</b></td><td><b>email</b></td><td><b>blocked?</b></td><td><b>admin?</b></td></tr>
+<% User.find(:all).each do |u| %>
+	<tr><td> <%= u.firstname %> </td><td> <%= u.lastname %> </td><td> <%= u.email %> </td><td> <%= u.blocked? %> </td><td> <%= u.admin? %> </td></tr>
+<% end %>
+</table>
+</div>
+
+<p />
+
 <%= form_tag ({:controller => "users", :action => "update"}) do %>
   <div class="field">
     <%= label_tag :user_email %><br />
