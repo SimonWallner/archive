@@ -1,5 +1,8 @@
 class GamesController < ApplicationController
-  before_filter :authenticate_user!, except: [:index, :show]
+  before_filter :authenticate_user!, except: [:index, :show, :report, :update]
+  before_filter only: [:edit, :show] { |c| c.block_content_visitor 0 } 
+  before_filter only: [:edit] { |c| c.block_content_user 0 }   
+  before_filter :authenticate_admin!, only: [:block]
 
   # GET /games
   # GET /games.json
@@ -16,6 +19,7 @@ class GamesController < ApplicationController
   # GET /games/1.json
   def show
     @game = Game.find(params[:id])
+	@reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(0,params[:id])	
 	if @game.popularity == nil 
 		@game.popularity = 0
 		@game.save
@@ -44,12 +48,22 @@ class GamesController < ApplicationController
     @genres = Genre.all
     @game = Game.find(params[:id])
   end
+  
+   # GET /games/1/report
+  def report
+	@reportblockcontent =Reportblockcontent.new
+    @game = Game.find(params[:id])	
+  end
+  
+  # GET /games/1/block
+  def block
+	@reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(0,params[:id])
+    @game = Game.find(params[:id])	
+  end
 
   # POST /games
   # POST /games.json
   def create
-
-
     @game = Game.new(params[:game])
 	@game.popularity = 0
     create_add_new_genres(params[:new_genres])
@@ -70,8 +84,13 @@ class GamesController < ApplicationController
   # PUT /games/1.json
   def update
     @game = Game.find(params[:id])
-
+	
+	if (params[:reportblockcontent])
+		Reportblockcontent.create_from_string(0,params[:id], params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
+	else
     create_add_new_genres(params[:new_genres])
+
+	end
 	
     respond_to do |format|
       if @game.update_attributes(params[:game])

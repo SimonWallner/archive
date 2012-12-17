@@ -5,7 +5,8 @@ class Developer < ActiveRecord::Base
 
   validates :name, :presence => true
 
-
+  has_many :reportblockcontent
+  
   mount_uploader :image , ImageUploader
 
   validates :image,

@@ -30,8 +30,45 @@
   </div>
 
   <div class="clear"></div>
-  <%= link_to 'Edit', edit_company_path(@company) %> |
-  <%= link_to 'Back', companies_path %> | <%= link_to 'Destroy', @company, method: :delete, data: { confirm: 'Are you sure?' } %>
+  <% if user_signed_in? %>
+	<% if current_user.admin %>
+		<%= link_to 'Edit', edit_company_path(@company) %> |
+		<% if @reportblockcontent %>
+					<% if @reportblockcontent.status ==1%>
+						<%= link_to 'Remove Block', block_company_path(@company) %> |
+					<% else if @reportblockcontent.status ==2%>
+						<%= link_to 'Remove Lock', block_company_path(@company) %> |
+					<% else%>
+						<%= link_to 'Block', block_company_path(@company) %> |
+					<% end %>
+					<% end %>
+			<% else%>
+				<%= link_to 'Block', block_company_path(@company) %> |
+			<% end %>
+		<% else%>
+			<% if @reportblockcontent %>
+				<% if @reportblockcontent.status !=2%>
+					<%= link_to 'Edit', edit_company_path(@company) %> |
+				<% end %>
+				<% if @reportblockcontent.status ==0%>
+					<%= link_to 'Report', report_company_path(@company) %> |
+				<% end %>
+			<% else%>
+				<%= link_to 'Edit', edit_company_path(@company) %> |
+				<%= link_to 'Report', report_company_path(@company) %> |
+			<% end %>
+		<% end %>
+	<% else%>
+		<% if @reportblockcontent %>
+			<% if @reportblockcontent.status ==0%>
+				<%= link_to 'Report', report_company_path(@company) %> |
+			<% end %>
+		<% else%>
+			<%= link_to 'Report', report_company_path(@company) %> |
+		<% end %>
+	<% end %>	
+	
+  <%= link_to 'Back', companies_path %>
 </div>
 
 <script>
@@ -43,5 +80,3 @@
     })
 
 </script>
-
-

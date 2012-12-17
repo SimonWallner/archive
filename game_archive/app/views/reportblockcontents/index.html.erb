@@ -1,0 +1,44 @@
+<h1>Reported Contents</h1>
+
+<table cellpadding="40">
+  <tr>
+    <th>Content Name</th>
+    <th>Reason</th>
+    <th>E-mail</th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% Reportblockcontent.all.each do |reportblockcontent| %>
+  <tr>
+	<% if reportblockcontent.status ==0 %>
+		<% if reportblockcontent.content_type ==0 %>
+			<% @title = Game.find(reportblockcontent.content_id).title %>
+		<% else if  reportblockcontent.content_type ==1 %>
+			<% @title = Developer.find(reportblockcontent.content_id).name %>
+		<% else if  reportblockcontent.content_type ==2 %>
+			<% @title = Company.find(reportblockcontent.content_id).name %>
+		<% end %>
+		<% end %>
+		<% end %>
+		<td><%= @title %></td>
+		<td><%= reportblockcontent.reason %></td>
+		<td><%= reportblockcontent.email %></td>
+	
+		<% if reportblockcontent.content_type ==0 %>
+			<td><%= link_to 'Block', block_game_path(reportblockcontent.content_id) %></td>
+		<% else if  reportblockcontent.content_type ==1 %>
+			<td><%= link_to 'Block', block_developer_path(reportblockcontent.content_id) %></td>
+		<% else if  reportblockcontent.content_type ==2 %>
+			<td><%= link_to 'Block', block_company_path(reportblockcontent.content_id) %></td>
+		<% end %>
+		<% end %>
+		<% end %>
+		<td><%= link_to 'Destroy', reportblockcontent, method: :delete, confirm: 'Are you sure?', :action => "destroy"%></td>
+		
+	<% end %>
+  </tr>
+<% end %>
+</table>
+
+<br />

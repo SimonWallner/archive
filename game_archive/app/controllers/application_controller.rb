@@ -17,4 +17,48 @@ class ApplicationController < ActionController::Base
 		redirect_to root_path, notice: 'you have been blocked, reason: ' + current_user.note
 	end
   end
+  def block_content_visitor (type)
+	@reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(type,params[:id])
+	if (@reportblockcontent)
+		if (@reportblockcontent.status== 1) and (current_user.nil?)
+			if @reportblockcontent.reason
+				flash[:alert] = "The content has been blocked due to: " + @reportblockcontent.reason
+			else
+				flash[:alert] = "The content has been blocked."
+			end
+			redirect_to root_path
+		end
+	end
+  end
+  
+  def block_content_user (type)
+	
+	@reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(type,params[:id])
+
+	if (@reportblockcontent)
+		if @reportblockcontent.status==2 and !current_user.admin
+				if @reportblockcontent.reason
+					flash[:alert] = "The content has been locked due to" + @reportblockcontent.reason
+				else
+					flash[:alert] = "The content has been locked." 
+				end
+				if type ==0
+					@game = Game.find(params[:id])
+					redirect_to @game
+				end
+				if type ==1
+					@developer = Developer.find(params[:id])
+					redirect_to @developer
+				end
+				if type ==2
+					@company = Company.find(params[:id])
+					redirect_to @company
+				end
+				
+		end
+	end
+end
+	
+   
+  
 end

@@ -17,18 +17,32 @@ GameArchive::Application.routes.draw do
 #      path_names: { new: 'sign_up' },
 
 
-  resources :companies
+  resources :companies do
+  		member do
+			get 'report'
+			get 'block'
+		end
+	end 
 
   resources :genres
 
-  resources :developers
+  resources :developers do
+  		member do
+			get 'report'
+			get 'block'
+		end
+	end 
 
   resources :games do
       resources :videos
-    end
-  resources :games do
       resources :screenshots
-    end
+		member do
+			get 'report'
+			get 'block'
+		end
+	end 
+	
+	resources :reportblockcontents, only: [:index, :destroy]
 
 
   # The priority is based upon order of creation:
