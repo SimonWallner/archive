@@ -5,7 +5,7 @@
 		<h3>Featured</h3>
 		<% devs = Developer.find(:all, :limit => getAmountFeatured, :order => 'created_at DESC')[0..7] %>
 		<% devs.concat(Developer.find(:all, :limit => getAmountFeatured, :order => 'popularity DESC')[0..7]) %>
-		<% #devs = removeDoubleEntries(devs) %>
+		<% devs = devs.uniq %>
 		<% devs[0..7].each do |dev| %>
 			<div class="tiled_4x">
 				<a href="/developers/<%= dev.id %>">
@@ -28,6 +28,23 @@
     </div>
 <% end %>
 
-	<div class="developers_all"></div>
+	<div class="developers_all">
+		<div class="developers_featured">
+		<h3>All developers</h3>
+		<% developers = Developer.find(:all, :order => 'name') %>
+		<% developers.each do |developer| %>
+			<div class="tiled_4x">
+				<a href="/developers/<%= developer.id %>">
+					<div class="tile">
+						<%= image_tag(developer.image_url(:tiled_4x).to_s, :class => 'rounded teaser')%>
+						<div class="caption"><div><%= developer.name %></div></div>
+					</div>
+				</a>
+			</div>
+		<% end %>
+	</div>
+	
+	<div class="clear"></div>
+	</div>
 
 </div>

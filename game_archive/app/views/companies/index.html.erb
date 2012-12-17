@@ -5,7 +5,7 @@
 		<h3>Featured</h3>
 		<% coms = Company.find(:all, :limit => getAmountFeatured, :order => 'created_at DESC')[0..7] %>
 		<% coms.concat(Company.find(:all, :limit => getAmountFeatured, :order => 'popularity DESC')[0..7]) %>
-		<% #coms = removeDoubleEntries(coms) %>
+		<% coms = coms.uniq %>
 		<% coms[0..7].each do |com| %>
 			<div class="tiled_2x">
 				<a href="/companies/<%= com.id %>">
@@ -27,6 +27,23 @@
     </div>
 <% end %>
 
-	<div class="companies_all"></div>
+	<div class="companies_all">
+		<div class="companies_featured">
+		<h3>All companies</h3>
+		<% companies = Company.find(:all, :order => 'name') %>
+		<% companies.each do |company| %>
+			<div class="tiled_2x">
+				<a href="/companies/<%= company.id %>">
+					<div class="tile">
+						<%= image_tag(company.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
+						<div class="caption"><div><%= company.name %></div></div>
+					</div>
+				</a>
+			</div>
+		<% end %>
+	</div>
+	
+	<div class="clear"></div>
+	</div>
 	
 </div>
