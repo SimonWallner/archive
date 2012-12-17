@@ -16,7 +16,7 @@
 	<div class="games_featured">
 		<% games = Game.find(:all, :limit => getAmountFeatured, :order => 'created_at DESC')[0..7] %>
 		<% games.concat(Game.find(:all, :limit => getAmountFeatured, :order => 'popularity DESC')[0..7]) %>
-		<% #games = removeDoubleEntries(games) %>
+		<% games = games.uniq %>
 		<% games[0..7].each do |game| %>
 			<div class="tiled_2x">
 				<a href="/games/<%= game.id %>">
@@ -58,7 +58,7 @@
 	<div class="companies_featured">
 		<% coms = Company.find(:all, :limit => getAmountFeatured, :order => 'created_at DESC')[0..7] %>
 		<% coms.concat(Company.find(:all, :limit => getAmountFeatured, :order => 'popularity DESC')[0..7]) %>
-		<% #coms = removeDoubleEntries(coms) %>
+		<% coms = coms.uniq %>
 		<% coms[0..7].each do |com| %>
 			<div class="tiled_2x">
 				<a href="/companies/<%= com.id %>">
@@ -100,7 +100,7 @@
 	<div class="developers_featured">
 		<% devs = Developer.find(:all, :limit => getAmountFeatured, :order => 'created_at DESC')[0..7] %>
 		<% devs.concat(Developer.find(:all, :limit => getAmountFeatured, :order => 'popularity DESC')[0..7]) %>
-		<% #devs = removeDoubleEntries(devs) %>
+		<% devs = devs.uniq %>
 		<% devs[0..7].each do |dev| %>
 			<div class="tiled_4x">
 				<a href="/developers/<%= dev.id %>">

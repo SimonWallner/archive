@@ -6,18 +6,6 @@ module ApplicationHelper
 		return 8
 	end
 	
-	def removeDoubleEntries(list)
-		if list.length > 0
-			ret = Array.new
-			list.each do |elem|
-				if not ret.include?(elem)
-					ret.insert(elem)
-				end
-			end
-		end
-		return ret
-	end
-	
 	def markdown(text)
 
 		rndr = CustomLinkRenderer.new(:filter_html => true, :no_images => true, :hard_wrap => true)
