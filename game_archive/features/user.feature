@@ -1,4 +1,4 @@
-  Feature: create user account
+Feature: create user account
   As a visitor,
   in order to contribute content,
   I want to create a user account for myself.

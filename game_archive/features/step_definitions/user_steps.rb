@@ -1,26 +1,3 @@
-Given /^I am not signed in$/ do
-  visit('/users/sign_out')
-end
-
-Given /^I am signed in as (.+)$/ do |role|
-
-  @email = 'user@user.com'
-  @pwd = 'aA1aaaaaa'
-  @user = User.new(:email => @email, :password => @pwd, :password_confirmation => @pwd)
-  @user.confirm!
-  @user.email.should == @email
-  if role == 'Admin'
-    @user.toggle :admin
-  end
-  @user.blocked = false
-  @user.save!
-
-  visit '/users/sign_in'
-  fill_in 'user_email', :with => @email
-  fill_in 'user_password', :with => @pwd
-  click_link_or_button 'Sign in'
-end
-
 def go_to_edit_page
   visit "/users/edit"
 end
@@ -106,7 +83,9 @@ Then /^The data has been updated$/ do
       @user.email.should == @newDetails.email
     else
       @user.email.should == @email
-      @user.unconfirmed_email.should = @newDetails.email
+      unless @email_confirmed == nil
+        @user.unconfirmed_email.should = @newDetails.email
+      end
     end
     @user.firstname.should == @newDetails.firstname
     @user.lastname.should == @newDetails.lastname
@@ -353,22 +332,6 @@ Then /^an invitation should be sent$/ do
 end
 
 # Promote Admin Steps
-Given /^I have a user who is admin$/ do
-	email = 'test@user.com'
-	@pwd = 'aA1aaaaaa'
-	@firstname = 'test'
-	@lastname = 'user'
-	@user = User.create!(:email => email, :password => @pwd, :password_confirmation => @pwd, :firstname => @firstname, :lastname => @lastname)
-	@user.toggle!(:admin)
-end
-
-Given /^I have a user who is not admin$/ do
-	email = 'test@user.com'
-	@pwd = 'aA1aaaaaa'
-	@firstname = 'test'
-	@lastname = 'user'
-	@user = User.create!(:email => email, :password => @pwd, :password_confirmation => @pwd, :firstname => @firstname, :lastname => @lastname)
-end
 
 When /^I go to the promote admin page$/ do
 	click_link_or_button "Manage Users"
@@ -376,11 +339,11 @@ end
 
 When /^I enter a valid user email adress$/ do
 	
-	fill_in "email", :with => 'test@user.com'
+	fill_in "email", :with => another_user_hash[:email]
 end
 
 When /^I enter a user email$/ do
-	fill_in "email", :with => 'test@user.com'
+	fill_in "email", :with => another_user_hash[:email]
 end
 
 When /^I enter an invalid email adress$/ do
@@ -388,12 +351,12 @@ When /^I enter an invalid email adress$/ do
 end
 
 When /^I enter an admin email$/ do
-	fill_in "email", :with => 'user@user.com'
+	fill_in "email", :with => another_user_hash[:email]
 end
 
 When /^I enter a valid full name$/ do
-	fill_in "firstname", :with => 'test'
-	fill_in "lastname", :with => 'user'
+	fill_in "firstname", :with => another_user_hash[:firstname]
+	fill_in "lastname", :with => another_user_hash[:lastname]
 end
 
 When /^I enter an invalid full name$/ do
@@ -402,7 +365,7 @@ When /^I enter an invalid full name$/ do
 end
 
 When /^I enter only a firstname$/ do
-	fill_in "firstname", :with => 'test'
+	fill_in "firstname", :with => another_user_hash[:firstname]
 end
 
 When /^I select Promote$/ do
