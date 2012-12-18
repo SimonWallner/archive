@@ -9,16 +9,21 @@ Given /^I am signed in as (.+)$/ do |role|
   @user = User.new(:email => @email, :password => @pwd, :password_confirmation => @pwd)
   @user.confirm!
   @user.email.should == @email
-  if role == 'Admin'
-    @user.toggle :admin
-  end
-  @user.blocked = false
-  @user.save!
-
+  
   visit '/users/sign_in'
   fill_in 'user_email', :with => @email
   fill_in 'user_password', :with => @pwd
   click_link_or_button 'Sign in'
+  
+  if role == 'Admin'
+    @user.toggle :admin
+	@user.blocked = false
+  elsif role == 'Blocked'
+	@user.blocked = true
+	@user.note = "blocked"
+  end
+  
+  @user.save!
 end
 
 def go_to_edit_page
@@ -358,8 +363,7 @@ Given /^I have a user who is admin$/ do
 	@pwd = 'aA1aaaaaa'
 	@firstname = 'test'
 	@lastname = 'user'
-	@user = User.create!(:email => email, :password => @pwd, :password_confirmation => @pwd, :firstname => @firstname, :lastname => @lastname)
-	@user.toggle!(:admin)
+	User.create!(:email => email, :password => @pwd, :password_confirmation => @pwd, :firstname => @firstname, :lastname => @lastname, :admin => true)
 end
 
 Given /^I have a user who is not admin$/ do
@@ -367,7 +371,7 @@ Given /^I have a user who is not admin$/ do
 	@pwd = 'aA1aaaaaa'
 	@firstname = 'test'
 	@lastname = 'user'
-	@user = User.create!(:email => email, :password => @pwd, :password_confirmation => @pwd, :firstname => @firstname, :lastname => @lastname)
+	User.create!(:email => email, :password => @pwd, :password_confirmation => @pwd, :firstname => @firstname, :lastname => @lastname)
 end
 
 When /^I go to the promote admin page$/ do
@@ -421,6 +425,49 @@ When /^I enter the promote admin page adress$/ do
 	visit "/users/manage"
 end
 
-Then /^I should be on the promote admin page$/ do
+When /^I click on Manage Users$/ do
+	click_link_or_button "Manage Users"
+end
+
+When /^I enter an email adress of an unblocked user$/ do
+	create_unblocked_user
+	fill_in "email", :with => '@created_user.email'
+end
+
+When /^I enter an email adress of a blocked user$/ do
+	create_blocked_user
+	fill_in "email", :with => '@created_user.email'
+end
+
+When /^I enter an email adress of an administrator$/ do
+	create_admin_user
+	fill_in "email", :with => '@created_user.email'
+end
+
+When /^I select Block$/ do
+	choose "todo_block"
+end
+
+When /^I select Unblock$/ do
+	choose "todo_unblock"
+end
+
+When /^I visit the Manage Users Page$/ do
+	visit "/users/manage"
+end
+
+Then /^I should be on the manage users page$/ do
 	URI.parse(current_url).path.should == "/users/manage"
+end
+
+Then /^the user should be blocked$/ do
+	@created_user.blocked == true
+end
+
+Then /^the user should be unblocked$/ do
+	@created_user.blocked == false
+end
+
+When /^I visit the new game page$/ do
+	visit "/games/new"
 end

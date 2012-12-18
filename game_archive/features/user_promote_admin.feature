@@ -53,7 +53,7 @@ Feature: Promote Admin
 		And I enter an invalid email adress
 		And I select Promote
 		And I press the Save button
-		Then I should be on the promote admin page
+		Then I should be on the manage users page
 	
 	Scenario: fail to promote user by wrong name
 		Given I am signed in as Admin
@@ -63,7 +63,7 @@ Feature: Promote Admin
 		And I enter an invalid full name
 		And I select Promote
 		And I press the Save button
-		Then I should be on the promote admin page
+		Then I should be on the manage users page
 	
 	Scenario: fail to promote user by firstname
 		Given I am signed in as Admin
@@ -73,7 +73,7 @@ Feature: Promote Admin
 		And I enter only a firstname
 		And I select Promote
 		And I press the Save button
-		Then I should be on the promote admin page
+		Then I should be on the manage users page
 	
 	Scenario: fail to promote user who is already admin
 		Given I am signed in as Admin
@@ -83,7 +83,7 @@ Feature: Promote Admin
 		And I enter an admin email
 		And I select Promote
 		And I press the Save button
-		Then I should be on the promote admin page
+		Then I should be on the manage users page
 	
 	Scenario: fail to demote user who is not admin
 		Given I am signed in as Admin
@@ -93,7 +93,7 @@ Feature: Promote Admin
 		And I enter a user email
 		And I select Demote
 		And I press the Save button
-		Then I should be on the promote admin page
+		Then I should be on the manage users page
 	
 	Scenario: fail to promote user without having administrator rights
 		Given I am signed in as user

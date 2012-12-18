@@ -1,7 +1,19 @@
 # creation helpers and steps
 
 def create_confirmed_user
-  @user = FactoryGirl.create :confirmed_user
+  @user = FactoryGirl.create(:confirmed_user)
+end
+
+def create_unblocked_user
+  @created_user = FactoryGirl.create(:confirmed_user, blocked: false)
+end
+
+def create_blocked_user
+  @created_user = FactoryGirl.create(:confirmed_user, blocked: true)
+end
+
+def create_admin_user
+  @created_user = FactoryGirl.create(:confirmed_user, admin: true)
 end
 
 def create_unconfirmed_user
