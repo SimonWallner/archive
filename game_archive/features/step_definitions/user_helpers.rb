@@ -24,6 +24,11 @@ def create_user(type, user_hash)
       @user = FactoryGirl.create :user, user_hash
     when :admin
       @user = FactoryGirl.create :admin_user, user_hash
+	when :blocked
+	  @user = FactoryGirl.create :confirmed_user, user_hash
+	  @user.blocked = true
+	  @user.note = "blocked"
+	  @user.save
     else
       @user = FactoryGirl.create :confirmed_user, user_hash
   end
@@ -64,6 +69,10 @@ end
 
 Given /^I have a user$/ do
   create_confirmed_user({})
+end
+
+Given /^I have an unconfirmed user$/ do
+  create_unconfirmed_user({})
 end
 
 Given /^I have another user who is admin$/ do

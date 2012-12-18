@@ -1,21 +1,5 @@
-Given /^I am not signed in$/ do
-  visit('/users/sign_out')
-end
-
-def go_to_edit_page
-  visit "/users/edit"
-end
-
-When /^I enter edit user url$/ do
-  go_to_edit_page
-end
-
 Then /^I should be redirected to the sign in page$/ do
   URI.parse(current_url).path.should == "/users/sign_in"
-end
-
-Given /^I am on the user edit page$/ do
-  go_to_edit_page
 end
 
 When /^I change all my data$/ do
@@ -357,27 +341,26 @@ When /^I press the Save button$/ do
 	click_link_or_button "Save"
 end
 
-When /^I enter the promote admin page adress$/ do
-	visit "/users/manage"
-end
-
 When /^I click on Manage Users$/ do
 	click_link_or_button "Manage Users"
 end
 
 When /^I enter an email adress of an unblocked user$/ do
-	create_unblocked_user
-	fill_in "email", :with => '@created_user.email'
+	@user_mail = "unblocked@example.com"
+	create_confirmed_user({:email => @user_mail})
+	fill_in "email", :with => @user_mail
 end
 
 When /^I enter an email adress of a blocked user$/ do
-	create_blocked_user
-	fill_in "email", :with => '@created_user.email'
+	@user_mail = "blocked@example.com"
+	create_blocked_user({:email => @user_mail})
+	fill_in "email", :with => @user_mail
 end
 
 When /^I enter an email adress of an administrator$/ do
-	create_admin_user
-	fill_in "email", :with => '@created_user.email'
+	@user_mail = "admin@example.com"
+	create_admin_user({:email => @user_mail})
+	fill_in "email", :with => @user_mail
 end
 
 When /^I select Block$/ do
@@ -389,21 +372,21 @@ When /^I select Unblock$/ do
 end
 
 When /^I visit the Manage Users Page$/ do
-	visit "/users/manage"
+	visit_manage_admin_page
 end
 
 Then /^I should be on the manage users page$/ do
-	URI.parse(current_url).path.should == "/users/manage"
+	URI.parse(current_url).path.should == users_manage_path
 end
 
 Then /^the user should be blocked$/ do
-	@created_user.blocked == true
+	@user.blocked == true
 end
 
 Then /^the user should be unblocked$/ do
-	@created_user.blocked == false
+	@user.blocked == false
 end
 
 When /^I visit the new game page$/ do
-	visit "/games/new"
+	visit_game_creation_page
 end
