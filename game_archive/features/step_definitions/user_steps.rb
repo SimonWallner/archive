@@ -2,30 +2,6 @@ Given /^I am not signed in$/ do
   visit('/users/sign_out')
 end
 
-Given /^I am signed in as (.+)$/ do |role|
-
-  @email = 'user@user.com'
-  @pwd = 'aA1aaaaaa'
-  @user = User.new(:email => @email, :password => @pwd, :password_confirmation => @pwd)
-  @user.confirm!
-  @user.email.should == @email
-  
-  visit '/users/sign_in'
-  fill_in 'user_email', :with => @email
-  fill_in 'user_password', :with => @pwd
-  click_link_or_button 'Sign in'
-  
-  if role == 'Admin'
-    @user.toggle :admin
-	@user.blocked = false
-  elsif role == 'Blocked'
-	@user.blocked = true
-	@user.note = "blocked"
-  end
-  
-  @user.save!
-end
-
 def go_to_edit_page
   visit "/users/edit"
 end

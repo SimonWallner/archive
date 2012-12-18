@@ -5,15 +5,15 @@ def create_confirmed_user
 end
 
 def create_unblocked_user
-  @created_user = FactoryGirl.create(:confirmed_user, blocked: false)
+  @created_user = FactoryGirl.create(:confirmed_user, email: "unblocked@example.com", blocked: false)
 end
 
 def create_blocked_user
-  @created_user = FactoryGirl.create(:confirmed_user, blocked: true)
+  @created_user = FactoryGirl.create(:confirmed_user, email: "blocked@example.com", blocked: true)
 end
 
 def create_admin_user
-  @created_user = FactoryGirl.create(:confirmed_user, admin: true)
+  @created_user = FactoryGirl.create(:confirmed_user, email: "admin@example.com", admin: true)
 end
 
 def create_unconfirmed_user

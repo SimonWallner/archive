@@ -48,6 +48,10 @@ def create_admin_user(user_hash)
   create_user :admin, user_hash
 end
 
+def create_blocked_user(user_hash)
+  create_user :blocked, user_hash
+end
+
 def another_user_hash
   return {
       :firstname => "Another",
@@ -107,6 +111,8 @@ Given /^I am signed in as (.+)$/ do |role|
   case role
     when 'Admin'
       create_admin_user({})
+	when 'Blocked'
+	  create_blocked_user({})
     else
       create_confirmed_user({})
   end
