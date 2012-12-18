@@ -111,7 +111,9 @@ Then /^The data has been updated$/ do
       @user.email.should == @newDetails.email
     else
       @user.email.should == @email
-      @user.unconfirmed_email.should = @newDetails.email
+      unless @email_confirmed == nil
+        @user.unconfirmed_email.should = @newDetails.email
+      end
     end
     @user.firstname.should == @newDetails.firstname
     @user.lastname.should == @newDetails.lastname
@@ -121,15 +123,6 @@ end
 When /^I provide the wrong password$/ do
   fill_in "user_current_password", :with => (@pwd + "A")
   update_form
-end
-
-Then /^I should be on the user edit page$/ do
-  page.should have_content("Edit User")
-end
-
-Then /^I should be on the reset password page$/ do
-  page.should have_content("Change your password")
-  URI.parse(current_url).path.should == "/users/password/edit"
 end
 
 Then /^I should see an error$/ do
@@ -168,10 +161,6 @@ Then /^My email has been updated$/ do
   @user.email.should == @newEmail
 end
 
-When /^I go to the sign up form$/ do
-  visit accept_user_invitation_path(:invitation_token => @user.invitation_token)
-end
-
 When /^I enter and repeat a password$/ do
   newpassword = "bB2bbbbbb"
   fill_in "user_password", :with => newpassword
@@ -182,16 +171,8 @@ When /^I click on the sign up button$/ do
   click_link_or_button "Set my password"
 end
 
-Then /^I should be on the sign up page$/ do
-  assert_equal current_path, accept_user_invitation_path
-end
-
-Given /^I am on the login page$/ do
-  visit "/users/sign_in"
-end
-
 def reset_password
-  visit "/users/password/new"
+  visit_reset_password_page
 
   fill_in "user_email", :with => @user.email
   click_link_or_button "Send me reset password instructions"
@@ -217,11 +198,6 @@ Given /^I have received a password reset email$/ do
   have_received_pwd_reset
 end
 
-When /^I follow the reset link$/ do
-  link = ("/users/password/edit?reset_password_token=" + @user.reset_password_token)
-  visit link
-end
-
 When /^I sign up with a short password$/ do
   fill_in "user_password", :with => "aA1a"
   fill_in "user_password_confirmation", :with => "aA1a"
@@ -240,10 +216,6 @@ end
 Then /^I am signed in$/ do
   page.should have_content("Edit")
   page.should have_content("Logout")
-end
-
-When /^I enter the invitation url$/ do
-  visit '/users/invitation/new'
 end
 
 Then /^No invitation should be sent$/ do
@@ -274,10 +246,6 @@ end
 
 Then /^Invitation should be sent$/ do
   assert (User.exists?(:email => @email))
-end
-
-Then /^I should be on the invite page$/ do
-  URI.parse(current_url).path.should == "/users/invitation"
 end
 
 Then /^I should see an email already used error$/ do
@@ -318,10 +286,6 @@ When /^I set an invalid password$/ do
   click_link_or_button "Change my password"
 end
 
-Then /^I should be on the password page$/ do
-  URI.parse(current_url).path.should == "/users/password"
-end
-
 When /^I set a too short password$/ do
   fill_in "user_password", :with => "aaa"
   fill_in "user_password_confirmation", :with => "aaa"
@@ -338,10 +302,6 @@ When /^I set a wrong confirmation password$/ do
   fill_in "user_password", :with => "aA1aaaa"
   fill_in "user_password_confirmation", :with => "aB1aaaa"
   click_link_or_button "Change my password"
-end
-
-Given /^I am on the reset password page$/ do
-  visit "/users/password/new"
 end
 
 Then /^I should be signed in$/ do
@@ -380,11 +340,11 @@ end
 
 When /^I enter a valid user email adress$/ do
 	
-	fill_in "email", :with => 'test@user.com'
+	fill_in "email", :with => another_user_hash[:email]
 end
 
 When /^I enter a user email$/ do
-	fill_in "email", :with => 'test@user.com'
+	fill_in "email", :with => another_user_hash[:email]
 end
 
 When /^I enter an invalid email adress$/ do
@@ -392,12 +352,12 @@ When /^I enter an invalid email adress$/ do
 end
 
 When /^I enter an admin email$/ do
-	fill_in "email", :with => 'user@user.com'
+	fill_in "email", :with => another_user_hash[:email]
 end
 
 When /^I enter a valid full name$/ do
-	fill_in "firstname", :with => 'test'
-	fill_in "lastname", :with => 'user'
+	fill_in "firstname", :with => another_user_hash[:firstname]
+	fill_in "lastname", :with => another_user_hash[:lastname]
 end
 
 When /^I enter an invalid full name$/ do
@@ -406,7 +366,7 @@ When /^I enter an invalid full name$/ do
 end
 
 When /^I enter only a firstname$/ do
-	fill_in "firstname", :with => 'test'
+	fill_in "firstname", :with => another_user_hash[:firstname]
 end
 
 When /^I select Promote$/ do

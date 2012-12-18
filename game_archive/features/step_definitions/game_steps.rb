@@ -76,9 +76,6 @@ end
 
 
 #   Scenarios: update game's page
-Given /^I am on the detail page of the game$/ do
-  visit game_path(@givenGame)
-end
 
 When /^I follow the game edit link$/ do
   within(".game") do
@@ -98,9 +95,6 @@ When /^I change the game's data and submit it$/ do
   fill_in("new_genres", :with => @givenGenre.name)
   #select('genre3', :from => "game_genre_ids")
   click_button "Update Game"
-end
-Then /^I should be on the detail page of the given game$/ do
-  current_path.should == game_path(@givenGame)
 end
 Then /^I should see the updated game content$/ do
   page.should have_content(@update_game_title)
