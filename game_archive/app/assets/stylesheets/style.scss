@@ -695,8 +695,12 @@ img.full_markdown_help {
 
  }
 
-#screenshots label{
+#screenshots label, #profilepicfields label{
   font-weight: normal;
+}
+
+#profilepicfields input[type="checkbox"]{
+  width: 2%;
 }
 
 table{
