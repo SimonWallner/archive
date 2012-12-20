@@ -1,7 +1,7 @@
 class Developer < ActiveRecord::Base
   require 'file_size_validator'
 
-  attr_accessible :description, :name , :image, :popularity
+  attr_accessible :description, :name , :image, :popularity,:remove_image
 
   validates :name, :presence => true
 
