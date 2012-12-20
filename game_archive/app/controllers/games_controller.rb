@@ -94,8 +94,13 @@ class GamesController < ApplicationController
 	
     respond_to do |format|
       if @game.update_attributes(params[:game])
-        format.html { redirect_to @game}
-        format.json { head :no_content }
+		if (params[:reportblockcontent][:status]=='0')
+			format.html { redirect_to @game,notice: 'Game was reported successfully'}
+			format.json { head :no_content }
+		else
+			format.html { redirect_to @game}
+			format.json { head :no_content }
+		end
       else
         format.html { render action: "edit" }
         format.json { render json: @game.errors, status: :unprocessable_entity }
