@@ -87,8 +87,13 @@ class DevelopersController < ApplicationController
 	
     respond_to do |format|
       if @developer.update_attributes(params[:developer])
-        format.html { redirect_to @developer}
-        format.json { head :no_content }
+	  	if (params[:reportblockcontent][:status]=='0')
+			format.html { redirect_to @developer,notice: 'Developer was reported successfully'}
+			format.json { head :no_content }
+		else
+			format.html { redirect_to @developer}
+			format.json { head :no_content }
+		end
       else
         format.html { render action: "edit" }
         format.json { render json: @developer.errors, status: :unprocessable_entity }
