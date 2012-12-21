@@ -77,6 +77,9 @@ class GamesController < ApplicationController
         create_add_new_mixed_fields(params[:new_distributors], MixedFieldType.find_by_name("Distributor"))
         create_add_new_mixed_fields(params[:new_credits], MixedFieldType.find_by_name("Credits"))
         create_add_new_mixed_fields(params[:new_series], MixedFieldType.find_by_name("Series"))
+        create_add_new_mixed_fields(params[:new_aggregate_scores], MixedFieldType.find_by_name("Aggregate Scores"))
+        create_add_new_mixed_fields(params[:new_review_scores], MixedFieldType.find_by_name("Review Scores"))
+        create_add_new_mixed_fields(params[:new_external_links], MixedFieldType.find_by_name("External Links"))
 
         format.html { redirect_to @game}
         format.json { render json: @game, status: :created, location: @game }
