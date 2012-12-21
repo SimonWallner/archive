@@ -388,7 +388,7 @@ div.fact-box {
 	p {
 		margin-bottom: 1em;
 	}
-
+  }
 }
 
 div.games_featured,
@@ -468,7 +468,7 @@ div.pager {
       content: "\25c0\2002";
       font-family: arial;
       font-size: 0.8em;
-    };
+    }
   }
   
   span.next {
@@ -479,16 +479,17 @@ div.pager {
       content: "\2002\25B6";
       font-family: arial;
       font-size: 0.8em;
-    };
+    }
   }
 }
 
 a:hover span {
   background-color: $lightGrey * 0.8;
-};
+}
+
 a.tagit-close:hover span {
   background-color: transparent;
-};
+}
 
 .blocked-link {
   display:block;
@@ -681,8 +682,6 @@ select.newField {
   vertical-align: top;
 }
 
- form.edit_game label, form.new_game label,form.edit_company label,form.new_company label,form.edit_developer label,form.new_developer label  {
-
 div.newFieldsDiv{
   width: 50%;
   input{
@@ -700,12 +699,12 @@ div.newFieldsDiv{
     }
   }
 }
- input.year{
-   width: 3em;
- }
+input.year{
+  width: 3em;
+}
 
+form.edit_game label, form.new_game label,form.edit_company label,form.new_company label,form.edit_developer label,form.new_developer label  {
    font-weight: bold;
-
  }
 
 #screenshots label, #profilepicfields label{
@@ -722,7 +721,6 @@ table{
 }
 
 table, tr, td{
-  
   border: 1px solid black;
   padding:5px;
 }
