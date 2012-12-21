@@ -11,7 +11,6 @@
     </div>
   <% end %>
 
-
     <div id="all_genres_div" class="all">
       <h3>All Genres</h3>
       <div >
@@ -63,7 +62,6 @@
       </div>
     </div>
 
-
   <div class="field">
     <%= f.label :title %><br />
     <%= f.text_field :title %>
@@ -76,6 +74,23 @@
   <div class="field">
       <%= f.label :image, 'Choose profile picture' %><br />
       <%= f.file_field :image %>
+    <%= f.label :image, 'Choose game picture' %>
+    <div class="field" id="profilepicfields">
+
+      <% imguploader = ImageUploader.new %>
+          <% if not @game.image_url == imguploader.default_url %>
+          <br />
+          <%= f.label :image, (File.basename f.object.image_url.to_s)%><br/>
+          <%=
+                image_tag f.object.image_url.to_s, :class => 'thumb'
+
+          %>
+
+          <br/><%= f.label :remove_image, "remove game picture?" %>
+          <%= f.check_box :remove_image %> <br/>
+          <%end  %> <br/>
+      <%= f.file_field :image %>   <br/>  <br/>
+
   </div>
   <div>
   <div class="newFieldsDiv"><script type="text/javascript">loadfields('<%= begin game_url rescue new_game_url end %>.json');</script></div>
@@ -135,6 +150,28 @@
       <%= text_field_tag 'new_fields' %>
     </div>
 -->
+    <div class="field" >
+      <!-- iterate through all the available videos for a game and create a field for them
+      <f.text_area :video mit id!? > <remove button>
+   end   -->
+      <%= f.label 'Post Video Embed links here (youtube or vimeo)' %><br /><br />
+      <div id="videos" >
+      <%= f.fields_for :videos do |builder| %>
+          <%= render :partial => 'video_fields', :locals => {:builder => builder} %>
+      <%end %>
+      <p><%= link_to_add_video_fields "Add Video", f, :videos %></p>
+      </div><br/>
+      </div>
+      <div class="field">
+    <%= f.label 'Upload Screenshots' %><br /><br />
+    <div id="screenshots" >
+      <%= f.fields_for :screenshots do |builder| %>
+          <%= render :partial => 'screenshot_fields', :locals => {:builder => builder} %>
+      <%end%>
+      <p><%= link_to_add_screenshot_fields "Add Screenshot", f, :screenshots %></p>
+    </div>
+  </div>
+
   <div class="actions">
     <%= f.submit %>
   </div>

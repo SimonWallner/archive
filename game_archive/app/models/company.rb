@@ -1,6 +1,6 @@
 class Company < ActiveRecord::Base
   require 'file_size_validator'
-  attr_accessible :description, :name, :image, :official_name, :founded, :defunct
+  attr_accessible :description, :name, :image, :official_name, :founded, :defunct, :popularity, :remove_image
 
   has_one :defunct, :class_name => "CompanyDefunct", :inverse_of => :company, :validate => true
   has_one :founded, :class_name => "CompanyFounded", :inverse_of => :company, :validate => true
@@ -11,6 +11,8 @@ class Company < ActiveRecord::Base
   accepts_nested_attributes_for :fields, :locations, :defunct, :founded
 
   validates :name, :presence => true
+
+  has_many :reportblockcontent
 
   mount_uploader :image , ImageUploader
 

@@ -1,5 +1,8 @@
 GameArchive::Application.routes.draw do
 
+  get "users/manage"
+  post "users/update"
+
   devise_for :users, skip: :registrations
   devise_scope :user do
     resource :registration,
@@ -7,18 +10,37 @@ GameArchive::Application.routes.draw do
              path: 'users',
              controller: 'devise/registrations',
              as: :user_registration do
-              end
+    end
   end
+
 #      path_names: { new: 'sign_up' },
 
+	resources :companies do
+		member do
+			get 'report'
+			get 'block'
+		end
+	end 
 
-  resources :companies
+	resources :genres
 
-  resources :genres
+	resources :developers do
+		member do
+			get 'report'
+			get 'block'
+		end
+	end 
 
-  resources :developers
-
-  resources :games
+	resources :games do
+		resources :videos
+		resources :screenshots
+		member do
+			get 'report'
+			get 'block'
+		end
+	end 
+	
+	resources :reportblockcontents, only: [:index, :destroy]
 
   resources :tags
 

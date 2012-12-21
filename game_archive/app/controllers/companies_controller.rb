@@ -1,7 +1,10 @@
 require "json"
 
 class CompaniesController < ApplicationController
-  before_filter :authenticate_user!, except: [:index, :show]
+  before_filter :authenticate_user!, except: [:index, :show, :report, :update]
+  before_filter only: [:edit, :show] { |c| c.block_content_visitor 2 } 
+  before_filter only: [:edit] { |c| c.block_content_user 2 }
+  before_filter :authenticate_admin!, only: [:block]
 
   # GET /companies
   # GET /companies.json
@@ -18,6 +21,12 @@ class CompaniesController < ApplicationController
   # GET /companies/1.json
   def show
     @company = Company.find(params[:id])
+	@reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(2,params[:id])
+	if @company.popularity == nil 
+		@company.popularity = 0
+		@company.save
+	end
+	@company.increment!(:popularity)
 
     respond_to do |format|
       format.html # show.html.erb
@@ -41,10 +50,24 @@ class CompaniesController < ApplicationController
     @company = Company.find(params[:id])
   end
 
+  # GET /games/1/report
+  def report
+	@reportblockcontent =Reportblockcontent.new
+    @company = Company.find(params[:id])	
+  end
+  
+  # GET /games/1/block
+  def block
+	@reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(2,params[:id])
+    @company = Company.find(params[:id])
+  end
+  
   # POST /companies
   # POST /companies.json
   def create
     @company = Company.new(params[:company])
+	@company.popularity = 0
+
     Location.create_add_new_locations(@company, params["new_locations"])
     add_founded(params)
     add_defunct(params)
@@ -64,14 +87,28 @@ class CompaniesController < ApplicationController
   # PUT /companies/1.json
   def update
     @company = Company.find(params[:id])
+
+	if (params[:reportblockcontent])
+		Reportblockcontent.create_from_string(2,params[:id], params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
+	end
+
     Location.create_add_new_locations(@company, params["new_locations"])
     add_founded(params)
     add_defunct(params)
-
     respond_to do |format|
       if @company.update_attributes(params[:company])
-        format.html { redirect_to @company }
-        format.json { head :no_content }
+	  	if (params[:reportblockcontent])
+			if (params[:reportblockcontent][:status]=='0')
+				format.html { redirect_to @company,notice: 'Company was reported successfully'}
+				format.json { head :no_content }
+			else
+				format.html { redirect_to @company }
+				format.json { head :no_content }
+			end
+		else
+			format.html { redirect_to @company}
+			format.json { head :no_content }
+		end
       else
         format.html { render action: "edit" }
         format.json { render json: @company.errors, status: :unprocessable_entity }

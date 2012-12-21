@@ -233,6 +233,9 @@ a {
 img {
   width: 100%;
 }
+img.thumb{
+  width:33%;
+}
 
 div.tiled_2x,
 div.tiled_4x {
@@ -356,34 +359,49 @@ div.text {
     ul {
       list-style: disc;
       margin-left: 1.5em;
+           
+    }
+    
+    ol{list-style-type:decimal; }
+
+    h3{
+      padding-bottom:1em;
     }
 }
 
-
-div.fact-box {
-  margin-bottom: 1em;
-
-	@media #{$large} {
-		width: 32%;
-		display: inline;
-		float: right;
-	}
-	
-	@media #{$mid} {
-		img {
-			float: right;
-			width: 33%;
-		}
-	}
-
-    .fact>div:first-child, .fact>span.label {
-      font-weight: bold;
+ 
+div.fact-box {  
+  
+ 
+  @media #{$large} {
+    width: 32%;
+    display: inline;
+    float: right;
+  }
+  
+  @media #{$mid} {
+    img {
+      float: right;
+      width: 33%;
     }
 	
 	p {
 		margin-bottom: 1em;
 	}
 
+}
+
+div.games_featured,
+div.developers_featured,
+div.companies_featured,
+div.games_all,
+div.developers_all,
+div.companies_all,
+div.games_random,
+div.developers_random,
+div.companies_random {
+	margin-top: 1.2em;
+    margin-bottom: 1.2em;
 }
 
 div.game {
@@ -560,6 +578,19 @@ a.tagit-close:hover span {
   }
 }
 
+.radiobutton {
+	.field-label {
+    &>div:first-child {
+      font-size: 1em;
+      width: 0em;
+    }
+
+    &>div {
+      font-size:0.8em;
+	  width: 2em;
+    }
+  }
+}
 // Listing of all available tags
 div.all {
 
@@ -646,10 +677,11 @@ img.full_markdown_help {
 .tooltipsy dt:nth-child(n+2) {
   padding-top: 5px;
 }
- 
 select.newField {
   vertical-align: top;
 }
+
+ form.edit_game label, form.new_game label,form.edit_company label,form.new_company label,form.edit_developer label,form.new_developer label  {
 
 div.newFieldsDiv{
   width: 50%;
@@ -672,19 +704,28 @@ div.newFieldsDiv{
    width: 3em;
  }
 
-div.text{ 
-ul { list-style-type: lower-roman; }
-ul ul { list-style-type: lower-alpha; }
-ul ul ul { list-style-type: lower-roman;  }
-ul ul  ul ul  { list-style-type: lower-alpha; }
-ul ul ul  ul ul { list-style-type:circle; }
+   font-weight: bold;
 
-ol{list-style-type:decimal; }
+ }
 
-h3{
-  padding-bottom:1em;
-}
+#screenshots label, #profilepicfields label{
+  font-weight: normal;
 }
 
+#profilepicfields input[type="checkbox"]{
+  width: 2%;
+}
+
+table{
+  border-collapse:collapse;
+  background-color: #f5f5f5;
+}
+
+table, tr, td{
+  
+  border: 1px solid black;
+  padding:5px;
+}
+ 
 
  

@@ -1,23 +1,38 @@
 <div>
-  <h1>Companies</h1>
-
-
-  <% @companies.each do |company| %>
-      <div class="tiled_4x">
-        <a href="/companies/<%= company.id %>">
-          <div class="tile">
-            <%= image_tag (company.image_url(:tiled_4x).to_s) , :class => "media rounded" %>
-            <div class="caption">
-              <div><%= company.name %></div>
-            </div>
-          </div>
-        </a>
-      </div>
-
-
-  <% end %>
-  <div class="clear"></div>
-</div>
+  <h2>Companies</h2>
+	
+	<div class="companies_featured">
+		<h3>Featured</h3>
+		<% coms = Company.find(:all, :limit => getAmountFeatured, :order => 'created_at DESC')[0..7] %>
+		<% coms.concat(Company.find(:all, :limit => getAmountFeatured, :order => 'popularity DESC')[0..7]) %>
+		<% coms = coms.uniq %>
+		<% coms[0..7].each do |com| %>
+			<% @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(2,com.id)%>
+			<% if !user_signed_in? && @reportblockcontent%>
+				<% if (@reportblockcontent.status !=1)%>
+					<div class="tiled_2x">
+						<a href="/companies/<%= com.id %>">
+							<div class="tile">
+								<%= image_tag(com.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
+								<div class="caption"><div><%= com.name %></div></div>
+							</div>
+						</a>
+					</div>
+				<% end %>
+			<% else%>
+				<div class="tiled_2x">
+					<a href="/companies/<%= com.id %>">
+						<div class="tile">
+							<%= image_tag(com.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
+							<div class="caption"><div><%= com.name %></div></div>
+						</div>
+					</a>
+				</div>
+			<% end %>
+		<% end %>
+	</div>
+	
+	<div class="clear"></div>
 
 <% if user_signed_in? %>
     <div><br />
@@ -25,3 +40,38 @@
         <%= link_to "New Company", new_company_path %>
     </div>
 <% end %>
+
+	<div class="companies_all">
+		<div class="companies_featured">
+		<h3>All companies</h3>
+		<% companies = Company.find(:all, :order => 'name') %>
+		<% companies.each do |company| %>
+			<% @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(2,company.id)%>
+			<% if !user_signed_in? && @reportblockcontent%>
+				<% if (@reportblockcontent.status !=1)%>
+					<div class="tiled_2x">
+						<a href="/companies/<%= company.id %>">
+							<div class="tile">
+								<%= image_tag(company.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
+								<div class="caption"><div><%= company.name %></div></div>
+							</div>
+						</a>
+					</div>
+				<% end %>
+			<% else%>
+				<div class="tiled_2x">
+					<a href="/companies/<%= company.id %>">
+						<div class="tile">
+							<%= image_tag(company.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
+							<div class="caption"><div><%= company.name %></div></div>
+						</div>
+					</a>
+				</div>	
+			<% end %>
+		<% end %>
+	</div>
+	
+	<div class="clear"></div>
+	</div>
+	
+</div>

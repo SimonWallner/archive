@@ -1,20 +1,24 @@
 module ApplicationHelper
 	require 'redcarpet'
 
-  PREDEFINED_FIELDS = ["External Links", "Aggregate Scores", "Review Scores"]
+	PREDEFINED_FIELDS = ["External Links", "Aggregate Scores", "Review Scores"]
+	
+	# amount displayed featured entries
+	def getAmountFeatured()
+		return 8
+	end
 	
 	def markdown(text)
-
-		rndr = LinksInNewWindow.new(:filter_html => true, :no_images => true, :hard_wrap => true)
+		rndr = CustomLinkRenderer.new(:filter_html => true, :no_images => true, :hard_wrap => true)
 		markdown = Redcarpet::Markdown.new(rndr, :space_after_headers => true, :autolink => true)
 		markdown.render(text).html_safe
-		
-  end
+	end
 
-  class LinksInNewWindow < Redcarpet::Render::HTML
+  class CustomLinkRenderer < Redcarpet::Render::HTML
       def link(link, title, alt_text)
-        "<a target=\"_blank\" href=\"#{link}\">#{alt_text}</a>"
+        "<a href=\"#{link}\">#{alt_text}</a>"
       end
+
       def autolink(link, link_type)
         if link[-1] =='/'
           link=link[0..-1]
@@ -25,7 +29,7 @@ module ApplicationHelper
           link_title=link_title[0..4]
           link_end = "/..."
         end
-          link_t = link_title[2]
+        link_t = link_title[2]
         for i in 3..link_title.length-1
           if link_title[i].length>20
             link_end = "/..."
@@ -33,8 +37,8 @@ module ApplicationHelper
           end
           link_t += "/" + link_title[i]
         end
-          link_t +=link_end
-        "<a target=\"_blank\" href=\"#{link}\">#{link_t}</a>"
+        link_t +=link_end
+        "<a href=\"#{link}\">#{link_t}</a>"
       end
   end
 
@@ -104,3 +108,5 @@ module ApplicationHelper
     return formatted_date
   end
 end
+
+

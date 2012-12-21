@@ -17,7 +17,9 @@
 //= require tooltipsy.min.js
 //= require at_autocomplete.js
 //= require notification.js
+//= require videoembed.js
 //= require general_functions.js
+//= require screenshot.js
 
 $(document).ready(function() {
     $("textarea:not([id^='game_video'])").parent().append(
@@ -61,9 +63,4 @@ $(document).ready(function() {
           '">'
     );
     $(".full_markdown_help").tooltipsy({delay: 600});
-
     $(".all").hide();
-});
-
-
-

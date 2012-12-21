@@ -1,7 +1,7 @@
 Feature: Profile Picture File Upload
   As a contributor,
         in order to show the world how developers and games look like,
-        I want to add an image to a developer and/or a game.
+        I want to add an image to a developer and/or a game and/or a company.
 
         Scenario: successfully upload picture for developer
             Given I am signed in as User

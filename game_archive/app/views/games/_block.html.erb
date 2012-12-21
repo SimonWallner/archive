@@ -1,0 +1,64 @@
+<%= form_for(@game) do |f| %>
+  <% if @game.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@game.errors.count, "error") %> prohibited this game from being saved:</h2>
+
+      <ul>
+      <% @game.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <% if @reportblockcontent %>  
+		<% if @reportblockcontent.status == 1 or @reportblockcontent.status == 2%>
+			<div class="field">
+			<% if @reportblockcontent.reason %>  
+				<%=  f.label :reason %><br />
+				<span><%= @reportblockcontent.reason %></span>
+			<% end %>
+				<%= text_field( :reportblockcontent, :status, :value => 3, :style => "display:none")  %>	
+			</div>  
+			<% if @reportblockcontent.status == 1 %>	
+				<%= f.submit 'Remove Block' %> </br></br>			
+			<% else %>
+				<%= f.submit 'Remove Lock' %> </br></br>	
+			<% end %>  
+		<% else %>  
+			<% Reportblockcontent.find_all_by_content_type_and_content_id(0,params[:id]).each do |rbcontent| %>
+				<% if rbcontent.reason %> 
+					<%=  f.label 'Reason: '%><span><%= rbcontent.reason %></span>
+					<% if rbcontent.email %> 
+						<%=  f.label 'E-mail: '%><span><%= rbcontent.email %></span></br>
+					<% end %>
+				<% end %>
+			<% end %> 
+			</br>
+			<div class="field">
+			<%=  f.label :reason %><br />
+			<%=  text_field( :reportblockcontent, :reason, :value => nil )%>
+			</div>	
+			<div class="radiobutton">
+			<%= radio_button("reportblockcontent", "status", 2) %>
+				<%= label_tag(:status, "Lock Game") %>
+			<%= radio_button("reportblockcontent", "status", 1) %>
+				<%= label_tag(:status, "Block Game") %>
+			</div></br>  
+			<%= f.submit 'Save' %> </br></br>
+		<% end %> 	  
+  <% else %>
+	  <div class="field">
+		<%=  f.label :reason %><br />
+		<%=  text_field( :reportblockcontent, :reason)%>
+	  </div>  
+	  <div class="radiobutton">
+		<%= radio_button("reportblockcontent", "status", 2) %>
+			<%= label_tag(:status, "Lock Game") %>
+		<%= radio_button("reportblockcontent", "status", 1) %>
+			<%= label_tag(:status, "Block Game") %>
+	  </div></br>  
+	  <%= f.submit 'Save' %> </br></br>
+  <% end %> 
+<% end %>
+

@@ -1,5 +1,7 @@
 class GamesController < ApplicationController
-  before_filter :authenticate_user!, except: [:index, :show]
+  before_filter :authenticate_user!, except: [:index, :show, :report, :update]
+  before_filter only: [:edit, :show] { |c| c.block_content_visitor 0 }
+  before_filter :authenticate_admin!, only: [:block]
 
   # GET /games
   # GET /games.json
@@ -16,7 +18,13 @@ class GamesController < ApplicationController
   # GET /games/1.json
   def show
     @game = Game.find(params[:id])
-
+	@reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(0,params[:id])	
+	if @game.popularity == nil 
+		@game.popularity = 0
+		@game.save
+	end
+	@game.increment!(:popularity)
+	
     respond_to do |format|
       format.html # show.html.erb
       format.json { render :json => @game.to_json() }
@@ -39,14 +47,28 @@ class GamesController < ApplicationController
     @genres = Genre.all
     @game = Game.find(params[:id])
   end
+  
+   # GET /games/1/report
+  def report
+	@reportblockcontent =Reportblockcontent.new
+    @game = Game.find(params[:id])	
+  end
+  
+  # GET /games/1/block
+  def block
+	@reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(0,params[:id])
+    @game = Game.find(params[:id])	
+  end
 
   # POST /games
   # POST /games.json
   def create
     @game = Game.new(params[:game])
+	@game.popularity = 0
     create_add_new_token(params[:new_genres], params[:new_platforms], params[:new_medias], params[:new_modes], params[:new_tags])
     create_add_new_release_dates(params[:new_release_dates])
     Field.create_add_new_fields(@game, params[:new_fields])
+
 
 	respond_to do |format|
       if @game.save
@@ -69,10 +91,14 @@ class GamesController < ApplicationController
   # PUT /games/1.json
   def update
     @game = Game.find(params[:id])
-
-    create_add_new_token(params[:new_genres], params[:new_platforms], params[:new_medias], params[:new_modes], params[:new_tags])
-    create_add_new_release_dates(params[:new_release_dates])
-    Field.create_add_new_fields(@game, params[:new_fields])
+	
+	if (params[:reportblockcontent])
+	  Reportblockcontent.create_from_string(0,params[:id], params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
+	else
+      create_add_new_token(params[:new_genres], params[:new_platforms], params[:new_medias], params[:new_modes], params[:new_tags])
+      create_add_new_release_dates(params[:new_release_dates])
+      Field.create_add_new_fields(@game, params[:new_fields])
+	end
 
     respond_to do |format|
       if @game.update_attributes(params[:game])
@@ -81,9 +107,18 @@ class GamesController < ApplicationController
         create_add_new_mixed_fields(params[:new_distributors], MixedFieldType.find_by_name("Distributor"))
         create_add_new_mixed_fields(params[:new_credits], MixedFieldType.find_by_name("Credits"))
         create_add_new_mixed_fields(params[:new_series], MixedFieldType.find_by_name("Series"))
-
-        format.html { redirect_to @game}
-        format.json { head :no_content }
+		if (params[:reportblockcontent])
+			if (params[:reportblockcontent][:status]=='0')
+				format.html { redirect_to @game,notice: 'Game was reported successfully'}
+				format.json { head :no_content }
+			else
+				format.html { redirect_to @game}
+				format.json { head :no_content }
+			end
+		else
+			format.html { redirect_to @game}
+			format.json { head :no_content }
+		end
       else
         format.html { render action: "edit" }
         format.json { render json: @game.errors, status: :unprocessable_entity }
@@ -120,11 +155,9 @@ class GamesController < ApplicationController
     Mode.create_from_string(modes_string)
     Tag.create_from_string(tags_string)    
  
-   
-     
     begin
-  if genres_string == nil  
-      return
+      if genres_string == nil  
+        return
     end
       new_genres = genres_string.split ','
       new_genres.try(:each) do |ng|
@@ -134,13 +167,9 @@ class GamesController < ApplicationController
           @game.genres << new_genre
         end
       end
-    rescue # nil exception due to "empty" arguments such as ", , ,"
-           #redirect_to @game, notice: 'Genres nicht korrekt angegeben!' 
+    rescue
     end
 
-
-
- 
     begin
         if platforms_string == nil  
       return
@@ -155,7 +184,6 @@ class GamesController < ApplicationController
       end
     rescue
     end
-
 
     begin
    if media_string == nil  

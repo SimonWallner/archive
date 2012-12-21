@@ -1,6 +1,12 @@
 <div class="game">
   <div class="media rounded">
-    <%= image_tag @game.image_url(:top_game).to_s, :class => "media rounded"%>
+    <%=
+        imguploader = ImageUploader.new
+        if not @game.image_url == imguploader.default_url
+            image_tag @game.image_url(:top_game).to_s
+        end
+
+    %>
 
   </div>
   <h1><%= @game.title %></h1>
@@ -54,27 +60,70 @@
 
   </div>
 
+
+
   <div class="clear"></div>
   <% if user_signed_in? %>
-    <%= link_to 'Edit', edit_game_path(@game) %> |
-  <% end %>
+	<% if current_user.admin %>
+		<%= link_to 'Edit', edit_game_path(@game) %> |
+		<% if @reportblockcontent %>
+					<% if @reportblockcontent.status ==1%>
+						<%= link_to 'Remove Block', block_game_path(@game) %> |
+					<% else if @reportblockcontent.status ==2%>
+						<%= link_to 'Remove Lock', block_game_path(@game) %> |
+					<% else%>
+						<%= link_to 'Block', block_game_path(@game) %> |
+					<% end %>
+					<% end %>
+			<% else%>
+				<%= link_to 'Block', block_game_path(@game) %> |
+			<% end %>
+		<% else%>
+			<% if @reportblockcontent %>
+				<% if @reportblockcontent.status !=2%>
+					<%= link_to 'Edit', edit_game_path(@game) %> |
+				<% end %>
+				<% if @reportblockcontent.status !=1%>
+					<%= link_to 'Report', report_game_path(@game) %> |
+				<% end %>
+			<% else%>
+				<%= link_to 'Edit', edit_game_path(@game) %> |
+				<%= link_to 'Report', report_game_path(@game) %> |
+			<% end %>
+		<% end %>
+	<% else%>
+		<% if @reportblockcontent %>
+			<% if @reportblockcontent.status !=1%>
+				<%= link_to 'Report', report_game_path(@game) %> |
+			<% end %>
+		<% else%>
+			<%= link_to 'Report', report_game_path(@game) %> |
+		<% end %>
+	<% end %>
+	
   <%= link_to 'Back', games_path %>
-  <div class="media rounded">
-    <%= image_tag 'screenshot_1.jpg', :alt => 'Screenshot 1 alt text' %>
-    <div class="caption">
-      This is an image caption for this very screenshot
-    </div>
-  </div>
+    <% for video in @game.videos %>
+      <div class="media rounded">
+            <%=h @str = embed_video(video.embedcode)
+               if @str
+                 @str.html_safe
+               end
+            %>
+      </div>
 
+    <% end %>
+
+    <% @game.screenshots.each do |screenshot| %>
+         <div class = "media rounded"><%=  image_tag screenshot.image_url.to_s %></div>
+
+       <% end%>
   </div>
 </div>
 
 <script>
-
     $(document).ready(function() {
         var target = $('div.game').offset().top - 25;
 
         $('html, body').animate({scrollTop: target}, 1000);
     })
-
 </script>

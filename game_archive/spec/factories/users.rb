@@ -7,7 +7,9 @@ FactoryGirl.define do
     lastname 'lastname'
     password 'aA1aaaaaa'
     password_confirmation { |u| u.password }
-    # required if the Devise Confirmable module is used
-    # confirmed_at Time.now
+  end
+
+  factory :confirmed_user, :parent => :user do
+    after(:create) { |user| user.confirm! }
   end
 end

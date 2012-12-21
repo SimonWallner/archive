@@ -52,6 +52,20 @@ Given /^I am on the genres page$/ do
 end
 
 
+When /^I fill in the fields with valid details for a (.+)$/ do |type|
+  if type == "developer"
+    @new_name ="Hans"
+    fill_in("developer_name", :with => @new_name)
+  elsif type == "game"
+    @new_game = "newgame"
+    fill_in("game_title", :with => @new_game)
+  elsif type == "company"
+    @new_company = "BowseruCo"
+    fill_in("company_name", :with => @new_company)
+  end
+
+end
+
 When /^I submit it$/ do
 
   begin
@@ -60,7 +74,7 @@ When /^I submit it$/ do
       puts "Clicked Update Developer"
     end
   rescue Capybara::ElementNotFound
-    puts "Update Developer not found"
+    #puts "Update Developer not found"
   end
   
   begin
@@ -69,7 +83,7 @@ When /^I submit it$/ do
       puts "Clicked Create Developer"
     end
   rescue Capybara::ElementNotFound
-    puts "Create Developer not found"
+    #puts "Create Developer not found"
   end
   
   begin
@@ -78,7 +92,7 @@ When /^I submit it$/ do
       puts "Clicked Create Game"
     end
   rescue Capybara::ElementNotFound
-    puts "Create Game not found"
+    #puts "Create Game not found"
   end
   begin
     if find_button("Update Game")
@@ -86,7 +100,7 @@ When /^I submit it$/ do
       puts "Clicked Update Game"
     end
   rescue Capybara::ElementNotFound
-    puts "Update Game not found"
+    #puts "Update Game not found"
   end
   begin
     if find_button("Update Company")
@@ -94,7 +108,7 @@ When /^I submit it$/ do
       puts "Clicked Update Company"
     end
   rescue Capybara::ElementNotFound
-    puts "Update Company not found"
+    #puts "Update Company not found"
   end
   begin
     if find_button("Create Company")
@@ -102,7 +116,7 @@ When /^I submit it$/ do
       puts "Clicked Create Company"
     end
   rescue Capybara::ElementNotFound
-    puts "Create Company not found"
+    #puts "Create Company not found"
   end
 
 

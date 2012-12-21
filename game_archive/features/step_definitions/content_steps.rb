@@ -127,3 +127,160 @@ Then /^I should see the link as a name$/ do
   assert (link.text == "Google")
   assert (link['href'] == "http://www.google.com/")
 end
+
+# landingpage steps
+Given /^I have a selection of games$/ do
+	@game1=FactoryGirl.create :game , title:"Game 1"
+	@game1.popularity = 1
+	@game1.save
+	@game2=FactoryGirl.create :game , title:"Game 2"
+	@game2.popularity = 2
+	@game2.save
+	@game3=FactoryGirl.create :game , title:"Game 3"
+	@game3.popularity = 4
+	@game3.save
+	@game4=FactoryGirl.create :game , title:"Game 4"
+	@game4.popularity = 5
+	@game4.save
+	@game5=FactoryGirl.create :game , title:"Game 5"
+	@game5.popularity = 6
+	@game5.save
+	@game6=FactoryGirl.create :game , title:"Game 6"
+	@game6.popularity = 2
+	@game6.save
+	@game7=FactoryGirl.create :game , title:"Game 7"
+	@game7.popularity = 1
+	@game7.save
+	@game8=FactoryGirl.create :game , title:"Game 8"
+	@game8.popularity = 2
+	@game8.save
+	@game9=FactoryGirl.create :game , title:"Game 9"
+	@game9.popularity = 4
+	@game9.save
+	@game10=FactoryGirl.create :game , title:"Game 10"
+	@game10.popularity = 5
+	@game10.save
+	@game11=FactoryGirl.create :game , title:"Game 11"
+	@game11.popularity = 6
+	@game11.save
+	@game12=FactoryGirl.create :game , title:"Game 12"
+	@game12.popularity = 2
+	@game12.save
+end
+
+Given /^I have a selection of developers$/ do
+	@dev1=FactoryGirl.create :developer , name:"Developer 1"
+	@dev1.popularity = 1
+	@dev1.save
+	@dev2=FactoryGirl.create :developer , name:"Developer 2"
+	@dev2.popularity = 2
+	@dev2.save
+	@dev3=FactoryGirl.create :developer , name:"Developer 3"
+	@dev3.popularity = 4
+	@dev3.save
+	@dev4=FactoryGirl.create :developer , name:"Developer 4"
+	@dev4.popularity = 5
+	@dev4.save
+	@dev5=FactoryGirl.create :developer , name:"Developer 5"
+	@dev5.popularity = 6
+	@dev5.save
+	@dev6=FactoryGirl.create :developer , name:"Developer 6"
+	@dev6.popularity = 2
+	@dev6.save
+end
+
+Given /^I have a selection of companies$/ do
+	@com1=FactoryGirl.create :company , name:"Company 1"
+	@com1.popularity = 1
+	@com1.save
+	@com2=FactoryGirl.create :company , name:"Company 2"
+	@com2.popularity = 2
+	@com2.save
+	@com3=FactoryGirl.create :company , name:"Company 3"
+	@com3.popularity = 4
+	@com3.save
+	@com4=FactoryGirl.create :company , name:"Company 4"
+	@com4.popularity = 5
+	@com4.save
+	@com5=FactoryGirl.create :company , name:"Company 5"
+	@com5.popularity = 6
+	@com5.save
+	@com6=FactoryGirl.create :company , name:"Company 6"
+	@com6.popularity = 2
+	@com6.save
+end
+
+When /^I am on the Home Page$/ do
+	visit "/"
+end
+
+Then /^I should see a selection of games sorted by Newest and Most Popular$/ do
+	within 'div.games_featured' do
+		page.should have_content(@game5.title)
+		page.should have_content(@game6.title)
+		page.should have_content(@game9.title)
+		page.should have_content(@game10.title)
+		page.should have_content(@game11.title)
+		page.should have_content(@game12.title)
+	end
+	
+end
+
+Then /^I should see a selection of developers sorted by Newest and Most Popular$/ do
+	within 'div.developers_featured' do
+		page.should have_content(@dev2.name)
+		page.should have_content(@dev3.name)
+		page.should have_content(@dev4.name)
+		page.should have_content(@dev5.name)
+		page.should have_content(@dev6.name)
+	end
+end
+
+Then /^I should see a selection of companies sorted by Newest and Most Popular$/ do
+	within 'div.companies_featured' do
+		page.should have_content(@com2.name)
+		page.should have_content(@com3.name)
+		page.should have_content(@com4.name)
+		page.should have_content(@com5.name)
+		page.should have_content(@com6.name)
+	end
+end
+
+Then /^I should see a random game pick$/ do
+	within 'div.games_random' do
+		page.should have_content("Game")
+	end
+end
+
+Then /^I should see a random developer pick$/ do
+	within 'div.developers_random' do
+		page.should have_content("Developer")
+	end
+end
+
+Then /^I should see a random company pick$/ do
+	within 'div.companies_random' do
+		page.should have_content("Company")
+	end
+end
+
+Then /^I should see all games$/ do
+	within 'div.games_all' do
+		page.should have_content(@game1.title)
+		page.should have_content(@game2.title)
+		page.should have_content(@game3.title)
+		page.should have_content(@game4.title)
+		page.should have_content(@game5.title)
+		page.should have_content(@game6.title)
+		page.should have_content(@game7.title)
+		page.should have_content(@game8.title)
+		page.should have_content(@game9.title)
+		page.should have_content(@game10.title)
+		page.should have_content(@game11.title)
+		page.should have_content(@game12.title)
+	end
+end
+
+When /^I am on the Games Overview Page$/ do
+	visit "/games/"
+end

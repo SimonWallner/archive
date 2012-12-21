@@ -19,6 +19,24 @@
     <%= f.label :description %><br />
     <%= f.text_area :description %>
   </div>
+
+    <%= f.label :image, 'Choose company picture' %>
+    <div class="field" id="profilepicfields">
+
+      <% imguploader = ImageUploader.new %>
+      <% if not @company.image_url == imguploader.default_url %>
+          <br />
+          <%= f.label :image, (File.basename f.object.image_url.to_s)%><br/>
+          <%=
+              image_tag f.object.image_url.to_s, :class => 'thumb'
+
+          %>
+
+          <br/><%= f.label :remove_image, "remove game picture?" %>
+          <%= f.check_box :remove_image %> <br/>
+      <%end  %> <br/>
+      <%= f.file_field :image %>   <br/>  <br/>
+
     <div>
       <div class="newFieldsDiv"><script type="text/javascript">loadfields('<%= begin company_url rescue new_company_url end %>.json');</script></div>
       <%= submit_tag "Add Field", :type => 'button', :id => 'addFieldButton' ,

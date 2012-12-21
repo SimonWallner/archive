@@ -1,138 +1,136 @@
-<div>
+<div class="about_home">
 	<h1>About us</h1>
 	<p>Lomo sriracha farm-to-table, authentic deserunt selvage whatever tofu biodiesel thundercats wayfarers chillwave typewriter brooklyn. Mumblecore bespoke officia authentic trust fund. Nostrud bushwick velit quis echo park Austin. Pickled salvia small batch, mustache banh mi pork belly cosby sweater four loko narwhal.</p>
 	<div class="more"><a href="#">more...</a></div>
 </div>
 
-<div>
+<div class="news_home">
 	<h1>News</h1>
 	<p><strong>September 3rd, 2012</strong> &mdash; Lomo sriracha farm-to-table, authentic deserunt selvage whatever tofu biodiesel thundercats wayfarers chillwave typewriter brooklyn. Mumblecore bespoke officia authentic trust fund. Nostrud bushwick velit quis echo park Austin. Pickled salvia small batch, mustache banh mi pork belly cosby sweater four loko narwhal.</p>
 	<div class="more"><a href = "#">more...</a></div>
 </div>
 
-<div>
-
-	<h1>Games Link</h1>
-	<div class="tiled_2x">
-		<a href="/games/1">
-			<div class="tile">
-				<%= image_tag('dummy_teaser.jpg', :class => 'rounded teaser')%>
-				<div class="caption"><div>This is a game</div></div>
+<div class="games_home">
+	<h1>Games</h1>
+	
+	<div class="games_featured">
+		<% games = Game.find(:all, :limit => getAmountFeatured, :order => 'created_at DESC')[0..7] %>
+		<% games.concat(Game.find(:all, :limit => getAmountFeatured, :order => 'popularity DESC')[0..7]) %>
+		<% games = games.uniq %>
+		<% games[0..7].each do |game| %>
+			<div class="tiled_2x">
+				<a href="/games/<%= game.id %>">
+					<div class="tile">
+						<%= image_tag(game.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
+						<div class="caption"><div><%= game.title %></div></div>
+					</div>
+				</a>
 			</div>
-		</a>
+		<% end %>
+		<div class="more"><a href="games/">more...</a></div>
 	</div>
 	
-	<div class="tiled_2x">
-		<a href="/games/1">
-			<div class="tile">
-				<%= image_tag('dummy_teaser.jpg', :class => 'rounded teaser')%>
-				<div class="caption"><div>This is a game</div></div>
-			</div>
-		</a>
-	</div>
+	<div class="clear"></div>
 	
-	<div class="tiled_2x">
-		<a href="/games/1">
-			<div class="tile">
-				<%= image_tag('dummy_teaser.jpg', :class => 'rounded teaser')%>
-				<div class="caption"><div>This is a game</div></div>
+	<div class="games_random">
+	<h3>Did you already know...</h3>
+	<div>
+		<% game = Game.order("RANDOM()").first %>
+		<% if game != nil %>
+			<div class="tiled_2x">
+			<a href="/games/<%= game.id %>">
+				<div class="tile">
+					<%= image_tag(game.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
+					<div class="caption"><div><%= game.title %></div></div>
+				</div>
+			</a>
 			</div>
-		</a>
+		<% end %>
 	</div>
-	
-	<div class="tiled_2x">
-		<a href="/games/1">
-			<div class="tile">
-				<%= image_tag('dummy_teaser.jpg', :class => 'rounded teaser')%>
-				<div class="caption"><div>This is a game</div></div>
-			</div>
-		</a>
-	</div>
-	
-	<div class="tiled_2x">
-		<a href="/games/1">
-			<div class="tile">
-				<%= image_tag('dummy_teaser.jpg', :class => 'rounded teaser')%>
-				<div class="caption"><div>This is a game</div></div>
-			</div>
-		</a>
 	</div>
 	
 	<div class="clear"></div>
 </div>
 
-<div>
-	<h1>People Links</h1>
+<div class="companies_home">
+	<h1>Companies</h1>
+	
+	<div class="companies_featured">
+		<% coms = Company.find(:all, :limit => getAmountFeatured, :order => 'created_at DESC')[0..7] %>
+		<% coms.concat(Company.find(:all, :limit => getAmountFeatured, :order => 'popularity DESC')[0..7]) %>
+		<% coms = coms.uniq %>
+		<% coms[0..7].each do |com| %>
+			<div class="tiled_2x">
+				<a href="/companies/<%= com.id %>">
+					<div class="tile">
+						<%= image_tag(com.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
+						<div class="caption"><div><%= com.name %></div></div>
+					</div>
+				</a>
+			</div>
+		<% end %>
+		<div class="more"><a href="companies/">more...</a></div>
+	</div>
+	
+	<div class="clear"></div>
+	
+	<div class="companies_random">
+	<h3>Did you already know...</h3>
+	<div>
+		<% com = Company.order("RANDOM()").first %>
+		<% if com != nil %>
+			<div class="tiled_2x">
+			<a href="/companies/<%= com.id %>">
+				<div class="tile">
+					<%= image_tag(com.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
+					<div class="caption"><div><%= com.name %></div></div>
+				</div>
+			</a>
+			</div>
+		<% end %>
+	</div>
+	</div>
+	
+	<div class="clear"></div>
+</div>
 
-	<div class="tiled_4x">
-		<a href="/developers/1">
-			<div class="tile" >
-				<%= image_tag('gagarin.jpg', :class => 'rounded teaser')%>
-				<div class="caption"><div>Juri Alexejewitsch Gagarin</div></div>
+<div class="developers_home">
+	<h1>People</h1>
+	
+	<div class="developers_featured">
+		<% devs = Developer.find(:all, :limit => getAmountFeatured, :order => 'created_at DESC')[0..7] %>
+		<% devs.concat(Developer.find(:all, :limit => getAmountFeatured, :order => 'popularity DESC')[0..7]) %>
+		<% devs = devs.uniq %>
+		<% devs[0..7].each do |dev| %>
+			<div class="tiled_4x">
+				<a href="/developers/<%= dev.id %>">
+					<div class="tile">
+						<%= image_tag(dev.image_url(:tiled_4x).to_s, :class => 'rounded teaser')%>
+						<div class="caption"><div><%= dev.name %></div></div>
+					</div>
+				</a>
 			</div>
-		</a>
+		<% end %>
+		<div class="more"><a href="developers/">more...</a></div>
 	</div>
 	
-	<div class="tiled_4x">
-		<a href="/developers/1">
-			<div class="tile" >
-				<%= image_tag('gagarin.jpg', :class => 'rounded teaser')%>
-				<div class="caption"><div>Juri Alexejewitsch Gagarin</div></div>
-			</div>
-		</a>
-	</div>
+	<div class="clear"></div>
 	
-	<div class="tiled_4x">
-		<a href="/developers/1">
-			<div class="tile" >
-				<%= image_tag('gagarin.jpg', :class => 'rounded teaser')%>
-				<div class="caption"><div>Juri Alexejewitsch Gagarin</div></div>
+	<div class="developers_random">
+	<h3>Did you already know...</h3>
+	<div>
+		<% dev = Developer.order("RANDOM()").first %>
+		<% if dev != nil %>
+			<div class="tiled_4x">
+			<a href="/developers/<%= dev.id %>">
+				<div class="tile">
+					<%= image_tag(dev.image_url(:tiled_4x).to_s, :class => 'rounded teaser')%>
+					<div class="caption"><div><%= dev.name %></div></div>
+				</div>
+			</a>
 			</div>
-		</a>
+		<% end %>
 	</div>
-	
-	<div class="tiled_4x">
-		<a href="/developers/1">
-			<div class="tile" > <%= image_tag('gagarin.jpg', :class => 'rounded teaser')%>
-				<div class="caption"><div>Juri Alexejewitsch Gagarin</div></div>
-			</div>
-		</a>
-	</div>
-	
-	<div class="tiled_4x">
-		<a href="/developers/1">
-			<div class="tile" >
-				<%= image_tag('gagarin.jpg', :class => 'rounded teaser')%>
-				<div class="caption"><div>Juri Alexejewitsch Gagarin</div></div>
-			</div>
-		</a>
-	</div>
-	
-	<div class="tiled_4x">
-		<a href="/developers/1">
-			<div class="tile" >
-				<%= image_tag('gagarin.jpg', :class => 'rounded teaser')%>
-				<div class="caption"><div>Juri Alexejewitsch Gagarin</div></div>
-			</div>
-		</a>
-	</div>
-
-	<div class="tiled_4x">
-		<a href="/developers/1">
-			<div class="tile" >
-				<%= image_tag('gagarin.jpg', :class => 'rounded teaser')%>
-				<div class="caption"><div>Juri Alexejewitsch Gagarin</div></div>
-			</div>
-		</a>
-	</div>
-	
-	<div class="tiled_4x">
-		<a href="/developers/1">
-			<div class="tile" >
-				<%= image_tag('gagarin.jpg', :class => 'rounded teaser')%>
-				<div class="caption"><div>Juri Alexejewitsch Gagarin</div></div>
-			</div>
-		</a>
 	</div>
 	
 	<div class="clear"></div>

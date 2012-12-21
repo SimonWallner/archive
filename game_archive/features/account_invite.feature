@@ -15,17 +15,11 @@ Feature: account invites
     And I am on the home page
     When I enter the invitation url
     Then I should be on the home page
-    And No invitation should be sent
 
-  Scenario Outline: : send invitation when signed in as admin
+  Scenario: send invitation when signed in as admin
     Given I am signed in as Admin
     And I am on the home page
     When I follow the send invite link
-    And I enter <email>
-    Then I should be <where>
-    And <action>
-    Examples:
-    | email | where | action |
-    | a valid email | on the home page | Invitation should be sent |
-    | an invalid email | on the invite page | No invitation should be sent |
-    | an already used email |on the invite page | I should see an email already used error |
+    And I enter a valid email
+    Then I should be on the home page
+    And an invitation should be sent
