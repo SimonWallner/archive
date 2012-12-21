@@ -64,7 +64,7 @@ function loadfields(jsonurl){
                 }
 
             } else if($.inArray(i,['mixed_fields']) >= 0){
-                if(val.length < 1){
+                if(val.length < 1 && page == "game"){
                     $.each(["developer","publisher","distributor","credits","external links","series"],
                     function(index,value){
                         addField($('#addFieldButton'), usedfields);

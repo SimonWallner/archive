@@ -70,19 +70,33 @@ And /^I create the game$/ do
   click_link_or_button "Create Game" 
 end
 
-Then /^I should see the saved fields$/ do
+Then /^I should see the saved (.*?) fields$/ do |pname|
   within(".fact-box") do
-    page.should have_content(@contentUserdefined)
-    page.should have_content(@allDateText)
-    page.should have_content(@additionalDate)
-  #  page.should have_content(@externalLinks)
-  #  page.should have_content(@aggregate_scores)
-  #  page.should have_content(@review_scores)
-    page.should have_content(@textDeveloper)
-    page.should have_content(@textPublisher)
-    page.should have_content(@textSeries)
-    page.should have_content(@textDistributor)
-    page.should have_content(@textCredits)
+    if pname == "Game"
+      page.should have_content(@contentUserdefined)
+      page.should have_content(@allDateText)
+      page.should have_content(@additionalDate)
+    #  page.should have_content(@externalLinks)
+    #  page.should have_content(@aggregate_scores)
+    #  page.should have_content(@review_scores)
+      page.should have_content(@textDeveloper)
+      page.should have_content(@textPublisher)
+      page.should have_content(@textSeries)
+      page.should have_content(@textDistributor)
+      page.should have_content(@textCredits)
+    end
+    if pname == "Developer"
+      page.should have_content(@contentUserdefined)
+    #  page.should have_content(@externalLinks)
+    end
+    if pname == "Company"
+      page.should have_content(@contentUserdefined)
+      page.should have_content("Founded")
+      page.should have_content(@additionalDefunct)
+      page.should have_content(@textLocation)
+      page.should have_content(@textOfficialName)
+    #  page.should have_content(@externalLinks)
+    end
   end
 end
 

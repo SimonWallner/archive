@@ -7,21 +7,19 @@ $(document).ready(function() {
 
         $('form').submit(function () {
 
-            if($('[id^="year_defunct"]').length > 0)   {
-                var defunctstring = '';
-                defunctstring = defunctstring + $('#day_defunct').val() +':'+
-                    $('#month_defunct').val() +':'+
-                    $('#year_defunct').val() +':'+
-                    $('#text_defunct').val();
-                defunctstring = '[' + defunctstring + ']';
+            if($('[id^="year_defunct"]').length > 0 && $('[id^="year_defunct"]').val().length > 0)   {
+                var defunctstring = '{"day":';
+                defunctstring = defunctstring + $('#day_defunct').val() +',"month":'+
+                    $('#month_defunct').val() +',"year":'+
+                    $('#year_defunct').val() +',"additional_info": "'+
+                    $('#text_defunct').val() + '"}';
                 $('#defunct').val(defunctstring);
             }
-            if($('[id^="year_founded"]').length > 0)   {
-                var foundedstring = '';
-                foundedstring = foundedstring + $('#day_founded').val() +':'+
-                    $('#month_founded').val() +':'+
-                    $('#year_founded').val();
-                foundedstring = '[' + foundedstring + ']';
+            if($('[id^="year_founded"]').length > 0 && $('[id^="year_founded"]').val().length > 0)   {
+                var foundedstring = '{"day":';
+                foundedstring = foundedstring + $('#day_founded').val() +',"month":'+
+                    $('#month_founded').val() +',"year":'+
+                    $('#year_founded').val() + '}';
                 $('#founded').val(foundedstring);
             }
 

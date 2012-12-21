@@ -11,7 +11,7 @@ Feature:
   Scenario: add game field data with valid data
     Given I am on the game creation page
     When I enter valid game data 
-    Then I enter field with "Developer" 
+    And I enter field with "Developer"
     And I enter field with "Publisher"
     And I enter field with "Distributor"
     And I enter field with "Credits" 
@@ -22,7 +22,7 @@ Feature:
     And I enter field with "Series"
     And I enter field with "Userdefined" 
     And I create the game
-    Then I should see the saved fields
+    Then I should see the saved Game fields
      
   
    @javascript

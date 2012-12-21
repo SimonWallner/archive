@@ -16,4 +16,8 @@ class Developer < ActiveRecord::Base
             :file_size => {
                 :maximum => 0.4.megabytes.to_i
             }
+
+  def as_json(options = {})
+    super(:include => [{:mixed_fields => {:include => :mixed_field_type}}, :fields])
+  end
 end

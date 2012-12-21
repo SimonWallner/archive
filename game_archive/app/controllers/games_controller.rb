@@ -18,13 +18,13 @@ class GamesController < ApplicationController
   # GET /games/1.json
   def show
     @game = Game.find(params[:id])
-	@reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(0,params[:id])	
-	if @game.popularity == nil 
+	@reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(0,params[:id])
+	if @game.popularity == nil
 		@game.popularity = 0
 		@game.save
 	end
 	@game.increment!(:popularity)
-	
+
     respond_to do |format|
       format.html # show.html.erb
       format.json { render :json => @game.to_json() }
@@ -77,9 +77,9 @@ class GamesController < ApplicationController
         create_add_new_mixed_fields(params[:new_distributors], MixedFieldType.find_by_name("Distributor"))
         create_add_new_mixed_fields(params[:new_credits], MixedFieldType.find_by_name("Credits"))
         create_add_new_mixed_fields(params[:new_series], MixedFieldType.find_by_name("Series"))
-        create_add_new_mixed_fields(params[:new_aggregate_scores], MixedFieldType.find_by_name("Aggregate Scores"))
-        create_add_new_mixed_fields(params[:new_review_scores], MixedFieldType.find_by_name("Review Scores"))
-        create_add_new_mixed_fields(params[:new_external_links], MixedFieldType.find_by_name("External Links"))
+      #  create_add_new_mixed_fields(params[:new_aggregate_scores], MixedFieldType.find_by_name("Aggregate Scores"))
+      #  create_add_new_mixed_fields(params[:new_review_scores], MixedFieldType.find_by_name("Review Scores"))
+      #  create_add_new_mixed_fields(params[:new_external_links], MixedFieldType.find_by_name("External Links"))
 
         format.html { redirect_to @game}
         format.json { render json: @game, status: :created, location: @game }
@@ -95,13 +95,13 @@ class GamesController < ApplicationController
   def update
     @game = Game.find(params[:id])
 	
-	if (params[:reportblockcontent])
-	  Reportblockcontent.create_from_string(0,params[:id], params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
-	else
-      create_add_new_token(params[:new_genres], params[:new_platforms], params[:new_medias], params[:new_modes], params[:new_tags])
-      create_add_new_release_dates(params[:new_release_dates])
-      Field.create_add_new_fields(@game, params[:new_fields])
-	end
+    if (params[:reportblockcontent])
+      Reportblockcontent.create_from_string(0,params[:id], params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
+    else
+        create_add_new_token(params[:new_genres], params[:new_platforms], params[:new_medias], params[:new_modes], params[:new_tags])
+        create_add_new_release_dates(params[:new_release_dates])
+        Field.create_add_new_fields(@game, params[:new_fields])
+    end
 
     respond_to do |format|
       if @game.update_attributes(params[:game])
@@ -110,21 +110,21 @@ class GamesController < ApplicationController
         create_add_new_mixed_fields(params[:new_distributors], MixedFieldType.find_by_name("Distributor"))
         create_add_new_mixed_fields(params[:new_credits], MixedFieldType.find_by_name("Credits"))
         create_add_new_mixed_fields(params[:new_series], MixedFieldType.find_by_name("Series"))
-		if (params[:reportblockcontent])
-			if (params[:reportblockcontent][:status]=='0')
-				format.html { redirect_to @game,notice: 'Game was reported successfully'}
-				format.json { head :no_content }
-			else
-				format.html { redirect_to @game}
-				format.json { head :no_content }
-			end
-		else
-			format.html { redirect_to @game}
-			format.json { head :no_content }
-		end
+      # create_add_new_mixed_fields(params[:new_aggregate_scores], MixedFieldType.find_by_name("Aggregate Scores"))
+       # create_add_new_mixed_fields(params[:new_review_scores], MixedFieldType.find_by_name("Review Scores"))
+       # create_add_new_mixed_fields(params[:new_external_links], MixedFieldType.find_by_name("External Links"))
+      end
+      if (params[:reportblockcontent])
+        if (params[:reportblockcontent][:status]=='0')
+          format.html { redirect_to @game,notice: 'Game was reported successfully'}
+          format.json { head :no_content }
+        else
+          format.html { redirect_to @game}
+          format.json { head :no_content }
+        end
       else
-        format.html { render action: "edit" }
-        format.json { render json: @game.errors, status: :unprocessable_entity }
+        format.html { redirect_to @game}
+        format.json { head :no_content }
       end
     end
   end

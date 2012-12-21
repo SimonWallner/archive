@@ -10,11 +10,12 @@ Feature:
  
   @javascript
   Scenario: insert developer with fields data
-    Given I am on the developer fields creation page 
+    Given I am on the developer creation page
+    When I enter valid developer data
     And I enter developer field with "Userdefined"
     And I enter developer field with "External Links"   
-    And should create developer 
-    When The data of developer be saved   
+    And I create the developer
+    Then I should see the saved Developer fields
 
 
  
