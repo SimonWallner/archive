@@ -93,7 +93,10 @@ function loadfields(jsonurl){
                         valstr = valstr + '@dev:' + val[x].developer_id;
                     else if(val[x].series_game_id)
                         valstr = valstr + '@game:' + val[x].series_game_id;
-                    valstr = valstr + ':' + (val[x].additional_info ? val[x].additional_info : '') + ',';
+                    if(val[x].not_found)
+                        valstr = valstr + val[x].not_found
+                    else
+                        valstr = valstr + ':' + (val[x].additional_info ? val[x].additional_info : '') + ',';
 
                     $('#'+input_field_name).val($('#'+input_field_name).val()+valstr);
                 }

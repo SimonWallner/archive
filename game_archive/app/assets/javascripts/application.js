@@ -64,3 +64,4 @@ $(document).ready(function() {
     );
     $(".full_markdown_help").tooltipsy({delay: 600});
     $(".all").hide();
+});
