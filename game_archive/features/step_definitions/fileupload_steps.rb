@@ -2,24 +2,8 @@
 
 When /^I choose a valid file for a (.+)$/ do |type|
 
-  if type == "developer"
+  tag, path = get_path_and_tag_to_type(type)
 
-    filename = "Luigi.png"
-    tag = 'developer_image'
-
-  elsif type == "game"
-
-    filename = "diablo3.jpeg"
-    tag = 'game_image'
-
-  elsif type == "company"
-
-    filename = "bowser.jpg"
-    tag = 'company_image'
-
-  end
-
-  path = "#{Rails.root}/features/testpics/#{filename}"
   attach_file(tag,path)
 
 

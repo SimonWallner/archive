@@ -210,10 +210,6 @@ Given /^I have a selection of companies$/ do
 	@com6.save
 end
 
-When /^I am on the Home Page$/ do
-	visit "/"
-end
-
 Then /^I should see a selection of games sorted by Newest and Most Popular$/ do
 	within 'div.games_featured' do
 		page.should have_content(@game5.title)
@@ -279,8 +275,4 @@ Then /^I should see all games$/ do
 		page.should have_content(@game11.title)
 		page.should have_content(@game12.title)
 	end
-end
-
-When /^I am on the Games Overview Page$/ do
-	visit "/games/"
 end

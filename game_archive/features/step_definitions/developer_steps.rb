@@ -27,9 +27,6 @@ end
 
 
 #    Scenario: fail to create developer with empty name
-Given /^I am on the developer creation page$/ do
-  visit new_developer_path
-end
 When /^I leave the name field empty and submit it$/ do
   fill_in("developer_name", :with => "")
   fill_in("developer_description", :with => "")
@@ -42,10 +39,6 @@ end
 
 
 #    Scenario: update developer's page with valid data
-
-Given /^I am on the detail page of the given developer$/ do
-  visit developer_path(@givenDeveloper)
-end
 
 When /^I follow the developer edit link$/ do
   within(".developer") do
@@ -69,12 +62,6 @@ When /^I change the developer's data and submit it$/ do
   click_button "Update Developer"
 
 end
-
-
-Then /^I should be on the detail page of the given developer$/ do
-  current_path.should == developer_path(@givenDeveloper)
-end
-
 
 Then /^I should see the updated content$/ do
   page.should have_content(@update_name)

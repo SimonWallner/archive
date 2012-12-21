@@ -1,6 +1,22 @@
 #   Scenario: show game's page
-Given /^I have a game (.+)$/ do |game_name|
+Given /^I have a game (.*)$/ do |game_name|
   @givenGame=FactoryGirl.create :game , title:game_name
+
+end
+
+Given /^I have a (.*) to the given game$/ do |addition|
+
+  if addition == "screenshot"
+
+    visit edit_game_path(@givenGame)
+
+    fill_in_name("game")
+    @filename = choose_filename_by_type("valid")
+    attach_screenshot(@filename)
+    submit_any_button
+
+  end
+
 end
 
 Then /^I should see the title of the game in a list of games$/ do
@@ -44,9 +60,6 @@ end
 
 
 #   Scenarios: update game's page
-Given /^I am on the detail page of the game$/ do
-  visit game_path(@givenGame)
-end
 
 When /^I follow the game edit link$/ do
   within(".game") do
@@ -61,9 +74,6 @@ When /^I change the game's data and submit it$/ do
   fill_in("game_title", :with => @update_game_title)
   fill_in("game_description", :with =>  @update_game_description) 
   click_button "Update Game"
-end
-Then /^I should be on the detail page of the given game$/ do
-  current_path.should == game_path(@givenGame)
 end
 Then /^I should see the updated game content$/ do
   page.should have_content(@update_game_title)
