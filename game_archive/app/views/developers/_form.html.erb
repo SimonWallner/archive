@@ -20,9 +20,9 @@
     <%= f.text_area :description  %>
   </div>
   <div>
-    <div class="newFieldsDiv"><script type="text/javascript">loadfields('<%= begin developer_url rescue '' end %>.json');</script></div>
+    <div class="newFieldsDiv"><script type="text/javascript">loadfields('<%= begin developer_url rescue new_developer_url end %>.json');</script></div>
     <%= submit_tag "Add Field", :type => 'button', :id => 'addFieldButton' ,
-      :onclick => 'addField(this,["External Links","Userdefined"]);'
+      :onclick => 'addField(this,["Userdefined"]);'
   %>
   </div>
   <div class="field">

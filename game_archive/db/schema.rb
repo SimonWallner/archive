@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121212135445) do
+ActiveRecord::Schema.define(:version => 20121207120548) do
 
   create_table "companies", :force => true do |t|
     t.string   "name"
@@ -20,7 +20,6 @@ ActiveRecord::Schema.define(:version => 20121212135445) do
     t.datetime "updated_at",    :null => false
     t.string   "image"
     t.string   "official_name"
-    t.integer  "popularity"
   end
 
   create_table "company_defuncts", :force => true do |t|
@@ -52,7 +51,6 @@ ActiveRecord::Schema.define(:version => 20121212135445) do
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
     t.string   "image"
-    t.integer  "popularity"
   end
 
   create_table "fields", :force => true do |t|
@@ -75,7 +73,6 @@ ActiveRecord::Schema.define(:version => 20121212135445) do
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
     t.string   "image"
-    t.integer  "popularity"
   end
 
   create_table "games_genres", :id => false, :force => true do |t|
@@ -175,15 +172,6 @@ ActiveRecord::Schema.define(:version => 20121212135445) do
 
   add_index "release_dates", ["game_id"], :name => "index_release_dates_on_game_id"
 
-  create_table "screenshots", :force => true do |t|
-    t.string   "image"
-    t.integer  "game_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
-  add_index "screenshots", ["game_id"], :name => "index_screenshots_on_game_id"
-
   create_table "tags", :force => true do |t|
     t.string   "name"
     t.datetime "created_at", :null => false
@@ -212,25 +200,11 @@ ActiveRecord::Schema.define(:version => 20121212135445) do
     t.integer  "invitation_limit"
     t.integer  "invited_by_id"
     t.string   "invited_by_type"
-    t.string   "confirmation_token"
-    t.datetime "confirmed_at"
-    t.datetime "confirmation_sent_at"
-    t.string   "unconfirmed_email"
   end
 
-  add_index "users", ["confirmation_token"], :name => "index_users_on_confirmation_token", :unique => true
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["invitation_token"], :name => "index_users_on_invitation_token"
   add_index "users", ["invited_by_id"], :name => "index_users_on_invited_by_id"
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
-
-  create_table "videos", :force => true do |t|
-    t.text     "embedcode"
-    t.integer  "game_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
-  add_index "videos", ["game_id"], :name => "index_videos_on_game_id"
 
 end

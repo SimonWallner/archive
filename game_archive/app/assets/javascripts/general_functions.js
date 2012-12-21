@@ -1,21 +1,30 @@
+// jsonurl = url zum json renderer der  anzuzeigenden seite
+// geht das json durch und fügt alle felder entsprechend hinzu
 function loadfields(jsonurl){
+    // bestimmen der möglichen fields und in welcher seite man sich befindet
     var gamefields = ["Developer","Publisher","Distributor","Credits","Platform",
                       "Release Dates","Mode","Media","External Links","Aggregate Scores",
                       "Review Scores","Genres","Tags","Series","Userdefined"];
     var companyfields = ["Official Name","Location","Founded","Defunct","External Links","Userdefined"];
     var developersfields = ["External Links","Userdefined"];
     var usedfields;
+    var page = '';
 
-    if(jsonurl.indexOf('games')>0)
+    if(jsonurl.indexOf('games') > 0) {
         usedfields = gamefields;
-    else if(jsonurl.indexOf('companies'))
+        page = 'game';
+    }else if(jsonurl.indexOf('companies') > 0){
         usedfields = companyfields;
-    else
+        page = 'company';
+    }else {
         usedfields = developersfields;
+        page = 'developer';
+    }
 
+    // json laden und durchgehen
     $.getJSON(jsonurl, function(data){
         jQuery.each(data, function(i, val) {
-            if($.inArray(i,['platforms','modes','media', 'genres', 'tags']) >= 0 && val.length > 0){
+            if($.inArray(i,['platforms','modes','media', 'genres', 'tags']) >= 0){
                 if($.inArray(i,['platforms','modes']) >= 0)
                     i = i.substr(0, i.length -1);
                 addField($('#addFieldButton'), usedfields);
@@ -29,7 +38,7 @@ function loadfields(jsonurl){
 
                 addConcreteField(select_elem, false, str);
 
-            }else if($.inArray(i,['release_dates']) >= 0 && val.length > 0){
+            }else if($.inArray(i,['release_dates']) >= 0 ){
                 addField($('#addFieldButton'), usedfields);
                 var select_elem = $('div.newFieldsDiv').find('select:last');
                 select_elem.find('option[value="release dates"]').attr('selected', true);
@@ -41,6 +50,7 @@ function loadfields(jsonurl){
                     $('#day_release_date'+(x+1)).val(val[x].day);
                     $('#text_release_date'+(x+1)).val(val[x].additional_info);
                 }
+                addConcreteField(select_elem, false);
 
             }else if($.inArray(i,['fields']) >= 0){
                 for (var x = 0; x < val.length; x++){
@@ -54,6 +64,15 @@ function loadfields(jsonurl){
                 }
 
             } else if($.inArray(i,['mixed_fields']) >= 0){
+                if(val.length < 1){
+                    $.each(["developer","publisher","distributor","credits","external links","series"],
+                    function(index,value){
+                        addField($('#addFieldButton'), usedfields);
+                        var select_elem = $('div.newFieldsDiv').find('select:last');
+                        select_elem.find('option[value="'+value+'"]').attr('selected', true);
+                        addConcreteField(select_elem, false);
+                    });
+                }
                 for (var x = 0; x < val.length; x++){
                     var type = val[x]['mixed_field_type'].name.toLowerCase();
                     var input_field_name = 'new_' + type.replace(' ','_');
@@ -78,17 +97,35 @@ function loadfields(jsonurl){
 
                     $('#'+input_field_name).val($('#'+input_field_name).val()+valstr);
                 }
-            }  else if($.inArray(i,['official_name']) >= 0 && val && val != 'null'){
+            }  else if($.inArray(i,['official_name']) >= 0){
                 addField($('#addFieldButton'), usedfields);
                 var select_elem = $('div.newFieldsDiv').find('select:last');
                 select_elem.find('option[value="official name"]').attr('selected', true);
                 addConcreteField(select_elem, false, val);
             }
-
         });
+        // bei neuanlage die felder hinzufügen die nicht im json sind
+        if(page == 'developer' && $.inArray(data,['mixed_fields']) < 0){
+            $.each(["external links"],
+                function(index,value){
+                    addField($('#addFieldButton'), usedfields);
+                    var select_elem = $('div.newFieldsDiv').find('select:last');
+                    select_elem.find('option[value="'+value+'"]').attr('selected', true);
+                    addConcreteField(select_elem, false);
+                });
+        }else if(page == 'company' && $.inArray(data,['mixed_fields']) < 0){
+            $.each(["founded", "location", "external links"],
+                function(index,value){
+                    addField($('#addFieldButton'), usedfields);
+                    var select_elem = $('div.newFieldsDiv').find('select:last');
+                    select_elem.find('option[value="'+value+'"]').attr('selected', true);
+                    addConcreteField(select_elem, false);
+                });
+        }
     });
 }
 
+// ein select zur feldauswahl hinzufügen
 function addField(button_element, types){
     $('#newFieldId').removeAttr('id');
     var html = '<div class="addedField"><select class="newField" id="newFieldId">';
@@ -105,6 +142,7 @@ function addField(button_element, types){
 }
 var anzDateInputs=0;
 var anzUserDefined=0;
+// ein feld im select ausgewählt => das konkrete feld hinzufügen
 function addConcreteField(select_element, deletecurrent){addConcreteField(select_element, deletecurrent, false)}
 function addConcreteField(select_element, deletecurrent, value){
     if(deletecurrent)
@@ -174,6 +212,7 @@ function addConcreteField(select_element, deletecurrent, value){
     }
 }
 
+// helper um datumsinputs hinzuzufügen
 function addDateInput(field_name){
     var html = '<select id="day_'+field_name+'" name="day_'+field_name+'">';
     for (var i=1; i<32; i++){
