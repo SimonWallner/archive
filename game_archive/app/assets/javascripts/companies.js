@@ -30,8 +30,23 @@ $(document).ready(function() {
                     '"content":"'+$('#content_userdefined'+i).val() +'"},';
             }
             userdefstring = '[' + userdefstring.substr(0,userdefstring.length-1) + ']';
-
             $('#new_fields').val(userdefstring);
+
+            var locationstring = '';
+            var larr = $('#new_locations').val().split(',');
+            $.each(larr, function(i,val){
+               if(val.indexOf(':') > 0){
+                  locationstring = locationstring +
+                      '{"name":"'+val.split(':')[0]+'","additional_info":"'+ val.split(':')[1]+'"},'
+               }else{
+                  if(val.length > 0)
+                    locationstring = locationstring +
+                      '{"name":"'+val+'","additional_info":null},'
+               }
+            });
+            locationstring = '[' + locationstring.substr(0,locationstring.length-1) + ']';
+            $('#new_locations').val(locationstring);
+
             return true;
         });
 });

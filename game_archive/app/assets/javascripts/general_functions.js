@@ -105,10 +105,34 @@ function loadfields(jsonurl){
                 var select_elem = $('div.newFieldsDiv').find('select:last');
                 select_elem.find('option[value="official name"]').attr('selected', true);
                 addConcreteField(select_elem, false, val);
+
+            }  else if($.inArray(i,['locations']) >= 0){
+                addField($('#addFieldButton'), usedfields);
+                var select_elem = $('div.newFieldsDiv').find('select:last');
+                select_elem.find('option[value="location"]').attr('selected', true);
+                var locationstring = '';
+                $.each(val, function(i,dat){
+                   locationstring = locationstring + dat.name;
+                   if(dat.additional_info)
+                      locationstring = locationstring + ':'+dat.additional_info;
+                   locationstring = locationstring + ',';
+                });
+                addConcreteField(select_elem, false, locationstring);
+
+            }  else if($.inArray(i,['founded','defunct']) >= 0 ){
+                addField($('#addFieldButton'), usedfields);
+                var select_elem = $('div.newFieldsDiv').find('select:last');
+                select_elem.find('option[value="'+i+'"]').attr('selected', true);
+
+                addConcreteField(select_elem, false);
+                $('#year_'+i).val(val.year);
+                $('#month_'+i).val(val.month);
+                $('#day_'+i).val(val.day);
+                $('#text_'+i).val(val.additional_info);
             }
         });
         // bei neuanlage die felder hinzufügen die nicht im json sind
-        if(page == 'developer' && $.inArray(data,['mixed_fields']) < 0){
+        if(page == 'developer' && !data.mixed_fields){
             $.each(["external links"],
                 function(index,value){
                     addField($('#addFieldButton'), usedfields);
@@ -116,14 +140,25 @@ function loadfields(jsonurl){
                     select_elem.find('option[value="'+value+'"]').attr('selected', true);
                     addConcreteField(select_elem, false);
                 });
-        }else if(page == 'company' && $.inArray(data,['mixed_fields']) < 0){
-            $.each(["founded", "location", "external links"],
-                function(index,value){
-                    addField($('#addFieldButton'), usedfields);
-                    var select_elem = $('div.newFieldsDiv').find('select:last');
-                    select_elem.find('option[value="'+value+'"]').attr('selected', true);
-                    addConcreteField(select_elem, false);
-                });
+        }else if(page == 'company'){
+            if(!data.mixed_fields){
+                addField($('#addFieldButton'), usedfields);
+                var select_elem = $('div.newFieldsDiv').find('select:last');
+                select_elem.find('option[value="external links"]').attr('selected', true);
+                addConcreteField(select_elem, false);
+            }
+            if(!data.founded){
+                addField($('#addFieldButton'), usedfields);
+                var select_elem = $('div.newFieldsDiv').find('select:last');
+                select_elem.find('option[value="founded"]').attr('selected', true);
+                addConcreteField(select_elem, false);
+            }
+            if(!data.locations){
+                addField($('#addFieldButton'), usedfields);
+                var select_elem = $('div.newFieldsDiv').find('select:last');
+                select_elem.find('option[value="location"]').attr('selected', true);
+                addConcreteField(select_elem, false);
+            }
         }
     });
 }
@@ -196,7 +231,7 @@ function addConcreteField(select_element, deletecurrent, value){
         at_autocomp(field_name+'_dummy', $('#'+input_field_name), '/ajax.json');
 
     }else if($.inArray(field_name,['official name']) >= 0){                                          // normal input
-        $(select_element).parent().append('<input id="'+field_name.replace(' ','_')+'" name="'+field_name.replace(' ','_')+ 'value="' +
+        $(select_element).parent().append('<input id="'+field_name.replace(' ','_')+'" name="company['+field_name.replace(' ','_')+ ']" value="' +
             (value ? value : '') + '">');
 
     }else if($.inArray(field_name,['defunct','founded']) >= 0){                                      // date + string
@@ -205,7 +240,9 @@ function addConcreteField(select_element, deletecurrent, value){
             $(select_element).parent().append('<input id="text_'+field_name+'" name="text_'+field_name+'" type="text">');
 
     }else if($.inArray(field_name,['external links', 'aggregate scores', 'review scores', 'location']) >= 0){    // external links only
-        $(select_element).parent().append('<textarea cols="40" rows="3" id="'+input_field_name+'" name="'+input_field_name+'"></textarea>');
+        $(select_element).parent().append('<textarea cols="40" rows="3" id="'+input_field_name+'" name="'+input_field_name+'">' +
+            (value ? value : '') +
+            '</textarea>');
 
     }else if($.inArray(field_name,['developer','publisher','distributor','credits']) >= 0){          // dev/comp references + add info
         $(select_element).parent().append('<textarea cols="40" rows="3" id="'+input_field_name+'" name="'+input_field_name+'">' +

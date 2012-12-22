@@ -30,7 +30,7 @@ class CompaniesController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render :json => @company.to_json(:include => [:mixed_fields, :fields, :defunct, :founded, :locations ]) }
+      format.json { render :json => @company.to_json() }
     end
   end
 
@@ -66,7 +66,7 @@ class CompaniesController < ApplicationController
   # POST /companies.json
   def create
     @company = Company.new(params[:company])
-	@company.popularity = 0
+	  @company.popularity = 0
 
     Location.create_add_new_locations(@company, params["new_locations"])
     add_founded(params)
