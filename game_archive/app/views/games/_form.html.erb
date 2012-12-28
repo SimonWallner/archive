@@ -44,15 +44,25 @@
     <%= f.label :description %><br />
     <%= f.text_area :description %>
   </div>
-    <div class="field">
-      <%= f.label :image, 'Choose profile picture' %><br /> <br/>
-      <%= imguploader = ImageUploader.new
-          if not @game.image_url == imguploader.default_url
-           File.basename @game.image.to_s
-          end %><br/>
-      <%= f.file_field :image %>
+    <%= f.label :image, 'Choose game picture' %>
+    <div class="field" id="profilepicfields">
+
+      <% imguploader = ImageUploader.new %>
+          <% if not @game.image_url == imguploader.default_url %>
+          <br />
+          <%= f.label :image, (File.basename f.object.image_url.to_s)%><br/>
+          <%=
+                image_tag f.object.image_url.to_s, :class => 'thumb'
+
+          %>
+
+          <br/><%= f.label :remove_image, "remove game picture?" %>
+          <%= f.check_box :remove_image %> <br/>
+          <%end  %> <br/>
+      <%= f.file_field :image %>   <br/>  <br/>
+
     </div>
-    <div class="field">
+    <div class="field" >
       <!-- iterate through all the available videos for a game and create a field for them
 
       <f.text_area :video mit id!? > <remove button>

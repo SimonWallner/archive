@@ -88,11 +88,16 @@ class CompaniesController < ApplicationController
 	
     respond_to do |format|
       if @company.update_attributes(params[:company])
-	  	if (params[:reportblockcontent][:status]=='0')
-			format.html { redirect_to @company,notice: 'Company was reported successfully'}
-			format.json { head :no_content }
+	  	if (params[:reportblockcontent])
+			if (params[:reportblockcontent][:status]=='0')
+				format.html { redirect_to @company,notice: 'Company was reported successfully'}
+				format.json { head :no_content }
+			else
+				format.html { redirect_to @company }
+				format.json { head :no_content }
+			end
 		else
-			format.html { redirect_to @company }
+			format.html { redirect_to @company}
 			format.json { head :no_content }
 		end
       else

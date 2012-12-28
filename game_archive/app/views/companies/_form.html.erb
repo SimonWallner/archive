@@ -19,9 +19,23 @@
     <%= f.label :description %><br />
     <%= f.text_area :description %>
   </div>
-    <div class="field">
-      <%= f.label :image, 'Choose profile picture' %><br />
-      <%= f.file_field :image %>
+    <%= f.label :image, 'Choose company picture' %>
+    <div class="field" id="profilepicfields">
+
+      <% imguploader = ImageUploader.new %>
+      <% if not @company.image_url == imguploader.default_url %>
+          <br />
+          <%= f.label :image, (File.basename f.object.image_url.to_s)%><br/>
+          <%=
+              image_tag f.object.image_url.to_s, :class => 'thumb'
+
+          %>
+
+          <br/><%= f.label :remove_image, "remove game picture?" %>
+          <%= f.check_box :remove_image %> <br/>
+      <%end  %> <br/>
+      <%= f.file_field :image %>   <br/>  <br/>
+
     </div>
   <div class="actions">
     <%= f.submit %>

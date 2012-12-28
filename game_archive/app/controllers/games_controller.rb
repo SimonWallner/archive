@@ -94,10 +94,16 @@ class GamesController < ApplicationController
 	
     respond_to do |format|
       if @game.update_attributes(params[:game])
-		if (params[:reportblockcontent][:status]=='0')
-			format.html { redirect_to @game,notice: 'Game was reported successfully'}
+		if (params[:reportblockcontent])
+			if (params[:reportblockcontent][:status]=='0')
+				format.html { redirect_to @game,notice: 'Game was reported successfully'}
+				format.json { head :no_content }
+			else
+			format.html { redirect_to @game}
 			format.json { head :no_content }
+			end
 		else
+	  
 			format.html { redirect_to @game}
 			format.json { head :no_content }
 		end
