@@ -4,10 +4,12 @@
 	  <div>
 	    <%= label.to_s %>:
 	  </div>
-	  <div>
+	  <ul>
 	    <% fields.each do |f| %>
-	        <%= just_links_markdown f.content %>&nbsp;
+		    <li>
+	            <%= just_links_markdown f.content %>
+		    </li>
 	    <% end %>
-	  </div>
+	  </ul>
 	</div>
 <% end %>
