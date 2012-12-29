@@ -71,7 +71,7 @@ class CompaniesController < ApplicationController
     Location.create_add_new_locations(@company, params["new_locations"])
     add_founded(params)
     add_defunct(params)
-
+    Field.create_add_new_fields(@company, params[:new_fields])
     respond_to do |format|
       if @company.save
         format.html { redirect_to @company }
@@ -88,27 +88,28 @@ class CompaniesController < ApplicationController
   def update
     @company = Company.find(params[:id])
 
-	if (params[:reportblockcontent])
-		Reportblockcontent.create_from_string(2,params[:id], params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
-	end
+    if (params[:reportblockcontent])
+      Reportblockcontent.create_from_string(2,params[:id], params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
+    end
 
     Location.create_add_new_locations(@company, params["new_locations"])
     add_founded(params)
     add_defunct(params)
+    Field.create_add_new_fields(@company, params[:new_fields])
     respond_to do |format|
       if @company.update_attributes(params[:company])
-	  	if (params[:reportblockcontent])
-			if (params[:reportblockcontent][:status]=='0')
-				format.html { redirect_to @company,notice: 'Company was reported successfully'}
-				format.json { head :no_content }
-			else
-				format.html { redirect_to @company }
-				format.json { head :no_content }
-			end
-		else
-			format.html { redirect_to @company}
-			format.json { head :no_content }
-		end
+        if (params[:reportblockcontent])
+          if (params[:reportblockcontent][:status]=='0')
+            format.html { redirect_to @company,notice: 'Company was reported successfully'}
+            format.json { head :no_content }
+          else
+            format.html { redirect_to @company }
+            format.json { head :no_content }
+          end
+        else
+          format.html { redirect_to @company}
+          format.json { head :no_content }
+        end
       else
         format.html { render action: "edit" }
         format.json { render json: @company.errors, status: :unprocessable_entity }

@@ -21,6 +21,15 @@ $(document).ready(function() {
             userdefstring = userdefstring + '{"name":"'+$('#name_userdefined'+i).val() +'",' +
                                             '"content":"'+$('#content_userdefined'+i).val() +'"},';
         }
+        if($('#new_external_links').length > 0 && $('#new_external_links').val().length > 0){
+            userdefstring = userdefstring + '{"name":"External Links","content":"'+$('#new_external_links').val()+'"},';
+        }
+        if($('#new_aggregate_scores').length > 0 && $('#new_aggregate_scores').val().length > 0){
+            userdefstring = userdefstring + '{"name":"Aggregate Scores","content":"'+$('#new_aggregate_scores').val()+'"},';
+        }
+        if($('#new_review_scores').length > 0 && $('#new_review_scores').val().length > 0){
+            userdefstring = userdefstring + '{"name":"Review Scores","content":"'+$('#new_review_scores').val()+'"},';
+        }
         userdefstring = '[' + userdefstring.substr(0,userdefstring.length-1) + ']';
 
         $('#new_release_dates').val(datestring);

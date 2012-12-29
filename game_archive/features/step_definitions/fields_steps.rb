@@ -76,9 +76,9 @@ Then /^I should see the saved (.*?) fields$/ do |pname|
       page.should have_content(@contentUserdefined)
       page.should have_content(@allDateText)
       page.should have_content(@additionalDate)
-    #  page.should have_content(@externalLinks)
-    #  page.should have_content(@aggregate_scores)
-    #  page.should have_content(@review_scores)
+      page.should have_content(@externalLinks)
+      page.should have_content(@aggregate_scores)
+      page.should have_content(@review_scores)
       page.should have_content(@textDeveloper)
       page.should have_content(@textPublisher)
       page.should have_content(@textSeries)
@@ -87,7 +87,7 @@ Then /^I should see the saved (.*?) fields$/ do |pname|
     end
     if pname == "Developer"
       page.should have_content(@contentUserdefined)
-    #  page.should have_content(@externalLinks)
+      page.should have_content(@externalLinks)
     end
     if pname == "Company"
       page.should have_content(@contentUserdefined)
@@ -95,7 +95,7 @@ Then /^I should see the saved (.*?) fields$/ do |pname|
       page.should have_content(@additionalDefunct)
       page.should have_content(@textLocation)
       page.should have_content(@textOfficialName)
-    #  page.should have_content(@externalLinks)
+      page.should have_content(@externalLinks)
     end
   end
 end
@@ -174,13 +174,11 @@ end
 end
 
 Then /^I should see the saved token list data$/ do
-  within(".fact-box") do
    page.should have_content(@textGenres)
    page.should have_content(@textPlatforms)
    page.should have_content(@textMedias)
    page.should have_content(@textModes)
    page.should have_content(@textTags)
-  end
 end
 
 

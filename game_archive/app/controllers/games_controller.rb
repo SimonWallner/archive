@@ -64,7 +64,7 @@ class GamesController < ApplicationController
   # POST /games.json
   def create
     @game = Game.new(params[:game])
-	@game.popularity = 0
+	  @game.popularity = 0
     create_add_new_token(params[:new_genres], params[:new_platforms], params[:new_medias], params[:new_modes], params[:new_tags])
     create_add_new_release_dates(params[:new_release_dates])
     Field.create_add_new_fields(@game, params[:new_fields])
@@ -77,9 +77,6 @@ class GamesController < ApplicationController
         create_add_new_mixed_fields(params[:new_distributors], MixedFieldType.find_by_name("Distributor"))
         create_add_new_mixed_fields(params[:new_credits], MixedFieldType.find_by_name("Credits"))
         create_add_new_mixed_fields(params[:new_series], MixedFieldType.find_by_name("Series"))
-      #  create_add_new_mixed_fields(params[:new_aggregate_scores], MixedFieldType.find_by_name("Aggregate Scores"))
-      #  create_add_new_mixed_fields(params[:new_review_scores], MixedFieldType.find_by_name("Review Scores"))
-      #  create_add_new_mixed_fields(params[:new_external_links], MixedFieldType.find_by_name("External Links"))
 
         format.html { redirect_to @game}
         format.json { render json: @game, status: :created, location: @game }
@@ -110,9 +107,6 @@ class GamesController < ApplicationController
         create_add_new_mixed_fields(params[:new_distributors], MixedFieldType.find_by_name("Distributor"))
         create_add_new_mixed_fields(params[:new_credits], MixedFieldType.find_by_name("Credits"))
         create_add_new_mixed_fields(params[:new_series], MixedFieldType.find_by_name("Series"))
-      # create_add_new_mixed_fields(params[:new_aggregate_scores], MixedFieldType.find_by_name("Aggregate Scores"))
-       # create_add_new_mixed_fields(params[:new_review_scores], MixedFieldType.find_by_name("Review Scores"))
-       # create_add_new_mixed_fields(params[:new_external_links], MixedFieldType.find_by_name("External Links"))
       end
       if (params[:reportblockcontent])
         if (params[:reportblockcontent][:status]=='0')

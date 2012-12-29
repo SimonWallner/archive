@@ -54,15 +54,30 @@ function loadfields(jsonurl){
 
             }else if($.inArray(i,['fields']) >= 0){
                 for (var x = 0; x < val.length; x++){
-                    addField($('#addFieldButton'), usedfields);
-                    var select_elem = $('div.newFieldsDiv').find('select:last');
-                    select_elem.find('option[value="userdefined"]').attr('selected', true);
-                    addConcreteField(select_elem, false);
+                    if($.inArray(val[x].name,['External Links','Aggregate Scores','Review Scores']) >= 0) {
+                        var fname = 'new_' + val[x].name.toLowerCase().replace(' ','_');
+                        if($('#'+fname).length < 1){
+                            addField($('#addFieldButton'), usedfields);
+                            var select_elem = $('div.newFieldsDiv').find('select:last');
+                            select_elem.find('option[value="'+val[x].name.toLowerCase()+'"]').attr('selected', true);
+                            addConcreteField(select_elem, false);
+                        }
+                        var input = $('#'+fname);
+                        if(input.val()){
+                            input.val(input.val()+', '+val[x].content);
+                        }else{
+                            input.val(val[x].content);
+                        }
+                    } else {
+                        addField($('#addFieldButton'), usedfields);
+                        var select_elem = $('div.newFieldsDiv').find('select:last');
+                        select_elem.find('option[value="userdefined"]').attr('selected', true);
+                        addConcreteField(select_elem, false);
 
-                    $('#name_userdefined'+(x+1)).val(val[x].name);
-                    $('#content_userdefined'+(x+1)).val(val[x].content);
+                        $('#name_userdefined'+(x+1)).val(val[x].name);
+                        $('#content_userdefined'+(x+1)).val(val[x].content);
+                    }
                 }
-
             } else if($.inArray(i,['mixed_fields']) >= 0){
                 if(val.length < 1 && page == "game"){
                     $.each(["developer","publisher","distributor","credits","external links","series"],
@@ -132,7 +147,7 @@ function loadfields(jsonurl){
             }
         });
         // bei neuanlage die felder hinzufügen die nicht im json sind
-        if(page == 'developer' && !data.mixed_fields){
+        if(page == 'developer' && (!data.mixed_fields || data.mixed_fields.length == 0)){
             $.each(["external links"],
                 function(index,value){
                     addField($('#addFieldButton'), usedfields);
@@ -141,7 +156,7 @@ function loadfields(jsonurl){
                     addConcreteField(select_elem, false);
                 });
         }else if(page == 'company'){
-            if(!data.mixed_fields){
+            if(!data.mixed_fields || data.mixed_fields.length == 0){
                 addField($('#addFieldButton'), usedfields);
                 var select_elem = $('div.newFieldsDiv').find('select:last');
                 select_elem.find('option[value="external links"]').attr('selected', true);

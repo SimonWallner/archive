@@ -73,13 +73,12 @@
   </div>
   <div class="field">
       <%= f.label :image, 'Choose profile picture' %><br />
-      <%= f.file_field :image %>
-    <%= f.label :image, 'Choose game picture' %>
+      <%= f.file_field :image %>   <br />
+    <%= f.label :image, 'Choose game picture' %><br />
     <div class="field" id="profilepicfields">
 
       <% imguploader = ImageUploader.new %>
           <% if not @game.image_url == imguploader.default_url %>
-          <br />
           <%= f.label :image, (File.basename f.object.image_url.to_s)%><br/>
           <%=
                 image_tag f.object.image_url.to_s, :class => 'thumb'
@@ -95,7 +94,9 @@
   <div>
   <div class="newFieldsDiv"><script type="text/javascript">loadfields('<%= begin game_url rescue new_game_url end %>.json');</script></div>
     <%= submit_tag "Add Field", :type => 'button', :id => 'addFieldButton' ,
-      :onclick => 'addField(this,["Aggregate Scores","Review Scores","Userdefined"]);'
+      :onclick => 'addField(this,["Developer","Publisher","Distributor","Credits","Platform",
+                      "Release Dates","Mode","Media","External Links","Aggregate Scores",
+                      "Review Scores","Genres","Tags","Series","Userdefined"]);'
   %>
   </div>
     <!--

@@ -29,6 +29,9 @@ $(document).ready(function() {
                 userdefstring = userdefstring + '{"name":"'+$('#name_userdefined'+i).val() +'",' +
                     '"content":"'+$('#content_userdefined'+i).val() +'"},';
             }
+            if($('#new_external_links').length > 0 && $('#new_external_links').val().length > 0){
+                userdefstring = userdefstring + '{"name":"External Links","content":"'+$('#new_external_links').val()+'"},';
+            }
             userdefstring = '[' + userdefstring.substr(0,userdefstring.length-1) + ']';
             $('#new_fields').val(userdefstring);
 
