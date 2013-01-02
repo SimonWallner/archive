@@ -1,4 +1,5 @@
 class Game < ActiveRecord::Base
+  acts_as_indexed :fields => [:description, :title]
   require 'file_size_validator'
 
   attr_accessible :description, :title, :genres, :genre_ids , :image, :videos_attributes, :popularity, :screenshots_attributes , :remove_image, :release_dates

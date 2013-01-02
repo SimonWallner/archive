@@ -2,6 +2,9 @@ GameArchive::Application.routes.draw do
 
   get "users/manage"
   post "users/update"
+  
+  get "search/query"
+  post "search/result"
 
   devise_for :users, skip: :registrations
   devise_scope :user do

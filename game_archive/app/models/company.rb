@@ -1,4 +1,5 @@
 class Company < ActiveRecord::Base
+  acts_as_indexed :fields => [:description, :name, :official_name]
   require 'file_size_validator'
   attr_accessible :description, :name, :image, :official_name, :founded, :defunct, :popularity, :remove_image
 
