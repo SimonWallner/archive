@@ -65,6 +65,7 @@ class CompaniesController < ApplicationController
   # POST /companies
   # POST /companies.json
   def create
+    authenticate_user!(nil)
     @company = Company.new(params[:company])
 	  @company.popularity = 0
 
@@ -86,6 +87,7 @@ class CompaniesController < ApplicationController
   # PUT /companies/1
   # PUT /companies/1.json
   def update
+    authenticate_user!(nil)
     @company = Company.find(params[:id])
 
     if (params[:reportblockcontent])

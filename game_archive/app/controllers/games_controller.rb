@@ -63,6 +63,7 @@ class GamesController < ApplicationController
   # POST /games
   # POST /games.json
   def create
+    authenticate_user!(nil)
     @game = Game.new(params[:game])
 	  @game.popularity = 0
     create_add_new_token(params[:new_genres], params[:new_platforms], params[:new_medias], params[:new_modes], params[:new_tags])
@@ -90,6 +91,7 @@ class GamesController < ApplicationController
   # PUT /games/1
   # PUT /games/1.json
   def update
+    authenticate_user!(nil)
     @game = Game.find(params[:id])
 	
     if (params[:reportblockcontent])

@@ -63,6 +63,7 @@ class DevelopersController < ApplicationController
   # POST /developers
   # POST /developers.json
   def create
+    authenticate_user!(nil)
     @developer = Developer.new(params[:developer])
 	  @developer.popularity = 0
     Field.create_add_new_fields(@developer, params[:new_fields])
@@ -80,6 +81,7 @@ class DevelopersController < ApplicationController
   # PUT /developers/1
   # PUT /developers/1.json
   def update
+    
     @developer = Developer.find(params[:id])
     if (params[:reportblockcontent])
       Reportblockcontent.create_from_string(1,params[:id], params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
