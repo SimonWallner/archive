@@ -19,23 +19,23 @@ Feature: Search content
 		And I click the Search button
 		Then I should have all three in the search results
 	
-	Scenario: Search for a part of the name of existing developer
-		Given I have a developer Will Wright
-		And I am on the Search Page
-		When I enter Will
-		And I click the Search button
-		Then I should have the developer in the search results
-	
-	Scenario: Search for description content of existing company
-		Given I have a company with description Tetris Developer
+	Scenario: Search for a part of the name of existing game
+		Given I have a game Tetris Revolution
 		And I am on the Search Page
 		When I enter Tetris
 		And I click the Search button
-		Then I should have the company in the search results
+		Then I should have the game in the search results
+	
+	Scenario: Search for description content of existing game
+		Given I have a game with description Tetris Sequel
+		And I am on the Search Page
+		When I enter Tetris
+		And I click the Search button
+		Then I should have the game in the search results
 	
 	Scenario: Search for non-existant game
-		Given I have a game Tertis
+		Given I have a company Microsoft
 		And I am on the Search Page
-		When I enter Tetris
+		When I enter Apple
 		And I click the Search button
 		Then I should have no search results
