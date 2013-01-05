@@ -1,32 +1,39 @@
-Given /^I have a (.*) game$/ do |blockedorlocked|
-  @givenGame=FactoryGirl.create :game , title: "Tetris"
-  if blockedorlocked == "blocked"
-	status = 1
-  else if blockedorlocked == "locked"
-    status = 2
+Given /^I have a blocked (.+)$/ do |content|
+
+  if content == "game"
+	@givenGame=FactoryGirl.create :game , title: "Tetris"
+	content_type = 0
+	  @givenReportblockcontent=FactoryGirl.create :reportblockcontent, content_type:content_type ,status:1, content_id:@givenGame.id
+  else if content == "developer"
+	@givenDeveloper=FactoryGirl.create :developer, name: "Leela"
+    content_type = 1
+	  @givenReportblockcontent=FactoryGirl.create :reportblockcontent, content_type:content_type ,status:1, content_id:@givenDeveloper.id
+  else if content == "company"
+	@givenCompany=FactoryGirl.create :company, name: "Leela"
+    content_type = 2
+	  @givenReportblockcontent=FactoryGirl.create :reportblockcontent, content_type:content_type ,status:1, content_id:@givenCompany.id
   end
   end
-  @givenReportblockcontent=FactoryGirl.create :reportblockcontent, content_type:0 ,status:status, content_id:@givenGame.id
+  end
 end
 
-Given /^I have a (.*) developer$/ do |blockedorlocked|
-  @givenDeveloper=FactoryGirl.create :developer, name: "Leela"
-  if blockedorlocked == "blocked"
-	status = 1
-  else 
-    status = 2
-  end
-  @givenReportblockcontent=FactoryGirl.create :reportblockcontent, content_type:1 ,status:status, content_id:@givenDeveloper.id
-end
+Given /^I have a locked (.+)$/ do |content|
 
-Given /^I have a (.*) company$/ do |blockedorlocked|
-  @givenCompany=FactoryGirl.create :company, name: "Leela"
-  if blockedorlocked == "blocked"
-	status = 1
-  else 
-    status = 2
+  if content == "game"
+	@givenGame=FactoryGirl.create :game , title: "Tetris"
+	content_type = 0
+	  @givenReportblockcontent=FactoryGirl.create :reportblockcontent, content_type:content_type ,status:2, content_id:@givenGame.id
+  else if content == "developer"
+	@givenDeveloper=FactoryGirl.create :developer, name: "Leela"
+    content_type = 1
+	  @givenReportblockcontent=FactoryGirl.create :reportblockcontent, content_type:content_type ,status:2, content_id:@givenDeveloper.id
+  else if content == "company"
+	@givenCompany=FactoryGirl.create :company, name: "Leela"
+    content_type = 2
+	  @givenReportblockcontent=FactoryGirl.create :reportblockcontent, content_type:content_type ,status:2, content_id:@givenCompany.id
   end
-  @givenReportblockcontent=FactoryGirl.create :reportblockcontent, content_type:2 ,status:status, content_id:@givenCompany.id
+  end
+  end
 end
 
 When /^I follow the (.*) content link$/ do |button|
