@@ -4,9 +4,7 @@ Given /^I have a game (.*)$/ do |game_name|
 
 end
 
-Given /^I have a (.*) to the given game$/ do |addition|
-
-  if addition == "screenshot"
+Given /^I have a screenshot to the given game$/ do
 
     visit edit_game_path(@givenGame)
 
@@ -14,8 +12,6 @@ Given /^I have a (.*) to the given game$/ do |addition|
     @filename = choose_filename_by_type("valid")
     attach_screenshot(@filename)
     submit_any_button
-
-  end
 
 end
 
