@@ -38,14 +38,11 @@
       <%= f.file_field :image %>   <br/>  <br/>
 
     <div>
+
       <div class="newFieldsDiv"><script type="text/javascript">loadfields('<%= begin company_url rescue new_company_url end %>.json');</script></div>
       <%= submit_tag "Add Field", :type => 'button', :id => 'addFieldButton' ,
                    :onclick => 'addField(this,["Official Name","Location","Founded","Defunct","External Links","Userdefined"]);'
     %>
-    </div>
-    <div class="field">
-      <%= f.label :image, 'Choose profile picture' %><br />
-      <%= f.file_field :image %>
     </div>
   <div class="actions">
     <%= f.submit %>

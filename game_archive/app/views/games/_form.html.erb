@@ -72,8 +72,7 @@
     <%= f.text_area :description %>
   </div>
   <div class="field">
-      <%= f.label :image, 'Choose profile picture' %><br />
-      <%= f.file_field :image %>   <br />
+
     <%= f.label :image, 'Choose game picture' %><br />
     <div class="field" id="profilepicfields">
 
@@ -91,7 +90,29 @@
       <%= f.file_field :image %>   <br/>  <br/>
 
   </div>
-  <div>
+    <div class="field" >
+      <!-- iterate through all the available videos for a game and create a field for them
+      <f.text_area :video mit id!? > <remove button>
+   end   -->
+      <%= f.label 'Post Video Embed links here (youtube or vimeo)' %><br /><br />
+      <div id="videos" >
+        <%= f.fields_for :videos do |builder| %>
+            <%= render :partial => 'video_fields', :locals => {:builder => builder} %>
+        <%end %>
+        <p><%= link_to_add_video_fields "Add Video", f, :videos %></p>
+      </div><br/>
+    </div>
+    <div class="field">
+      <%= f.label 'Upload Screenshots' %><br /><br />
+      <div id="screenshots" >
+        <%= f.fields_for :screenshots do |builder| %>
+            <%= render :partial => 'screenshot_fields', :locals => {:builder => builder} %>
+        <%end%>
+        <p><%= link_to_add_screenshot_fields "Add Screenshot", f, :screenshots %></p>
+      </div>
+    </div>
+
+    <div>
   <div class="newFieldsDiv"><script type="text/javascript">loadfields('<%= begin game_url rescue new_game_url end %>.json');</script></div>
     <%= submit_tag "Add Field", :type => 'button', :id => 'addFieldButton' ,
       :onclick => 'addField(this,["Developer","Publisher","Distributor","Credits","Platform",
@@ -149,29 +170,10 @@
       <%= text_field_tag 'new_fields' %>
     </div>
 -->
-    <div class="field" >
-      <!-- iterate through all the available videos for a game and create a field for them
-      <f.text_area :video mit id!? > <remove button>
-   end   -->
-      <%= f.label 'Post Video Embed links here (youtube or vimeo)' %><br /><br />
-      <div id="videos" >
-      <%= f.fields_for :videos do |builder| %>
-          <%= render :partial => 'video_fields', :locals => {:builder => builder} %>
-      <%end %>
-      <p><%= link_to_add_video_fields "Add Video", f, :videos %></p>
-      </div><br/>
-      </div>
-      <div class="field">
-    <%= f.label 'Upload Screenshots' %><br /><br />
-    <div id="screenshots" >
-      <%= f.fields_for :screenshots do |builder| %>
-          <%= render :partial => 'screenshot_fields', :locals => {:builder => builder} %>
-      <%end%>
-      <p><%= link_to_add_screenshot_fields "Add Screenshot", f, :screenshots %></p>
     </div>
-  </div>
 
   <div class="actions">
     <%= f.submit %>
   </div>
+
 <% end %>
