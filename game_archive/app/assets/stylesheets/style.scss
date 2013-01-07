@@ -120,9 +120,13 @@ $large-and-up: "screen and (min-width: 700px)";
 
 @font-face {
   font-family: 'League Gothic';
+	src: url('League_Gothic-webfont.eot');
+  src: url('/assets/League_Gothic-webfont.eot?#iefix') format('embedded-opentype'),
+       url('/assets/League_Gothic-webfont.woff') format('woff'),
+       url('/assets/League_Gothic-webfont.ttf') format('truetype'),
+       url('/assets/League_Gothic-webfont.svg#LeagueGothicRegular') format('svg');
+  font-weight: normal;
   font-style: normal;
-  font-weight: 400;
-  src: url('/assets/League_Gothic-webfont.woff') format('woff');
 }
 
 body {
