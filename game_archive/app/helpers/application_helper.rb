@@ -5,7 +5,7 @@ module ApplicationHelper
 	
 	# amount displayed featured entries
 	def getAmountFeatured()
-		return 8
+		return 3
 	end
 	
 	def markdown(text)

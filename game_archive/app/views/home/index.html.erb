@@ -53,7 +53,7 @@
 	<% coms = coms.uniq %>
 	<% coms[0..7].each do |com| %>
 		<div class="tiled_2x">
-			<a href="/companies/<%= com.id %>">
+			<a href="<%= company_path coms %>">
 				<div class="tile">
 					<%= image_tag(com.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
 					<div class="caption"><div><%= com.name %></div></div>
@@ -64,7 +64,7 @@
 </div>
 
 <br class="clear" />
-<div class="more"><a href="companies/">Find More Studios & Organisations...</a></div>
+<div class="more"><a href="<%= companies_path %>">Find More Studios & Organisations...</a></div>
 
 
 
@@ -96,7 +96,7 @@
 	<% devs = devs.uniq %>
 	<% devs[0..7].each do |dev| %>
 		<div class="tiled_4x">
-			<a href="/developers/<%= dev.id %>">
+			<a href="<%= developer_path dev %>">
 				<div class="tile">
 					<%= image_tag(dev.image_url(:tiled_4x).to_s, :class => 'rounded teaser')%>
 					<div class="caption"><div><%= dev.name %></div></div>
@@ -107,7 +107,7 @@
 </div>
 
 <br class="clear" />
-<div class="more"><a href="developers/">Find More Developers...</a></div>
+<div class="more"><a href="<%= developers_path %>">Find More Developers...</a></div>
 
 <!-- <div class="developers_random">
 <h3>Did you already know...</h3>
