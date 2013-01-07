@@ -8,7 +8,7 @@
 		<% if !user_signed_in? && @reportblockcontent%>
 			<% if (@reportblockcontent.status !=1)%>
 				<div class="tiled_2x">
-					<a href="<%= companies_path com %>">
+					<a href="<%= company_path com %>">
 						<div class="tile">
 							<%= image_tag(com.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
 							<div class="caption"><div><%= com.name %></div></div>
@@ -18,7 +18,7 @@
 			<% end %>
 		<% else%>
 			<div class="tiled_2x">
-				<a href="<%= companies_path com %>">
+				<a href="<%= company_path com %>">
 					<div class="tile">
 						<%= image_tag(com.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
 						<div class="caption"><div><%= com.name %></div></div>
@@ -38,7 +38,7 @@
 		<% if !user_signed_in? && @reportblockcontent%>
 			<% if (@reportblockcontent.status !=1)%>
 				<div class="tiled_2x">
-					<a href="/companies/<%= company.id %>">
+					<a href="<%= company_path company %>">
 						<div class="tile">
 							<%= image_tag(company.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
 							<div class="caption"><div><%= company.name %></div></div>
@@ -48,7 +48,7 @@
 			<% end %>
 		<% else%>
 			<div class="tiled_2x">
-				<a href="/companies/<%= company.id %>">
+				<a href="<%= company_path company %>">
 					<div class="tile">
 						<%= image_tag(company.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
 						<div class="caption"><div><%= company.name %></div></div>
