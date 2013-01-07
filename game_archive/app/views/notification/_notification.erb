@@ -1,10 +1,7 @@
-<% if flash[:notice] != nil || flash[:alert] != nil %>
+<% if flash != nil && ( not flash.empty? ) %>
     <div id="notification">
-      <div class="notice">
-        <%= flash[:notice] %>
-      </div>
-      <div class="alert">
-        <%=  flash[:alert] %>
-      </div>
+      <%- flash.each do |name, msg| -%>
+          <%= content_tag :div, msg, :class => "#{name}" if msg.is_a?(String) %>
+      <%- end -%>
     </div>
 <% end %>
