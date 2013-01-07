@@ -1,19 +1,40 @@
-<div class="about_home">
-	<h1>About us</h1>
-	<p>Lomo sriracha farm-to-table, authentic deserunt selvage whatever tofu biodiesel thundercats wayfarers chillwave typewriter brooklyn. Mumblecore bespoke officia authentic trust fund. Nostrud bushwick velit quis echo park Austin. Pickled salvia small batch, mustache banh mi pork belly cosby sweater four loko narwhal.</p>
-	<div class="more"><a href="#">more...</a></div>
-</div>
+<h1>About us</h1>
+<p>
+	The Archive for Austrian Video Game Development strives to gather and preserve information related to video game development in Austria. Our goal is to create a comprehensive archive that serves as an overview over current developments and a constitutes a valuable historical source for the future.
+	</p>
+<p>
+	Information is gathered through public contribution in a "wiki like" fashion. Users create and author articles for games, developers, studios and other organisations, and also correct and amend data. 
+</p>
+<p>
+	The platform is still in its infancy both in terms of the technical realisation and the gathered content. We planed this as a long term endeavour and we invite everyone to join the conversation and support the archive. We believe that games are an important new medium and art form, and thus deserve to be properly preserved and information about the archived.
+</p>
+<p>
+	We are still in an early prototyping stage, and user accounts are only issued manually. If you want to become a contributor, please send an email to
+<a href="mailto:simon@gamelab.at">Simon</a>.
+</p>
 
-<div class="news_home">
-	<h1>News</h1>
-	<p><strong>September 3rd, 2012</strong> &mdash; Lomo sriracha farm-to-table, authentic deserunt selvage whatever tofu biodiesel thundercats wayfarers chillwave typewriter brooklyn. Mumblecore bespoke officia authentic trust fund. Nostrud bushwick velit quis echo park Austin. Pickled salvia small batch, mustache banh mi pork belly cosby sweater four loko narwhal.</p>
-	<div class="more"><a href = "#">more...</a></div>
-</div>
 
-<div class="games_home">
+
+<div id="games-home">
 	<h1>Games</h1>
 	
-	<div class="games_featured">
+	<div>
+		<% game = Game.order("RANDOM()").first %>
+		<% if game != nil %>
+			<div class="rounded">
+				<a href="<%= game_path game %>">
+					<div class="tile">
+						<%= image_tag(game.image, :class => 'rounded teaser')%>
+						<div class="caption"><div><%= game.title %></div></div>
+					</div>
+				</a>
+			</div>
+		<% end %>
+	</div>
+	
+	<br class="clear" />
+	
+	<div>
 		<% games = Game.find(:all, :limit => getAmountFeatured, :order => 'created_at DESC')[0..7] %>
 		<% games.concat(Game.find(:all, :limit => getAmountFeatured, :order => 'popularity DESC')[0..7]) %>
 		<% games = games.uniq %>
@@ -31,23 +52,6 @@
 	</div>
 	
 	<div class="clear"></div>
-	
-	<div class="games_random">
-	<h3>Did you already know...</h3>
-	<div>
-		<% game = Game.order("RANDOM()").first %>
-		<% if game != nil %>
-			<div class="tiled_2x">
-			<a href="/games/<%= game.id %>">
-				<div class="tile">
-					<%= image_tag(game.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
-					<div class="caption"><div><%= game.title %></div></div>
-				</div>
-			</a>
-			</div>
-		<% end %>
-	</div>
-	</div>
 	
 	<div class="clear"></div>
 </div>

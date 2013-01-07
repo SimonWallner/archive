@@ -40,6 +40,7 @@ $large: "screen and (min-width: 700px)";
  */
 #responsiveHelper {
 /*	visibility: hidden;*/
+	opacity: 0.1;
 	position: fixed;
 	top: 0px;
 	left: 0px;
