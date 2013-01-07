@@ -53,7 +53,7 @@
 	<% coms = coms.uniq %>
 	<% coms[0..7].each do |com| %>
 		<div class="tiled_2x">
-			<a href="<%= company_path coms %>">
+			<a href="<%= company_path com %>">
 				<div class="tile">
 					<%= image_tag(com.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
 					<div class="caption"><div><%= com.name %></div></div>
