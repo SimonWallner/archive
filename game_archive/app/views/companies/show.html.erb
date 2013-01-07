@@ -11,18 +11,14 @@
 
         end
     %>
-    <p>
 
-      <strong>Legal Name</strong>: studio radiolaris interactive entertainment GmbH <br />
-      <strong>Location</strong>: Vienna, Austria<br />
-      <strong>Founded:</strong>: June 2009, Vienna, Austria <br />
-      <strong>Closed</strong>: July 2010, merged with Broken Rules</a><br />
-	<p>
-	</p>	
-      <strong>Website</strong>: <span class="forceWrap"><a href="#">http://radiolaris.com</a></span><br />
-	  <strong>Social Media</strong>: twitter: https://twitter.com/radiolaris <br />
-	  <strong>Projects</strong>: Radio Flare - 2008<br />
-    </p>
+	    <%= render :template => "facts/_single", :locals => { :fact => @company.official_name, :label => "Official Name" } %>
+	    <%= render :template => "facts/_single", :locals => { :fact => format_date(@company.founded), :label => "Founded" } %>
+	    <%= render :template => "facts/_single", :locals => { :fact => format_date(@company.defunct), :label => "Defunct" } %>
+        <%= render :template => "facts/_name_addinfo", :locals => { :object => @company.locations, :label => "Locations" } %>
+        <%= render :template => "facts/_standard", :locals => { :object => @company, :label => "External Links" } %>
+        <%= render :template => "facts/_credits", :locals => { :object => @company } %>
+        <%= render :template => "facts/_user_defined", :locals => { :object => @company } %>
   </div>
 
   <div class="text">

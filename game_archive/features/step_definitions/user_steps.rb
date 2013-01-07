@@ -1,40 +1,5 @@
-Given /^I am not signed in$/ do
-  visit('/users/sign_out')
-end
-
-Given /^I am signed in as (.+)$/ do |role|
-
-  @email = 'user@user.com'
-  @pwd = 'aA1aaaaaa'
-  @user = User.new(:email => @email, :password => @pwd, :password_confirmation => @pwd)
-  @user.confirm!
-  @user.email.should == @email
-  if role == 'Admin'
-    @user.toggle :admin
-  end
-  @user.blocked = false
-  @user.save!
-
-  visit '/users/sign_in'
-  fill_in 'user_email', :with => @email
-  fill_in 'user_password', :with => @pwd
-  click_link_or_button 'Sign in'
-end
-
-def go_to_edit_page
-  visit "/users/edit"
-end
-
-When /^I enter edit user url$/ do
-  go_to_edit_page
-end
-
 Then /^I should be redirected to the sign in page$/ do
   URI.parse(current_url).path.should == "/users/sign_in"
-end
-
-Given /^I am on the user edit page$/ do
-  go_to_edit_page
 end
 
 When /^I change all my data$/ do
@@ -94,17 +59,6 @@ When /^I provide the correct password$/ do
   update_form
 end
 
-When /^I confirm my email$/ do
-  @user.reload
-  @user.confirm!
-  @email_confirmed = true
-end
-
-When /^I don't confirm my email$/ do
-  # do nothing
-  @email_confirmed = false
-end
-
 Then /^I should be on the home page$/ do
   URI.parse(current_url).path.should == "/"
 end
@@ -117,7 +71,9 @@ Then /^The data has been updated$/ do
       @user.email.should == @newDetails.email
     else
       @user.email.should == @email
-      @user.unconfirmed_email.should = @newDetails.email
+      unless @email_confirmed == nil
+        @user.unconfirmed_email.should = @newDetails.email
+      end
     end
     @user.firstname.should == @newDetails.firstname
     @user.lastname.should == @newDetails.lastname
@@ -127,10 +83,6 @@ end
 When /^I provide the wrong password$/ do
   fill_in "user_current_password", :with => (@pwd + "A")
   update_form
-end
-
-Then /^I should be on the user edit page$/ do
-  page.should have_content("Edit User")
 end
 
 Then /^I should see an error$/ do
@@ -157,9 +109,7 @@ When /^I change my email$/ do
 end
 
 Then /^I should receive an email with confirmation instructions$/ do
-  mail = ActionMailer::Base.deliveries.last
-  mail['to'].to_s.should == @newEmail
-  mail['subject'].to_s.should == "Confirmation instructions"
+  mail_sent? :to => @newEmail, :subject => "Confirmation instructions"
 end
 
 Then /^The email has not changed yet$/ do
@@ -169,10 +119,6 @@ end
 
 Then /^My email has been updated$/ do
   @user.email.should == @newEmail
-end
-
-When /^I go to the sign up form$/ do
-  visit accept_user_invitation_path(:invitation_token => @user.invitation_token)
 end
 
 When /^I enter and repeat a password$/ do
@@ -185,16 +131,8 @@ When /^I click on the sign up button$/ do
   click_link_or_button "Set my password"
 end
 
-Then /^I should be on the sign up page$/ do
-  assert_equal current_path, accept_user_invitation_path
-end
-
-Given /^I am on the login page$/ do
-  visit "/users/sign_in"
-end
-
 def reset_password
-  visit "/users/password/new"
+  visit_reset_password_page
 
   fill_in "user_email", :with => @user.email
   click_link_or_button "Send me reset password instructions"
@@ -203,32 +141,21 @@ def reset_password
   @user.reset_password_token.should_not == nil
 end
 
-def have_received_pwd_reset(user)
-  mail = ActionMailer::Base.deliveries.last
-  mail['to'].to_s.should == user.email
-  mail['subject'].to_s.should == "Reset password instructions"
+def have_received_pwd_reset
+  mail_sent? :to => @user.email, :subject => "Reset password instructions"
 end
 
 When /^I reset my password$/ do
   reset_password
 end
 
-Given /^I have a user$/ do
-  @user = FactoryGirl.create :user
-end
-
 Then /^I should receive an email with password reset instructions$/ do
-  have_received_pwd_reset @user
+  have_received_pwd_reset
 end
 
 Given /^I have received a password reset email$/ do
   reset_password
-  have_received_pwd_reset @user
-end
-
-When /^I follow the reset link$/ do
-  link = ("/users/password/edit?reset_password_token=" + @user.reset_password_token)
-  visit link
+  have_received_pwd_reset
 end
 
 When /^I sign up with a short password$/ do
@@ -249,10 +176,6 @@ end
 Then /^I am signed in$/ do
   page.should have_content("Edit")
   page.should have_content("Logout")
-end
-
-When /^I enter the invitation url$/ do
-  visit '/users/invitation/new'
 end
 
 Then /^No invitation should be sent$/ do
@@ -283,10 +206,6 @@ end
 
 Then /^Invitation should be sent$/ do
   assert (User.exists?(:email => @email))
-end
-
-Then /^I should be on the invite page$/ do
-  URI.parse(current_url).path.should == "/users/invitation"
 end
 
 Then /^I should see an email already used error$/ do
@@ -327,10 +246,6 @@ When /^I set an invalid password$/ do
   click_link_or_button "Change my password"
 end
 
-Then /^I should be on the password page$/ do
-  URI.parse(current_url).path.should == "/users/password"
-end
-
 When /^I set a too short password$/ do
   fill_in "user_password", :with => "aaa"
   fill_in "user_password_confirmation", :with => "aaa"
@@ -347,10 +262,6 @@ When /^I set a wrong confirmation password$/ do
   fill_in "user_password", :with => "aA1aaaa"
   fill_in "user_password_confirmation", :with => "aB1aaaa"
   click_link_or_button "Change my password"
-end
-
-Given /^I am on the reset password page$/ do
-  visit "/users/password/new"
 end
 
 Then /^I should be signed in$/ do
@@ -372,8 +283,7 @@ Given /^I have a user who is admin$/ do
 	@pwd = 'aA1aaaaaa'
 	@firstname = 'test'
 	@lastname = 'user'
-	@user = User.create!(:email => email, :password => @pwd, :password_confirmation => @pwd, :firstname => @firstname, :lastname => @lastname)
-	@user.toggle!(:admin)
+	User.create!(:email => email, :password => @pwd, :password_confirmation => @pwd, :firstname => @firstname, :lastname => @lastname, :admin => true)
 end
 
 Given /^I have a user who is not admin$/ do
@@ -381,7 +291,7 @@ Given /^I have a user who is not admin$/ do
 	@pwd = 'aA1aaaaaa'
 	@firstname = 'test'
 	@lastname = 'user'
-	@user = User.create!(:email => email, :password => @pwd, :password_confirmation => @pwd, :firstname => @firstname, :lastname => @lastname)
+	User.create!(:email => email, :password => @pwd, :password_confirmation => @pwd, :firstname => @firstname, :lastname => @lastname)
 end
 
 When /^I go to the promote admin page$/ do
@@ -390,11 +300,11 @@ end
 
 When /^I enter a valid user email adress$/ do
 	
-	fill_in "email", :with => 'test@user.com'
+	fill_in "email", :with => another_user_hash[:email]
 end
 
 When /^I enter a user email$/ do
-	fill_in "email", :with => 'test@user.com'
+	fill_in "email", :with => another_user_hash[:email]
 end
 
 When /^I enter an invalid email adress$/ do
@@ -402,12 +312,12 @@ When /^I enter an invalid email adress$/ do
 end
 
 When /^I enter an admin email$/ do
-	fill_in "email", :with => 'user@user.com'
+	fill_in "email", :with => another_user_hash[:email]
 end
 
 When /^I enter a valid full name$/ do
-	fill_in "firstname", :with => 'test'
-	fill_in "lastname", :with => 'user'
+	fill_in "firstname", :with => another_user_hash[:firstname]
+	fill_in "lastname", :with => another_user_hash[:lastname]
 end
 
 When /^I enter an invalid full name$/ do
@@ -416,7 +326,7 @@ When /^I enter an invalid full name$/ do
 end
 
 When /^I enter only a firstname$/ do
-	fill_in "firstname", :with => 'test'
+	fill_in "firstname", :with => another_user_hash[:firstname]
 end
 
 When /^I select Promote$/ do
@@ -431,10 +341,52 @@ When /^I press the Save button$/ do
 	click_link_or_button "Save"
 end
 
-When /^I enter the promote admin page adress$/ do
-	visit "/users/manage"
+When /^I click on Manage Users$/ do
+	click_link_or_button "Manage Users"
 end
 
-Then /^I should be on the promote admin page$/ do
-	URI.parse(current_url).path.should == "/users/manage"
+When /^I enter an email adress of an unblocked user$/ do
+	@user_mail = "unblocked@example.com"
+	create_confirmed_user({:email => @user_mail})
+	fill_in "email", :with => @user_mail
+end
+
+When /^I enter an email adress of a blocked user$/ do
+	@user_mail = "blocked@example.com"
+	create_blocked_user({:email => @user_mail})
+	fill_in "email", :with => @user_mail
+end
+
+When /^I enter an email adress of an administrator$/ do
+	@user_mail = "admin@example.com"
+	create_admin_user({:email => @user_mail})
+	fill_in "email", :with => @user_mail
+end
+
+When /^I select Block$/ do
+	choose "todo_block"
+end
+
+When /^I select Unblock$/ do
+	choose "todo_unblock"
+end
+
+When /^I visit the Manage Users Page$/ do
+	visit_manage_admin_page
+end
+
+Then /^I should be on the manage users page$/ do
+	URI.parse(current_url).path.should == users_manage_path
+end
+
+Then /^the user should be blocked$/ do
+	@user.blocked == true
+end
+
+Then /^the user should be unblocked$/ do
+	@user.blocked == false
+end
+
+When /^I visit the new game page$/ do
+	visit_game_creation_page
 end

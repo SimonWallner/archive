@@ -18,6 +18,7 @@
 //= require at_autocomplete.js
 //= require notification.js
 //= require videoembed.js
+//= require general_functions.js
 //= require screenshot.js
 
 $(document).ready(function() {
@@ -61,10 +62,6 @@ $(document).ready(function() {
                 '</dl>' +
           '">'
     );
-    $(".full_markdown_help").tooltipsy();
+    $(".full_markdown_help").tooltipsy({delay: 600});
+    $(".all").hide();
 });
-
-
-
-
-

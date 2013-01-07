@@ -39,9 +39,6 @@ Then /^I should see the genres$/ do
   end
 end
 
-Given /^I am on the edit page of the genre$/ do
-  visit "/genres/#{@genre.id}/edit"
-end
 When /^I create a valid genre$/ do
   name = "Genre1"
   fill_in("genre_name", :with => name)

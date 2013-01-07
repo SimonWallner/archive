@@ -2,6 +2,9 @@ GameArchive::Application.routes.draw do
 
   get "users/manage"
   post "users/update"
+  
+  get "search/query"
+  post "search/result"
 
   devise_for :users, skip: :registrations
   devise_scope :user do
@@ -13,29 +16,27 @@ GameArchive::Application.routes.draw do
     end
   end
 
-
 #      path_names: { new: 'sign_up' },
 
-
-  resources :companies do
-  		member do
+	resources :companies do
+		member do
 			get 'report'
 			get 'block'
 		end
 	end 
 
-  resources :genres
+	resources :genres
 
-  resources :developers do
-  		member do
+	resources :developers do
+		member do
 			get 'report'
 			get 'block'
 		end
 	end 
 
-  resources :games do
-      resources :videos
-      resources :screenshots
+	resources :games do
+		resources :videos
+		resources :screenshots
 		member do
 			get 'report'
 			get 'block'
@@ -44,7 +45,13 @@ GameArchive::Application.routes.draw do
 	
 	resources :reportblockcontents, only: [:index, :destroy]
 
+  resources :tags
 
+  resources :media
+
+  resources :modes
+
+  resources :platforms
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
@@ -105,6 +112,6 @@ GameArchive::Application.routes.draw do
   # Note: This route will make all actions in every controller accessible via GET requests.
   # match ':controller(/:action(/:id))(.:format)'
 
-  match '/tags', :controller => 'tags', :action => 'get'
+  match '/ajax', :controller => 'ajax', :action => 'get'
 
 end

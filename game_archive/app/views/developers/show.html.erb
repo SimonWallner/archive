@@ -10,17 +10,9 @@
             image_tag @developer.image_url.to_s, :class => "media rounded"
         end
     %>
-
-    <p>
-      <strong>Website</strong>: <span class="forceWrap"><a href="#">http://de.wikipedia.org/wiki/Juri_Alexejewitsch_Gagarin</a></span><br />
-      <strong>Twitter</strong>: @Boctok1
-    </p>
-    <p>
-      <strong>Credits:</strong><br />
-      <strong>Designer</strong>: My first pony game, My second pony game, <a href="#">Ponys going to Space</a><br />
-      <strong>Programmer</strong>: Ponys going to Space<br />
-      <strong>Special Thanks</strong>: From Russia with Love
-    </p>
+	<%= render :template => "facts/_standard", :locals => { :object => @developer, :label => "External Links" } %>
+    <%= render :template => "facts/_credits", :locals => { :object => @developer } %>
+    <%= render :template => "facts/_user_defined", :locals => { :object => @developer } %>
   </div>
 
   <div class="text">

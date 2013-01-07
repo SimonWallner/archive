@@ -346,6 +346,8 @@ div.more {
 
 
 div.text {
+  margin-bottom: 1em;
+
   @media #{$large} {
     border-right-width: 1px;
     border-right-style: solid;
@@ -362,11 +364,10 @@ div.text {
     
     ol{list-style-type:decimal; }
 
-h3{
-  padding-bottom:1em;
+    h3{
+      padding-bottom:1em;
+    }
 }
-}
-
 
  
 div.fact-box {  
@@ -383,18 +384,11 @@ div.fact-box {
       float: right;
       width: 33%;
     }
+	
+	p {
+		margin-bottom: 1em;
+	}
   }
-  
-  p {
-    margin-bottom: 1em;
-  }
-  
-   
-   
-}
-
-div.fact-box > p:first-of-type{
-  padding-top:1em;
 }
 
 div.games_featured,
@@ -474,7 +468,7 @@ div.pager {
       content: "\25c0\2002";
       font-family: arial;
       font-size: 0.8em;
-    };
+    }
   }
   
   span.next {
@@ -485,16 +479,17 @@ div.pager {
       content: "\2002\25B6";
       font-family: arial;
       font-size: 0.8em;
-    };
+    }
   }
 }
 
 a:hover span {
   background-color: $lightGrey * 0.8;
-};
+}
+
 a.tagit-close:hover span {
   background-color: transparent;
-};
+}
 
 .blocked-link {
   display:block;
@@ -597,22 +592,17 @@ a.tagit-close:hover span {
     }
   }
 }
+// Listing of all available tags
+div.all {
 
-// Listing of genres
-div.all-genres {
-  
-      @media #{$mid} {   
-      float: right;
-      width: 33%;   }
-      
+   position: fixed;
+   top: 10px;
+   right: 10px;
    width: 310px;
-   display: inline;
-   float: right;
    margin: 20px auto;
    background: #3D3D3F;
    color: #ffffff;
    border-radius: 15px;
-   margin-top: 68px;
    min-height : 140px;
    max-height : 460px;
   
@@ -688,11 +678,36 @@ img.full_markdown_help {
 .tooltipsy dt:nth-child(n+2) {
   padding-top: 5px;
 }
+select.newField {
+  vertical-align: top;
+}
 
- form.edit_game label, form.new_game label,form.edit_company label,form.new_company label,form.edit_developer label,form.new_developer label  {
+div.newFieldsDiv{
+  width: 50%;
+  input{
+    width: 100%;
+  }
+  textarea{
+    width: 100%;
+  }
+  input.year{
+    width: 3em;
+  }
+  div.release_dates_div {
+    input{
+      width: auto;
+    }
+    input.year{
+      width: 3em;
+    }
+  }
+}
+input.year{
+  width: 3em;
+}
 
+form.edit_game label, form.new_game label,form.edit_company label,form.new_company label,form.edit_developer label,form.new_developer label  {
    font-weight: bold;
-
  }
 
 #screenshots label, #profilepicfields label{
@@ -709,7 +724,6 @@ table{
 }
 
 table, tr, td{
-  
   border: 1px solid black;
   padding:5px;
 }

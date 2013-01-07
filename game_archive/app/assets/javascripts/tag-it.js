@@ -97,7 +97,7 @@
                 this.tagList = this.element.find('ul, ol').andSelf().last();
             }
 
-            this._tagInput = $('<input id="tag_input" type="text" />').addClass('ui-widget-content');
+            this._tagInput = $('<input id="'+this.element[0].id+'_input" type="text" />').addClass('ui-widget-content');
             if (this.options.tabIndex) {
                 this._tagInput.attr('tabindex', this.options.tabIndex);
             }

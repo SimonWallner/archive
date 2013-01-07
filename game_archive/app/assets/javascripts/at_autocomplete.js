@@ -12,24 +12,28 @@ $.fn.getCursorPosition = function() {
     }
     return pos;
 }
-$(document).ready(function() {
-    var txts = $('#game_description, #developer_description, #company_description');
-    $(txts).before('<textarea id="txtdummy" style="position:absolute;visibility:hidden;"></textarea> ');
-    $(txts).parent().append('<input type="hidden" name="mentioned_ids" id="mentioned_ids" value=""/>');
-    $(txts).bind("keyup",function(){
-        $('#txtdummy').val($(this).val().substr(0, $(this).getCursorPosition()));
+
+function at_autocomp(dummyname, elements_selector, source) {
+    $(elements_selector).before('<textarea id="'+dummyname+'" style="position:absolute;visibility:hidden;"></textarea> ');
+    $(elements_selector).parent().append('<input type="hidden" name="mentioned_ids_'+dummyname+'" id="mentioned_ids_'+dummyname+'" value=""/>');
+    $(elements_selector).bind("keyup",function(){
+        $('#'+dummyname).val($(this).val().substr(0, $(this).getCursorPosition()));
     });
-    $(txts).triggeredAutocomplete({
-        hidden: '#mentioned_ids',
+    $(elements_selector).triggeredAutocomplete({
+        hidden: '#mentioned_ids_'+dummyname,
         trigger: "@",
         maxlength: 20,
         open: function(event, ui) {
             $(".ui-autocomplete").css("position", "absolute");
-            $(".ui-autocomplete").css("top",  $(this).offset().top+$('#txtdummy')[0].scrollHeight+"px");
+            $(".ui-autocomplete").css("top",  $(this).offset().top+$('#'+dummyname)[0].scrollHeight+"px");
             $(".ui-autocomplete").css("left", $(this).offset().left+"px");
         },
-        source: '/tags.json'
+        source: source
     });
+}
+$(document).ready(function() {
+    var txts = $('#game_description, #developer_description, #company_description');
+    at_autocomp('desc_dummy', txts, '/ajax.json');
 });
 
 

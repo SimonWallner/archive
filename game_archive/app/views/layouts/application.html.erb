@@ -39,7 +39,7 @@
 				<li><%= link_to 'companies' ,companies_path %></li>				
 			</ul>
 			<ul>
-				<li>search</li>
+				<li><%= link_to "search", '/search/query' %></li>
 			</ul>
 			<ul>
               <% if user_signed_in? %>

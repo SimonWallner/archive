@@ -1,0 +1,14 @@
+<% if object.any? %>
+	<div class="fact">
+	  <div>
+	    <%= label.to_s %>:
+	  </div>
+	  <ul>
+	    <% object.each do |f| %>
+	        <li>
+	          <%= format_date f %>
+	        </li>
+	    <% end %>
+	  </ul>
+	</div>
+<% end %>

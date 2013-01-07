@@ -1,0 +1,15 @@
+<% fields = get_field(object, label.to_s) %>
+<% if fields.any? %>
+	<div class="fact">
+	  <div>
+	    <%= label.to_s %>:
+	  </div>
+	  <ul>
+	    <% fields.each do |f| %>
+		    <li>
+	            <%= just_links_markdown f.content %>
+		    </li>
+	    <% end %>
+	  </ul>
+	</div>
+<% end %>

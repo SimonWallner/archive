@@ -28,7 +28,7 @@ class DevelopersController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render json: @developer }
+      format.json { render :json => @developer.to_json(:include => [:mixed_fields, :fields ]) }
     end
   end
 
@@ -63,9 +63,10 @@ class DevelopersController < ApplicationController
   # POST /developers
   # POST /developers.json
   def create
+    authenticate_user!(nil)
     @developer = Developer.new(params[:developer])
-	@developer.popularity = 0
-
+	  @developer.popularity = 0
+    Field.create_add_new_fields(@developer, params[:new_fields])
     respond_to do |format|
       if @developer.save
         format.html { redirect_to @developer }
@@ -80,11 +81,12 @@ class DevelopersController < ApplicationController
   # PUT /developers/1
   # PUT /developers/1.json
   def update
+    
     @developer = Developer.find(params[:id])
-	if (params[:reportblockcontent])
-		Reportblockcontent.create_from_string(1,params[:id], params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
-	end
-	
+    if (params[:reportblockcontent])
+      Reportblockcontent.create_from_string(1,params[:id], params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
+    end
+    Field.create_add_new_fields(@developer, params[:new_fields])
     respond_to do |format|
       if @developer.update_attributes(params[:developer])
 	  	if (params[:reportblockcontent])

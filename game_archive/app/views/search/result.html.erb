@@ -1,0 +1,50 @@
+<h2>Results</h2>
+
+<% if @game_results.size > 0 %>
+<h3>Games</h3>
+	<% games = @game_results %>
+	<% games.each do |game| %>
+		<div class="tiled_2x">
+			<a href="/games/<%= game.id %>">
+				<div class="tile">
+					<%= image_tag(game.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
+					<div class="caption"><div><%= game.title %></div></div>
+				</div>
+			</a>
+		</div>
+	<% end %>
+<p />	
+<% end %>
+<% if @dev_results.size > 0 %>
+<h3>Developers</h3>
+	<% devs = @dev_results %>
+	<% devs.each do |dev| %>
+		<div class="tiled_4x">
+			<a href="/developers/<%= dev.id %>">
+				<div class="tile">
+					<%= image_tag(dev.image_url(:tiled_4x).to_s, :class => 'rounded teaser')%>
+					<div class="caption"><div><%= dev.name %></div></div>
+				</div>
+			</a>
+		</div>
+	<% end %>
+<p />
+<% end %>
+<% if @com_results.size > 0 %>
+<h3>Companies</h3>
+	<% coms = @com_results %>
+	<% coms.each do |com| %>
+		<div class="tiled_2x">
+			<a href="/companies/<%= com.id %>">
+				<div class="tile">
+					<%= image_tag(com.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
+					<div class="caption"><div><%= com.name %></div></div>
+				</div>
+			</a>
+		</div>
+	<% end %>
+<% end %>
+
+<% if @game_results.size == 0 and @dev_results.size == 0 and @com_results.size == 0 %>
+<p>no results found!</p>
+<% end %>

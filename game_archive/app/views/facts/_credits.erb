@@ -1,0 +1,18 @@
+<% credits = get_mixed_fields(object, :all) %>
+<% if credits.any? %>
+	<div class="fact">
+	  <div>
+	    Credits
+	  </div>
+	  <ul>
+	    <% credits.each do |mf| %>
+	        <li>
+	          <%= link_to mf.game.title, game_path(mf.game) %>: <%= mf.mixed_field_type.name %>
+	          <% if mf.additional_info != nil %>
+	              &nbsp;(<%= mf.additional_info %>)
+	          <% end %>
+	        </li>
+	    <% end %>
+	  </ul>
+	</div>
+<% end %>
