@@ -1,4 +1,5 @@
-# Archive for Austrian Video Game Development Project
+Archive for Austrian Video Game Development Project
+===================================================
 
 This project aims to collect and preserve information related to the Austrian video game development szene. This software is/was written to collect data via public contribution and to serve it over the net in an appealing manner. 
 
