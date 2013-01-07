@@ -46,7 +46,7 @@ $large-and-up: "screen and (min-width: 700px)";
  */
 #responsiveHelper {
 	visibility: hidden;
-/*	opacity: 0.1;*/
+	opacity: 0.5;
 	position: fixed;
 	top: 0px;
 	left: 0px;
@@ -307,6 +307,10 @@ img.thumb{
   width:33%;
 }
 
+div.game-teaser-large {
+	padding-bottom: ($tileGap);
+}
+
 div.tiled_2x,
 div.tiled_4x {
   float: left;
@@ -337,14 +341,11 @@ div.tiled_2x {
 		padding-right: 0px;
 		float: clear;
 	
-	&:nth-child(1) {
-		padding-top: 0px;
+		&:nth-child(1) {
+			padding-top: 0px;
+		}
 	}
-
-  }
 }
-
-
 
 div.tiled_4x {
 	width: (100% - (3 * $tileGap)) / 4;
@@ -357,12 +358,12 @@ div.tiled_4x {
 		&:nth-child(4n) {
 			padding-right: 0px;
 		}
-		
+	
 		&:nth-child(-n+4) {
 			padding-top: 0px;
 		}
-	}
-  
+	}  
+	
 	@media #{$mid-only} {
 		width: (100% - (2 * $tileGap)) / 3;
 
@@ -379,14 +380,8 @@ div.tiled_4x {
 		}
 	}
 
-	@media #{$small-only} {
+	@media #{$small-and-below} {
 		width: (100% - $tileGap) / 2;
-
-		/* reset previous media styles */
-		&:nth-child(n) {
-			padding-left: ($tileGap / 2);
-			padding-right: ($tileGap / 2);
-		}
 
 		&:nth-child(odd) {
 			padding-left: 0px;

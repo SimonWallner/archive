@@ -17,7 +17,7 @@
 
 <% game = Game.order("RANDOM()").first %>
 <% if game != nil %>
-	<div class="rounded">
+	<div class="rounded game-teaser-large">
 		<a href="<%= game_path game %>">
 			<div class="tile">
 				<%= image_tag(game.image_url(:top_game).to_s, :class => 'rounded teaser')%>
