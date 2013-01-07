@@ -13,7 +13,7 @@ This archive project was initially drafted by the Association for Innovative Sof
 
 Initial Prototype, 2012-2013
 ----------------------------
-In autumn 2012, support of a team of students at the Vienna University of Development was sought to develop an initial prototype. The project was coordianted by *Simon Wallner* and supervised by *Thomas Östreicher*. Members of the team:
+In autumn 2012, support of a team of students at the Vienna University of Technology was sought to develop an initial prototype. The project was coordianted by *Simon Wallner* and supervised by *Thomas Östreicher*. Members of the team:
 
 * Dominik Amon
 * Deniz Kocabas
