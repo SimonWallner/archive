@@ -183,7 +183,7 @@ Then /^No invitation should be sent$/ do
 end
 
 When /^I follow the send invite link$/ do
-  click_link_or_button 'Send Invitation'
+  click_link_or_button 'Invite Users'
 end
 
 When /^I enter a valid email$/ do
@@ -265,12 +265,12 @@ When /^I set a wrong confirmation password$/ do
 end
 
 Then /^I should be signed in$/ do
-  page.should have_content("Edit")
-  page.should have_content("Logout")
+  page.should have_content("My Account")
+  page.should have_content("Sign Out")
 end
 
 Then /^I should not be signed in$/ do
-  page.should have_content("Login")
+  page.should have_content("Sign In")
 end
 
 Then /^an invitation should be sent$/ do
