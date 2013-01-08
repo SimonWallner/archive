@@ -110,18 +110,22 @@ class GamesController < ApplicationController
         create_add_new_mixed_fields(params[:new_distributors], MixedFieldType.find_by_name("Distributor"))
         create_add_new_mixed_fields(params[:new_credits], MixedFieldType.find_by_name("Credits"))
         create_add_new_mixed_fields(params[:new_series], MixedFieldType.find_by_name("Series"))
-      end
-      if (params[:reportblockcontent])
-        if (params[:reportblockcontent][:status]=='0')
-          format.html { redirect_to @game,notice: 'Game was reported successfully'}
-          format.json { head :no_content }
+
+        if (params[:reportblockcontent])
+          if (params[:reportblockcontent][:status]=='0')
+            format.html { redirect_to @game,notice: 'Game was reported successfully'}
+            format.json { head :no_content }
+          else
+            format.html { redirect_to @game}
+            format.json { head :no_content }
+          end
         else
           format.html { redirect_to @game}
           format.json { head :no_content }
         end
       else
-        format.html { redirect_to @game}
-        format.json { head :no_content }
+        format.html { render action: "edit" }
+        format.json { render json: @game.errors, status: :unprocessable_entity }
       end
     end
   end
