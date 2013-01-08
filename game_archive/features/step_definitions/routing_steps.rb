@@ -81,6 +81,58 @@ Given /^I am on the edit page of the genre$/ do
   visit_genre_edit_page @genre
 end
 
+## modes
+Given /^I am on the mode create page$/ do
+  visit_mode_creation_page
+end
+
+Given /^I am on the modes page$/ do
+  visit_modes_overview_page
+end
+
+Given /^I am on the edit page of the mode$/ do
+  visit_mode_edit_page @mode
+end
+
+## tags
+Given /^I am on the tag create page$/ do
+  visit_tag_creation_page
+end
+
+Given /^I am on the tags page$/ do
+  visit_tags_overview_page
+end
+
+Given /^I am on the edit page of the tag$/ do
+  visit_tag_edit_page @tag
+end
+
+## platforms
+Given /^I am on the platform create page$/ do
+  visit_platform_creation_page
+end
+
+Given /^I am on the platforms page$/ do
+  visit_platforms_overview_page
+end
+
+Given /^I am on the edit page of the platform$/ do
+  visit_platform_edit_page @platform
+end
+
+## media
+Given /^I am on the medium create page$/ do
+  visit_media_creation_page
+end
+
+Given /^I am on the media page$/ do
+  visit_media_overview_page
+end
+
+Given /^I am on the edit page of the medium$/ do
+  visit_media_edit_page @medium
+end
+
 ## users
 Given /^I am on the user edit page$/ do
   visit_user_edit_page

@@ -63,7 +63,6 @@ class CompaniesController < ApplicationController
   end
   
   # POST /companies
-  # POST /companies.json
   def create
     authenticate_user!(nil)
     @company = Company.new(params[:company])
@@ -76,21 +75,18 @@ class CompaniesController < ApplicationController
     respond_to do |format|
       if @company.save
         format.html { redirect_to @company }
-        format.json { render json: @company, status: :created, location: @company }
       else
         format.html { render action: "new" }
-        format.json { render json: @company.errors, status: :unprocessable_entity }
       end
     end
   end
 
   # PUT /companies/1
-  # PUT /companies/1.json
   def update
     authenticate_user!(nil)
     @company = Company.find(params[:id])
 
-    if (params[:reportblockcontent])
+    if params[:reportblockcontent]
       Reportblockcontent.create_from_string(2,params[:id], params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
     end
 
@@ -100,34 +96,24 @@ class CompaniesController < ApplicationController
     Field.create_add_new_fields(@company, params[:new_fields])
     respond_to do |format|
       if @company.update_attributes(params[:company])
-        if (params[:reportblockcontent])
-          if (params[:reportblockcontent][:status]=='0')
+        if params[:reportblockcontent] && params[:reportblockcontent][:status]=='0'
             format.html { redirect_to @company,notice: 'Company was reported successfully'}
-            format.json { head :no_content }
-          else
-            format.html { redirect_to @company }
-            format.json { head :no_content }
-          end
         else
           format.html { redirect_to @company}
-          format.json { head :no_content }
         end
       else
         format.html { render action: "edit" }
-        format.json { render json: @company.errors, status: :unprocessable_entity }
       end
     end
   end
 
   # DELETE /companies/1
-  # DELETE /companies/1.json
   def destroy
     @company = Company.find(params[:id])
     @company.destroy
 
     respond_to do |format|
       format.html { redirect_to companies_url }
-      format.json { head :no_content }
     end
   end
 

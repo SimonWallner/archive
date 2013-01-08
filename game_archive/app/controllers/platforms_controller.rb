@@ -39,46 +39,35 @@ class PlatformsController < ApplicationController
   end
 
   # POST /platforms
-  # POST /platforms.json
   def create
     @platform = Platform.new(params[:platform])
-
     respond_to do |format|
       if @platform.save
         format.html { redirect_to @platform, notice: 'Platform was successfully created.' }
-        format.json { render json: @platform, status: :created, location: @platform }
       else
         format.html { render action: "new" }
-        format.json { render json: @platform.errors, status: :unprocessable_entity }
       end
     end
   end
 
   # PUT /platforms/1
-  # PUT /platforms/1.json
   def update
     @platform = Platform.find(params[:id])
-
     respond_to do |format|
       if @platform.update_attributes(params[:platform])
         format.html { redirect_to @platform, notice: 'Platform was successfully updated.' }
-        format.json { head :no_content }
       else
         format.html { render action: "edit" }
-        format.json { render json: @platform.errors, status: :unprocessable_entity }
       end
     end
   end
 
   # DELETE /platforms/1
-  # DELETE /platforms/1.json
   def destroy
     @platform = Platform.find(params[:id])
     @platform.destroy
-
     respond_to do |format|
       format.html { redirect_to platforms_url }
-      format.json { head :no_content }
     end
   end
 end

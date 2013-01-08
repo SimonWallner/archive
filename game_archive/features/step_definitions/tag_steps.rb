@@ -32,9 +32,6 @@ Then /^I should see the tags$/ do
   end
 end
 
-Given /^I am on the edit page of the tag$/ do
-  visit "/tags/#{@tag.id}/edit"
-end
 When /^I create a valid tag$/ do
   name = "Tag1"
   fill_in("tag_name", :with => name)

@@ -35,9 +35,6 @@ Then /^I should see the modes$/ do
   end
 end
 
-Given /^I am on the edit page of the mode$/ do
-  visit "/modes/#{@mode.id}/edit"
-end
 When /^I create a valid mode$/ do
   name = "Mode1"
   fill_in("mode_name", :with => name)

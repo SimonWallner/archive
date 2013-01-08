@@ -71,7 +71,54 @@ end
 def visit_genre_edit_page(genre)
   visit edit_genre_path(genre)
 end
+## media
+def visit_media_creation_page
+  visit new_medium_path
+end
 
+def visit_media_overview_page
+  visit media_path
+end
+
+def visit_media_edit_page(medium)
+  visit edit_medium_path(medium)
+end
+## modes
+def visit_mode_creation_page
+  visit new_mode_path
+end
+
+def visit_modes_overview_page
+  visit modes_path
+end
+
+def visit_mode_edit_page(mode)
+  visit edit_mode_path(mode)
+end
+## platforms
+def visit_platform_creation_page
+  visit new_platform_path
+end
+
+def visit_platforms_overview_page
+  visit platforms_path
+end
+
+def visit_platform_edit_page(platform)
+  visit edit_platform_path(platform)
+end
+## tags
+def visit_tag_creation_page
+  visit new_tag_path
+end
+
+def visit_tags_overview_page
+  visit tags_path
+end
+
+def visit_tag_edit_page(tag)
+  visit edit_tag_path(tag)
+end
 ## users
 def visit_user_edit_page
   visit edit_user_registration_path

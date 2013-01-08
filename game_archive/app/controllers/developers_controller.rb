@@ -61,7 +61,6 @@ class DevelopersController < ApplicationController
   end
   
   # POST /developers
-  # POST /developers.json
   def create
     authenticate_user!(nil)
     @developer = Developer.new(params[:developer])
@@ -70,53 +69,39 @@ class DevelopersController < ApplicationController
     respond_to do |format|
       if @developer.save
         format.html { redirect_to @developer }
-        format.json { render json: @developer, status: :created, location: @developer }
       else
         format.html { render action: "new" }
-        format.json { render json: @developer.errors, status: :unprocessable_entity }
       end
     end
   end
 
   # PUT /developers/1
-  # PUT /developers/1.json
   def update
-    
     @developer = Developer.find(params[:id])
-    if (params[:reportblockcontent])
+    if params[:reportblockcontent]
       Reportblockcontent.create_from_string(1,params[:id], params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
     end
     Field.create_add_new_fields(@developer, params[:new_fields])
     respond_to do |format|
       if @developer.update_attributes(params[:developer])
-	  	if (params[:reportblockcontent])
-			if (params[:reportblockcontent][:status]=='0')
-				format.html { redirect_to @developer,notice: 'Developer was reported successfully'}
-				format.json { head :no_content }
-			else
-				format.html { redirect_to @developer}
-				format.json { head :no_content }
-			end
-		else
-			format.html { redirect_to @developer}
-			format.json { head :no_content }		
-		end
+        if params[:reportblockcontent] && params[:reportblockcontent][:status]=='0'
+          format.html { redirect_to @developer,notice: 'Developer was reported successfully'}
+        else
+          format.html { redirect_to @developer}
+        end
       else
         format.html { render action: "edit" }
-        format.json { render json: @developer.errors, status: :unprocessable_entity }
       end
     end
   end
 
   # DELETE /developers/1
-  # DELETE /developers/1.json
   def destroy
     @developer = Developer.find(params[:id])
     @developer.destroy
 
     respond_to do |format|
       format.html { redirect_to developers_url }
-      format.json { head :no_content }
     end
   end
 end

@@ -62,7 +62,6 @@ class GamesController < ApplicationController
   end
 
   # POST /games
-  # POST /games.json
   def create
     authenticate_user!(nil)
     @game = Game.new(params[:game])
@@ -81,16 +80,13 @@ class GamesController < ApplicationController
         create_add_new_mixed_fields(params[:new_series], MixedFieldType.find_by_name("Series"))
 
         format.html { redirect_to @game}
-        format.json { render json: @game, status: :created, location: @game }
       else
         format.html { render action: "new" }
-        format.json { render json: @game.errors, status: :unprocessable_entity }
       end
     end
   end
 
   # PUT /games/1
-  # PUT /games/1.json
   def update
     authenticate_user!(nil)
     @game = Game.find(params[:id])
@@ -111,34 +107,24 @@ class GamesController < ApplicationController
         create_add_new_mixed_fields(params[:new_credits], MixedFieldType.find_by_name("Credits"))
         create_add_new_mixed_fields(params[:new_series], MixedFieldType.find_by_name("Series"))
 
-        if (params[:reportblockcontent])
-          if (params[:reportblockcontent][:status]=='0')
-            format.html { redirect_to @game,notice: 'Game was reported successfully'}
-            format.json { head :no_content }
-          else
-            format.html { redirect_to @game}
-            format.json { head :no_content }
-          end
+        if params[:reportblockcontent] && params[:reportblockcontent][:status]=='0'
+          format.html { redirect_to @game,notice: 'Game was reported successfully'}
         else
           format.html { redirect_to @game}
-          format.json { head :no_content }
         end
       else
         format.html { render action: "edit" }
-        format.json { render json: @game.errors, status: :unprocessable_entity }
       end
     end
   end
 
   # DELETE /games/1
-  # DELETE /games/1.json
   def destroy
     @game = Game.find(params[:id])
     @game.destroy
 
     respond_to do |format|
       format.html { redirect_to games_url }
-      format.json { head :no_content }
     end
   end
 

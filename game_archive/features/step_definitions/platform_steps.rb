@@ -32,9 +32,6 @@ Then /^I should see the platforms$/ do
   end
 end
 
-Given /^I am on the edit page of the platform$/ do
-  visit "/platforms/#{@platform.id}/edit"
-end
 When /^I create a valid platform$/ do
   name = "Platform1"
   fill_in("platform_name", :with => name)

@@ -32,9 +32,6 @@ Then /^I should see the media$/ do
   end
 end
 
-Given /^I am on the edit page of the medium$/ do
-  visit "/media/#{@medium.id}/edit"
-end
 When /^I create a valid medium$/ do
   name = "Medium1"
   fill_in("medium_name", :with => name)

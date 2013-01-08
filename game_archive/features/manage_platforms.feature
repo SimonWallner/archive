@@ -18,6 +18,6 @@ Scenario: create platform
 
 Scenario: edit platform
   Given I have a platform named PC
-  And I am on the platform edit page
+  And I am on the edit page of the platform
   When I update the platform
   Then I should see the new values of Platform
