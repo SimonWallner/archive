@@ -1,6 +1,6 @@
 class SearchController < ApplicationController
 	def result
-		query = params[:query]
+		query = '^"' + params[:query] + '"'
 		
 		@game_results = Game.find_with_index(query)
 		@dev_results = Developer.find_with_index(query)
