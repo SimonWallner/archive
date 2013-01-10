@@ -43,6 +43,16 @@ class Game < ActiveRecord::Base
   # returns the most current version of this object
   def current_version
 
+    max_ver = 0
+    # iterate through all games with certain object id, choose the version with the highest version id.
+    Game.find_all_by_object_id(@@cur_obj_id).each do |game|
+
+      if (max_ver < game.version_number)
+        max_ver = game.version_number
+      end
+
+    end
+
   end
 
   # reverts to this version
