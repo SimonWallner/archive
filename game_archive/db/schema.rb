@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121213160247) do
+ActiveRecord::Schema.define(:version => 20130110162224) do
 
   create_table "companies", :force => true do |t|
     t.string   "name"
@@ -72,11 +72,17 @@ ActiveRecord::Schema.define(:version => 20121213160247) do
   create_table "games", :force => true do |t|
     t.string   "title"
     t.text     "description"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
     t.string   "image"
     t.integer  "popularity"
+    t.integer  "object_id"
+    t.integer  "version_number"
+    t.datetime "updated_ts"
+    t.integer  "author_id"
   end
+
+  add_index "games", ["object_id"], :name => "index_games_on_object_id"
 
   create_table "games_genres", :id => false, :force => true do |t|
     t.integer "game_id"

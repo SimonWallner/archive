@@ -35,4 +35,38 @@ class Game < ActiveRecord::Base
     super(:include => [{:mixed_fields => {:include => :mixed_field_type}}, :release_dates, :fields, :genres, :platforms, :media, :modes, :tags ])
   end
 
+  def Game.next_object_id
+    @@cur_obj_id = 0 if @@cur_obj_id == nil
+    @@cur_obj_id += 1
+  end
+
+  # returns the most current version of this object
+  def current_version
+
+  end
+
+  # reverts to this version
+  def revert_to_this
+    cur_ver = current_version
+
+  end
+
+  # copies the current state and saves the new version
+  # returns the new version
+  def new_version
+    clone = Game.new
+    clone.id = self.id
+    clone.title = self.title
+    clone.description = self.description
+    clone.created_at = self.created_at
+    clone.updated_at = self.updated_at
+    clone.image = self.image
+    clone.popularity = self.popularity
+    clone.object_id = self.object_id
+    clone.updated_ts = self.updated_ts
+    clone.author_id = self.author_id
+
+    # version number
+    clone.version_number = ( self.current_version.version_number + 1 )
+  end
 end
