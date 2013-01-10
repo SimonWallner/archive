@@ -88,12 +88,13 @@ class CompaniesController < ApplicationController
 
     if params[:reportblockcontent]
       Reportblockcontent.create_from_string(2,params[:id], params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
+    elsif
+      Location.create_add_new_locations(@company, params["new_locations"])
+      add_founded(params)
+      add_defunct(params)
+      Field.create_add_new_fields(@company, params[:new_fields])
     end
 
-    Location.create_add_new_locations(@company, params["new_locations"])
-    add_founded(params)
-    add_defunct(params)
-    Field.create_add_new_fields(@company, params[:new_fields])
     respond_to do |format|
       if @company.update_attributes(params[:company])
         if params[:reportblockcontent] && params[:reportblockcontent][:status]=='0'

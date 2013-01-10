@@ -12,4 +12,9 @@ class Screenshot < ActiveRecord::Base
                 :maximum => 1.megabytes.to_i
             }
 
+  def copy_without_references
+    clone = Screenshot.new
+    clone.image = self.image
+    return clone
+  end
 end

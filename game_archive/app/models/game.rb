@@ -16,8 +16,8 @@ class Game < ActiveRecord::Base
 
   has_many :screenshots, :dependent => :destroy
   accepts_nested_attributes_for :screenshots, :reject_if => lambda { |a| a[:image].blank? }, :allow_destroy => true
-  has_and_belongs_to_many :genres
 
+  has_and_belongs_to_many :genres
   has_and_belongs_to_many :platforms
   has_and_belongs_to_many :media
   has_and_belongs_to_many :modes
@@ -47,8 +47,7 @@ class Game < ActiveRecord::Base
 
   # reverts to this version
   def revert_to_this
-    cur_ver = current_version
-
+    new_version
   end
 
   # copies the current state and saves the new version
@@ -68,5 +67,62 @@ class Game < ActiveRecord::Base
 
     # version number
     clone.version_number = ( self.current_version.version_number + 1 )
+
+    # fields
+    self.fields.each do |f|
+      clone.fields.push f.copy_without_references
+    end
+
+    # release dates
+    self.release_dates.each do |rd|
+      clone.release_dates.push rd.copy_without_references
+    end
+
+    # videos
+    self.videos.each do |v|
+      clone.videos.push v.copy_without_references
+    end
+
+    # screenshots
+    self.screenshots.each do |ss|
+      clone.screenshots.push ss.copy_without_references
+    end
+
+    # genres
+    self.genres.each do |g|
+      clone.genres.push g
+    end
+
+    # platforms
+    self.platforms.each do |p|
+      clone.platforms.push p
+    end
+
+    # media
+    self.media.each do |m|
+      clone.media.push m
+    end
+
+    # modes
+    self.modes.each do |m|
+      clone.modes.push m
+    end
+
+    # tags
+    self.tags.each do |t|
+      clone.tags.push t
+    end
+
+    clone.save
+    return clone
+  end
+
+  def change_rbc(old)
+    # report block content
+    old.reportblockcontent.each do |rbc|
+      cp = rbc.copy_without_references
+      cp.content_id = self.id
+      self.reportblockcontent.push cp
+    end
   end
 end

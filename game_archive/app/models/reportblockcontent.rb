@@ -28,4 +28,14 @@ class Reportblockcontent < ActiveRecord::Base
 		end
 	end
   end
+
+  def copy_without_references
+    clone = Reportblockcontent.new
+    clone.admin_id = self.admin_id
+    clone.reason = self.reason
+    clone.status = self.status
+    clone.email = self.email
+    clone.content_type = self.content_type
+    return clone
+  end
 end

@@ -80,8 +80,10 @@ class DevelopersController < ApplicationController
     @developer = Developer.find(params[:id])
     if params[:reportblockcontent]
       Reportblockcontent.create_from_string(1,params[:id], params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
+    elsif
+      Field.create_add_new_fields(@developer, params[:new_fields])
     end
-    Field.create_add_new_fields(@developer, params[:new_fields])
+
     respond_to do |format|
       if @developer.update_attributes(params[:developer])
         if params[:reportblockcontent] && params[:reportblockcontent][:status]=='0'

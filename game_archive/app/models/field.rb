@@ -49,4 +49,11 @@ class Field < ActiveRecord::Base
     { :type => { :MixedFieldType => :name } }
   end
 
+  # copies the fields without referenced fields
+  def copy_without_references
+    clone = Field.new
+    clone.name = self.name
+    clone.content = self.content
+    return clone
+  end
 end
