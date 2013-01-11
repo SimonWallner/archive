@@ -18,13 +18,21 @@ class GamesController < ApplicationController
   # GET /games/1
   # GET /games/1.json
   def show
-    @game = Game.find(params[:id])
-	@reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(0,params[:id])
-	if @game.popularity == nil
-		@game.popularity = 0
-		@game.save
-	end
-	@game.increment!(:popularity)
+    some_version = Game.find(params[:id])
+    @game = some_version.current_version
+
+    # redirect to other page if game is not newest version
+    if @game != some_version
+      redirect_to @game
+      return
+    end
+
+	  @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(0,params[:id])
+	  if @game.popularity == nil
+		  @game.popularity = 0
+		  @game.save
+	  end
+	  @game.increment!(:popularity)
 
     respond_to do |format|
       format.html # show.html.erb

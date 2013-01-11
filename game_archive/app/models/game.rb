@@ -59,14 +59,12 @@ class Game < ActiveRecord::Base
 
   # returns the most current version of this object
   def current_version
-    max_ver = 0
+    max_ver = nil
     # iterate through all games with certain object id, choose the version with the highest version id.
     Game.find_all_by_object_id(self.object_id).each do |game|
-
-      if (max_ver < game.version_number)
-        max_ver = game.version_number
+      if max_ver == nil || max_ver.version_number < game.version_number
+        max_ver = game
       end
-
     end
     max_ver
   end
@@ -91,7 +89,7 @@ class Game < ActiveRecord::Base
     clone.author_id = self.author_id
 
     # version number
-    clone.version_number = ( current_version + 1 )
+    clone.version_number = ( current_version.version_number + 1 )
 
     # fields
     self.fields.each do |f|
