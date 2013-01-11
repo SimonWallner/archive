@@ -36,7 +36,7 @@ function loadfields(jsonurl){
                     str = str + val[x].name + ',';
                 str = str.substr(0, str.length -1);
 
-                addConcreteField(select_elem, false, str);
+                addConcreteField(select_elem, false, str, true);
 
             }else if($.inArray(i,['release_dates']) >= 0 ){
                 addField($('#addFieldButton'), usedfields);
@@ -44,13 +44,13 @@ function loadfields(jsonurl){
                 select_elem.find('option[value="release dates"]').attr('selected', true);
 
                 for (var x = 0; x < val.length; x++){
-                    addConcreteField(select_elem, false);
+                    addConcreteField(select_elem, false, false, true);
                     $('#year_release_date'+(x+1)).val(val[x].year);
                     $('#month_release_date'+(x+1)).val(val[x].month);
                     $('#day_release_date'+(x+1)).val(val[x].day);
                     $('#text_release_date'+(x+1)).val(val[x].additional_info);
                 }
-                addConcreteField(select_elem, false);
+                addConcreteField(select_elem, false, false, true);
 
             }else if($.inArray(i,['fields']) >= 0){
                 for (var x = 0; x < val.length; x++){
@@ -60,7 +60,7 @@ function loadfields(jsonurl){
                             addField($('#addFieldButton'), usedfields);
                             var select_elem = $('div.newFieldsDiv').find('select:last');
                             select_elem.find('option[value="'+val[x].name.toLowerCase()+'"]').attr('selected', true);
-                            addConcreteField(select_elem, false);
+                            addConcreteField(select_elem, false, false, true);
                         }
                         var input = $('#'+fname);
                         if(input.val()){
@@ -72,7 +72,7 @@ function loadfields(jsonurl){
                         addField($('#addFieldButton'), usedfields);
                         var select_elem = $('div.newFieldsDiv').find('select:last');
                         select_elem.find('option[value="userdefined"]').attr('selected', true);
-                        addConcreteField(select_elem, false);
+                        addConcreteField(select_elem, false, false, true);
 
                         $('#name_userdefined'+(x+1)).val(val[x].name);
                         $('#content_userdefined'+(x+1)).val(val[x].content);
@@ -85,7 +85,7 @@ function loadfields(jsonurl){
                         addField($('#addFieldButton'), usedfields);
                         var select_elem = $('div.newFieldsDiv').find('select:last');
                         select_elem.find('option[value="'+value+'"]').attr('selected', true);
-                        addConcreteField(select_elem, false);
+                        addConcreteField(select_elem, false, false, true);
                     });
                 }
                 for (var x = 0; x < val.length; x++){
@@ -98,7 +98,7 @@ function loadfields(jsonurl){
                         addField($('#addFieldButton'), usedfields);
                         var select_elem = $('div.newFieldsDiv').find('select:last');
                         select_elem.find('option[value="'+type+'"]').attr('selected', true);
-                        addConcreteField(select_elem, false);
+                        addConcreteField(select_elem, false, false, true);
                         $('#'+input_field_name).val('');
                     }
                     var valstr = ''
@@ -119,7 +119,7 @@ function loadfields(jsonurl){
                 addField($('#addFieldButton'), usedfields);
                 var select_elem = $('div.newFieldsDiv').find('select:last');
                 select_elem.find('option[value="official name"]').attr('selected', true);
-                addConcreteField(select_elem, false, val);
+                addConcreteField(select_elem, false, val, true);
 
             }  else if($.inArray(i,['locations']) >= 0){
                 addField($('#addFieldButton'), usedfields);
@@ -132,14 +132,14 @@ function loadfields(jsonurl){
                       locationstring = locationstring + ':'+dat.additional_info;
                    locationstring = locationstring + ',';
                 });
-                addConcreteField(select_elem, false, locationstring);
+                addConcreteField(select_elem, false, locationstring, true);
 
             }  else if($.inArray(i,['founded','defunct']) >= 0 ){
                 addField($('#addFieldButton'), usedfields);
                 var select_elem = $('div.newFieldsDiv').find('select:last');
                 select_elem.find('option[value="'+i+'"]').attr('selected', true);
 
-                addConcreteField(select_elem, false);
+                addConcreteField(select_elem, false, false, true);
                 $('#year_'+i).val(val.year);
                 $('#month_'+i).val(val.month);
                 $('#day_'+i).val(val.day);
@@ -153,26 +153,26 @@ function loadfields(jsonurl){
                     addField($('#addFieldButton'), usedfields);
                     var select_elem = $('div.newFieldsDiv').find('select:last');
                     select_elem.find('option[value="'+value+'"]').attr('selected', true);
-                    addConcreteField(select_elem, false);
+                    addConcreteField(select_elem, false, false, true);
                 });
         }else if(page == 'company'){
             if(!data.mixed_fields || data.mixed_fields.length == 0){
                 addField($('#addFieldButton'), usedfields);
                 var select_elem = $('div.newFieldsDiv').find('select:last');
                 select_elem.find('option[value="external links"]').attr('selected', true);
-                addConcreteField(select_elem, false);
+                addConcreteField(select_elem, false, false, true);
             }
             if(!data.founded){
                 addField($('#addFieldButton'), usedfields);
                 var select_elem = $('div.newFieldsDiv').find('select:last');
                 select_elem.find('option[value="founded"]').attr('selected', true);
-                addConcreteField(select_elem, false);
+                addConcreteField(select_elem, false, false, true);
             }
             if(!data.locations){
                 addField($('#addFieldButton'), usedfields);
                 var select_elem = $('div.newFieldsDiv').find('select:last');
                 select_elem.find('option[value="location"]').attr('selected', true);
-                addConcreteField(select_elem, false);
+                addConcreteField(select_elem, false, false, true);
             }
         }
     });
@@ -196,8 +196,9 @@ function addField(button_element, types){
 var anzDateInputs=0;
 var anzUserDefined=0;
 // ein feld im select ausgewählt => das konkrete feld hinzufügen
-function addConcreteField(select_element, deletecurrent){addConcreteField(select_element, deletecurrent, false)}
-function addConcreteField(select_element, deletecurrent, value){
+function addConcreteField(select_element, deletecurrent){addConcreteField(select_element, deletecurrent, false, false)}
+function addConcreteField(select_element, deletecurrent, value){addConcreteField(select_element, deletecurrent, value, false)}
+function addConcreteField(select_element, deletecurrent, value, onload){
     if(deletecurrent)
         $(select_element).parent().find('> :not(select:first)').remove();
     var field_name = $(select_element).val();
@@ -236,7 +237,11 @@ function addConcreteField(select_element, deletecurrent, value){
                     $('input, textarea').unbind('.allavailable');
                 });
             });
-            $('#'+input_field_name+'_input').focus();
+            if(onload)  {
+                $(':input:enabled:visible:first').focus();
+                $('html, body').animate({scrollTop: '0px'}, 0);
+            }else
+                $('#'+input_field_name+'_input').focus();
         });
 
     }else if($.inArray(field_name,['userdefined']) >= 0){                                            // markup input
@@ -265,6 +270,8 @@ function addConcreteField(select_element, deletecurrent, value){
             '</textarea>');
         at_autocomp(input_field_name+'_dummy', $('#'+input_field_name), '/ajax.json?type=developer');
     }
+    if(onload)
+        $(':input:enabled:visible:first').focus();
 }
 
 // helper um datumsinputs hinzuzufügen
