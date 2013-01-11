@@ -74,7 +74,13 @@ class Game < ActiveRecord::Base
 
   # reverts to this version
   def revert_to_this
-    new_version
+    old_last = current_version
+    reverted = new_version
+
+    # change attributes from most recent version
+    reverted.popularity = old_last.popularity
+    reverted.save
+    reverted
   end
 
   # copies the current state and saves the new version
