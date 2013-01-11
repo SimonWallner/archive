@@ -14,9 +14,9 @@
 	<h1>Games</h1>
 	
 	<div class="games_featured">
-		<% games = Game.find(:all, :limit => getAmountFeatured, :order => 'created_at DESC')[0..7] %>
-		<% games.concat(Game.find(:all, :limit => getAmountFeatured, :order => 'popularity DESC')[0..7]) %>
-		<% games = games.uniq %>
+		<% games = (Game.current_versions_from_collection Game.find(:all, :limit => getAmountFeatured, :order => 'created_at DESC'))[0..7] %>
+		<% games.concat((Game.current_versions_from_collection Game.find(:all, :limit => getAmountFeatured, :order => 'popularity DESC'))[0..7]) %>
+		<% games = Game.current_versions_from_collection games.uniq %>
 		<% games[0..7].each do |game| %>
 			<div class="tiled_2x">
 				<a href="/games/<%= game.id %>">

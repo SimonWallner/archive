@@ -27,7 +27,7 @@ class GamesController < ApplicationController
       return
     end
 
-	  @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(0,params[:id])
+	  @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(0,@game.id)
 	  if @game.popularity == nil
 		  @game.popularity = 0
 		  @game.save

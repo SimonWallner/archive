@@ -15,7 +15,7 @@ class AjaxController < ApplicationController
           end
           @tags = @devs.concat(@comps)
         elsif params[:type] == 'game'
-          @games = Game.where("title LIKE ?", "#{params[:term]}%")
+          @games = Game.current_versions_from_collection Game.where("title LIKE ?", "#{params[:term]}%")
           @games.collect! do |game|
             {:value => '@game:' + game.id.to_s + ':additional-info,', :label => game.title + ' - Game'}
           end
@@ -27,7 +27,7 @@ class AjaxController < ApplicationController
         @devs.collect! do |dev|
           {:value => '[' + dev.name + '](' + developer_path(dev) + ')', :label => dev.name + ' - Developer'}
         end
-        @games = Game.where("title LIKE ?", "#{params[:term]}%")
+        @games = Game.current_versions_from_collection Game.where("title LIKE ?", "#{params[:term]}%")
         @games.collect! do |game|
           {:value => '[' + game.title + '](' + game_path(game) + ')', :label => game.title + ' - Game'}
         end

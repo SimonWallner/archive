@@ -41,10 +41,13 @@ class Game < ActiveRecord::Base
 
   # returns all current versions of all games
   def Game.all_current_versions
-    all_games = Game.order('object_id ASC, version_number DESC')
+    Game.current_versions_from_collection Game.order('object_id ASC, version_number DESC')
+  end
+
+  def Game.current_versions_from_collection(collection)
     last_obj_id = -1
     ret = Array.new
-    all_games.each do |g|
+    collection.each do |g|
       if last_obj_id == -1 || last_obj_id != g.object_id
         last_obj_id = g.object_id
         ret.push g
