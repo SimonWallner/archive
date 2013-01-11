@@ -8,9 +8,9 @@ namespace :db do
                          firstname: "admin",
                          lastname: "admin")
     admin.skip_confirmation!
+    admin.blocked = false
     admin.save
     admin.toggle!(:admin)
-	  admin.blocked = false
   end
 
   desc "drop default admin account (admin@example.com)."

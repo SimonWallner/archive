@@ -7,7 +7,7 @@ class GamesController < ApplicationController
   # GET /games
   # GET /games.json
   def index
-    @games = Game.all
+    @games = Game.all_current_versions
 
     respond_to do |format|
       format.html # index.html.erb
@@ -65,6 +65,13 @@ class GamesController < ApplicationController
   def create
     authenticate_user!(nil)
     @game = Game.new(params[:game])
+
+    # add version stuff
+    @game.object_id = Game.next_object_id
+    @game.version_number = 1
+    @game.author_id = current_user.id
+    @game.updated_ts = Time.now
+
 	  @game.popularity = 0
     create_add_new_token(params[:new_genres], params[:new_platforms], params[:new_medias], params[:new_modes], params[:new_tags])
     create_add_new_release_dates(params[:new_release_dates])
@@ -89,10 +96,13 @@ class GamesController < ApplicationController
   # PUT /games/1
   def update
     authenticate_user!(nil)
-    @game = Game.find(params[:id])
+    oldgame = Game.find(params[:id])
+    @game = oldgame.new_version
+    @game.change_rbc oldgame
+    logger.debug @game.to_s
 	
     if (params[:reportblockcontent])
-      Reportblockcontent.create_from_string(0,params[:id], params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
+      Reportblockcontent.create_from_string(0,@game.id, params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
     else
         create_add_new_token(params[:new_genres], params[:new_platforms], params[:new_medias], params[:new_modes], params[:new_tags])
         create_add_new_release_dates(params[:new_release_dates])

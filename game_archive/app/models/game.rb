@@ -1,4 +1,7 @@
+require 'securerandom'
+
 class Game < ActiveRecord::Base
+
   acts_as_indexed :fields => [:description, :title]
   require 'file_size_validator'
 
@@ -31,20 +34,33 @@ class Game < ActiveRecord::Base
                 :maximum => 0.4.megabytes.to_i
             }
 
-  def as_json(options = {})
-    super(:include => [{:mixed_fields => {:include => :mixed_field_type}}, :release_dates, :fields, :genres, :platforms, :media, :modes, :tags ])
+  # returns a uuid as string
+  def Game.next_object_id
+    SecureRandom.uuid.to_s
   end
 
-  def Game.next_object_id
-    @@cur_obj_id = 0 if @@cur_obj_id == nil
-    @@cur_obj_id += 1
+  def Game.all_current_versions
+    all_games = Game.order('object_id ASC, version_number DESC')
+    logger.debug 'all current version'
+    all_games.each do |g|
+      logger.debug " - " + g.id.to_s
+      logger.debug " - " + g.object_id.to_s unless g.object_id == nil
+      logger.debug " - " + g.version_number.to_s unless g.version_number == nil
+      logger.debug " - " + g.title
+      logger.debug "----------------"
+    end
+    all_games
+  end
+
+  def as_json(options = {})
+    super(:include => [{:mixed_fields => {:include => :mixed_field_type}}, :release_dates, :fields, :genres, :platforms, :media, :modes, :tags ])
   end
 
   # returns the most current version of this object
   def current_version
     max_ver = 0
     # iterate through all games with certain object id, choose the version with the highest version id.
-    Game.find_all_by_object_id(@@cur_obj_id).each do |game|
+    Game.find_all_by_object_id(self.object_id).each do |game|
 
       if (max_ver < game.version_number)
         max_ver = game.version_number
@@ -63,7 +79,6 @@ class Game < ActiveRecord::Base
   # returns the new version
   def new_version
     clone = Game.new
-    clone.id = self.id
     clone.title = self.title
     clone.description = self.description
     clone.created_at = self.created_at
@@ -123,12 +138,17 @@ class Game < ActiveRecord::Base
     end
 
     clone.save
+    logger.debug "clone saved with id: #{clone.id}"
     return clone
   end
 
   def change_rbc(old)
     # report block content
-    old.reportblockcontent.each do |rbc|
+    rbc = Reportblockcontent.find_by_content_type_and_content_id(0, old.id)
+    if rbc == nil
+      return
+    end
+    rbc.each do |rbc|
       cp = rbc.copy_without_references
       cp.content_id = self.id
       self.reportblockcontent.push cp

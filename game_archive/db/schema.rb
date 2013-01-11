@@ -76,7 +76,7 @@ ActiveRecord::Schema.define(:version => 20130110162224) do
     t.datetime "updated_at",     :null => false
     t.string   "image"
     t.integer  "popularity"
-    t.integer  "object_id"
+    t.string   "object_id"
     t.integer  "version_number"
     t.datetime "updated_ts"
     t.integer  "author_id"
