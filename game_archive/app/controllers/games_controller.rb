@@ -3,7 +3,8 @@ class GamesController < ApplicationController
   before_filter only: [:edit, :show] { |c| c.block_content_visitor 0 }
   before_filter only: [:edit] { |c| c.block_content_user 0 } 
   before_filter :authenticate_admin!, only: [:block]
-
+  before_filter :blocked_user!, except: [:index, :show, :report, :update]
+  
   # GET /games
   # GET /games.json
   def index
@@ -63,7 +64,6 @@ class GamesController < ApplicationController
 
   # POST /games
   def create
-    authenticate_user!(nil)
     @game = Game.new(params[:game])
 	  @game.popularity = 0
     create_add_new_token(params[:new_genres], params[:new_platforms], params[:new_medias], params[:new_modes], params[:new_tags])
@@ -88,7 +88,6 @@ class GamesController < ApplicationController
 
   # PUT /games/1
   def update
-    authenticate_user!(nil)
     @game = Game.find(params[:id])
 	
     if (params[:reportblockcontent])

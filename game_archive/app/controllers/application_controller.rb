@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
 	authenticate_admin!
   end
   
-  def authenticate_user!(*tmp)
+  def blocked_user!
 	if current_user.nil?
 		redirect_to root_path, notice: 'you need to be registered and signed up in order to access this page'
 	elsif current_user.blocked?

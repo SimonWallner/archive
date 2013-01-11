@@ -62,7 +62,6 @@ class DevelopersController < ApplicationController
   
   # POST /developers
   def create
-    authenticate_user!(nil)
     @developer = Developer.new(params[:developer])
 	  @developer.popularity = 0
     Field.create_add_new_fields(@developer, params[:new_fields])
