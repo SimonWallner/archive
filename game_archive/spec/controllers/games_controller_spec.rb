@@ -118,16 +118,16 @@ describe GamesController do
         put :update, {:id => game.to_param, :game => {'these' => 'params'}}
       end
 
-      it "assigns the requested game as @game" do
+      it "assigns the newest version of the requested game as @game" do
         game = FactoryGirl.create :game
         put :update, {:id => game.to_param, :game => valid_attributes}
-        assigns(:game).should eq(game)
+        assigns(:game).should eq(game.current_version)
       end
 
-      it "redirects to the game" do
+      it "redirects to the new version of the game" do
         game = FactoryGirl.create :game
         put :update, {:id => game.to_param, :game => valid_attributes}
-        response.should redirect_to(game)
+        response.should redirect_to(game.current_version)
       end
     end
 

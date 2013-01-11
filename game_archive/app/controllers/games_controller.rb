@@ -131,6 +131,9 @@ class GamesController < ApplicationController
           format.html { redirect_to @game}
         end
       else
+        # delete newest version
+        @game.destroy
+        @game = oldgame
         format.html { render action: "edit" }
       end
     end
