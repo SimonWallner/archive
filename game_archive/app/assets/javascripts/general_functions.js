@@ -265,10 +265,14 @@ function addConcreteField(select_element, deletecurrent, value, onload){
             '</textarea>');
 
     }else if($.inArray(field_name,['developer','publisher','distributor','credits']) >= 0){          // dev/comp references + add info
-        $(select_element).parent().append('<textarea cols="40" rows="3" id="'+input_field_name+'" name="'+input_field_name+'">' +
-            (value ? value : '') +
-            '</textarea>');
-        at_autocomp(input_field_name+'_dummy', $('#'+input_field_name), '/ajax.json?type=developer');
+
+        anzDateInputs++;
+        var    html = '<div class="'+field_name+'_div" id="'+field_name+'_div">';
+        html = html + '<input class="'+field_name+'_link mixin" name="'+field_name+'_link" type="text">';
+        html = html + '<input class="'+field_name+'_text mixin" name="'+field_name+'_text" type="text">';
+        html = html + '<button type="button" onclick="addConcreteField(this,false);" value="'+field_name+'"> + </button></div>';
+        $(select_element).parent().append(html);
+        $('.'+field_name+'_link').autocomplete({source: '/ajax.json?type=developer', minLength: 1});
     }
     if(onload)
         $(':input:enabled:visible:first').focus();
