@@ -188,6 +188,9 @@ end
 def on_sign_up_page
   current_path.should == accept_user_invitation_path
 end
+def on_sign_in_page
+  current_path.should == "/users/sign_in"
+end
 
 def on_invite_page
   current_path.should == "/users/invitation"

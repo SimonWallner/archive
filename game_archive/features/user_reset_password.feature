@@ -3,14 +3,14 @@ Feature: reset password
   in order to access my account again,
   I want to reset my password via email.
 
-  Scenario : get email to reset password
+  Scenario: get email to reset password
     Given I have a user
     And I am not signed in
     And I am on the reset password page
     When I enter my email
     Then I should receive an email with password reset instructions
 
-  Scenario : fail to get email to reset password due to an email that does not belong to any user
+  Scenario: fail to get email to reset password due to an email that does not belong to any user
     Given I have a user
     And I am not signed in
     And I am on the reset password page

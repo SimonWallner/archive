@@ -178,6 +178,7 @@ end
 ##################################
 
 ## users
+
 Then /^I should be on the user edit page$/ do
   on_user_edit_page
 end
@@ -188,6 +189,9 @@ end
 
 Then /^I should be on the sign up page$/ do
   on_sign_up_page
+end
+Then /^I should be on the sign in page$/ do
+  on_sign_in_page
 end
 
 Then /^I should be on the invite page$/ do

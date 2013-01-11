@@ -174,6 +174,13 @@ end
 end
 
 Then /^I should see the saved token list data$/ do
+
+  #mysterious bug prohobiting this test from running through
+
+
+   #wait for page to fully load/fix for selenium bug
+   #wait_until { page.evaluate_script('$.active') == 0 }
+
    page.should have_content(@textGenres)
    page.should have_content(@textPlatforms)
    page.should have_content(@textMedias)
