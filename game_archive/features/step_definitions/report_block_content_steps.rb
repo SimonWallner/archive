@@ -36,6 +36,25 @@ Given /^I have a locked (.+)$/ do |content|
   end
 end
 
+Given /^I have a deleted (.+)$/ do |content|
+
+  if content == "game"
+	@givenGame=FactoryGirl.create :game , title: "Tetris"
+	content_type = 0
+	  @givenReportblockcontent=FactoryGirl.create :reportblockcontent, content_type:content_type ,status:4, content_id:@givenGame.id
+  else if content == "developer"
+	@givenDeveloper=FactoryGirl.create :developer, name: "Leela"
+    content_type = 1
+	  @givenReportblockcontent=FactoryGirl.create :reportblockcontent, content_type:content_type ,status:4, content_id:@givenDeveloper.id
+  else if content == "company"
+	@givenCompany=FactoryGirl.create :company, name: "Leela"
+    content_type = 2
+	  @givenReportblockcontent=FactoryGirl.create :reportblockcontent, content_type:content_type ,status:4, content_id:@givenCompany.id
+  end
+  end
+  end
+end
+
 When /^I follow the (.*) content link$/ do |button|
     click_link_or_button button
 end
@@ -66,6 +85,13 @@ When /^I fill in the fields of (.*) reportblockcontent with valid details and su
   click_button "Report " + type
 end
 
+When /^I fill in the fields of (.*) deletecontent with valid details and submit it$/ do |type|
+  @report_reason="Reason"
+
+  fill_in("reportblockcontent_reason", :with => @report_reason)
+  click_button "Delete " + type
+end
+
 When /^I enter the (.*) edit page$/ do |type|
   if type == 'game'
 	visit edit_game_path(@givenGame)
@@ -86,6 +112,17 @@ When /^I enter the (.*) detail page$/ do |type|
 	visit company_path(@givenCompany)
   end 
   end 
+end
+
+Then /^I should not see deleted (.*)$/ do |type|
+    if type == 'game'
+		page.should_not have_content(@givenGame)
+	else if type == 'developer'
+		page.should_not have_content(@givenDeveloper)
+	else
+		page.should_not have_content(@givenCompany)
+	end 
+	end 
 end
 
 

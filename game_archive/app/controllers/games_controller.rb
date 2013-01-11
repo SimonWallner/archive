@@ -3,7 +3,8 @@ class GamesController < ApplicationController
   before_filter only: [:edit, :show] { |c| c.block_content_visitor 0 }
   before_filter only: [:edit] { |c| c.block_content_user 0 } 
   before_filter :authenticate_admin!, only: [:block]
-
+  before_filter :blocked_user!, except: [:index, :show, :report, :update]
+  
   # GET /games
   # GET /games.json
   def index
@@ -68,10 +69,15 @@ class GamesController < ApplicationController
 	@reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(0,params[:id])
     @game = Game.find(params[:id])	
   end
-
+  
+  # GET /games/1/delete
+  def delete
+	@reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(0,params[:id])
+    @game = Game.find(params[:id])	
+  end
+  
   # POST /games
   def create
-    authenticate_user!(nil)
     @game = Game.new(params[:game])
 
     # add version stuff
@@ -108,6 +114,7 @@ class GamesController < ApplicationController
     @game = oldgame.new_version
     @game.change_rbc oldgame
     logger.debug @game.to_s
+
 	
     if (params[:reportblockcontent])
       Reportblockcontent.create_from_string(0,@game.id, params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])

@@ -54,6 +54,15 @@
 				<%= link_to 'Report', report_company_path(@company) %> |
 			<% end %>
 		<% end %>
+		<% if @reportblockcontent %>
+			<% if @reportblockcontent.status ==4%>
+				<%= link_to 'Undelete', delete_company_path(@company) %> |
+			<% else%>
+				<%= link_to 'Delete', delete_company_path(@company) %> |
+			<% end%>
+		<% else%>
+			<%= link_to 'Delete', delete_company_path(@company) %> |
+		<% end%>
 	<% else%>
 		<% if @reportblockcontent %>
 			<% if @reportblockcontent.status !=1%>

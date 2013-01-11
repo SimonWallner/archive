@@ -1,4 +1,46 @@
-
+<h1>Games</h1>
+<% Game.order("RANDOM()").each do |game| %>
+	<% @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(0,game.id)%>
+	<% if game != nil%>
+		<% if (@reportblockcontent)%>
+				<% if (@reportblockcontent.status !=4)%>				
+					<% if !user_signed_in?%>
+						<% if (@reportblockcontent.status !=1)%>
+							<div class="rounded game-teaser-large">
+								<a href="<%= game_path game %>">
+									<div class="tile">
+										<%= image_tag(game.image_url(:top_game).to_s, :class => 'rounded teaser')%>
+										<div class="caption"><div><%= game.title %></div></div>
+									</div>
+								</a>
+							</div>
+							<% break %>	
+						<% end %>
+					<% else%>
+						<div class="rounded game-teaser-large">
+							<a href="<%= game_path game %>">
+								<div class="tile">
+									<%= image_tag(game.image_url(:top_game).to_s, :class => 'rounded teaser')%>
+									<div class="caption"><div><%= game.title %></div></div>
+								</div>
+							</a>
+						</div>
+						<% break %>	
+					<% end %>
+				<% end %>
+		<% else%>
+			<div class="rounded game-teaser-large">
+				<a href="<%= game_path game %>">
+					<div class="tile">
+						<%= image_tag(game.image_url(:top_game).to_s, :class => 'rounded teaser')%>
+						<div class="caption"><div><%= game.title %></div></div>
+					</div>
+				</a>
+			</div>
+			<% break %>	
+		<% end %>				
+	<% end %>
+<% end %>
 <div>
     <h2>Games</h2>
 	
@@ -11,8 +53,18 @@
 			<% @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(0,game.id)%>
 			<% if !user_signed_in? && @reportblockcontent%>
 				<% if (@reportblockcontent.status !=1)%>
+						<div class="tiled_2x">
+							<a href="<%= game_path game %>">
+								<div class="tile">
+									<%= image_tag(game.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
+									<div class="caption"><div><%= game.title %></div></div>
+								</div>
+							</a>
+						</div>
+					<% end %>
+                 <% else%>
 					<div class="tiled_2x">
-						<a href="/games/<%= game.id %>">
+						<a href="<%= game_path game %>">
 							<div class="tile">
 								<%= image_tag(game.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
 								<div class="caption"><div><%= game.title %></div></div>
@@ -20,26 +72,14 @@
 						</a>
 					</div>
 				<% end %>
-			<% else%>
-				<div class="tiled_2x">
-					<a href="/games/<%= game.id %>">
-						<div class="tile">
-							<%= image_tag(game.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
-							<div class="caption"><div><%= game.title %></div></div>
-						</div>
-					</a>
-				</div>
 			<% end %>
-		<% end %>
-	</div>
-	
-	<div class="clear"></div>
 
-<% if user_signed_in? %>
-    <div><br>
-    <%= link_to 'New Game', new_game_path %>
-    </div>
-<% end %>
+</div>
+
+<br class="clear" />
+
+  <h2>All Games in Alphabetical Order</h2>
+  <div>
 
 	<div class="games_all">
 		<div class="games_featured">
@@ -49,6 +89,16 @@
 			<% @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(0,game.id)%>
 			<% if !user_signed_in? && @reportblockcontent%>
 				<% if (@reportblockcontent.status !=1)%>
+						<div class="tiled_2x">
+							<a href="/games/<%= game.id %>">
+								<div class="tile">
+									<%= image_tag(game.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
+									<div class="caption"><div><%= game.title %></div></div>
+								</div>
+							</a>
+						</div>
+					<% end %>
+				<% else%>
 					<div class="tiled_2x">
 						<a href="/games/<%= game.id %>">
 							<div class="tile">
@@ -58,23 +108,15 @@
 						</a>
 					</div>
 				<% end %>
-			<% else%>		
-				<div class="tiled_2x">
-					<a href="/games/<%= game.id %>">
-						<div class="tile">
-							<%= image_tag(game.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
-							<div class="caption"><div><%= game.title %></div></div>
-						</div>
-					</a>
-				</div>
 			<% end %>
-		<% end %>
-	</div>
-	
-	<div class="clear"></div>
-	</div>
-	
 </div>
+
+<br class="clear" />
+<% if user_signed_in? %>
+    <div class="more">
+    	<%= link_to 'Create a New Game Article...', new_game_path %>
+    </div>
+<% end %>
 
 
 

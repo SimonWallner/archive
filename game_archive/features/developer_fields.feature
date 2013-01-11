@@ -14,7 +14,7 @@ Feature:
     When I enter valid developer data
     And I enter developer field with "Userdefined"
     And I enter developer field with "External Links"   
-    And I create the developer
+    And I submit it
     Then I should see the saved Developer fields
 
 

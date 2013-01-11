@@ -211,57 +211,43 @@ Given /^I have a selection of companies$/ do
 end
 
 Then /^I should see a selection of games sorted by Newest and Most Popular$/ do
-	within 'div.games_featured' do
 		page.should have_content(@game5.title)
 		page.should have_content(@game6.title)
 		page.should have_content(@game9.title)
 		page.should have_content(@game10.title)
 		page.should have_content(@game11.title)
 		page.should have_content(@game12.title)
-	end
-	
 end
 
 Then /^I should see a selection of developers sorted by Newest and Most Popular$/ do
-	within 'div.developers_featured' do
 		page.should have_content(@dev2.name)
 		page.should have_content(@dev3.name)
 		page.should have_content(@dev4.name)
 		page.should have_content(@dev5.name)
 		page.should have_content(@dev6.name)
-	end
 end
 
 Then /^I should see a selection of companies sorted by Newest and Most Popular$/ do
-	within 'div.companies_featured' do
 		page.should have_content(@com2.name)
 		page.should have_content(@com3.name)
 		page.should have_content(@com4.name)
 		page.should have_content(@com5.name)
 		page.should have_content(@com6.name)
-	end
 end
 
 Then /^I should see a random game pick$/ do
-	within 'div.games_random' do
 		page.should have_content("Game")
-	end
 end
 
 Then /^I should see a random developer pick$/ do
-	within 'div.developers_random' do
 		page.should have_content("Developer")
-	end
 end
 
 Then /^I should see a random company pick$/ do
-	within 'div.companies_random' do
 		page.should have_content("Company")
-	end
 end
 
 Then /^I should see all games$/ do
-	within 'div.games_all' do
 		page.should have_content(@game1.title)
 		page.should have_content(@game2.title)
 		page.should have_content(@game3.title)
@@ -274,5 +260,4 @@ Then /^I should see all games$/ do
 		page.should have_content(@game10.title)
 		page.should have_content(@game11.title)
 		page.should have_content(@game12.title)
-	end
 end

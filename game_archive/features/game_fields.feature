@@ -21,7 +21,7 @@ Feature:
     And I enter field with "Review Scores" 
     And I enter field with "Series"
     And I enter field with "Userdefined" 
-    And I create the game
+    And I submit it
     Then I should see the saved Game fields
      
   
@@ -34,7 +34,7 @@ Feature:
     And I enter field with token list "Media" 
     And I enter field with token list "Genres"
     And I enter field with token list "Tags"
-    And I create the game
+    And I submit it
     Then I should see the saved token list data  
   
 
@@ -45,7 +45,7 @@ Feature:
     Given I am on the game creation page
     When I enter valid game data 
     And I enter field of Release Dates without day
-    And I create the game
+    And I submit it
     Then I should see error for day
     
     
@@ -54,7 +54,7 @@ Feature:
     Given I am on the game creation page
     When I enter valid game data 
     And I enter field of Release Dates without month
-    And I create the game
+    And I submit it
     Then I should see error for month
     
     

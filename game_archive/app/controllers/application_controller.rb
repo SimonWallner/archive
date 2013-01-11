@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
 	authenticate_admin!
   end
   
-  def authenticate_user!(*tmp)
+  def blocked_user!
 	if current_user.nil?
 		redirect_to root_path, notice: 'you need to be registered and signed up in order to access this page'
 	elsif current_user.blocked?
@@ -20,16 +20,27 @@ class ApplicationController < ActionController::Base
   def block_content_visitor (type)
 	@reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(type,params[:id])
 	if (@reportblockcontent)
-		if (@reportblockcontent.status== 1) and (current_user.nil?)
-			if @reportblockcontent.reason
-				flash[:alert] = "The content has been blocked due to: " + @reportblockcontent.reason
-			else
-				flash[:alert] = "The content has been blocked."
+		if current_user.nil?
+			if (@reportblockcontent.status== 1)
+				if @reportblockcontent.reason
+					flash[:alert] = "The content has been blocked due to: " + @reportblockcontent.reason
+				else
+					flash[:alert] = "The content has been blocked."
+				end
+				redirect_to root_path
+			else if (@reportblockcontent.status== 4)
+								if @reportblockcontent.reason
+					flash[:alert] = "The content has been deleted due to: " + @reportblockcontent.reason
+				else
+					flash[:alert] = "The content has been deleted."
+				end
+				redirect_to root_path
 			end
-			redirect_to root_path
+			end
 		end
 	end
   end
+  
   
   def block_content_user (type)
 	

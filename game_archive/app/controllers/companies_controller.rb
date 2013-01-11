@@ -5,7 +5,8 @@ class CompaniesController < ApplicationController
   before_filter only: [:edit, :show] { |c| c.block_content_visitor 2 } 
   before_filter only: [:edit] { |c| c.block_content_user 2 }
   before_filter :authenticate_admin!, only: [:block]
-
+  before_filter :blocked_user!, except: [:index, :show, :report, :update]
+  
   # GET /companies
   # GET /companies.json
   def index
@@ -50,21 +51,26 @@ class CompaniesController < ApplicationController
     @company = Company.find(params[:id])
   end
 
-  # GET /games/1/report
+  # GET /companies/1/report
   def report
 	@reportblockcontent =Reportblockcontent.new
     @company = Company.find(params[:id])	
   end
   
-  # GET /games/1/block
+  # GET /companies/1/block
   def block
+	@reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(2,params[:id])
+    @company = Company.find(params[:id])
+  end
+  
+  # GET /companies/1/delete
+  def delete
 	@reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(2,params[:id])
     @company = Company.find(params[:id])
   end
   
   # POST /companies
   def create
-    authenticate_user!(nil)
     @company = Company.new(params[:company])
 	  @company.popularity = 0
 
@@ -83,7 +89,6 @@ class CompaniesController < ApplicationController
 
   # PUT /companies/1
   def update
-    authenticate_user!(nil)
     @company = Company.find(params[:id])
 
     if params[:reportblockcontent]

@@ -1,17 +1,26 @@
+<h1>Companies</h1>
 <div>
-  <h2>Companies</h2>
-	
-	<div class="companies_featured">
-		<h3>Featured</h3>
-		<% coms = Company.find(:all, :limit => getAmountFeatured, :order => 'created_at DESC')[0..7] %>
-		<% coms.concat(Company.find(:all, :limit => getAmountFeatured, :order => 'popularity DESC')[0..7]) %>
-		<% coms = coms.uniq %>
-		<% coms[0..7].each do |com| %>
-			<% @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(2,com.id)%>
-			<% if !user_signed_in? && @reportblockcontent%>
-				<% if (@reportblockcontent.status !=1)%>
+	<% coms = Company.find(:all, :limit => getAmountFeatured, :order => 'created_at DESC')[0..7] %>
+	<% coms.concat(Company.find(:all, :limit => getAmountFeatured, :order => 'popularity DESC')[0..7]) %>
+	<% coms = coms.uniq %>
+	<% coms[0..7].each do |com| %>
+		<% @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(2,com.id)%>
+		<% if @reportblockcontent%>
+			<% if (@reportblockcontent.status !=4)%>				
+				<% if !user_signed_in?%>
+					<% if (@reportblockcontent.status !=1)%>
+						<div class="tiled_2x">
+							<a href="<%= company_path com %>">
+								<div class="tile">
+									<%= image_tag(com.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
+									<div class="caption"><div><%= com.name %></div></div>
+								</div>
+							</a>
+						</div>
+					<% end %>
+				<% else%>
 					<div class="tiled_2x">
-						<a href="/companies/<%= com.id %>">
+						<a href="<%= company_path com %>">
 							<div class="tile">
 								<%= image_tag(com.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
 								<div class="caption"><div><%= com.name %></div></div>
@@ -19,59 +28,68 @@
 						</a>
 					</div>
 				<% end %>
-			<% else%>
-				<div class="tiled_2x">
-					<a href="/companies/<%= com.id %>">
-						<div class="tile">
-							<%= image_tag(com.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
-							<div class="caption"><div><%= com.name %></div></div>
-						</div>
-					</a>
-				</div>
 			<% end %>
+		<% else%>
+			<div class="tiled_2x">
+				<a href="<%= company_path com %>">
+					<div class="tile">
+						<%= image_tag(com.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
+						<div class="caption"><div><%= com.name %></div></div>
+					</div>
+				</a>
+			</div>
 		<% end %>
-	</div>
-	
-	<div class="clear"></div>
+	<% end %>
 
-<% if user_signed_in? %>
-    <div><br />
+</div>
+<br class="clear" />
 
-        <%= link_to "New Company", new_company_path %>
-    </div>
-<% end %>
-
-	<div class="companies_all">
-		<div class="companies_featured">
-		<h3>All companies</h3>
-		<% companies = Company.find(:all, :order => 'name') %>
-		<% companies.each do |company| %>
-			<% @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(2,company.id)%>
-			<% if !user_signed_in? && @reportblockcontent%>
-				<% if (@reportblockcontent.status !=1)%>
+<h2>All Studios and Organisations in Alphabetic Order</h2>
+<div>
+	<% companies = Company.find(:all, :order => 'name') %>
+	<% companies.each do |company| %>
+		<% @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(2,company.id)%>
+		<% if @reportblockcontent%>
+			<% if (@reportblockcontent.status !=4)%>				
+				<% if !user_signed_in?%>
+					<% if (@reportblockcontent.status !=1)%>
+						<div class="tiled_2x">
+							<a href="<%= company_path company %>">
+								<div class="tile">
+									<%= image_tag(company.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
+									<div class="caption"><div><%= company.name %></div></div>
+								</div>
+							</a>
+						</div>
+					<% end %>
+				<% else%>
 					<div class="tiled_2x">
-						<a href="/companies/<%= company.id %>">
+						<a href="<%= company_path company %>">
 							<div class="tile">
 								<%= image_tag(company.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
 								<div class="caption"><div><%= company.name %></div></div>
 							</div>
 						</a>
-					</div>
+					</div>	
 				<% end %>
-			<% else%>
-				<div class="tiled_2x">
-					<a href="/companies/<%= company.id %>">
-						<div class="tile">
-							<%= image_tag(company.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
-							<div class="caption"><div><%= company.name %></div></div>
-						</div>
-					</a>
-				</div>	
 			<% end %>
+		<% else%>
+			<div class="tiled_2x">
+				<a href="<%= company_path company %>">
+					<div class="tile">
+						<%= image_tag(company.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
+						<div class="caption"><div><%= company.name %></div></div>
+					</div>
+				</a>
+			</div>	
 		<% end %>
-	</div>
-	
-	<div class="clear"></div>
-	</div>
-	
+	<% end %>
 </div>
+
+<br class="clear" />
+
+<% if user_signed_in? %>
+   <div class="more">
+       <%= link_to "Create a New Studio or Organisation Article...", new_company_path %>
+   </div>
+<% end %>
