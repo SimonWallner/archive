@@ -39,17 +39,18 @@ class Game < ActiveRecord::Base
     SecureRandom.uuid.to_s
   end
 
+  # returns all current versions of all games
   def Game.all_current_versions
     all_games = Game.order('object_id ASC, version_number DESC')
-    logger.debug 'all current version'
+    last_obj_id = -1
+    ret = Array.new
     all_games.each do |g|
-      logger.debug " - " + g.id.to_s
-      logger.debug " - " + g.object_id.to_s unless g.object_id == nil
-      logger.debug " - " + g.version_number.to_s unless g.version_number == nil
-      logger.debug " - " + g.title
-      logger.debug "----------------"
+      if last_obj_id == -1 || last_obj_id != g.object_id
+        last_obj_id = g.object_id
+        ret.push g
+      end
     end
-    all_games
+    ret
   end
 
   def as_json(options = {})
