@@ -50,6 +50,15 @@
 				<%= link_to 'Report', report_developer_path(@developer) %> |
 			<% end %>
 		<% end %>
+		<% if @reportblockcontent %>
+			<% if @reportblockcontent.status ==4%>
+				<%= link_to 'Undelete', delete_developer_path(@developer) %> |
+			<% else%>
+				<%= link_to 'Delete', delete_developer_path(@developer) %> |
+			<% end%>
+		<% else%>
+			<%= link_to 'Delete', delete_developer_path(@developer) %> |
+		<% end%>
 	<% else%>
 		<% if @reportblockcontent %>
 			<% if @reportblockcontent.status !=1%>

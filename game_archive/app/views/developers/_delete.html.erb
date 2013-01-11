@@ -1,0 +1,64 @@
+<%= form_for(@developer) do |f| %>
+  <% if @developer.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@developer.errors.count, "error") %> prohibited this developer from being saved:</h2>
+
+      <ul>
+      <% @developer.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+<% end %>
+
+  <% if @reportblockcontent %>  
+		<% if @reportblockcontent.status == 4%>
+			<div class="field">
+			<% if @reportblockcontent.reason %>  
+				<%=  f.label :reason %><br />
+				<span><%= @reportblockcontent.reason %></span>
+			<% end %>
+				<%= text_field( :reportblockcontent, :status, :value => 3, :style => "display:none")  %>	
+			</div>  
+				<%= f.submit 'Undelete Developer' %> </br></br>			
+		<% else %>  
+			<% Reportblockcontent.find_all_by_content_type_and_content_id(1,params[:id]).each do |rbcontent| %>
+				<% if rbcontent.status == 0 %> 
+					<% if rbcontent.reason %> 
+						<%=  f.label 'Reason: '%><span><%= rbcontent.reason %></span>
+						<% if rbcontent.email %> 
+							<%=  f.label 'E-mail: '%><span><%= rbcontent.email %></span></br>
+						<% end %>
+					<% end %>				
+				<% else if rbcontent.status == 1 %>
+					<%=  'The Developer has been blocked. '%>
+					<% if rbcontent.reason %> 
+						<%= 'The reason is '%><span><%= rbcontent.reason %></span>
+					<% end %>	
+				<% else if rbcontent.status == 2 %>
+					<%=  'The Developer has been locked. '%>
+					<% if rbcontent.reason %> 
+						<%=  'The reason is '%><span><%= rbcontent.reason %></span>
+					<% end %>
+				<% end %>
+				<% end %>
+				<% end %>				
+			<% end %> 
+			</br>
+			<div class="field">
+			<%=  f.label :reason %><br />
+			<%=  text_field( :reportblockcontent, :reason, :value => nil )%>
+			</div>	
+			<%= text_field( :reportblockcontent, :status, :value => 4, :style => "display:none")  %>	
+			<%= f.submit 'Delete Developer' %> </br></br>
+		<% end %> 	  
+  <% else %>
+	  <div class="field">
+		<%=  f.label :reason %><br />
+		<%=  text_field( :reportblockcontent, :reason)%>
+	  </div>  
+			<%= text_field( :reportblockcontent, :status, :value => 4, :style => "display:none")  %>	
+			<%= f.submit 'Delete Developer' %> </br></br>
+  <% end %> 
+<% end %>
+

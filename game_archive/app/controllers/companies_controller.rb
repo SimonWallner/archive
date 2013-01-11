@@ -51,14 +51,20 @@ class CompaniesController < ApplicationController
     @company = Company.find(params[:id])
   end
 
-  # GET /games/1/report
+  # GET /companies/1/report
   def report
 	@reportblockcontent =Reportblockcontent.new
     @company = Company.find(params[:id])	
   end
   
-  # GET /games/1/block
+  # GET /companies/1/block
   def block
+	@reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(2,params[:id])
+    @company = Company.find(params[:id])
+  end
+  
+  # GET /companies/1/delete
+  def delete
 	@reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(2,params[:id])
     @company = Company.find(params[:id])
   end

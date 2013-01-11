@@ -49,14 +49,20 @@ class DevelopersController < ApplicationController
     @developer = Developer.find(params[:id])
   end
 
-   # GET /games/1/report
+   # GET /developers/1/report
   def report
 	@reportblockcontent =Reportblockcontent.new
     @developer = Developer.find(params[:id])	
   end
   
-  # GET /games/1/block
+  # GET /developers/1/block
   def block
+	@reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(1,params[:id])
+    @developer = Developer.find(params[:id])
+  end
+  
+  # GET /developers/1/delete
+  def delete
 	@reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(1,params[:id])
     @developer = Developer.find(params[:id])
   end

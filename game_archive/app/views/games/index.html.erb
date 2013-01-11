@@ -1,32 +1,75 @@
-   <h1>Games</h1>
-<% game = Game.order("RANDOM()").first %>
-<% if game != nil %>
-	<div class="rounded game-teaser-large">
-		<a href="<%= game_path game %>">
-			<div class="tile">
-				<%= image_tag(game.image_url(:top_game).to_s, :class => 'rounded teaser')%>
-				<div class="caption"><div><%= game.title %></div></div>
+<h1>Games</h1>
+<% Game.order("RANDOM()").each do |game| %>
+	<% @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(0,game.id)%>
+	<% if game != nil%>
+		<% if (@reportblockcontent)%>
+				<% if (@reportblockcontent.status !=4)%>				
+					<% if !user_signed_in?%>
+						<% if (@reportblockcontent.status !=1)%>
+							<div class="rounded game-teaser-large">
+								<a href="<%= game_path game %>">
+									<div class="tile">
+										<%= image_tag(game.image_url(:top_game).to_s, :class => 'rounded teaser')%>
+										<div class="caption"><div><%= game.title %></div></div>
+									</div>
+								</a>
+							</div>
+							<% break %>	
+						<% end %>
+					<% else%>
+						<div class="rounded game-teaser-large">
+							<a href="<%= game_path game %>">
+								<div class="tile">
+									<%= image_tag(game.image_url(:top_game).to_s, :class => 'rounded teaser')%>
+									<div class="caption"><div><%= game.title %></div></div>
+								</div>
+							</a>
+						</div>
+						<% break %>	
+					<% end %>
+				<% end %>
+		<% else%>
+			<div class="rounded game-teaser-large">
+				<a href="<%= game_path game %>">
+					<div class="tile">
+						<%= image_tag(game.image_url(:top_game).to_s, :class => 'rounded teaser')%>
+						<div class="caption"><div><%= game.title %></div></div>
+					</div>
+				</a>
 			</div>
-		</a>
-	</div>
+			<% break %>	
+		<% end %>				
+	<% end %>
 <% end %>
-
 <div>
 	<% games = Game.find(:all, :limit => getAmountFeatured, :order => 'created_at DESC')[0..7] %>
 	<% games.concat(Game.find(:all, :limit => getAmountFeatured, :order => 'popularity DESC')[0..7]) %>
 	<% games = games.uniq %>
 	<% games[0..7].each do |game| %>
-		<% @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(0,game.id)%>
-		<% if !user_signed_in? && @reportblockcontent%>
-			<% if (@reportblockcontent.status !=1)%>
-				<div class="tiled_2x">
-					<a href="<%= game_path game %>">
-						<div class="tile">
-							<%= image_tag(game.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
-							<div class="caption"><div><%= game.title %></div></div>
+	<% @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(0,game.id)%>
+		<% if @reportblockcontent%>
+			<% if (@reportblockcontent.status !=4)%>				
+				<% if !user_signed_in?%>
+					<% if (@reportblockcontent.status !=1)%>
+						<div class="tiled_2x">
+							<a href="<%= game_path game %>">
+								<div class="tile">
+									<%= image_tag(game.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
+									<div class="caption"><div><%= game.title %></div></div>
+								</div>
+							</a>
 						</div>
-					</a>
-				</div>
+					<% end %>
+				<% else%>
+					<div class="tiled_2x">
+						<a href="<%= game_path game %>">
+							<div class="tile">
+								<%= image_tag(game.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
+								<div class="caption"><div><%= game.title %></div></div>
+							</div>
+						</a>
+					</div>
+				<% end %>
 			<% end %>
 		<% else%>
 			<div class="tiled_2x">
@@ -39,6 +82,7 @@
 			</div>
 		<% end %>
 	<% end %>
+
 </div>
 
 <br class="clear" />
@@ -48,16 +92,29 @@
 	<% games = Game.find(:all, :order => 'title') %>
 	<% games.each do |game| %>
 		<% @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(0,game.id)%>
-		<% if !user_signed_in? && @reportblockcontent%>
-			<% if (@reportblockcontent.status !=1)%>
-				<div class="tiled_2x">
-					<a href="/games/<%= game.id %>">
-						<div class="tile">
-							<%= image_tag(game.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
-							<div class="caption"><div><%= game.title %></div></div>
+		<% if @reportblockcontent%>
+			<% if (@reportblockcontent.status !=4)%>				
+				<% if !user_signed_in?%>
+					<% if (@reportblockcontent.status !=1)%>
+						<div class="tiled_2x">
+							<a href="/games/<%= game.id %>">
+								<div class="tile">
+									<%= image_tag(game.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
+									<div class="caption"><div><%= game.title %></div></div>
+								</div>
+							</a>
 						</div>
-					</a>
-				</div>
+					<% end %>
+				<% else%>		
+					<div class="tiled_2x">
+						<a href="/games/<%= game.id %>">
+							<div class="tile">
+								<%= image_tag(game.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
+								<div class="caption"><div><%= game.title %></div></div>
+							</div>
+						</a>
+					</div>
+				<% end %>
 			<% end %>
 		<% else%>		
 			<div class="tiled_2x">
