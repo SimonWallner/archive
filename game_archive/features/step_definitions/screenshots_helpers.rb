@@ -54,9 +54,9 @@ def choose_filename_by_type(type)
 
   if type == "valid"
 
-    filename1 = "diablo3.jpeg"
-    filename2 = "halo4.jpg"
-    filename3 = "Luigi.png"
+    filename1 = "field.jpg"
+    filename2 = "loudspeaker.png"
+    filename3 = "painting.jpg"
 
     filename_array = [filename1,filename2,filename3]
 
@@ -65,7 +65,7 @@ def choose_filename_by_type(type)
   elsif type == "invalid"
     return "notallowed.rb"
   elsif type == "big"
-    return "marioverybig.jpg"
+    return "coin_big.jpg"
   else
     return ""
   end

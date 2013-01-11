@@ -22,7 +22,7 @@ Then /^I should see the picture on the details page of the (.+)$/ do |type|
 
     id =   Developer.find_by_name(@new_name).id.to_s
    version = "tiled_4x"
-    upload_to_path = "uploads/developer/image/" + id + "/Luigi.png"
+    upload_to_path = "uploads/developer/image/" + id + "/loudspeaker.png"
 
   elsif type == "game"
 
@@ -32,7 +32,7 @@ Then /^I should see the picture on the details page of the (.+)$/ do |type|
 
     id =   Game.find_by_title(@new_game).id.to_s
     version = "top_game"
-    upload_to_path = "uploads/game/image/" + id + "/" + version + "_diablo3.jpeg"
+    upload_to_path = "uploads/game/image/" + id + "/" + version + "_field.jgp"
 
 
   elsif type == "company"
@@ -42,7 +42,7 @@ Then /^I should see the picture on the details page of the (.+)$/ do |type|
     end
     id =   Company.find_by_name(@new_company).id.to_s
     version = "tiled_4x"
-    upload_to_path = "uploads/company/image/" + id + "/bowser.jpg"
+    upload_to_path = "uploads/company/image/" + id + "/parliament.jpg"
 
 
   end
@@ -74,7 +74,7 @@ When /^I choose a file that is too big for a (.+)$/ do  |type|
 
   end
 
-  path = "#{Rails.root}/features/testpics/barley_too_big.jpg"
+  path = "#{Rails.root}/features/testpics/coin_big.jpg"
   attach_file(tag,path)
 
 end
