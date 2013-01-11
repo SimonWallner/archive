@@ -75,10 +75,10 @@ class GamesController < ApplicationController
     @game = Game.new(params[:game])
 
     # add version stuff
-    @game.object_id = Game.next_object_id
+    @game.version_id = Game.next_version_id
     @game.version_number = 1
-    @game.author_id = current_user.id
-    @game.updated_ts = Time.now
+    @game.version_author_id = current_user.id
+    @game.version_updated_at = Time.now
 
 	  @game.popularity = 0
     create_add_new_token(params[:new_genres], params[:new_platforms], params[:new_medias], params[:new_modes], params[:new_tags])

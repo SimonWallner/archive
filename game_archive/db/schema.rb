@@ -72,17 +72,17 @@ ActiveRecord::Schema.define(:version => 20130110162224) do
   create_table "games", :force => true do |t|
     t.string   "title"
     t.text     "description"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
     t.string   "image"
     t.integer  "popularity"
-    t.string   "object_id"
+    t.string   "version_id"
     t.integer  "version_number"
-    t.datetime "updated_ts"
-    t.integer  "author_id"
+    t.datetime "version_updated_at"
+    t.integer  "version_author_id"
   end
 
-  add_index "games", ["object_id"], :name => "index_games_on_object_id"
+  add_index "games", ["version_id"], :name => "index_games_on_version_id"
 
   create_table "games_genres", :id => false, :force => true do |t|
     t.integer "game_id"

@@ -109,7 +109,7 @@ describe GamesController do
   describe "PUT update" do
     describe "with valid params" do
       it "updates the requested game" do
-        game = Game.create! valid_attributes
+        game = FactoryGirl.create :game
         # Assuming there are no other games in the database, this
         # specifies that the Game created on the previous line
         # receives the :update_attributes message with whatever params are
@@ -119,13 +119,13 @@ describe GamesController do
       end
 
       it "assigns the requested game as @game" do
-        game = Game.create! valid_attributes
+        game = FactoryGirl.create :game
         put :update, {:id => game.to_param, :game => valid_attributes}
         assigns(:game).should eq(game)
       end
 
       it "redirects to the game" do
-        game = Game.create! valid_attributes
+        game = FactoryGirl.create :game
         put :update, {:id => game.to_param, :game => valid_attributes}
         response.should redirect_to(game)
       end
@@ -133,7 +133,7 @@ describe GamesController do
 
     describe "with invalid params" do
       it "assigns the game as @game" do
-        game = Game.create! valid_attributes
+        game = FactoryGirl.create :game
         # Trigger the behavior that occurs when invalid params are submitted
         Game.any_instance.stub(:save).and_return(false)
         put :update, {:id => game.to_param, :game => {}}
@@ -141,7 +141,7 @@ describe GamesController do
       end
 
       it "re-renders the 'edit' template" do
-        game = Game.create! valid_attributes
+        game = FactoryGirl.create :game
         # Trigger the behavior that occurs when invalid params are submitted
         Game.any_instance.stub(:save).and_return(false)
         put :update, {:id => game.to_param, :game => {}}

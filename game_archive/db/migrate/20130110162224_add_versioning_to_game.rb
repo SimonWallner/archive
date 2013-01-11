@@ -1,10 +1,10 @@
 class AddVersioningToGame < ActiveRecord::Migration
   def change
-    add_column :games, :object_id, :string
+    add_column :games, :version_id, :string
     add_column :games, :version_number, :integer
-    add_column :games, :updated_ts, :datetime
-    add_column :games, :author_id, :integer
+    add_column :games, :version_updated_at, :datetime
+    add_column :games, :version_author_id, :integer
 
-    add_index :games, :object_id
+    add_index :games, :version_id
   end
 end

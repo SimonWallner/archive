@@ -35,21 +35,21 @@ class Game < ActiveRecord::Base
             }
 
   # returns a uuid as string
-  def Game.next_object_id
+  def Game.next_version_id
     SecureRandom.uuid.to_s
   end
 
   # returns all current versions of all games
   def Game.all_current_versions
-    Game.current_versions_from_collection Game.order('object_id ASC, version_number DESC')
+    Game.current_versions_from_collection Game.order('version_id ASC, version_number DESC')
   end
 
   def Game.current_versions_from_collection(collection)
-    last_obj_id = -1
+    last_version_id = -1
     ret = Array.new
     collection.each do |g|
-      if last_obj_id == -1 || last_obj_id != g.object_id
-        last_obj_id = g.object_id
+      if last_version_id == -1 || last_version_id != g.version_id
+        last_version_id = g.version_id
         ret.push g
       end
     end
@@ -64,7 +64,7 @@ class Game < ActiveRecord::Base
   def current_version
     max_ver = nil
     # iterate through all games with certain object id, choose the version with the highest version id.
-    Game.find_all_by_object_id(self.object_id).each do |game|
+    Game.find_all_by_version_id(self.version_id).each do |game|
       if max_ver == nil || max_ver.version_number < game.version_number
         max_ver = game
       end
@@ -87,9 +87,9 @@ class Game < ActiveRecord::Base
     clone.updated_at = self.updated_at
     clone.image = self.image
     clone.popularity = self.popularity
-    clone.object_id = self.object_id
-    clone.updated_ts = self.updated_ts
-    clone.author_id = self.author_id
+    clone.version_id = self.version_id
+    clone.version_updated_at = self.version_updated_at
+    clone.version_author_id = self.version_author_id
 
     # version number
     clone.version_number = ( current_version.version_number + 1 )
