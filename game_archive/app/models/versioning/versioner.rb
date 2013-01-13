@@ -14,6 +14,9 @@ class Versioner
   end
 
   def current_versions_from_collection(collection)
+    if collection == nil
+      return
+    end
     last_version_id = -1
     ret = Array.new
     collection.each do |v|
@@ -27,6 +30,9 @@ class Versioner
 
   # returns the most current version of this object
   def current_version(obj)
+    if obj == nil
+      return
+    end
     max_ver = nil
     # iterate through all games with certain object id, choose the version with the highest version id.
     model_class.find_all_by_version_id(obj.version_id).each do |v|
