@@ -88,7 +88,6 @@ class GamesController < ApplicationController
     create_add_new_release_dates(params[:new_release_dates])
     Field.create_add_new_fields(@game, params[:new_fields])
 
-
 	respond_to do |format|
       if @game.save
         create_add_new_mixed_fields(params[:new_developers], MixedFieldType.find_by_name("Developer"))

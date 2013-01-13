@@ -1,7 +1,6 @@
 namespace :db do
   desc "add versioning"
   task add_versioning: :environment do
-    games = Game.all
     time = Time.now
     versioner = Versioner.new
     users = User.all
@@ -11,17 +10,24 @@ namespace :db do
       u = 1
     end
 
-    games.each do |g|
-      if g.version_id == nil
-        puts "add versioning to game #{g.id}"
-        g.version_id = versioner.next_version_id
-        g.version_number = 1
-        g.version_updated_at = time
-        g.version_author_id = u
-        g.save!
-      else
-        puts "no versioning added for game #{g.id}"
+    add_version = lambda {
+      |obj, type|
+      obj.each do |o|
+        if o.version_id == nil
+          puts "add versioning to #{type} #{o.id}"
+          o.version_id = versioner.next_version_id
+          o.version_number = 1
+          o.version_updated_at = time
+          o.version_author_id = u
+          o.save!
+        else
+          puts "no versioning added for #{type} #{o.id}"
+        end
       end
-    end
+    }
+
+    add_version.call Game.all, "game"
+    add_version.call Developer.all, "developer"
+    add_version.call Company.all, "company"
   end
 end

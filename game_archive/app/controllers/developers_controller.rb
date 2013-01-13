@@ -4,11 +4,13 @@ class DevelopersController < ApplicationController
   before_filter only: [:edit] { |c| c.block_content_user 1 }
   before_filter :authenticate_admin!, only: [:block]
   before_filter :blocked_user!, except: [:index, :show, :report, :update]
+
+  @@DEVELOPER_VERSIONER = DeveloperVersioner.instance
   
   # GET /developers
   # GET /developers.json
   def index
-    @developers = Developer.all
+    @developers = @@DEVELOPER_VERSIONER.all_current_versions
 
     respond_to do |format|
       format.html # index.html.erb
