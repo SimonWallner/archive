@@ -1,5 +1,5 @@
 <h1>Games</h1>
-<% Game.order("RANDOM()").each do |game| %>
+<% (Game.current_versions_from_collection Game.order("RANDOM()")).each do |game| %>
 	<% @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(0,game.id)%>
 	<% if game != nil%>
 		<% if (@reportblockcontent)%>

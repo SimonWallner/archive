@@ -12,27 +12,10 @@
 	We are still in an early prototyping stage, and user accounts are only issued manually. If you want to become a contributor, please send us an <a href="mailto:simon@gamelab.at">email</a>.
 </p>
 
-
-
-<div class="games_home">
-	<h1>Games with versioning</h1>
-	
-	<div class="games_featured">
-		<% games = (Game.current_versions_from_collection Game.find(:all, :limit => getAmountFeatured, :order => 'created_at DESC'))[0..7] %>
-		<% games.concat((Game.current_versions_from_collection Game.find(:all, :limit => getAmountFeatured, :order => 'popularity DESC'))[0..7]) %>
-		<% games = Game.current_versions_from_collection games.uniq %>
-		<% games[0..7].each do |game| %>
-			<div class="tiled_2x">
-				<a href="/games/<%= game.id %>" />
-             </div>
-         <%end%>
-        </div>
- </div>
-
 <h1>Games</h1>
 
-<% game = Game.order("RANDOM()").first %>
-<% Game.order("RANDOM()").each do |game| %>
+<% game = Game.order("RANDOM()").first.current_version %>
+<% (Game.current_versions_from_collection Game.order("RANDOM()")).each do |game| %>
 	<% @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(0,game.id)%>
 	<% if game != nil%>
 		<% if (@reportblockcontent)%>
@@ -76,9 +59,9 @@
 <% end %>
 
 <div>
-	<% games = Game.find(:all, :limit => getAmountFeatured, :order => 'created_at DESC')[0..7] %>
-	<% games.concat(Game.find(:all, :limit => getAmountFeatured, :order => 'popularity DESC')[0..7]) %>
-	<% games = games.uniq %>
+	<% games = (Game.current_versions_from_collection Game.find(:all, :limit => getAmountFeatured, :order => 'created_at DESC'))[0..7] %>
+	<% games.concat((Game.current_versions_from_collection Game.find(:all, :limit => getAmountFeatured, :order => 'popularity DESC'))[0..7]) %>
+	<% games = Game.current_versions_from_collection games.uniq %>
 	<% games[0..7].each do |game| %>
 	<% @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(0,game.id)%>
 		<% if @reportblockcontent%>

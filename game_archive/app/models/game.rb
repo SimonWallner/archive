@@ -80,6 +80,10 @@ class Game < ActiveRecord::Base
     # change attributes from most recent version
     reverted.popularity = old_last.popularity
     reverted.save
+
+    # change report/block/delete
+    change_rbc old_last
+
     reverted
   end
 
@@ -147,6 +151,7 @@ class Game < ActiveRecord::Base
 
     clone.save
     logger.debug "clone saved with id: #{clone.id}"
+
     return clone
   end
 
@@ -160,6 +165,7 @@ class Game < ActiveRecord::Base
       cp = rbc.copy_without_references
       cp.content_id = self.id
       self.reportblockcontent.push cp
+      rbc.destroy
     end
   end
 end
