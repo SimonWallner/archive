@@ -1,11 +1,11 @@
 require "json"
 
 class CompaniesController < ApplicationController
-  before_filter :authenticate_user!, except: [:index, :show, :report, :update]
+  before_filter :authenticate_user!, except: [:index, :show, :report]
   before_filter only: [:edit, :show] { |c| c.block_content_visitor 2 } 
   before_filter only: [:edit] { |c| c.block_content_user 2 }
   before_filter :authenticate_admin!, only: [:block]
-  before_filter :blocked_user!, except: [:index, :show, :report, :update]
+  #before_filter :blocked_user!, except: [:index, :show, :report, :update]
   
   # GET /companies
   # GET /companies.json

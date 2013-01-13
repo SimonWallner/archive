@@ -10,13 +10,14 @@ class ApplicationController < ActionController::Base
 	authenticate_admin!
   end
   
-  def blocked_user!
+  def authenticate_user!(*tmp)
 	if current_user.nil?
 		redirect_to root_path, notice: 'you need to be registered and signed up in order to access this page'
 	elsif current_user.blocked?
 		redirect_to root_path, notice: 'you have been blocked, reason: ' + current_user.note
 	end
   end
+  
   def block_content_visitor (type)
 	@reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(type,params[:id])
 	if (@reportblockcontent)
