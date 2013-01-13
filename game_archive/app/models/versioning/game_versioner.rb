@@ -29,63 +29,63 @@ class GameVersioner < Versioner
 
   #adds additional behaviour to the new_version method
   # override in sublass if wanted
-  def new_version_additional_behaviour_before_save(old, clone)
-    clone.title = self.title
-    clone.description = self.description
-    clone.created_at = self.created_at
-    clone.updated_at = self.updated_at
-    clone.image = self.image
-    clone.popularity = self.popularity
-    clone.version_id = self.version_id
-    clone.version_updated_at = self.version_updated_at
-    clone.version_author_id = self.version_author_id
+  def new_version_additional_behaviour_before_save(old, new)
+    new.title = old.title
+    new.description = old.description
+    new.created_at = old.created_at
+    new.updated_at = old.updated_at
+    new.image = old.image
+    new.popularity = old.popularity
+    new.version_id = old.version_id
+    new.version_updated_at = old.version_updated_at
+    new.version_author_id = old.version_author_id
 
     # version number
-    clone.version_number = ( current_version.version_number + 1 )
+    new.version_number = ( current_version(old).version_number + 1 )
 
     # fields
-    self.fields.each do |f|
-      clone.fields.push f.copy_without_references
+    old.fields.each do |f|
+      new.fields.push f.copy_without_references
     end
 
     # release dates
-    self.release_dates.each do |rd|
-      clone.release_dates.push rd.copy_without_references
+    old.release_dates.each do |rd|
+      new.release_dates.push rd.copy_without_references
     end
 
     # videos
-    self.videos.each do |v|
-      clone.videos.push v.copy_without_references
+    old.videos.each do |v|
+      new.videos.push v.copy_without_references
     end
 
     # screenshots
-    self.screenshots.each do |ss|
-      clone.screenshots.push ss.copy_without_references
+    old.screenshots.each do |ss|
+      new.screenshots.push ss.copy_without_references
     end
 
     # genres
-    self.genres.each do |g|
-      clone.genres.push g
+    old.genres.each do |g|
+      new.genres.push g
     end
 
     # platforms
-    self.platforms.each do |p|
-      clone.platforms.push p
+    old.platforms.each do |p|
+      new.platforms.push p
     end
 
     # media
-    self.media.each do |m|
-      clone.media.push m
+    old.media.each do |m|
+      new.media.push m
     end
 
     # modes
-    self.modes.each do |m|
-      clone.modes.push m
+    old.modes.each do |m|
+      new.modes.push m
     end
 
     # tags
-    self.tags.each do |t|
-      clone.tags.push t
+    old.tags.each do |t|
+      new.tags.push t
     end
 
   end

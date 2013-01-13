@@ -21,8 +21,16 @@ class DevelopersController < ApplicationController
   # GET /developers/1
   # GET /developers/1.json
   def show
-    @developer = Developer.find(params[:id])
-	@reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(1,params[:id])
+    some_version = Developer.find(params[:id])
+    @developer = @@DEVELOPER_VERSIONER.current_version some_version
+
+    # redirect to other page if game is not newest version
+    if @developer != some_version
+      redirect_to @developer
+      return
+    end
+
+	@reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(1,@developer.id)
 	if @developer.popularity == nil 
 		@developer.popularity = 0
 		@developer.save
@@ -48,30 +56,32 @@ class DevelopersController < ApplicationController
 
   # GET /developers/1/edit
   def edit
-    @developer = Developer.find(params[:id])
+    @developer = @@DEVELOPER_VERSIONER.current_version Developer.find(params[:id])
   end
 
    # GET /developers/1/report
   def report
-	@reportblockcontent =Reportblockcontent.new
-    @developer = Developer.find(params[:id])	
+    @developer = @@DEVELOPER_VERSIONER.current_version Developer.find(params[:id])
+    @reportblockcontent =Reportblockcontent.new
   end
   
   # GET /developers/1/block
   def block
-	@reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(1,params[:id])
-    @developer = Developer.find(params[:id])
+    @developer = @@DEVELOPER_VERSIONER.current_version Developer.find(params[:id])
+    @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(1, @developer.id)
   end
   
   # GET /developers/1/delete
   def delete
-	@reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(1,params[:id])
-    @developer = Developer.find(params[:id])
+    @developer = @@DEVELOPER_VERSIONER.current_version Developer.find(params[:id])
+    @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(1,@developer.id)
   end
   
   # POST /developers
   def create
     @developer = Developer.new(params[:developer])
+    @@DEVELOPER_VERSIONER.add_versioning_to_new_object @developer, current_user
+
 	  @developer.popularity = 0
     Field.create_add_new_fields(@developer, params[:new_fields])
     respond_to do |format|
@@ -85,9 +95,11 @@ class DevelopersController < ApplicationController
 
   # PUT /developers/1
   def update
-    @developer = Developer.find(params[:id])
+    old = Developer.find(params[:id])
+    @developer = @@DEVELOPER_VERSIONER.new_version old
+
     if params[:reportblockcontent]
-      Reportblockcontent.create_from_string(1,params[:id], params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
+      Reportblockcontent.create_from_string(1,@developer.id, params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
     elsif
       Field.create_add_new_fields(@developer, params[:new_fields])
     end

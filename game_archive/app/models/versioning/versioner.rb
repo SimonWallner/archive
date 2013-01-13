@@ -62,14 +62,9 @@ class Versioner
   # returns the new version
   def new_version(old)
     new = model_class.new
-
     new_version_additional_behaviour_before_save old, new
-
     new.save
-
     new_version_additional_behaviour_after_save old, new
-
-    logger.debug "clone saved with id: #{new.id}"
     return new
   end
 

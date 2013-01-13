@@ -57,25 +57,25 @@ class GamesController < ApplicationController
   # GET /games/1/edit
   def edit
     @genres = Genre.all
-    @game = Game.find(params[:id])
+    @game = @@GAME_VERSIONER.current_version Game.find(params[:id])
   end
   
    # GET /games/1/report
   def report
-	@reportblockcontent =Reportblockcontent.new
-    @game = Game.find(params[:id])	
+    @game = @@GAME_VERSIONER.current_version Game.find(params[:id])
+    @reportblockcontent =Reportblockcontent.new
   end
   
   # GET /games/1/block
   def block
-	@reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(0,params[:id])
-    @game = Game.find(params[:id])	
+    @game = @@GAME_VERSIONER.current_version Game.find(params[:id])
+    @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(0,@game.id)
   end
   
   # GET /games/1/delete
   def delete
-	@reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(0,params[:id])
-    @game = Game.find(params[:id])	
+    @game = @@GAME_VERSIONER.current_version Game.find(params[:id])
+    @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(0,@game.id)
   end
   
   # POST /games
