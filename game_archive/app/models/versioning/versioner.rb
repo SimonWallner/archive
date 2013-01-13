@@ -49,11 +49,11 @@ class Versioner
     old_last = obj.current_version
     reverted = new_version old_last
 
-    revert_additional_behaviour_before_save old_last, reverted
+    revert_additional_behaviour_before_save obj, old_last, reverted
 
     reverted.save
 
-    revert_additional_behaviour_after_save old_last, reverted
+    revert_additional_behaviour_after_save obj, old_last, reverted
 
     reverted
   end
@@ -62,7 +62,13 @@ class Versioner
   # returns the new version
   def new_version(old)
     new = model_class.new
+    new.version_id = old.version_id
+    new.version_author_id = old.version_author_id
+    # version number
+    new.version_number = ( current_version(old).version_number + 1 )
+
     new_version_additional_behaviour_before_save old, new
+    new.version_updated_at = Time.now
     new.save
     new_version_additional_behaviour_after_save old, new
     return new
@@ -85,12 +91,12 @@ class Versioner
 
   # adds additional behaviour to the revert_to_this method before saving the record
   # override in subclass if wanted
-  def revert_additional_behaviour_before_save(old, new)
+  def revert_additional_behaviour_before_save(revert_to, current_newest, new)
   end
 
   # adds additional behaviour to the revert_to_this method after saving the record
   # override in subclass if wanted
-  def revert_additional_behaviour_after_save(old, new)
+  def revert_additional_behaviour_after_save(revert_to, current_newest, new)
   end
 
   # adds additional behaviour to the new_version method before saving the record
@@ -101,6 +107,20 @@ class Versioner
   # adds additional behaviour to the new_version method after saving the record
   # override in sublass if wanted
   def new_version_additional_behaviour_after_save(old, new)
+  end
+
+  def change_rbc(old, new, content_type)
+    # report block content
+    rbc = Reportblockcontent.find_by_content_type_and_content_id(content_type, old.id)
+    if rbc == nil
+      return
+    end
+    rbc.each do |rbc|
+      cp = rbc.copy_without_references
+      cp.content_id = new.id
+      new.reportblockcontent.push cp
+      rbc.destroy
+    end
   end
 
 end

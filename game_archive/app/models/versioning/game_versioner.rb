@@ -13,18 +13,20 @@ class GameVersioner < Versioner
     Game
   end
 
-  # adds additional behaviour to the revert_to_this method
+  # adds additional behaviour to the revert_to_this method before saving the record
   # override in subclass if wanted
-  def revert_additional_behaviour_before_save(old, new)
+  def revert_additional_behaviour_before_save(revert_to, current_newest, new)
     # change attributes from most recent version
-    new.popularity = old.popularity
+    new.popularity = current_newest.popularity
   end
 
   # adds additional behaviour to the revert_to_this method after saving the record
   # override in subclass if wanted
-  def revert_additional_behaviour_after_save(old, new)
+  def revert_additional_behaviour_after_save(revert_to, current_newest, new)
     # change report/block/delete
-    change_rbc old, new
+    change_rbc current_newest, new, 0
+    copy_mixed_fields revert_to, new
+    mixed_fields_update_series_references revert_to, new
   end
 
   #adds additional behaviour to the new_version method
@@ -33,15 +35,9 @@ class GameVersioner < Versioner
     new.title = old.title
     new.description = old.description
     new.created_at = old.created_at
-    new.updated_at = old.updated_at
+    new.updated_at = Time.now
     new.image = old.image
     new.popularity = old.popularity
-    new.version_id = old.version_id
-    new.version_updated_at = old.version_updated_at
-    new.version_author_id = old.version_author_id
-
-    # version number
-    new.version_number = ( current_version(old).version_number + 1 )
 
     # fields
     old.fields.each do |f|
@@ -94,20 +90,29 @@ class GameVersioner < Versioner
   # override in sublass if wanted
   def new_version_additional_behaviour_after_save(old, new)
     # change report/block/delete
-    change_rbc old, new
+    change_rbc old, new, 0
+    copy_mixed_fields old, new
+    mixed_fields_update_series_references old, new
   end
 
-  def change_rbc(old, new)
-    # report block content
-    rbc = Reportblockcontent.find_by_content_type_and_content_id(0, old.id)
-    if rbc == nil
+  def copy_mixed_fields(old, new)
+    # mixed fields
+    old.mixed_fields.each do |mf|
+      nmf = mf.clone
+      nmf.game_id = new.id
+      nmf.save
+    end
+  end
+
+  def mixed_fields_update_series_references(old, new)
+    smf = MixedField.where(:series_game_id => old.id)
+    if smf == nil
       return
     end
-    rbc.each do |rbc|
-      cp = rbc.copy_without_references
-      cp.content_id = new.id
-      new.reportblockcontent.push cp
-      rbc.destroy
+
+    smf.each do |smfe|
+      smfe.series_game_id = new.id
+      smfe.save
     end
   end
 
