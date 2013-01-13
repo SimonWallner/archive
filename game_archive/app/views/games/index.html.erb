@@ -1,5 +1,5 @@
 <h1>Games</h1>
-<% (Game.current_versions_from_collection Game.order("RANDOM()")).each do |game| %>
+<% (GameVersioner.instance.current_versions_from_collection Game.order("RANDOM()")).each do |game| %>
 	<% @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(0,game.id)%>
 	<% if game != nil%>
 		<% if (@reportblockcontent)%>
@@ -46,9 +46,9 @@
 	
 	<div class="games_featured">
 		<h3>Featured</h3>
-		<% games = (Game.current_versions_from_collection Game.find(:all, :limit => getAmountFeatured, :order => 'created_at DESC'))[0..7] %>
-		<% games.concat((Game.current_versions_from_collection Game.find(:all, :limit => getAmountFeatured, :order => 'popularity DESC'))[0..7]) %>
-		<% games = Game.current_versions_from_collection games.uniq %>
+		<% games = (GameVersioner.instance.current_versions_from_collection Game.find(:all, :limit => getAmountFeatured, :order => 'created_at DESC'))[0..7] %>
+		<% games.concat((GameVersioner.instance.current_versions_from_collection Game.find(:all, :limit => getAmountFeatured, :order => 'popularity DESC'))[0..7]) %>
+		<% games = GameVersioner.instance.current_versions_from_collection games.uniq %>
 		<% games[0..7].each do |game| %>
 			<% @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(0,game.id)%>
 			<% if !user_signed_in? && @reportblockcontent%>
@@ -84,7 +84,7 @@
 	<div class="games_all">
 		<div class="games_featured">
 		<h3>All games</h3>
-		<% games = Game.current_versions_from_collection Game.find(:all, :order => 'title') %>
+		<% games = GameVersioner.instance.current_versions_from_collection Game.find(:all, :order => 'title') %>
 		<% games.each do |game| %>
 			<% @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(0,game.id)%>
 			<% if !user_signed_in? && @reportblockcontent%>

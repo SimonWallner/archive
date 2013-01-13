@@ -4,11 +4,13 @@ class GamesController < ApplicationController
   before_filter only: [:edit] { |c| c.block_content_user 0 } 
   before_filter :authenticate_admin!, only: [:block]
   before_filter :blocked_user!, except: [:index, :show, :report, :update]
+
+  @@GAME_VERSIONER = GameVersioner.instance
   
   # GET /games
   # GET /games.json
   def index
-    @games = Game.all_current_versions
+    @games = @@GAME_VERSIONER.all_current_versions
 
     respond_to do |format|
       format.html # index.html.erb
@@ -20,7 +22,7 @@ class GamesController < ApplicationController
   # GET /games/1.json
   def show
     some_version = Game.find(params[:id])
-    @game = some_version.current_version
+    @game = @@GAME_VERSIONER.current_version some_version
 
     # redirect to other page if game is not newest version
     if @game != some_version
@@ -79,12 +81,7 @@ class GamesController < ApplicationController
   # POST /games
   def create
     @game = Game.new(params[:game])
-
-    # add version stuff
-    @game.version_id = Game.next_version_id
-    @game.version_number = 1
-    @game.version_author_id = current_user.id
-    @game.version_updated_at = Time.now
+    @@GAME_VERSIONER.add_versioning_to_new_object @game, current_user
 
 	  @game.popularity = 0
     create_add_new_token(params[:new_genres], params[:new_platforms], params[:new_medias], params[:new_modes], params[:new_tags])
@@ -109,10 +106,13 @@ class GamesController < ApplicationController
 
   # PUT /games/1
   def update
+    logger.debug '----------   1'
     authenticate_user!(nil)
+    logger.debug '----------   2'
     oldgame = Game.find(params[:id])
-    @game = oldgame.new_version
-    @game.change_rbc oldgame
+    logger.debug '----------   3'
+    @game = @@GAME_VERSIONER.new_version oldgame
+    logger.debug '----------   4'
     logger.debug @game.to_s
 
 	

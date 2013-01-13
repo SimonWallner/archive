@@ -12,7 +12,7 @@ module ApplicationHelper
 		rndr = CustomLinkRenderer.new(:filter_html => true, :no_images => true, :hard_wrap => true)
 		markdown = Redcarpet::Markdown.new(rndr, :space_after_headers => true, :autolink => true)
 		markdown.render(text).html_safe
-	end
+  end
 
   class CustomLinkRenderer < Redcarpet::Render::HTML
       def link(link, title, alt_text)

@@ -77,5 +77,7 @@ module GameArchive
     # passwords won't be written to log files
     config.filter_parameters += [:password, :password_confirmation]
 
+    config.autoload_paths += %W(#{config.root}/app/models/versioning)
+
   end
 end
