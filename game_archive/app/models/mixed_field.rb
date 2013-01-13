@@ -10,15 +10,15 @@ class MixedField < ActiveRecord::Base
   attr_accessible :additional_info, :not_found
 
   # copies the fields without referenced fields
-  def clone
-    clone = MixedField.new
-    clone.additional_info = self.additional_info
-    clone.not_found = self.not_found
-    clone.mixed_field_type_id = self.mixed_field_type_id
-    clone.series_game_id = self.series_game_id
-    clone.game_id = self.game_id
-    clone.developer_id = self.developer_id
-    clone.company_id = self.company_id
-    return clone
+  def dup
+    d = MixedField.new
+    d.additional_info = self.additional_info
+    d.not_found = self.not_found
+    d.mixed_field_type_id = self.mixed_field_type_id
+    d.series_game_id = self.series_game_id
+    d.game_id = self.game_id
+    d.developer_id = self.developer_id
+    d.company_id = self.company_id
+    return d
   end
 end

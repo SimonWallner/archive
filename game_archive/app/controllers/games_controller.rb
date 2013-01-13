@@ -69,12 +69,14 @@ class GamesController < ApplicationController
   # GET /games/1/block
   def block
     @game = @@GAME_VERSIONER.current_version Game.find(params[:id])
+    return if @game = nil
     @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(0,@game.id)
   end
   
   # GET /games/1/delete
   def delete
     @game = @@GAME_VERSIONER.current_version Game.find(params[:id])
+    return if @game == nil
     @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(0,@game.id)
   end
   
@@ -105,14 +107,9 @@ class GamesController < ApplicationController
 
   # PUT /games/1
   def update
-    logger.debug '----------   1'
     authenticate_user!(nil)
-    logger.debug '----------   2'
     oldgame = Game.find(params[:id])
-    logger.debug '----------   3'
     @game = @@GAME_VERSIONER.new_version oldgame
-    logger.debug '----------   4'
-    logger.debug @game.to_s
 
 	
     if (params[:reportblockcontent])

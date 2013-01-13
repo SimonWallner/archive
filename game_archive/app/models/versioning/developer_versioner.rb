@@ -48,7 +48,7 @@ class DeveloperVersioner < Versioner
   # override in sublass if wanted
   def new_version_additional_behaviour_after_save(old, new)
     # change report/block/delete
-    change_rbc current_newest, new, 1
+    change_rbc old, new, 1
     mixed_fields_reference_update old, new
   end
 

@@ -68,12 +68,14 @@ class DevelopersController < ApplicationController
   # GET /developers/1/block
   def block
     @developer = @@DEVELOPER_VERSIONER.current_version Developer.find(params[:id])
+    return if @developer == nil
     @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(1, @developer.id)
   end
   
   # GET /developers/1/delete
   def delete
     @developer = @@DEVELOPER_VERSIONER.current_version Developer.find(params[:id])
+    return if @developer == nil
     @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(1,@developer.id)
   end
   

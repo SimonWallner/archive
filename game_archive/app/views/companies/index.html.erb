@@ -1,8 +1,8 @@
 <h1>Companies</h1>
 <div>
-	<% coms = Company.find(:all, :limit => getAmountFeatured, :order => 'created_at DESC')[0..7] %>
-	<% coms.concat(Company.find(:all, :limit => getAmountFeatured, :order => 'popularity DESC')[0..7]) %>
-	<% coms = coms.uniq %>
+	<% coms = (CompanyVersioner.instance.current_versions_from_collection Company.find(:all, :limit => getAmountFeatured, :order => 'created_at DESC'))[0..7] %>
+	<% coms.concat((CompanyVersioner.instance.current_versions_from_collection Company.find(:all, :limit => getAmountFeatured, :order => 'popularity DESC'))[0..7]) %>
+	<% coms = CompanyVersioner.instance.current_versions_from_collection coms.uniq %>
 	<% coms[0..7].each do |com| %>
 		<% @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(2,com.id)%>
 		<% if @reportblockcontent%>
@@ -46,7 +46,7 @@
 
 <h2>All Studios and Organisations in Alphabetic Order</h2>
 <div>
-	<% companies = Company.find(:all, :order => 'name') %>
+	<% companies = CompanyVersioner.instance.current_versions_from_collection Company.find(:all, :order => 'name') %>
 	<% companies.each do |company| %>
 		<% @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(2,company.id)%>
 		<% if @reportblockcontent%>

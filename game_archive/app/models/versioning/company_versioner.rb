@@ -1,6 +1,6 @@
-class GameVersioner < Versioner
+class CompanyVersioner < Versioner
 
-  @@instance = GameVersioner.new
+  @@instance = DeveloperVersioner.new
 
   def self.instance
     @@instance
@@ -10,7 +10,7 @@ class GameVersioner < Versioner
   # needs to be overridden in subclass
   # returns the active record model class object
   def model_class
-    Game
+    Company
   end
 
   # adds additional behaviour to the revert_to_this method before saving the record
@@ -24,18 +24,17 @@ class GameVersioner < Versioner
   # override in subclass if wanted
   def revert_additional_behaviour_after_save(revert_to, current_newest, new)
     # change report/block/delete
-    change_rbc current_newest, new, 0
-    copy_mixed_fields revert_to, new
-    mixed_fields_update_series_references revert_to, new
+    change_rbc current_newest, new, 2
+    mixed_fields_reference_update revert_to, new
   end
 
   #adds additional behaviour to the new_version method
   # override in sublass if wanted
   def new_version_additional_behaviour_before_save(old, new)
-    new.title = old.title
+    new.name = old.name
     new.description = old.description
+    new.official_name = old.official_name
     new.created_at = old.created_at
-    new.updated_at = Time.now
     new.image = old.image
     new.popularity = old.popularity
 
@@ -44,76 +43,33 @@ class GameVersioner < Versioner
       new.fields.push f.copy_without_references
     end
 
-    # release dates
-    old.release_dates.each do |rd|
-      new.release_dates.push rd.copy_without_references
+    old.locations.each do |l|
+      nl = l.dup
+      nl.company_id = nil
+      new.locations.push nl
     end
 
-    # videos
-    old.videos.each do |v|
-      new.videos.push v.copy_without_references
-    end
+    cd = old.defunct
+    cf = old.founded
+    new.build_defunct :year => cd.year, :month => cd.month, :day => cd.day, :additional_info => cd.additional_info unless cd == nil
+    new.build_founded :year => cf.year, :month => cf.month, :day => cf.day unless cf == nil
 
-    # screenshots
-    old.screenshots.each do |ss|
-      new.screenshots.push ss.copy_without_references
-    end
-
-    # genres
-    old.genres.each do |g|
-      new.genres.push g
-    end
-
-    # platforms
-    old.platforms.each do |p|
-      new.platforms.push p
-    end
-
-    # media
-    old.media.each do |m|
-      new.media.push m
-    end
-
-    # modes
-    old.modes.each do |m|
-      new.modes.push m
-    end
-
-    # tags
-    old.tags.each do |t|
-      new.tags.push t
-    end
-
+    new.updated_at = Time.now
   end
 
   # adds additional behaviour to the new_version method after saving the record
   # override in sublass if wanted
   def new_version_additional_behaviour_after_save(old, new)
     # change report/block/delete
-    change_rbc old, new, 0
-    copy_mixed_fields old, new
-    mixed_fields_update_series_references old, new
+    change_rbc old, new, 2
+    mixed_fields_reference_update old, new
   end
 
-  def copy_mixed_fields(old, new)
+  def mixed_fields_reference_update(old, new)
     # mixed fields
     old.mixed_fields.each do |mf|
-      nmf = mf.dup
-      nmf.game_id = new.id
+      nmf.company_id = new.id
       nmf.save
     end
   end
-
-  def mixed_fields_update_series_references(old, new)
-    smf = MixedField.where(:series_game_id => old.id)
-    if smf == nil
-      return
-    end
-
-    smf.each do |smfe|
-      smfe.series_game_id = new.id
-      smfe.save
-    end
-  end
-
 end

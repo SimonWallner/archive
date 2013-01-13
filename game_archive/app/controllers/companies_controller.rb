@@ -6,11 +6,13 @@ class CompaniesController < ApplicationController
   before_filter only: [:edit] { |c| c.block_content_user 2 }
   before_filter :authenticate_admin!, only: [:block]
   #before_filter :blocked_user!, except: [:index, :show, :report, :update]
+
+  @@COMPANY_VERSIONER = CompanyVersioner.instance
   
   # GET /companies
   # GET /companies.json
   def index
-    @companies = Company.all
+    @companies = @@COMPANY_VERSIONER.all_current_versions
 
     respond_to do |format|
       format.html # index.html.erb
@@ -21,13 +23,22 @@ class CompaniesController < ApplicationController
   # GET /companies/1
   # GET /companies/1.json
   def show
-    @company = Company.find(params[:id])
-	@reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(2,params[:id])
-	if @company.popularity == nil 
-		@company.popularity = 0
-		@company.save
-	end
-	@company.increment!(:popularity)
+    some_version = Company.find(params[:id])
+    @company = @@COMPANY_VERSIONER.current_version some_version
+
+    # redirect to other page if company is not newest version
+    if @company != some_version
+      redirect_to @company
+      return
+    end
+
+
+	  @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(2, @company.id)
+	  if @company.popularity == nil
+		  @company.popularity = 0
+		  @company.save
+	  end
+	  @company.increment!(:popularity)
 
     respond_to do |format|
       format.html # show.html.erb
@@ -48,30 +59,34 @@ class CompaniesController < ApplicationController
 
   # GET /companies/1/edit
   def edit
-    @company = Company.find(params[:id])
+    @company = @@COMPANY_VERSIONER.current_version Company.find(params[:id])
   end
 
   # GET /companies/1/report
   def report
-	@reportblockcontent =Reportblockcontent.new
-    @company = Company.find(params[:id])	
+    @company = @@COMPANY_VERSIONER.current_version Company.find(params[:id])
+    @reportblockcontent =Reportblockcontent.new
   end
   
   # GET /companies/1/block
   def block
-	@reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(2,params[:id])
-    @company = Company.find(params[:id])
+    @company = @@COMPANY_VERSIONER.current_version Company.find(params[:id])
+    return if @company == nil
+    @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(2, @company.id)
   end
   
   # GET /companies/1/delete
   def delete
-	@reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(2,params[:id])
-    @company = Company.find(params[:id])
+    @company = @@COMPANY_VERSIONER.current_version Company.find(params[:id])
+    return if @company == nil
+    @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(2, @company.id)
   end
   
   # POST /companies
   def create
     @company = Company.new(params[:company])
+    @@COMPANY_VERSIONER.add_versioning_to_new_object @company, current_user
+
 	  @company.popularity = 0
 
     Location.create_add_new_locations(@company, params["new_locations"])
@@ -89,10 +104,11 @@ class CompaniesController < ApplicationController
 
   # PUT /companies/1
   def update
-    @company = Company.find(params[:id])
+    old = Company.find(params[:id])
+    @company = @@COMPANY_VERSIONER.new_version old
 
     if params[:reportblockcontent]
-      Reportblockcontent.create_from_string(2,params[:id], params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
+      Reportblockcontent.create_from_string(2,@company.id, params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
     elsif
       Location.create_add_new_locations(@company, params["new_locations"])
       add_founded(params)

@@ -105,9 +105,9 @@
 
 <h1>Studios & Organisations</h1>
 <div>
-	<% coms = Company.find(:all, :limit => getAmountFeatured, :order => 'created_at DESC')[0..7] %>
-	<% coms.concat(Company.find(:all, :limit => getAmountFeatured, :order => 'popularity DESC')[0..7]) %>
-	<% coms = coms.uniq %>
+	<% coms = ( CompanyVersioner.instance.current_versions_from_collection Company.find(:all, :limit => getAmountFeatured, :order => 'created_at DESC') )[0..7] %>
+	<% coms.concat(( CompanyVersioner.instance.current_versions_from_collection Company.find(:all, :limit => getAmountFeatured, :order => 'popularity DESC') )[0..7]) %>
+	<% coms = CompanyVersioner.instance.current_versions_from_collection coms.uniq %>
 	<% coms[0..7].each do |com| %>
 		<% @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(2,com.id)%>
 		<% if @reportblockcontent%>
@@ -155,7 +155,7 @@
 <!-- <div class="companies_random">
 <h3>Did you already know...</h3>
 	<div>
-		<% com = Company.order("RANDOM()").first %>
+		<% com = CompanyVersioner.instance.current_version (Company.order("RANDOM()").first) %>
 		<% if com != nil %>
 			<div class="tiled_2x">
 			<a href="/companies/<%= com.id %>">
@@ -175,9 +175,9 @@
 <h1>Developers</h1>
 
 <div>
-	<% devs = Developer.find(:all, :limit => getAmountFeatured, :order => 'created_at DESC')[0..7] %>
-	<% devs.concat(Developer.find(:all, :limit => getAmountFeatured, :order => 'popularity DESC')[0..7]) %>
-	<% devs = devs.uniq %>
+	<% devs = (DeveloperVersioner.instance.current_versions_from_collection Developer.find(:all, :limit => getAmountFeatured, :order => 'created_at DESC'))[0..7] %>
+	<% devs.concat((DeveloperVersioner.instance.current_versions_from_collection Developer.find(:all, :limit => getAmountFeatured, :order => 'popularity DESC'))[0..7]) %>
+	<% devs = DeveloperVersioner.instance.current_versions_from_collection devs.uniq %>
 	<% devs[0..7].each do |dev| %>
 		<% @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(1,dev.id)%>
 		<% if @reportblockcontent%>
@@ -223,7 +223,7 @@
 <!-- <div class="developers_random">
 <h3>Did you already know...</h3>
 <div>
-	<% dev = Developer.order("RANDOM()").first %>
+	<% dev = DeveloperVersioner.instance.current_version Developer.order("RANDOM()").first %>
 	<% if dev != nil %>
 		<div class="tiled_4x">
 		<a href="/developers/<%= dev.id %>">
