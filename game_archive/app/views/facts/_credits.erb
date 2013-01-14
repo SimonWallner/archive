@@ -1,9 +1,9 @@
 <% credits = get_mixed_fields(object, :all) %>
 <% if credits.any? %>
 	<div class="fact">
-	  <div>
+	  <span class="label">
 	    Credits
-	  </div>
+	  </span>
 	  <ul>
 	    <% credits.each do |mf| %>
 	        <li>
