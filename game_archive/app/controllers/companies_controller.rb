@@ -124,6 +124,9 @@ class CompaniesController < ApplicationController
           format.html { redirect_to @company}
         end
       else
+        # delete newest version created
+        @company.destroy
+        @company = old
         format.html { render action: "edit" }
       end
     end

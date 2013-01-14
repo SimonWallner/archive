@@ -18,7 +18,7 @@ GameArchive::Application.routes.draw do
 
 #      path_names: { new: 'sign_up' },
 
-	resources :companies do
+	resources :companies, :except => :destroy do
 		member do
 			get 'report'
 			get 'block'
@@ -28,7 +28,7 @@ GameArchive::Application.routes.draw do
 
 	resources :genres
 
-	resources :developers do
+	resources :developers, :except => :destroy do
 		member do
 			get 'report'
 			get 'block'
@@ -36,7 +36,7 @@ GameArchive::Application.routes.draw do
 		end
 	end 
 
-	resources :games do
+	resources :games, :except => :destroy do
 		resources :videos
 		resources :screenshots
 		member do

@@ -1,6 +1,6 @@
 class CompanyVersioner < Versioner
 
-  @@instance = DeveloperVersioner.new
+  @@instance = CompanyVersioner.new
 
   def self.instance
     @@instance

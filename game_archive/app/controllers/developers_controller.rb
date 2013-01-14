@@ -114,6 +114,9 @@ class DevelopersController < ApplicationController
           format.html { redirect_to @developer}
         end
       else
+        # delete newest version
+        @developer.destroy
+        @developer = old
         format.html { render action: "edit" }
       end
     end
