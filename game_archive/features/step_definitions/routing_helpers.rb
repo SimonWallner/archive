@@ -157,17 +157,20 @@ end
 
 ## companies
 def on_company_detail_page(company)
-  current_path.should == company_path(company)
+  new = CompanyVersioner.instance.current_version company
+  current_path.should == company_path(new)
 end
 
 ## developers
 def on_developer_detail_page(developer)
-  current_path.should == developer_path(developer)
+  new = DeveloperVersioner.instance.current_version developer
+  current_path.should == developer_path(new)
 end
 
 ## game
 def on_game_detail_page(game)
-  current_path.should == game_path(game)
+  new = GameVersioner.instance.current_version game
+  current_path.should == game_path(new)
 end
 
 ## users

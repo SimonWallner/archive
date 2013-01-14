@@ -111,7 +111,7 @@ class Versioner
 
   def change_rbc(old, new, content_type)
     # report block content
-    rbc = Reportblockcontent.find_by_content_type_and_content_id(content_type, old.id)
+    rbc = Reportblockcontent.find_all_by_content_type_and_content_id(content_type, old.id)
     if rbc == nil
       return
     end

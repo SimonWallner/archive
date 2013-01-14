@@ -1,5 +1,4 @@
- @active
-Feature:
+Feature: Company fields
   As a contributor
   In order to add additional info to my company
   I want to add more information about company

@@ -1,4 +1,3 @@
-@active
 Feature:
   As a contributor
   In order to add additional info to my developer

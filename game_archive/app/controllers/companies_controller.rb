@@ -125,6 +125,7 @@ class CompaniesController < ApplicationController
         end
       else
         # delete newest version created
+        old.add_errors @company.errors
         @company.destroy
         @company = old
         format.html { render action: "edit" }

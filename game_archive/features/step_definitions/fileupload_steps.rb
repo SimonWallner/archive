@@ -16,11 +16,12 @@ Then /^I should see the picture on the details page of the (.+)$/ do |type|
 
   if type == "developer"
 
-    if @new_name == nil
-      @new_name = @givenDeveloper.name
-    end
+    #if @new_name == nil
+    #  @new_name = @givenDeveloper.name
+    #end
 
-    id =   Developer.find_by_name(@new_name).id.to_s
+    #id =   Developer.find_by_name(@new_name).id.to_s
+    id = (DeveloperVersioner.instance.current_version @givenDeveloper).id
    version = "tiled_4x"
     upload_to_path = "uploads/developer/image/" + id + "/loudspeaker.png"
 

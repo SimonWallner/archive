@@ -115,6 +115,7 @@ class DevelopersController < ApplicationController
         end
       else
         # delete newest version
+        old.add_errors @developer.errors
         @developer.destroy
         @developer = old
         format.html { render action: "edit" }

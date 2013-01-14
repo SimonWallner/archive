@@ -108,8 +108,8 @@ class GamesController < ApplicationController
   # PUT /games/1
   def update
     authenticate_user!(nil)
-    oldgame = Game.find(params[:id])
-    @game = @@GAME_VERSIONER.new_version oldgame
+    old = Game.find(params[:id])
+    @game = @@GAME_VERSIONER.new_version old
 
 	
     if (params[:reportblockcontent])
@@ -135,8 +135,9 @@ class GamesController < ApplicationController
         end
       else
         # delete newest version
+        old.add_errors @game.errors
         @game.destroy
-        @game = oldgame
+        @game = old
         format.html { render action: "edit" }
       end
     end

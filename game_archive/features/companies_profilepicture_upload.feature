@@ -1,4 +1,4 @@
-Feature: Profile Picture File Upload
+Feature: Company Profile Picture File Upload
   As a contributor,
   in order to show the world how companies look like,
   I want to add an image to a company page.
@@ -30,7 +30,8 @@ Feature: Profile Picture File Upload
     And I submit it
     Then I should be notified on that the file is not an image file
 
-    Scenario: change profile picture of developer
+      @active
+    Scenario: change profile picture of company
     Given I am signed in as User
     And I have a company BowserCO
     And I am on the edit page of the given company
@@ -38,7 +39,7 @@ Feature: Profile Picture File Upload
     And I submit it
     Then I should see the picture on the details page of the company
 
-    Scenario: unsucsessfully change profile picture of a developer because the image is too big
+    Scenario: unsucsessfully change profile picture of a company because the image is too big
     Given I am signed in as User
     And I have a company BowserCo
     When I am on the edit page of the given company
