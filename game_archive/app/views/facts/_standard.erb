@@ -1,9 +1,9 @@
 <% fields = get_field(object, label.to_s) %>
 <% if fields.any? %>
 	<div class="fact">
-	  <div>
+	  <span class="label">
 	    <%= label.to_s %>:
-	  </div>
+	  </span>
 	  <ul>
 	    <% fields.each do |f| %>
 		    <li>

@@ -17,6 +17,7 @@ $redBright: $red * 1.2;
 $redDark: $red * 0.8;
 
 $borderRadius: 4px;
+$font-size: 14px;
 
 /*
  * media query sizes: 
@@ -48,7 +49,7 @@ $large-and-up: "screen and (min-width: 700px)";
  */
 #responsiveHelper {
 	visibility: hidden;
-/*	opacity: 0.5;*/
+	opacity: 0.5;
 	position: fixed;
 	top: 0px;
 	left: 0px;
@@ -130,7 +131,7 @@ $large-and-up: "screen and (min-width: 700px)";
 }
 
 body {
-	font-size: 14px;
+	font-size: $font-size;
 	font-family: 'Bitter';
 	font-style: normal;
 	font-weight: 400;
@@ -476,25 +477,59 @@ div.text {
 }
 
  
-div.fact-box {  
-  
- 
-  @media #{$large-and-up} {
-    width: 32%;
-    display: inline;
-    float: right;
-  }
-  
-  @media #{$mid-and-below} {
-    img {
-      float: right;
-      width: 33%;
-    }
+div.fact-box {
+	margin-bottom: $font-size;
 	
-	p {
-		margin-bottom: 1em;
+	img {
+		margin-bottom: 14px;
+		float: clear;
 	}
-  }
+	
+	@media #{$large-and-up} {
+		width: 32%;
+		float: right;
+	}
+
+	@media #{$mid-and-below} {
+		img {
+			float: right;
+			width: 33%;
+			margin-left: $font-size;
+		}
+	}
+	
+	@media #{$tiny-and-below} {
+		img {
+			float: none;
+			width: 60%;
+			display: block;
+		    margin-left: auto;
+		    margin-right: auto
+		}
+	}
+	
+
+	
+	.label {
+		font-weight: 900;
+	}
+	
+	ul {
+		display: inline;
+	}
+	
+	li {
+		display: inline;
+		&:after {
+			content: ","
+		}
+		
+		&:last-child {
+			&:after {
+				content: ""
+			}
+		}
+	}
 }
 
 div.game {
@@ -524,9 +559,6 @@ div.game {
   }
 }
 
-img.portrait {
-  margin-bottom: 14px;
-}
 span.forceWrap {
   word-wrap: break-word;
 }

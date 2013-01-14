@@ -19,8 +19,8 @@ ActiveRecord::Schema.define(:version => 20121213160247) do
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
     t.string   "image"
-    t.string   "official_name"
     t.integer  "popularity"
+    t.string   "official_name"
   end
 
   create_table "company_defuncts", :force => true do |t|
