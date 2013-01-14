@@ -1,7 +1,7 @@
 require "json"
 
 class CompaniesController < ApplicationController
-  before_filter :authenticate_user!, except: [:index, :show, :report]
+  before_filter :authenticate_user!, except: [:index, :show, :report, :update]
   before_filter only: [:edit, :show] { |c| c.block_content_visitor 2 } 
   before_filter only: [:edit] { |c| c.block_content_user 2 }
   before_filter :authenticate_admin!, only: [:block]
@@ -90,25 +90,54 @@ class CompaniesController < ApplicationController
   # PUT /companies/1
   def update
     @company = Company.find(params[:id])
-
-    if params[:reportblockcontent]
-      Reportblockcontent.create_from_string(2,params[:id], params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
+	
+    if current_user
+	  if !current_user.blocked		
+		if (params[:reportblockcontent])
+			Reportblockcontent.create_from_string(2,params[:id], params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
+		else 
+			Location.create_add_new_locations(@company, params["new_locations"])
+			add_founded(params)
+			add_defunct(params)
+			Field.create_add_new_fields(@company, params[:new_fields])
+		end
+	  else
+		if params[:reportblockcontent]&& params[:reportblockcontent][:status]=='0'
+			Reportblockcontent.create_from_string(2,params[:id], params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
+		end
+	  end
+	else
+		if params[:reportblockcontent]&& params[:reportblockcontent][:status]=='0'
+			Reportblockcontent.create_from_string(2,params[:id], params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
+		end	
     end
-
-    Location.create_add_new_locations(@company, params["new_locations"])
-    add_founded(params)
-    add_defunct(params)
-    Field.create_add_new_fields(@company, params[:new_fields])
+	
     respond_to do |format|
-      if @company.update_attributes(params[:company])
-        if params[:reportblockcontent] && params[:reportblockcontent][:status]=='0'
-            format.html { redirect_to @company,notice: 'Company was reported successfully'}
-        else
-          format.html { redirect_to @company}
-        end
-      else
-        format.html { render action: "edit" }
-      end
+      if current_user
+	    if !current_user.blocked
+		  if @company.update_attributes(params[:company])
+			if params[:reportblockcontent] && params[:reportblockcontent][:status]=='0'
+				format.html { redirect_to @company,notice: 'Company was reported successfully'}
+			else
+			  format.html { redirect_to @company}
+			end
+		  else
+			format.html { render action: "edit" }
+		  end
+		else
+			if params[:reportblockcontent] && params[:reportblockcontent][:status]=='0'
+				format.html { redirect_to @company,notice: 'Company was reported successfully'}
+			else
+				format.html { redirect_to @company,notice: 'you have been blocked, reason: ' + current_user.note}
+			end
+		end
+	  else 
+			if params[:reportblockcontent] && params[:reportblockcontent][:status]=='0'
+				format.html { redirect_to @company,notice: 'Company was reported successfully'}
+			else
+				redirect_to root_path, notice: 'you need to be registered and signed up in order to access this page'
+			end	    
+	  end
     end
   end
 

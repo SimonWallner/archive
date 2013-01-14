@@ -1,5 +1,5 @@
 class DevelopersController < ApplicationController
-  before_filter :authenticate_user!, except: [:index, :show, :report]
+  before_filter :authenticate_user!, except: [:index, :show, :report, :update]
   before_filter only: [:edit, :show] { |c| c.block_content_visitor 1 } 
   before_filter only: [:edit] { |c| c.block_content_user 1 }
   before_filter :authenticate_admin!, only: [:block]
@@ -84,20 +84,51 @@ class DevelopersController < ApplicationController
   # PUT /developers/1
   def update
     @developer = Developer.find(params[:id])
-    if params[:reportblockcontent]
-      Reportblockcontent.create_from_string(1,params[:id], params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
+
+    if current_user
+	  if !current_user.blocked		
+		if (params[:reportblockcontent])
+			Reportblockcontent.create_from_string(1,params[:id], params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
+		else 
+			Field.create_add_new_fields(@developer, params[:new_fields])
+		end
+	  else
+		if params[:reportblockcontent]&& params[:reportblockcontent][:status]=='0'
+			Reportblockcontent.create_from_string(1,params[:id], params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
+		end
+	  end
+	else
+		if params[:reportblockcontent]&& params[:reportblockcontent][:status]=='0'
+			Reportblockcontent.create_from_string(1,params[:id], params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
+		end	
     end
-    Field.create_add_new_fields(@developer, params[:new_fields])
+	  
     respond_to do |format|
-      if @developer.update_attributes(params[:developer])
-        if params[:reportblockcontent] && params[:reportblockcontent][:status]=='0'
-          format.html { redirect_to @developer,notice: 'Developer was reported successfully'}
-        else
-          format.html { redirect_to @developer}
-        end
-      else
-        format.html { render action: "edit" }
-      end
+      if current_user
+	    if !current_user.blocked
+		  if @developer.update_attributes(params[:developer])
+			if params[:reportblockcontent] && params[:reportblockcontent][:status]=='0'
+			  format.html { redirect_to @developer,notice: 'Developer was reported successfully'}
+			else
+			  format.html { redirect_to @developer}
+			end
+		  else
+			format.html { render action: "edit" }
+		  end
+		else
+			if params[:reportblockcontent] && params[:reportblockcontent][:status]=='0'
+				format.html { redirect_to @developer,notice: 'Developer was reported successfully'}
+			else
+				format.html { redirect_to @developer,notice: 'you have been blocked, reason: ' + current_user.note}
+			end
+		end
+	  else 
+			if params[:reportblockcontent] && params[:reportblockcontent][:status]=='0'
+				format.html { redirect_to @developer,notice: 'Developer was reported successfully'}
+			else
+				redirect_to root_path, notice: 'you need to be registered and signed up in order to access this page'
+			end	    
+	  end
     end
   end
 
