@@ -19,6 +19,7 @@ class Game < ActiveRecord::Base
   accepts_nested_attributes_for :screenshots, :reject_if => lambda { |a| a[:image].blank? }, :allow_destroy => true
 
   has_and_belongs_to_many :genres
+
   has_and_belongs_to_many :platforms
   has_and_belongs_to_many :media
   has_and_belongs_to_many :modes
@@ -33,6 +34,6 @@ class Game < ActiveRecord::Base
             }
 
   def as_json(options = {})
-    super(:include => [{:mixed_fields => {:include => :mixed_field_type}}, :release_dates, :fields, :genres, :platforms, :media, :modes, :tags ])
+    super(:include => [{:mixed_fields => {:include => [:mixed_field_type, :company, :developer, :series_game]}}, :release_dates, :fields, :genres, :platforms, :media, :modes, :tags ])
   end
 end

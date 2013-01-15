@@ -265,3 +265,4 @@ ActiveRecord::Schema.define(:version => 20130113152519) do
   add_index "videos", ["game_id"], :name => "index_videos_on_game_id"
 
 end
+

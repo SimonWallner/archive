@@ -9,10 +9,14 @@ function loadfields(jsonurl){
     var developersfields = ["External Links","Userdefined"];
     var usedfields;
     var page = '';
+    var devs;
+    var comps;
 
     if(jsonurl.indexOf('games') > 0) {
         usedfields = gamefields;
         page = 'game';
+        $.getJSON('/developers.json', function ( data ) { devs = data; });
+        $.getJSON('/companies.json', function ( data ) { comps = data; });
     }else if(jsonurl.indexOf('companies') > 0){
         usedfields = companyfields;
         page = 'company';
@@ -36,7 +40,7 @@ function loadfields(jsonurl){
                     str = str + val[x].name + ',';
                 str = str.substr(0, str.length -1);
 
-                addConcreteField(select_elem, false, str);
+                addConcreteField(select_elem, false, str, true);
 
             }else if($.inArray(i,['release_dates']) >= 0 ){
                 addField($('#addFieldButton'), usedfields);
@@ -44,13 +48,13 @@ function loadfields(jsonurl){
                 select_elem.find('option[value="release dates"]').attr('selected', true);
 
                 for (var x = 0; x < val.length; x++){
-                    addConcreteField(select_elem, false);
+                    addConcreteField(select_elem, false, false, true);
                     $('#year_release_date'+(x+1)).val(val[x].year);
                     $('#month_release_date'+(x+1)).val(val[x].month);
                     $('#day_release_date'+(x+1)).val(val[x].day);
                     $('#text_release_date'+(x+1)).val(val[x].additional_info);
                 }
-                addConcreteField(select_elem, false);
+                addConcreteField(select_elem, false, false, true);
 
             }else if($.inArray(i,['fields']) >= 0){
                 for (var x = 0; x < val.length; x++){
@@ -60,7 +64,7 @@ function loadfields(jsonurl){
                             addField($('#addFieldButton'), usedfields);
                             var select_elem = $('div.newFieldsDiv').find('select:last');
                             select_elem.find('option[value="'+val[x].name.toLowerCase()+'"]').attr('selected', true);
-                            addConcreteField(select_elem, false);
+                            addConcreteField(select_elem, false, false, true);
                         }
                         var input = $('#'+fname);
                         if(input.val()){
@@ -72,54 +76,79 @@ function loadfields(jsonurl){
                         addField($('#addFieldButton'), usedfields);
                         var select_elem = $('div.newFieldsDiv').find('select:last');
                         select_elem.find('option[value="userdefined"]').attr('selected', true);
-                        addConcreteField(select_elem, false);
+                        addConcreteField(select_elem, false, false, true);
 
                         $('#name_userdefined'+(x+1)).val(val[x].name);
                         $('#content_userdefined'+(x+1)).val(val[x].content);
                     }
                 }
             } else if($.inArray(i,['mixed_fields']) >= 0){
-                if(val.length < 1 && page == "game"){
+
+                if(page == "game"){
                     $.each(["developer","publisher","distributor","credits","external links","series"],
                     function(index,value){
                         addField($('#addFieldButton'), usedfields);
                         var select_elem = $('div.newFieldsDiv').find('select:last');
                         select_elem.find('option[value="'+value+'"]').attr('selected', true);
-                        addConcreteField(select_elem, false);
+                        addConcreteField(select_elem, false, false, true);
+                        $('#'+input_field_name).val('')
                     });
                 }
+
                 for (var x = 0; x < val.length; x++){
                     var type = val[x]['mixed_field_type'].name.toLowerCase();
                     var input_field_name = 'new_' + type.replace(' ','_');
                     if(input_field_name.lastIndexOf('s') !== (input_field_name.length - 1))
                         input_field_name = input_field_name + 's';
 
-                    if($('#'+input_field_name).length == 0){
-                        addField($('#addFieldButton'), usedfields);
-                        var select_elem = $('div.newFieldsDiv').find('select:last');
-                        select_elem.find('option[value="'+type+'"]').attr('selected', true);
-                        addConcreteField(select_elem, false);
-                        $('#'+input_field_name).val('');
-                    }
-                    var valstr = ''
+                    var valstr = '';
                     if(val[x].company_id)
-                        valstr = valstr + '@comp:' + val[x].company_id;
+                        valstr = valstr + '@comp:' + val[x].company_id + ':' + val[x].company.name ;
                     else if(val[x].developer_id)
-                        valstr = valstr + '@dev:' + val[x].developer_id;
+                        valstr = valstr + '@dev:' + val[x].developer_id + ':' + val[x].developer.name ;
                     else if(val[x].series_game_id)
-                        valstr = valstr + '@game:' + val[x].series_game_id;
+                        valstr = valstr + '@game:' + val[x].series_game_id + ':' + val[x].series_game.title ;
                     if(val[x].not_found)
-                        valstr = valstr + val[x].not_found
+                        valstr = valstr + val[x].not_found + ':' + (val[x].additional_info ? val[x].additional_info : '') + ','
                     else
                         valstr = valstr + ':' + (val[x].additional_info ? val[x].additional_info : '') + ',';
 
                     $('#'+input_field_name).val($('#'+input_field_name).val()+valstr);
                 }
+
+                $.each(["developer","publisher","distributor","credits","series"],
+                function(index,value){
+                    var input_field_name = 'new_' + value;
+                    if(input_field_name.lastIndexOf('s') !== (input_field_name.length - 1))
+                        input_field_name = input_field_name + 's';
+                    //@dev:2:adelheit:asde,@comp:1:company:casd,
+                    if($('#'+input_field_name).val()){
+                        $.each($('#'+input_field_name).val().split(','), function(index, splitval){
+
+                            if(splitval.indexOf('@') == 0){
+                                var name = splitval.split(':')[2];
+                                var text = splitval.split(':')[3];
+                                $('.'+value+'_hidden:last').val(splitval.replace(':'+name,'')+',');
+                                $('.'+value+'_link:last').val(name);
+                                $('.'+value+'_text:last').val(text);
+                                $('.'+value+'_text:last').next('button').click();
+                            }else if(splitval.split(':').length > 1){
+                                var name = splitval.split(':')[0];
+                                var text = splitval.split(':')[1];
+                                $('.'+value+'_hidden:last').val(splitval+',');
+                                $('.'+value+'_link:last').val(name);
+                                $('.'+value+'_text:last').val(text);
+                                $('.'+value+'_text:last').next('button').click();
+                            }
+                        });
+                    }
+                });
+
             }  else if($.inArray(i,['official_name']) >= 0){
                 addField($('#addFieldButton'), usedfields);
                 var select_elem = $('div.newFieldsDiv').find('select:last');
                 select_elem.find('option[value="official name"]').attr('selected', true);
-                addConcreteField(select_elem, false, val);
+                addConcreteField(select_elem, false, val, true);
 
             }  else if($.inArray(i,['locations']) >= 0){
                 addField($('#addFieldButton'), usedfields);
@@ -132,14 +161,14 @@ function loadfields(jsonurl){
                       locationstring = locationstring + ':'+dat.additional_info;
                    locationstring = locationstring + ',';
                 });
-                addConcreteField(select_elem, false, locationstring);
+                addConcreteField(select_elem, false, locationstring, true);
 
             }  else if($.inArray(i,['founded','defunct']) >= 0 ){
                 addField($('#addFieldButton'), usedfields);
                 var select_elem = $('div.newFieldsDiv').find('select:last');
                 select_elem.find('option[value="'+i+'"]').attr('selected', true);
 
-                addConcreteField(select_elem, false);
+                addConcreteField(select_elem, false, false, true);
                 $('#year_'+i).val(val.year);
                 $('#month_'+i).val(val.month);
                 $('#day_'+i).val(val.day);
@@ -153,26 +182,26 @@ function loadfields(jsonurl){
                     addField($('#addFieldButton'), usedfields);
                     var select_elem = $('div.newFieldsDiv').find('select:last');
                     select_elem.find('option[value="'+value+'"]').attr('selected', true);
-                    addConcreteField(select_elem, false);
+                    addConcreteField(select_elem, false, false, true);
                 });
         }else if(page == 'company'){
             if(!data.mixed_fields || data.mixed_fields.length == 0){
                 addField($('#addFieldButton'), usedfields);
                 var select_elem = $('div.newFieldsDiv').find('select:last');
                 select_elem.find('option[value="external links"]').attr('selected', true);
-                addConcreteField(select_elem, false);
+                addConcreteField(select_elem, false, false, true);
             }
             if(!data.founded){
                 addField($('#addFieldButton'), usedfields);
                 var select_elem = $('div.newFieldsDiv').find('select:last');
                 select_elem.find('option[value="founded"]').attr('selected', true);
-                addConcreteField(select_elem, false);
+                addConcreteField(select_elem, false, false, true);
             }
             if(!data.locations){
                 addField($('#addFieldButton'), usedfields);
                 var select_elem = $('div.newFieldsDiv').find('select:last');
                 select_elem.find('option[value="location"]').attr('selected', true);
-                addConcreteField(select_elem, false);
+                addConcreteField(select_elem, false, false, true);
             }
         }
     });
@@ -196,8 +225,9 @@ function addField(button_element, types){
 var anzDateInputs=0;
 var anzUserDefined=0;
 // ein feld im select ausgewählt => das konkrete feld hinzufügen
-function addConcreteField(select_element, deletecurrent){addConcreteField(select_element, deletecurrent, false)}
-function addConcreteField(select_element, deletecurrent, value){
+function addConcreteField(select_element, deletecurrent){addConcreteField(select_element, deletecurrent, false, false)}
+function addConcreteField(select_element, deletecurrent, value){addConcreteField(select_element, deletecurrent, value, false)}
+function addConcreteField(select_element, deletecurrent, value, onload){
     if(deletecurrent)
         $(select_element).parent().find('> :not(select:first)').remove();
     var field_name = $(select_element).val();
@@ -205,13 +235,7 @@ function addConcreteField(select_element, deletecurrent, value){
     if(input_field_name.lastIndexOf('s') !== (input_field_name.length - 1))
         input_field_name = input_field_name + 's';
     if(field_name == 'remove'){                                                                      // remove field
-        $(select_element).parent().remove();
-
-    }else if($.inArray(field_name,['series']) >= 0){                                                 // game references + add info
-        $(select_element).parent().append('<textarea cols="40" rows="3" id="'+input_field_name+'" name="'+input_field_name+'">' +
-            (value ? value : '') +
-            '</textarea>');
-        at_autocomp(input_field_name+'_dummy', $('#'+input_field_name), '/ajax.json?type=game');
+        $(select_element).parent().remove()
 
     }else if($.inArray(field_name,['release dates']) >= 0){                                           // dates
         anzDateInputs++;
@@ -236,7 +260,11 @@ function addConcreteField(select_element, deletecurrent, value){
                     $('input, textarea').unbind('.allavailable');
                 });
             });
-            $('#'+input_field_name+'_input').focus();
+            if(onload)  {
+                $(':input:enabled:visible:first').focus();
+                $('html, body').animate({scrollTop: '0px'}, 0);
+            }else
+                $('#'+input_field_name+'_input').focus();
         });
 
     }else if($.inArray(field_name,['userdefined']) >= 0){                                            // markup input
@@ -259,12 +287,26 @@ function addConcreteField(select_element, deletecurrent, value){
             (value ? value : '') +
             '</textarea>');
 
-    }else if($.inArray(field_name,['developer','publisher','distributor','credits']) >= 0){          // dev/comp references + add info
-        $(select_element).parent().append('<textarea cols="40" rows="3" id="'+input_field_name+'" name="'+input_field_name+'">' +
-            (value ? value : '') +
-            '</textarea>');
-        at_autocomp(input_field_name+'_dummy', $('#'+input_field_name), '/ajax.json?type=developer');
+    }else if($.inArray(field_name,['developer','publisher','distributor','credits','series']) >= 0){          // dev/comp/game references + add info
+
+        var    html = '<div class="'+field_name+'_div" id="'+field_name+'_div">';
+        html = html + '<input class="'+field_name+'_hidden" name="'+field_name+'_hidden" type="hidden">';
+        html = html + '<input class="'+field_name+'_link mixin" name="'+field_name+'_link" type="text">';
+        html = html + '<input class="'+field_name+'_text mixin" name="'+field_name+'_text" type="text">';
+        html = html + '<button type="button" onclick="addConcreteField(this,false);" value="'+field_name+'"> + </button></div>';
+        $(select_element).parent().append(html);
+        $('.'+field_name+'_link').autocomplete({
+            source: field_name == 'series' ? '/ajax.json?type=game' : '/ajax.json?type=developer',
+            minLength: 1,
+            select: function( event, ui ) {
+                $(this).val( ui.item.label.split(' - ')[0] );
+                $(this).prev().val( ui.item.value );
+                return false;
+            }
+        });
     }
+    if(onload)
+        $(':input:enabled:visible:first').focus();
 }
 
 // helper um datumsinputs hinzuzufügen

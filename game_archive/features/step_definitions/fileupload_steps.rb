@@ -33,7 +33,7 @@ Then /^I should see the picture on the details page of the (.+)$/ do |type|
 
     id =   Game.find_by_title(@new_game).id.to_s
     version = "top_game"
-    upload_to_path = "uploads/game/image/" + id + "/" + version + "_field.jgp"
+    upload_to_path = "uploads/game/image/" + id + "/" + version + "_field.jpg"
 
 
   elsif type == "company"
@@ -47,9 +47,6 @@ Then /^I should see the picture on the details page of the (.+)$/ do |type|
 
 
   end
-
-
-  #puts upload_to_path
 
   page.should have_selector("img[src$='#{upload_to_path}']")
 
