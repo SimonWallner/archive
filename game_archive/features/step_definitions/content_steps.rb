@@ -27,7 +27,7 @@ When /^I create a developer with (.+)$/ do |fill|
   fill_in("developer_description", :with => (markup_text))
   click_button "Create Developer"
 
-  @developer = Developer.find_by_name name
+  @developer = DeveloperVersioner.instance.current_version Developer.find_by_name name
 end
 
 Then /^I should see the developer$/ do
@@ -68,7 +68,7 @@ When /^I try using heading markdown in the name field$/ do
   fill_in("developer_name", :with => @name)
   click_button "Create Developer"
 
-  @developer = Developer.find_by_name @name
+  @developer = DeveloperVersioner.instance.current_version Developer.find_by_name @name
 end
 
 Then /^I should see the syntax for heading as the name$/ do

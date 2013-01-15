@@ -16,12 +16,14 @@ Then /^I should see the picture on the details page of the (.+)$/ do |type|
 
   if type == "developer"
 
-    #if @new_name == nil
-    #  @new_name = @givenDeveloper.name
-    #end
+    if @new_name == nil
+      @new_name = @givenDeveloper.name
+    end
 
     #id =   Developer.find_by_name(@new_name).id.to_s
-    id = (DeveloperVersioner.instance.current_version @givenDeveloper).id
+    id = (DeveloperVersioner.instance.current_version Developer.find_by_name(@new_name)).id.to_s
+
+    puts id
    version = "tiled_4x"
     upload_to_path = "uploads/developer/image/" + id + "/loudspeaker.png"
 
@@ -31,17 +33,21 @@ Then /^I should see the picture on the details page of the (.+)$/ do |type|
       @new_game = @givenGame.title
     end
 
-    id =   Game.find_by_title(@new_game).id.to_s
+    #id =   Game.find_by_title(@new_game).id.to_s
+    id = (GameVersioner.instance.current_version Game.find_by_title(@new_game)).id.to_s
     version = "top_game"
     upload_to_path = "uploads/game/image/" + id + "/" + version + "_field.jpg"
 
 
   elsif type == "company"
 
+
     if @new_company == nil
       @new_company =  @givenCompany.name
     end
-    id =   Company.find_by_name(@new_company).id.to_s
+
+    #id =   Company.find_by_name(@new_company).id.to_s
+    id = (CompanyVersioner.instance.current_version Company.find_by_name(@new_company)).id.to_s
     version = "tiled_4x"
     upload_to_path = "uploads/company/image/" + id + "/parliament.jpg"
 

@@ -30,7 +30,6 @@ Feature: Company Profile Picture File Upload
     And I submit it
     Then I should be notified on that the file is not an image file
 
-      @active
     Scenario: change profile picture of company
     Given I am signed in as User
     And I have a company BowserCO
