@@ -13,9 +13,11 @@
 
   <div class="fact-box">
       <%= render :template => "facts/_mixed_field", :locals => { :type => :Developer, :object => @game, :label => "Developer" } %>
-      <%= render :template => "facts/_dates", :locals => { :object => @game.release_dates, :label => "Release Dates" } %>
       <%= render :template => "facts/_mixed_field", :locals => { :type => :Publisher, :object => @game, :label => "Publisher" } %>
       <%= render :template => "facts/_mixed_field", :locals => { :type => :Distributor, :object => @game, :label => "Distributor" } %>
+      <%= render :template => "facts/_mixed_field", :locals => { :type => :Credits, :object => @game, :label => "Credits" } %>
+      <%= render :template => "facts/_dates", :locals => { :object => @game.release_dates, :label => "Release Dates" } %>
+      <%= render :template => "facts/_mixed_field", :locals => { :type => :Series, :object => @game, :label => "Series" } %>
 	  <% if @game.genres.any? %>
 		  <strong>Genre</strong>:
 		  <% @game.genres.each do |genre| %>
@@ -46,9 +48,6 @@
 			  <%= tag.name%>
 		  <% end %></br>
 	  <% end %>
-      <%= render :template => "facts/_mixed_field", :locals => { :type => :Series, :object => @game, :label => "Series" } %>
-      <%= render :template => "facts/_mixed_field", :locals => { :type => :Credits, :object => @game, :label => "Credits" } %>
-      <%= render :template => "facts/_mixed_field", :locals => { :type => :Distributor, :object => @game, :label => "Distributor" } %>
       <%= render :template => "facts/_standard", :locals => { :object => @game, :label => "External Links" } %>
       <%= render :template => "facts/_standard", :locals => { :object => @game, :label => "Aggregate Scores" } %>
       <%= render :template => "facts/_standard", :locals => { :object => @game, :label => "Review Scores" } %>
@@ -94,6 +93,7 @@
 		<% else%>
 			<%= link_to 'Block', block_game_path(@game) %> |
 		<% end %>
+
 		<% else%>
 			<% if @reportblockcontent %>
 				<% if @reportblockcontent.status !=2%>
@@ -127,5 +127,6 @@
 	<% end %>
 
   <%= link_to 'Back', games_path %>
+
 </div>
 

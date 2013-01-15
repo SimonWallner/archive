@@ -32,7 +32,7 @@ class Game < ActiveRecord::Base
             }
 
   def as_json(options = {})
-    super(:include => [{:mixed_fields => {:include => :mixed_field_type}}, :release_dates, :fields, :genres, :platforms, :media, :modes, :tags ])
+    super(:include => [{:mixed_fields => {:include => [:mixed_field_type, :company, :developer, :series_game]}}, :release_dates, :fields, :genres, :platforms, :media, :modes, :tags ])
   end
 
 end
