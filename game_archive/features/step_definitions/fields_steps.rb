@@ -22,23 +22,23 @@ When /^I enter field with "(.*?)"$/ do |fill|
     end
     if fill == "Developer"
       @textDeveloper = "new developer"
-      fill_in "new_developers", :with => @textDeveloper
+      fill_in "developer_link", :with => @textDeveloper
     end
     if fill == "Publisher"
       @textPublisher = "new publisher"
-      fill_in "new_publishers", :with => @textPublisher
+      fill_in "publisher_link", :with => @textPublisher
     end
     if fill == "Distributor"
       @textDistributor = "new distributor"
-      fill_in "new_distributors", :with => @textDistributor
+      fill_in "distributor_link", :with => @textDistributor
     end
     if fill == "Credits"
       @textCredits = "new credits"
-      fill_in "new_credits", :with => @textCredits
+      fill_in "credits_link", :with => @textCredits
     end
     if fill == "Series"
       @textSeries = "new series"
-      fill_in "new_series", :with => @textSeries
+      fill_in "series_link", :with => @textSeries
     end
     if fill == "Userdefined"
       @nameUserdefined = "new name Userdefined"

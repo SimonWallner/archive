@@ -9,10 +9,14 @@ function loadfields(jsonurl){
     var developersfields = ["External Links","Userdefined"];
     var usedfields;
     var page = '';
+    var devs;
+    var comps;
 
     if(jsonurl.indexOf('games') > 0) {
         usedfields = gamefields;
         page = 'game';
+        $.getJSON('/developers.json', function ( data ) { devs = data; });
+        $.getJSON('/companies.json', function ( data ) { comps = data; });
     }else if(jsonurl.indexOf('companies') > 0){
         usedfields = companyfields;
         page = 'company';
@@ -79,42 +83,67 @@ function loadfields(jsonurl){
                     }
                 }
             } else if($.inArray(i,['mixed_fields']) >= 0){
-                if(val.length < 1 && page == "game"){
+
+                if(page == "game"){
                     $.each(["developer","publisher","distributor","credits","external links","series"],
                     function(index,value){
                         addField($('#addFieldButton'), usedfields);
                         var select_elem = $('div.newFieldsDiv').find('select:last');
                         select_elem.find('option[value="'+value+'"]').attr('selected', true);
                         addConcreteField(select_elem, false, false, true);
+                        $('#'+input_field_name).val('')
                     });
                 }
+
                 for (var x = 0; x < val.length; x++){
                     var type = val[x]['mixed_field_type'].name.toLowerCase();
                     var input_field_name = 'new_' + type.replace(' ','_');
                     if(input_field_name.lastIndexOf('s') !== (input_field_name.length - 1))
                         input_field_name = input_field_name + 's';
 
-                    if($('#'+input_field_name).length == 0){
-                        addField($('#addFieldButton'), usedfields);
-                        var select_elem = $('div.newFieldsDiv').find('select:last');
-                        select_elem.find('option[value="'+type+'"]').attr('selected', true);
-                        addConcreteField(select_elem, false, false, true);
-                        $('#'+input_field_name).val('');
-                    }
-                    var valstr = ''
+                    var valstr = '';
                     if(val[x].company_id)
-                        valstr = valstr + '@comp:' + val[x].company_id;
+                        valstr = valstr + '@comp:' + val[x].company_id + ':' + val[x].company.name ;
                     else if(val[x].developer_id)
-                        valstr = valstr + '@dev:' + val[x].developer_id;
+                        valstr = valstr + '@dev:' + val[x].developer_id + ':' + val[x].developer.name ;
                     else if(val[x].series_game_id)
-                        valstr = valstr + '@game:' + val[x].series_game_id;
+                        valstr = valstr + '@game:' + val[x].series_game_id + ':' + val[x].series_game.title ;
                     if(val[x].not_found)
-                        valstr = valstr + val[x].not_found
+                        valstr = valstr + val[x].not_found + ':' + (val[x].additional_info ? val[x].additional_info : '') + ','
                     else
                         valstr = valstr + ':' + (val[x].additional_info ? val[x].additional_info : '') + ',';
 
                     $('#'+input_field_name).val($('#'+input_field_name).val()+valstr);
                 }
+
+                $.each(["developer","publisher","distributor","credits","series"],
+                function(index,value){
+                    var input_field_name = 'new_' + value;
+                    if(input_field_name.lastIndexOf('s') !== (input_field_name.length - 1))
+                        input_field_name = input_field_name + 's';
+                    //@dev:2:adelheit:asde,@comp:1:company:casd,
+                    if($('#'+input_field_name).val()){
+                        $.each($('#'+input_field_name).val().split(','), function(index, splitval){
+
+                            if(splitval.indexOf('@') == 0){
+                                var name = splitval.split(':')[2];
+                                var text = splitval.split(':')[3];
+                                $('.'+value+'_hidden:last').val(splitval.replace(':'+name,'')+',');
+                                $('.'+value+'_link:last').val(name);
+                                $('.'+value+'_text:last').val(text);
+                                $('.'+value+'_text:last').next('button').click();
+                            }else if(splitval.split(':').length > 1){
+                                var name = splitval.split(':')[0];
+                                var text = splitval.split(':')[1];
+                                $('.'+value+'_hidden:last').val(splitval+',');
+                                $('.'+value+'_link:last').val(name);
+                                $('.'+value+'_text:last').val(text);
+                                $('.'+value+'_text:last').next('button').click();
+                            }
+                        });
+                    }
+                });
+
             }  else if($.inArray(i,['official_name']) >= 0){
                 addField($('#addFieldButton'), usedfields);
                 var select_elem = $('div.newFieldsDiv').find('select:last');
@@ -206,13 +235,7 @@ function addConcreteField(select_element, deletecurrent, value, onload){
     if(input_field_name.lastIndexOf('s') !== (input_field_name.length - 1))
         input_field_name = input_field_name + 's';
     if(field_name == 'remove'){                                                                      // remove field
-        $(select_element).parent().remove();
-
-    }else if($.inArray(field_name,['series']) >= 0){                                                 // game references + add info
-        $(select_element).parent().append('<textarea cols="40" rows="3" id="'+input_field_name+'" name="'+input_field_name+'">' +
-            (value ? value : '') +
-            '</textarea>');
-        at_autocomp(input_field_name+'_dummy', $('#'+input_field_name), '/ajax.json?type=game');
+        $(select_element).parent().remove()
 
     }else if($.inArray(field_name,['release dates']) >= 0){                                           // dates
         anzDateInputs++;
@@ -264,15 +287,23 @@ function addConcreteField(select_element, deletecurrent, value, onload){
             (value ? value : '') +
             '</textarea>');
 
-    }else if($.inArray(field_name,['developer','publisher','distributor','credits']) >= 0){          // dev/comp references + add info
+    }else if($.inArray(field_name,['developer','publisher','distributor','credits','series']) >= 0){          // dev/comp/game references + add info
 
-        anzDateInputs++;
         var    html = '<div class="'+field_name+'_div" id="'+field_name+'_div">';
+        html = html + '<input class="'+field_name+'_hidden" name="'+field_name+'_hidden" type="hidden">';
         html = html + '<input class="'+field_name+'_link mixin" name="'+field_name+'_link" type="text">';
         html = html + '<input class="'+field_name+'_text mixin" name="'+field_name+'_text" type="text">';
         html = html + '<button type="button" onclick="addConcreteField(this,false);" value="'+field_name+'"> + </button></div>';
         $(select_element).parent().append(html);
-        $('.'+field_name+'_link').autocomplete({source: '/ajax.json?type=developer', minLength: 1});
+        $('.'+field_name+'_link').autocomplete({
+            source: field_name == 'series' ? '/ajax.json?type=game' : '/ajax.json?type=developer',
+            minLength: 1,
+            select: function( event, ui ) {
+                $(this).val( ui.item.label.split(' - ')[0] );
+                $(this).prev().val( ui.item.value );
+                return false;
+            }
+        });
     }
     if(onload)
         $(':input:enabled:visible:first').focus();
