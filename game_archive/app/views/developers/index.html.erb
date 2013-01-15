@@ -1,17 +1,26 @@
+<h1>Developers</h1>
 <div>
-  <h2>People</h2>
-	
-	<div class="developers_featured">
-		<h3>Featured</h3>
-		<% devs = Developer.find(:all, :limit => getAmountFeatured, :order => 'created_at DESC')[0..7] %>
-		<% devs.concat(Developer.find(:all, :limit => getAmountFeatured, :order => 'popularity DESC')[0..7]) %>
-		<% devs = devs.uniq %>
-		<% devs[0..7].each do |dev| %>
-			<% @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(1,dev.id)%>
-			<% if !user_signed_in? && @reportblockcontent%>
-				<% if (@reportblockcontent.status !=1)%>
+	<% devs = Developer.find(:all, :limit => getAmountFeatured, :order => 'created_at DESC')[0..7] %>
+	<% devs.concat(Developer.find(:all, :limit => getAmountFeatured, :order => 'popularity DESC')[0..7]) %>
+	<% devs = devs.uniq %>
+	<% devs[0..7].each do |dev| %>
+		<% @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(1,dev.id)%>
+		<% if @reportblockcontent%>
+			<% if (@reportblockcontent.status !=4)%>				
+				<% if !user_signed_in?%>
+					<% if (@reportblockcontent.status !=1)%>
+						<div class="tiled_4x">
+							<a href="<%= developer_path dev %>">
+								<div class="tile">
+									<%= image_tag(dev.image_url(:tiled_4x).to_s, :class => 'rounded teaser')%>
+									<div class="caption"><div><%= dev.name %></div></div>
+								</div>
+							</a>
+						</div>
+					<% end %>
+				<% else%>
 					<div class="tiled_4x">
-						<a href="/developers/<%= dev.id %>">
+						<a href="<%= developer_path dev %>">
 							<div class="tile">
 								<%= image_tag(dev.image_url(:tiled_4x).to_s, :class => 'rounded teaser')%>
 								<div class="caption"><div><%= dev.name %></div></div>
@@ -19,39 +28,43 @@
 						</a>
 					</div>
 				<% end %>
-			<% else%>
-				<div class="tiled_4x">
-					<a href="/developers/<%= dev.id %>">
-						<div class="tile">
-							<%= image_tag(dev.image_url(:tiled_4x).to_s, :class => 'rounded teaser')%>
-							<div class="caption"><div><%= dev.name %></div></div>
-						</div>
-					</a>
-				</div>
 			<% end %>
+		<% else%>
+			<div class="tiled_4x">
+				<a href="<%= developer_path dev %>">
+					<div class="tile">
+						<%= image_tag(dev.image_url(:tiled_4x).to_s, :class => 'rounded teaser')%>
+						<div class="caption"><div><%= dev.name %></div></div>
+					</div>
+				</a>
+			</div>
 		<% end %>
-	</div>
-	
-	<div class="clear"></div>
+	<% end %>
+</div>
 
+<br class="clear" />
 
-<% if user_signed_in? %>
-    <div><br/>
-
-        <%= link_to "New Developer", new_developer_path %>
-    </div>
-<% end %>
-
-	<div class="developers_all">
-		<div class="developers_featured">
-		<h3>All developers</h3>
-		<% developers = Developer.find(:all, :order => 'name') %>
-		<% developers.each do |developer| %>
-			<% @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(1,developer.id)%>
-			<% if !user_signed_in? && @reportblockcontent%>
-				<% if (@reportblockcontent.status !=1)%>
+<h2>All Developers in Alphabetical Order</h2>
+<div>
+	<% developers = Developer.find(:all, :order => 'name') %>
+	<% developers.each do |developer| %>
+		<% @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(1,developer.id)%>
+		<% if @reportblockcontent%>
+			<% if (@reportblockcontent.status !=4)%>				
+				<% if !user_signed_in?%>
+					<% if (@reportblockcontent.status !=1)%>
+						<div class="tiled_4x">
+							<a href="<%= developer_path developer %>">
+								<div class="tile">
+									<%= image_tag(developer.image_url(:tiled_4x).to_s, :class => 'rounded teaser')%>
+									<div class="caption"><div><%= developer.name %></div></div>
+								</div>
+							</a>
+						</div>
+					<% end %>
+				<% else%>
 					<div class="tiled_4x">
-						<a href="/developers/<%= developer.id %>">
+						<a href="<%= developer_path developer %>">
 							<div class="tile">
 								<%= image_tag(developer.image_url(:tiled_4x).to_s, :class => 'rounded teaser')%>
 								<div class="caption"><div><%= developer.name %></div></div>
@@ -59,20 +72,23 @@
 						</a>
 					</div>
 				<% end %>
-			<% else%>
-				<div class="tiled_4x">
-					<a href="/developers/<%= developer.id %>">
-						<div class="tile">
-							<%= image_tag(developer.image_url(:tiled_4x).to_s, :class => 'rounded teaser')%>
-							<div class="caption"><div><%= developer.name %></div></div>
-						</div>
-					</a>
-				</div>
 			<% end %>
+		<% else%>
+			<div class="tiled_4x">
+				<a href="<%= developer_path developer %>">
+					<div class="tile">
+						<%= image_tag(developer.image_url(:tiled_4x).to_s, :class => 'rounded teaser')%>
+						<div class="caption"><div><%= developer.name %></div></div>
+					</div>
+				</a>
+			</div>
 		<% end %>
-	</div>
-	
-	<div class="clear"></div>
-	</div>
-
+	<% end %>
 </div>
+
+<br class="clear" />
+<% if user_signed_in? %>
+   <div class="more">
+       <%= link_to "Create a New Developer Article...", new_developer_path %>
+   </div>
+<% end %>

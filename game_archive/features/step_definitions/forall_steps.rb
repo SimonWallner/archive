@@ -8,7 +8,7 @@ When /^I follow the new developer link$/ do
 end
 
 When /^I follow the new company link$/ do
-  click_link_or_button "New Company"
+  click_link_or_button "Create a New Studio or Organisation Article..."
 end
 
 

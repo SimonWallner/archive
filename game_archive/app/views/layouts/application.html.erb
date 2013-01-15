@@ -11,7 +11,19 @@
 </head>
 <body>
 
-<div id="responsiveHelper"><span>media type: </span></div>
+<div id="responsiveHelper">
+	<p>
+		media queries:<br>
+		<span id="responsive-tag-large-and-up">large and up</span>
+		<span id="responsive-tag-mid-only">mid only</span>
+		<span id="responsive-tag-mid-and-below">mid and below</span>
+		<span id="responsive-tag-mid-and-up">mid and up</span>
+		<span id="responsive-tag-small-only">small only</span>
+		<span id="responsive-tag-small-and-below">small and below</span>
+		<span id="responsive-tag-small-and-up">small and up</span>
+		<span id="responsive-tag-tiny-and-below">tiny and below</span>
+	</p>
+</div>
 
 <div id="header">
 	<div class="container">
@@ -21,52 +33,14 @@
 			</a>
 		</div>
 		<div class="brief">
-			<p>Lomo sriracha farm-to-table, authentic deserunt selvage whatever tofu biodiesel thundercats wayfarers chillwave typewriter brooklyn. Mumblecore bespoke officia authentic trust fund. Nostrud bushwick velit quis echo park Austin. Pickled salvia small batch, mustache banh mi pork belly cosby sweater four loko narwhal. </p>
+			<p><em>"The Archive for Austrian Video Game Development strives to capture and preserve information related to video game development in Austria. Our goal is to create a comprehensive archive that serves as an overview over current developments and a constitutes a valuable historical source for the future."</em></p>
 		</div>
 	
-		<div class="clear"></div>
-	
-		<div class="menu">
-			<ul>
-				<li><%= link_to 'home', "/"%></li>
-				<li>about us</li>
-				<li>news</li>
-				<li>press</li>
-			</ul>
-			<ul>
-				<li><%= link_to "games", games_path %></li>
-                <li><%= link_to 'people' ,developers_path %></li>
-				<li><%= link_to 'companies' ,companies_path %></li>				
-			</ul>
-			<ul>
-				<li><%= link_to "search", '/search/query' %></li>
-			</ul>
-			<ul>
-              <% if user_signed_in? %>
-                  <% if current_user.admin? %>
-                    <li>
-                        <%= link_to('Send Invitation', new_user_invitation_path) %>
-                    </li>
-					<li>
-                        <%= link_to('Manage Users', '/users/manage') %>
-                    </li>
-				    <li>
-						<%= link_to('Reported Contents', reportblockcontents_path ) %>
-					</li>
-                  <% end %>
-                  <li>
-                    <%= link_to('Edit', edit_user_registration_path) %>
-                  </li>
-                  <li>
-                    <%= link_to('Logout', destroy_user_session_path, :method => :delete) %>
-                  </li>
-              <% else %>
-                  <li>
-                    <%= link_to('Login', new_user_session_path)  %>
-                  </li>
-              <% end %>
-			</ul>
-		</div>	
+	</div>
+</div>
+<div id="top-menu">
+	<div class="container">	
+		<%= render "layouts/menu" %>
 		<div class="clear"></div>
 	</div>
 </div>
@@ -81,53 +55,13 @@
 
 <div id="footer">
 	<div class="container">
-	    <div class="menu">
-			<ul>
-				<li><%= link_to 'home', "/"%></li>
-				<li>about us</li>
-				<li>news</li>
-				<li>press</li>
-			</ul>
-			<ul>
-                <li><%= link_to "games", games_path %></li>
-                <li><%= link_to 'people', developers_path%></li>
-				<li><%= link_to 'companies' ,companies_path %></li>		
-			</ul>
-			<ul>
-				<li>search</li>
-			</ul>
-			<ul>
-              <% if user_signed_in? %>
-                  <% if current_user.admin? %>
-                      <li>
-                        <%= link_to('Send Invitation', new_user_invitation_path) %>
-                      </li>
-					  <li>
-                        <%= link_to('Manage Users', '/users/manage') %>
-					  </li>
-				    <li>
-						<%= link_to('Reported Contents', reportblockcontents_path) %>
-					</li>
-                  <% end %>
-                  <li>
-                    <%= link_to('Edit', edit_user_registration_path) %>
-                  </li>
-                  <li>
-                    <%= link_to('Logout', destroy_user_session_path, :method => :delete) %>
-                  </li>
-              <% else %>
-                  <li>
-                    <%= link_to('Login', new_user_session_path)  %>
-                  </li>
-              <% end %>
-			</ul>
-		</div>	
+	    <%= render "layouts/menu" %>	
 		<div class="clear"></div>
 		
 		<div id="legal" class="grid_12">
-			<p>Ennui food truck adipisicing, vinyl high life seitan direct trade authentic. Freegan truffaut placeat, umami portland +1 cred nostrud. Trust fund locavore sunt, readymade viral art party aute skateboard PBR sriracha. Post-ironic quinoa fugiat pork belly tempor.</p>
+			<p>The platform behind the archive is developed as open source under the MIT license. You can find the repository at <a href="https://github.com/SimonWallner/archive/">github</a>.</p>
 			<p>
-				(c) 2012, some rights reserved
+				(c) 2012-2013, some rights reserved
 			</p>
 		</div>
 		

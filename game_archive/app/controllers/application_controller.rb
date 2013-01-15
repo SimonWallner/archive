@@ -17,19 +17,31 @@ class ApplicationController < ActionController::Base
 		redirect_to root_path, notice: 'you have been blocked, reason: ' + current_user.note
 	end
   end
+  
   def block_content_visitor (type)
 	@reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(type,params[:id])
 	if (@reportblockcontent)
-		if (@reportblockcontent.status== 1) and (current_user.nil?)
-			if @reportblockcontent.reason
-				flash[:alert] = "The content has been blocked due to: " + @reportblockcontent.reason
-			else
-				flash[:alert] = "The content has been blocked."
+		if current_user.nil?
+			if (@reportblockcontent.status== 1)
+				if @reportblockcontent.reason
+					flash[:alert] = "The content has been blocked due to: " + @reportblockcontent.reason
+				else
+					flash[:alert] = "The content has been blocked."
+				end
+				redirect_to root_path
+			else if (@reportblockcontent.status== 4)
+								if @reportblockcontent.reason
+					flash[:alert] = "The content has been deleted due to: " + @reportblockcontent.reason
+				else
+					flash[:alert] = "The content has been deleted."
+				end
+				redirect_to root_path
 			end
-			redirect_to root_path
+			end
 		end
 	end
   end
+  
   
   def block_content_user (type)
 	

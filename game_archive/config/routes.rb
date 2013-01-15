@@ -22,6 +22,7 @@ GameArchive::Application.routes.draw do
 		member do
 			get 'report'
 			get 'block'
+			get 'delete'
 		end
 	end 
 
@@ -31,6 +32,7 @@ GameArchive::Application.routes.draw do
 		member do
 			get 'report'
 			get 'block'
+			get 'delete'
 		end
 	end 
 
@@ -40,6 +42,7 @@ GameArchive::Application.routes.draw do
 		member do
 			get 'report'
 			get 'block'
+			get 'delete'
 		end
 	end 
 	

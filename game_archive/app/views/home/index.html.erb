@@ -1,25 +1,97 @@
-<div class="about_home">
-	<h1>About us</h1>
-	<p>Lomo sriracha farm-to-table, authentic deserunt selvage whatever tofu biodiesel thundercats wayfarers chillwave typewriter brooklyn. Mumblecore bespoke officia authentic trust fund. Nostrud bushwick velit quis echo park Austin. Pickled salvia small batch, mustache banh mi pork belly cosby sweater four loko narwhal.</p>
-	<div class="more"><a href="#">more...</a></div>
-</div>
+<h1>About us</h1>
+<p>
+	The Archive for Austrian Video Game Development strives to gather and preserve information related to video game development in Austria. Our goal is to create a comprehensive archive that serves as an overview over current developments and a constitutes a valuable historical source for the future.
+	</p>
+<p>
+	Information is gathered through public contribution in a "wiki like" fashion. Users create and author articles for games, developers, studios and other organisations, and also correct and amend data. 
+</p>
+<p>
+	The platform is still in its infancy both in terms of the technical realisation and the gathered content. We planed this as a long term endeavour and we invite everyone to join the conversation and support the archive. We believe that games are an important new medium and art form, and thus deserve to be properly preserved and information about the archived.
+</p>
+<p>
+	We are still in an early prototyping stage, and user accounts are only issued manually. If you want to become a contributor, please send us an <a href="mailto:simon@gamelab.at">email</a>.
+</p>
 
-<div class="news_home">
-	<h1>News</h1>
-	<p><strong>September 3rd, 2012</strong> &mdash; Lomo sriracha farm-to-table, authentic deserunt selvage whatever tofu biodiesel thundercats wayfarers chillwave typewriter brooklyn. Mumblecore bespoke officia authentic trust fund. Nostrud bushwick velit quis echo park Austin. Pickled salvia small batch, mustache banh mi pork belly cosby sweater four loko narwhal.</p>
-	<div class="more"><a href = "#">more...</a></div>
-</div>
 
-<div class="games_home">
-	<h1>Games</h1>
-	
-	<div class="games_featured">
-		<% games = Game.find(:all, :limit => getAmountFeatured, :order => 'created_at DESC')[0..7] %>
-		<% games.concat(Game.find(:all, :limit => getAmountFeatured, :order => 'popularity DESC')[0..7]) %>
-		<% games = games.uniq %>
-		<% games[0..7].each do |game| %>
+<h1>Games</h1>
+
+<% game = Game.order("RANDOM()").first %>
+<% Game.order("RANDOM()").each do |game| %>
+	<% @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(0,game.id)%>
+	<% if game != nil%>
+		<% if (@reportblockcontent)%>
+				<% if (@reportblockcontent.status !=4)%>				
+					<% if !user_signed_in?%>
+						<% if (@reportblockcontent.status !=1)%>
+							<div class="rounded game-teaser-large">
+								<a href="<%= game_path game %>">
+									<div class="tile">
+										<%= image_tag(game.image_url(:top_game).to_s, :class => 'rounded teaser')%>
+										<div class="caption"><div><%= game.title %></div></div>
+									</div>
+								</a>
+							</div>
+							<% break %>	
+						<% end %>
+					<% else%>
+						<div class="rounded game-teaser-large">
+							<a href="<%= game_path game %>">
+								<div class="tile">
+									<%= image_tag(game.image_url(:top_game).to_s, :class => 'rounded teaser')%>
+									<div class="caption"><div><%= game.title %></div></div>
+								</div>
+							</a>
+						</div>
+						<% break %>	
+					<% end %>
+				<% end %>
+		<% else%>
+			<div class="rounded game-teaser-large">
+				<a href="<%= game_path game %>">
+					<div class="tile">
+						<%= image_tag(game.image_url(:top_game).to_s, :class => 'rounded teaser')%>
+						<div class="caption"><div><%= game.title %></div></div>
+					</div>
+				</a>
+			</div>
+			<% break %>	
+		<% end %>				
+	<% end %>
+<% end %>
+
+<div>
+	<% games = Game.find(:all, :limit => getAmountFeatured, :order => 'created_at DESC')[0..7] %>
+	<% games.concat(Game.find(:all, :limit => getAmountFeatured, :order => 'popularity DESC')[0..7]) %>
+	<% games = games.uniq %>
+	<% games[0..7].each do |game| %>
+	<% @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(0,game.id)%>
+		<% if @reportblockcontent%>
+			<% if (@reportblockcontent.status !=4)%>				
+				<% if !user_signed_in?%>
+					<% if (@reportblockcontent.status !=1)%>
+						<div class="tiled_2x">
+							<a href="<%= game_path game %>">
+								<div class="tile">
+									<%= image_tag(game.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
+									<div class="caption"><div><%= game.title %></div></div>
+								</div>
+							</a>
+						</div>
+					<% end %>
+				<% else%>
+					<div class="tiled_2x">
+						<a href="<%= game_path game %>">
+							<div class="tile">
+								<%= image_tag(game.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
+								<div class="caption"><div><%= game.title %></div></div>
+							</div>
+						</a>
+					</div>
+				<% end %>
+			<% end %>
+		<% else%>
 			<div class="tiled_2x">
-				<a href="/games/<%= game.id %>">
+				<a href="<%= game_path game %>">
 					<div class="tile">
 						<%= image_tag(game.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
 						<div class="caption"><div><%= game.title %></div></div>
@@ -27,41 +99,45 @@
 				</a>
 			</div>
 		<% end %>
-		<div class="more"><a href="games/">more...</a></div>
-	</div>
-	
-	<div class="clear"></div>
-	
-	<div class="games_random">
-	<h3>Did you already know...</h3>
-	<div>
-		<% game = Game.order("RANDOM()").first %>
-		<% if game != nil %>
-			<div class="tiled_2x">
-			<a href="/games/<%= game.id %>">
-				<div class="tile">
-					<%= image_tag(game.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
-					<div class="caption"><div><%= game.title %></div></div>
-				</div>
-			</a>
-			</div>
-		<% end %>
-	</div>
-	</div>
-	
-	<div class="clear"></div>
+	<% end %>
 </div>
+<br class="clear" />
+<div class="more"><a href="<%= games_path %>">Find More Games...</a></div>
 
-<div class="companies_home">
-	<h1>Companies</h1>
-	
-	<div class="companies_featured">
-		<% coms = Company.find(:all, :limit => getAmountFeatured, :order => 'created_at DESC')[0..7] %>
-		<% coms.concat(Company.find(:all, :limit => getAmountFeatured, :order => 'popularity DESC')[0..7]) %>
-		<% coms = coms.uniq %>
-		<% coms[0..7].each do |com| %>
+<h1>Studios & Organisations</h1>
+<div>
+	<% coms = Company.find(:all, :limit => getAmountFeatured, :order => 'created_at DESC')[0..7] %>
+	<% coms.concat(Company.find(:all, :limit => getAmountFeatured, :order => 'popularity DESC')[0..7]) %>
+	<% coms = coms.uniq %>
+	<% coms[0..7].each do |com| %>
+		<% @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(2,com.id)%>
+		<% if @reportblockcontent%>
+			<% if (@reportblockcontent.status !=4)%>				
+				<% if !user_signed_in?%>
+					<% if (@reportblockcontent.status !=1)%>
+						<div class="tiled_2x">
+							<a href="<%= company_path com %>">
+								<div class="tile">
+									<%= image_tag(com.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
+									<div class="caption"><div><%= com.name %></div></div>
+								</div>
+							</a>
+						</div>
+					<% end %>
+				<% else%>
+					<div class="tiled_2x">
+						<a href="<%= company_path com %>">
+							<div class="tile">
+								<%= image_tag(com.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
+								<div class="caption"><div><%= com.name %></div></div>
+							</div>
+						</a>
+					</div>
+				<% end %>
+			<% end %>
+		<% else%>
 			<div class="tiled_2x">
-				<a href="/companies/<%= com.id %>">
+				<a href="<%= company_path com %>">
 					<div class="tile">
 						<%= image_tag(com.image_url(:tiled_2x).to_s, :class => 'rounded teaser')%>
 						<div class="caption"><div><%= com.name %></div></div>
@@ -69,13 +145,16 @@
 				</a>
 			</div>
 		<% end %>
-		<div class="more"><a href="companies/">more...</a></div>
-	</div>
-	
-	<div class="clear"></div>
-	
-	<div class="companies_random">
-	<h3>Did you already know...</h3>
+	<% end %>
+</div>
+
+<br class="clear" />
+<div class="more"><a href="<%= companies_path %>">Find More Studios & Organisations...</a></div>
+
+
+
+<!-- <div class="companies_random">
+<h3>Did you already know...</h3>
 	<div>
 		<% com = Company.order("RANDOM()").first %>
 		<% if com != nil %>
@@ -89,21 +168,46 @@
 			</div>
 		<% end %>
 	</div>
-	</div>
-	
-	<div class="clear"></div>
-</div>
+</div> -->
 
-<div class="developers_home">
-	<h1>People</h1>
-	
-	<div class="developers_featured">
-		<% devs = Developer.find(:all, :limit => getAmountFeatured, :order => 'created_at DESC')[0..7] %>
-		<% devs.concat(Developer.find(:all, :limit => getAmountFeatured, :order => 'popularity DESC')[0..7]) %>
-		<% devs = devs.uniq %>
-		<% devs[0..7].each do |dev| %>
+<br class="clear" />
+
+
+<h1>Developers</h1>
+
+<div>
+	<% devs = Developer.find(:all, :limit => getAmountFeatured, :order => 'created_at DESC')[0..7] %>
+	<% devs.concat(Developer.find(:all, :limit => getAmountFeatured, :order => 'popularity DESC')[0..7]) %>
+	<% devs = devs.uniq %>
+	<% devs[0..7].each do |dev| %>
+		<% @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(1,dev.id)%>
+		<% if @reportblockcontent%>
+			<% if (@reportblockcontent.status !=4)%>				
+				<% if !user_signed_in?%>
+					<% if (@reportblockcontent.status !=1)%>
+						<div class="tiled_4x">
+							<a href="<%= developer_path dev %>">
+								<div class="tile">
+									<%= image_tag(dev.image_url(:tiled_4x).to_s, :class => 'rounded teaser')%>
+									<div class="caption"><div><%= dev.name %></div></div>
+								</div>
+							</a>
+						</div>
+					<% end %>
+				<% else%>
+					<div class="tiled_4x">
+						<a href="<%= developer_path dev %>">
+							<div class="tile">
+								<%= image_tag(dev.image_url(:tiled_4x).to_s, :class => 'rounded teaser')%>
+								<div class="caption"><div><%= dev.name %></div></div>
+							</div>
+						</a>
+					</div>
+				<% end %>
+			<% end %>
+		<% else%>
 			<div class="tiled_4x">
-				<a href="/developers/<%= dev.id %>">
+				<a href="<%= developer_path dev %>">
 					<div class="tile">
 						<%= image_tag(dev.image_url(:tiled_4x).to_s, :class => 'rounded teaser')%>
 						<div class="caption"><div><%= dev.name %></div></div>
@@ -111,27 +215,27 @@
 				</a>
 			</div>
 		<% end %>
-		<div class="more"><a href="developers/">more...</a></div>
-	</div>
-	
-	<div class="clear"></div>
-	
-	<div class="developers_random">
-	<h3>Did you already know...</h3>
-	<div>
-		<% dev = Developer.order("RANDOM()").first %>
-		<% if dev != nil %>
-			<div class="tiled_4x">
-			<a href="/developers/<%= dev.id %>">
-				<div class="tile">
-					<%= image_tag(dev.image_url(:tiled_4x).to_s, :class => 'rounded teaser')%>
-					<div class="caption"><div><%= dev.name %></div></div>
-				</div>
-			</a>
-			</div>
-		<% end %>
-	</div>
-	</div>
-	
-	<div class="clear"></div>
+	<% end %>
 </div>
+
+<br class="clear" />
+<div class="more"><a href="<%= developers_path %>">Find More Developers...</a></div>
+
+<!-- <div class="developers_random">
+<h3>Did you already know...</h3>
+<div>
+	<% dev = Developer.order("RANDOM()").first %>
+	<% if dev != nil %>
+		<div class="tiled_4x">
+		<a href="/developers/<%= dev.id %>">
+			<div class="tile">
+				<%= image_tag(dev.image_url(:tiled_4x).to_s, :class => 'rounded teaser')%>
+				<div class="caption"><div><%= dev.name %></div></div>
+			</div>
+		</a>
+		</div>
+	<% end %>
+</div>
+</div> -->
+
+<br class="clear" />
