@@ -1,7 +1,7 @@
 <h1>Developers</h1>
 <div>
-	<% devs = (DeveloperVersioner.instance.current_versions_from_collection Developer.find(:all, :limit => getAmountFeatured, :order => 'created_at DESC'))[0..7] %>
-	<% devs.concat((DeveloperVersioner.instance.current_versions_from_collection Developer.find(:all, :limit => getAmountFeatured, :order => 'popularity DESC'))[0..7]) %>
+	<% devs = (DeveloperVersioner.instance.current_versions_from_collection Developer.all(:order => 'created_at DESC'))[0..7] %>
+	<% devs.concat((DeveloperVersioner.instance.current_versions_from_collection Developer.all(:order => 'popularity DESC'))[0..7]) %>
 	<% devs = DeveloperVersioner.instance.current_versions_from_collection devs.uniq %>
 	<% devs[0..7].each do |dev| %>
 		<% @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(1,dev.id)%>
@@ -46,7 +46,7 @@
 
 <h2>All Developers in Alphabetical Order</h2>
 <div>
-	<% developers = DeveloperVersioner.instance.current_versions_from_collection Developer.find(:all, :order => 'name') %>
+	<% developers = DeveloperVersioner.instance.current_versions_from_collection Developer.all(:order => 'name') %>
 	<% developers.each do |developer| %>
 		<% @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(1,developer.id)%>
 		<% if @reportblockcontent%>

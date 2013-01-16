@@ -59,8 +59,8 @@
 <% end %>
 
 <div>
-	<% games = (GameVersioner.instance.current_versions_from_collection Game.find(:all, :limit => getAmountFeatured, :order => 'created_at DESC'))[0..7] %>
-	<% games.concat((GameVersioner.instance.current_versions_from_collection Game.find(:all, :limit => getAmountFeatured, :order => 'popularity DESC'))[0..7]) %>
+	<% games = (GameVersioner.instance.current_versions_from_collection Game.all(:order => 'created_at DESC'))[0..7] %>
+	<% games.concat((GameVersioner.instance.current_versions_from_collection Game.all(:order => 'popularity DESC'))[0..7]) %>
 	<% games = GameVersioner.instance.current_versions_from_collection games.uniq %>
 	<% games[0..7].each do |game| %>
 	<% @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(0,game.id)%>
@@ -105,8 +105,8 @@
 
 <h1>Studios & Organisations</h1>
 <div>
-	<% coms = ( CompanyVersioner.instance.current_versions_from_collection Company.find(:all, :limit => getAmountFeatured, :order => 'created_at DESC') )[0..7] %>
-	<% coms.concat(( CompanyVersioner.instance.current_versions_from_collection Company.find(:all, :limit => getAmountFeatured, :order => 'popularity DESC') )[0..7]) %>
+	<% coms = ( CompanyVersioner.instance.current_versions_from_collection Company.all(:order => 'created_at DESC') )[0..7] %>
+	<% coms.concat(( CompanyVersioner.instance.current_versions_from_collection Company.all(:order => 'popularity DESC') )[0..7]) %>
 	<% coms = CompanyVersioner.instance.current_versions_from_collection coms.uniq %>
 	<% coms[0..7].each do |com| %>
 		<% @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(2,com.id)%>
@@ -175,8 +175,8 @@
 <h1>Developers</h1>
 
 <div>
-	<% devs = (DeveloperVersioner.instance.current_versions_from_collection Developer.find(:all, :limit => getAmountFeatured, :order => 'created_at DESC'))[0..7] %>
-	<% devs.concat((DeveloperVersioner.instance.current_versions_from_collection Developer.find(:all, :limit => getAmountFeatured, :order => 'popularity DESC'))[0..7]) %>
+	<% devs = (DeveloperVersioner.instance.current_versions_from_collection Developer.all(:order => 'created_at DESC'))[0..7] %>
+	<% devs.concat((DeveloperVersioner.instance.current_versions_from_collection Developer.all(:order => 'popularity DESC'))[0..7]) %>
 	<% devs = DeveloperVersioner.instance.current_versions_from_collection devs.uniq %>
 	<% devs[0..7].each do |dev| %>
 		<% @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(1,dev.id)%>

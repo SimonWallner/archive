@@ -115,7 +115,7 @@ class GamesController < ApplicationController
     if current_user
       if !current_user.blocked
         if (params[:reportblockcontent])
-          Reportblockcontent.create_from_string(0,params[:id], params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
+          Reportblockcontent.create_from_string(0,@game.id, params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
         else
           create_add_new_token(params[:new_genres], params[:new_platforms], params[:new_medias], params[:new_modes], params[:new_tags])
           create_add_new_release_dates(params[:new_release_dates])
@@ -123,12 +123,12 @@ class GamesController < ApplicationController
         end
       else
         if params[:reportblockcontent]&& params[:reportblockcontent][:status]=='0'
-          Reportblockcontent.create_from_string(0,params[:id], params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
+          Reportblockcontent.create_from_string(0,@game.id, params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
         end
       end
     else
         if params[:reportblockcontent]&& params[:reportblockcontent][:status]=='0'
-          Reportblockcontent.create_from_string(0,params[:id], params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
+          Reportblockcontent.create_from_string(0,@game.id, params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
         end
     end
 
@@ -146,7 +146,7 @@ class GamesController < ApplicationController
             format.html { redirect_to @game,notice: 'Game was reported successfully'}
           else
             format.html { redirect_to @game}
-        end
+          end
         else
           # delete newest version
           old.add_errors @game.errors
