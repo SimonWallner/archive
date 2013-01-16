@@ -11,6 +11,7 @@ Feature: Report Content
     And I fill in the fields of Game reportblockcontent with valid details and submit it
     Then I should be on the detail page of the given game
 
+    @active
   Scenario: User report game's page with valid data
     Given I am not signed in
 	And I have a game Tetris

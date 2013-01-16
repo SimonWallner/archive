@@ -1,4 +1,3 @@
-@active
 Feature: Landingpage
 	As a visitor,
 	in order to get a good overview,

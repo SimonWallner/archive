@@ -97,50 +97,50 @@ class DevelopersController < ApplicationController
 
   # PUT /developers/1
   def update
-
-    old = Developer.find(params[:id])
-    @developer = @@DEVELOPER_VERSIONER.new_version old
+    @developer = @@DEVELOPER_VERSIONER.current_version Developer.find(params[:id])
 
     if current_user
       if !current_user.blocked
         if (params[:reportblockcontent])
-          Reportblockcontent.create_from_string(1,params[:id], params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
+          Reportblockcontent.create_from_string(1,@developer.id, params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
         else
+          old = @developer
+          @developer = @@DEVELOPER_VERSIONER.new_version old
           Field.create_add_new_fields(@developer, params[:new_fields])
         end
-        else
+      else
         if params[:reportblockcontent]&& params[:reportblockcontent][:status]=='0'
-          Reportblockcontent.create_from_string(1,params[:id], params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
+          Reportblockcontent.create_from_string(1, @developer.id, params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
         end
       end
     else
       if params[:reportblockcontent]&& params[:reportblockcontent][:status]=='0'
-        Reportblockcontent.create_from_string(1,params[:id], params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
+        Reportblockcontent.create_from_string(1, @developer.id, params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
       end
     end
 	  
     respond_to do |format|
       if current_user
         if !current_user.blocked
+          if params[:reportblockcontent] && params[:reportblockcontent][:status]=='0'
+            format.html { redirect_to @developer,notice: 'Developer was reported successfully'}
+          else
             if @developer.update_attributes(params[:developer])
-              if params[:reportblockcontent] && params[:reportblockcontent][:status]=='0'
-                format.html { redirect_to @developer,notice: 'Developer was reported successfully'}
-              else
-                format.html { redirect_to @developer}
-              end
+              format.html { redirect_to @developer}
             else
               # delete newest version
               old.add_errors @developer.errors
               @developer.destroy
               @developer = old
-            format.html { render action: "edit" }
+              format.html { render action: "edit" }
             end
+          end
+        else
+          if params[:reportblockcontent] && params[:reportblockcontent][:status]=='0'
+            format.html { redirect_to @developer,notice: 'Developer was reported successfully'}
           else
-            if params[:reportblockcontent] && params[:reportblockcontent][:status]=='0'
-              format.html { redirect_to @developer,notice: 'Developer was reported successfully'}
-            else
-              format.html { redirect_to @developer,notice: 'you have been blocked, reason: ' + current_user.note}
-            end
+            format.html { redirect_to @developer,notice: 'you have been blocked, reason: ' + current_user.note}
+          end
         end
       else
         if params[:reportblockcontent] && params[:reportblockcontent][:status]=='0'
