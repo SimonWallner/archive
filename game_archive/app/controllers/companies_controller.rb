@@ -163,16 +163,6 @@ class CompaniesController < ApplicationController
     end
   end
 
-  # DELETE /companies/1
-  def destroy
-    @company = Company.find(params[:id])
-    @company.destroy
-
-    respond_to do |format|
-      format.html { redirect_to companies_url }
-    end
-  end
-
   def add_founded(params)
     param_founded = params[:founded]
     if param_founded == nil

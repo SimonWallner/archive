@@ -136,39 +136,38 @@ class GamesController < ApplicationController
       if current_user
         if !current_user.blocked
           if @game.update_attributes(params[:game])
-          create_add_new_mixed_fields(params[:new_developers], MixedFieldType.find_by_name("Developer"))
-          create_add_new_mixed_fields(params[:new_publishers], MixedFieldType.find_by_name("Publisher"))
-          create_add_new_mixed_fields(params[:new_distributors], MixedFieldType.find_by_name("Distributor"))
-          create_add_new_mixed_fields(params[:new_credits], MixedFieldType.find_by_name("Credits"))
-          create_add_new_mixed_fields(params[:new_series], MixedFieldType.find_by_name("Series"))
+            create_add_new_mixed_fields(params[:new_developers], MixedFieldType.find_by_name("Developer"))
+            create_add_new_mixed_fields(params[:new_publishers], MixedFieldType.find_by_name("Publisher"))
+            create_add_new_mixed_fields(params[:new_distributors], MixedFieldType.find_by_name("Distributor"))
+            create_add_new_mixed_fields(params[:new_credits], MixedFieldType.find_by_name("Credits"))
+            create_add_new_mixed_fields(params[:new_series], MixedFieldType.find_by_name("Series"))
 
+            if params[:reportblockcontent] && params[:reportblockcontent][:status]=='0'
+              format.html { redirect_to @game,notice: 'Game was reported successfully'}
+            else
+              format.html { redirect_to @game}
+            end
+          else
+            # delete newest version
+            old.add_errors @game.errors
+            @game.destroy
+            @game = old
+            format.html { render action: "edit" }
+          end
+        else
           if params[:reportblockcontent] && params[:reportblockcontent][:status]=='0'
             format.html { redirect_to @game,notice: 'Game was reported successfully'}
           else
-            format.html { redirect_to @game}
+            format.html { redirect_to @game,notice: 'you have been blocked, reason: ' + current_user.note}
           end
-        else
-          # delete newest version
-          old.add_errors @game.errors
-          @game.destroy
-          @game = old
-        format.html { render action: "edit" }
         end
-      else
-        if params[:reportblockcontent] && params[:reportblockcontent][:status]=='0'
-          format.html { redirect_to @game,notice: 'Game was reported successfully'}
-        else
-          format.html { redirect_to @game,notice: 'you have been blocked, reason: ' + current_user.note}
-        end
-      end
       else
         if params[:reportblockcontent] && params[:reportblockcontent][:status]=='0'
           format.html { redirect_to @game,notice: 'Game was reported successfully'}
         else
           redirect_to root_path, notice: 'you need to be registered and signed up in order to access this page'
         end
-	  end
-
+	    end
     end
   end
 

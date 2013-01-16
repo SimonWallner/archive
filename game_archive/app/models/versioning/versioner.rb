@@ -10,19 +10,40 @@ class Versioner
 
   # returns all current versions of of the provided active record model class
   def all_current_versions
-    current_versions_from_collection model_class.order('version_id ASC, version_number DESC')
-  end
-
-  def current_versions_from_collection(collection)
-    if collection == nil
-      return
-    end
+    collection = model_class.order('version_id ASC, version_number DESC')
     last_version_id = -1
     ret = Array.new
     collection.each do |v|
       if last_version_id == -1 || last_version_id != v.version_id
         last_version_id = v.version_id
         ret.push v
+      end
+    end
+    ret
+  end
+
+  def current_versions_from_collection(collection)
+    if collection == nil
+      return
+    end
+
+    hash = Hash.new
+    ret = Array.new
+    pos = 0
+    collection.each do |v|
+      v_id = v.version_id
+      hash_elem = hash[v_id]
+      if hash_elem == nil
+        # element is not in return yet
+        col_el = CollectionElement.new
+        col_el.setElement = v
+        col_el.setPosition = pos
+        hash[v_id] = col_el
+        ret.push v
+        pos += 1
+      elsif hash_elem.getElement.version_number < v.version_number
+        ret[hash_elem.getPosition.to_i] = v
+        hash_elem.setElement = v
       end
     end
     ret
@@ -120,6 +141,26 @@ class Versioner
       cp.content_id = new.id
       new.reportblockcontent.push cp
       rbc.destroy
+    end
+  end
+
+  private
+  class CollectionElement
+
+    def setElement=(element)
+      @element = element
+    end
+
+    def getElement
+      @element
+    end
+
+    def setPosition=(pos)
+      @pos = pos
+    end
+
+    def getPosition
+      @pos
     end
   end
 
