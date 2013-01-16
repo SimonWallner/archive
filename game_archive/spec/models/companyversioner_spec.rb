@@ -42,4 +42,5 @@ describe CompanyVersioner do
 
     end
   end
+
 end
