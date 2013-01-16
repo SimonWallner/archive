@@ -46,8 +46,8 @@
 	
 	<div class="games_featured">
 		<h3>Featured</h3>
-		<% games = (GameVersioner.instance.current_versions_from_collection Game.all(:order => 'created_at DESC'))[0..7] %>
-		<% games.concat((GameVersioner.instance.current_versions_from_collection Game.all(:order => 'popularity DESC'))[0..7]) %>
+		<% games = (GameVersioner.instance.current_versions_from_collection Game.all(:order => 'created_at DESC'))[0..3] %>
+		<% games.concat((GameVersioner.instance.current_versions_from_collection Game.all(:order => 'popularity DESC'))[0..3]) %>
 		<% games = GameVersioner.instance.current_versions_from_collection games.uniq %>
 		<% games[0..7].each do |game| %>
 			<% @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(0,game.id)%>
