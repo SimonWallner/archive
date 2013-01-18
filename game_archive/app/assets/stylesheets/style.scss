@@ -796,6 +796,39 @@ div.newFieldsDiv{
     }
   }
 }
+ @media #{$mid-and-below} {
+   div.newFieldsDiv{
+     width: 100%;
+   }
+ }
+
+ .field {
+   input[type="text"]{
+     width: 50%;
+   }
+   textarea{
+     width: 50%;
+   }
+   input[type="text"].mixin {
+     width: 40%;
+     margin: 2px;
+   }
+ }
+ @media #{$mid-and-below} {
+   .field {
+     input[type="text"]{
+       width: 100%;
+     }
+     textarea{
+       width: 100%;
+     }
+     input[type="text"].mixin {
+       width: 40%;
+       margin: 2px;
+     }
+   }
+ }
+
 input.year{
   width: 3em;
 }
