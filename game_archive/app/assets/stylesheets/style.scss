@@ -699,7 +699,8 @@ div.all {
    border-radius: 15px;
    min-height : 140px;
    max-height : 460px;
-  
+   z-index : 50;
+
     h3 {
     padding-top:20px;
     text-align: center;
@@ -710,7 +711,7 @@ div.all {
 
   div{    
   @media #{$mid-and-below} {    
-      width: 50%;     
+      width: 100%;
   }
     padding-left:20px;
     padding-bottom:20px;
@@ -720,6 +721,9 @@ div.all {
   }
 }
 
+ ul.tagit li.tagit-choice {
+   z-index : 25;
+ }
 
 #notification {
   position: absolute;
