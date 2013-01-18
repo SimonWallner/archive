@@ -50,6 +50,11 @@ $(document).ready(function() {
             locationstring = '[' + locationstring.substr(0,locationstring.length-1) + ']';
             $('#new_locations').val(locationstring);
 
+            //escape linebreacks from json inputs
+            $('[id^="new_"]').each(function(){
+                $(this).val($(this).val().replace("\n", "\\n"));
+            });
+
             return true;
         });
 });

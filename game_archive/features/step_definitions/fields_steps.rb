@@ -138,20 +138,14 @@ end
 
 Then /^I should see error for month$/ do
   within("#error_explanation") do
-    page.should have_content("Release dates month must be between 1 and")
-  end
-end
-
-Then /^I should see error for day$/ do
-  within("#error_explanation") do
-    page.should have_content("Release dates day must be between 1 and")
+    page.should have_content("Release dates day needs Month to be specified")
   end
 end
 
 #   Scenario: add game field with token list 
  When /^I enter field with token list "(.*?)"$/ do |fill|
      sleep(1)
-     if fill == "Platform"
+    if fill == "Platform"
       @textPlatforms = "new plattforms"
       fill_in "new_platforms_input", :with => @textPlatforms
     end    
@@ -171,6 +165,7 @@ end
       @textMedias = "new medias"
       fill_in "new_medias_input", :with => @textMedias
     end
+    sleep(1)
 end
 
 Then /^I should see the saved token list data$/ do
