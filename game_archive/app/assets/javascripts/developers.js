@@ -17,6 +17,12 @@ $(document).ready(function() {
         userdefstring = '[' + userdefstring.substr(0,userdefstring.length-1) + ']';
 
         $('#new_fields').val(userdefstring);
+
+        //escape linebreacks from json inputs
+        $('[id^="new_"]').each(function(){
+            $(this).val($(this).val().replace("\n", "\\n"));
+        });
+
         return true;
     });
 

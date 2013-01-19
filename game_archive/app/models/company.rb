@@ -23,6 +23,7 @@ class Company < ActiveRecord::Base
             }
 
   def as_json(options = {})
-    super(:include => [{:mixed_fields => {:include => :mixed_field_type}}, :fields, :locations, :defunct, :founded])
+    super(:include => [{:mixed_fields => {:include => [:mixed_field_type, :company, :developer, :series_game]}}, :fields, :locations, :defunct, :founded])
+
   end
 end
