@@ -23,6 +23,21 @@ $(document).ready(function() {
             $(this).val($(this).val().replace("\n", "\\n"));
         });
 
+        /*
+        event.preventDefault();
+
+        var $form = $( this ),
+            term = $form.find( 'input[name="s"]' ).val(),
+            url = $form.attr( 'action' );
+
+        $.post( url, { s: term },
+            function( data ) {
+                var content = $( data ).find( '#content' );
+                $( "#result" ).empty().append( content );
+            }
+        );
+        $('#notification').fadeIn(500).delay(3000).fadeOut(500);
+        */
         return true;
     });
 

@@ -61,7 +61,7 @@ function loadfields(jsonurl){
                     if($.inArray(val[x].name,['External Links','Aggregate Scores','Review Scores']) >= 0) {
                         var fname = 'new_' + val[x].name.toLowerCase().replace(' ','_');
                         if($('#'+fname).length < 1){
-                            addField($('#addFieldButton'), 'only_label:'+val[x]);
+                            addField($('#addFieldButton'), 'only_label:'+val[x].name);
                             var select_elem = $('div.newFieldsDiv').find('.newField:last');
                             select_elem.attr('value', val[x].name.toLowerCase());
                             addConcreteField(select_elem, false, false, true);
@@ -94,6 +94,21 @@ function loadfields(jsonurl){
                         $('#'+input_field_name).val('')
                     });
 
+                    $('input[class*="_link"]').on('focusout', function(event){
+                        $(this).removeClass('linkFound');
+                        $(this).prev().val('');
+                        var url = ($(this).is('input[class*="series"]') ?  '/ajax.json?type=game&term=' : '/ajax.json?type=developer&term=')+$(this).val();
+                        var elem = $(this);
+                        $.getJSON(url, function(data){
+                            $.each(data, function(i, item) {
+                                if(item.label.split(' - ')[0].toLowerCase() == elem.val().toLowerCase()){
+                                    elem.prev().val( item.value );
+                                    elem.addClass('linkFound');
+                                }
+                            });
+                        });
+                    });
+
                 }else if(page == 'developer'){
                     addField($('#addFieldButton'), 'only_label:External Links');
                     var select_elem = $('div.newFieldsDiv').find('.newField:last');
@@ -121,6 +136,7 @@ function loadfields(jsonurl){
                     }
                 }
 
+                // hidden field mit entsprechenden werten füllen
                 for (var x = 0; x < val.length; x++){
                     var type = val[x]['mixed_field_type'].name.toLowerCase();
                     var input_field_name = 'new_' + type.replace(' ','_');
@@ -142,6 +158,7 @@ function loadfields(jsonurl){
                     $('#'+input_field_name).val($('#'+input_field_name).val()+valstr);
                 }
 
+                //hidden fields auswerten und in die angezeigten objekte füllen
                 $.each(["developer","publisher","distributor","credits","series"],
                 function(index,value){
                     var input_field_name = 'new_' + value;
@@ -156,6 +173,7 @@ function loadfields(jsonurl){
                                 var text = splitval.split(':')[3];
                                 $('.'+value+'_hidden:last').val(splitval.replace(':'+name,'')+',');
                                 $('.'+value+'_link:last').val(name);
+                                $('.'+value+'_link:last').addClass('linkFound');
                                 $('.'+value+'_text:last').val(text);
                                 $('.'+value+'_text:last').next('button').click();
                             }else if(splitval.split(':').length > 1){
@@ -208,8 +226,10 @@ function loadfields(jsonurl){
 function addField(button_element, types){
     $('#newFieldId').removeAttr('id');
     if(types.indexOf('only_label') == 0 ){
-        var html = '<div class="addedField"><label class="newField" id="newFieldId" value="">'+types.split(':')[1].charAt(0).toUpperCase() + types.split(':')[1].slice(1)+'</label></div>';
+        var html = '<div class="addedField"><label class="newField" id="newFieldId" value="'+types.split(':')[1]+'">'+types.split(':')[1].charAt(0).toUpperCase() + types.split(':')[1].slice(1)+'</label></div>';
         $(button_element).parent().find('.newFieldsDiv').append(html);
+        $('#newFieldId').parent().append( help[$('#newFieldId').attr('value').toLowerCase()] );
+        $(".newhelp").tooltipsy({delay: 600}).removeClass("newhelp");
     }else{
         var html = '<div class="addedField"><select class="newField" id="newFieldId">';
         $.each(types, function(index, value) {
@@ -220,7 +240,11 @@ function addField(button_element, types){
         $(button_element).parent().find('.newFieldsDiv').append(html);
         $.each($('.newField'),function(){
             $(this).unbind("change");
-            $(this).change([this],function(){addConcreteField(this, true);});
+            $(this).change([this],function(){
+                addConcreteField(this, true);
+                $('#newFieldId').after( help[$('#newFieldId').val()] );
+                $(".newhelp").tooltipsy({delay: 600}).removeClass("newhelp");
+            });
         });
     }
 }
@@ -255,6 +279,7 @@ function addConcreteField(select_element, deletecurrent, value, onload){
             $('#'+input_field_name).tagit({caseSensitive: false, availableTags: availableTags, allowSpaces: true});
 
             $('#'+input_field_name+'_input').focus(function() {
+                $('div[id^="all_"]').hide();
                 var div = $('#all_'+field_name+'_div').show();
                 $('textarea, input:not(#'+input_field_name+'_input)').bind('focusin.allavailable click.allavailable',function(e) {
                     if ($(e.target).closest('#'+input_field_name+'_input').length) return;
@@ -280,7 +305,7 @@ function addConcreteField(select_element, deletecurrent, value, onload){
             (value ? value : '') + '">');
 
     }else if($.inArray(field_name,['defunct','founded']) >= 0){                                      // date + string
-        $(select_element).parent().append(addDateInput(field_name));
+        $(select_element).parent().append('<br/>'+addDateInput(field_name));
         if(field_name == 'defunct')
             $(select_element).parent().append('<input id="text_'+field_name+'" name="text_'+field_name+'" type="text">');
 
