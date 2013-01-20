@@ -25,6 +25,9 @@ class Reportblockcontent < ActiveRecord::Base
 			end
 			new_report = Reportblockcontent.new :content_type => ctype, :content_id => cid, :reason => reason, :status => content_status, :email => email, :admin_id => admin_id
 			new_report.save
+			
+			# send notification mail to admin
+			Reportmailer.report(ctype, cid, reason).deliver
 		end
 	end
   end
