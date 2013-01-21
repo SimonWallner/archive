@@ -93,22 +93,22 @@ function loadfields(jsonurl){
                         addConcreteField(select_elem, false, false, true);
                         $('#'+input_field_name).val('')
                     });
-
-                    $('input[class*="_link"]').on('focusout', function(event){
-                        $(this).removeClass('linkFound');
-                        $(this).prev().val('');
-                        var url = ($(this).is('input[class*="series"]') ?  '/ajax.json?type=game&term=' : '/ajax.json?type=developer&term=')+$(this).val();
-                        var elem = $(this);
-                        $.getJSON(url, function(data){
-                            $.each(data, function(i, item) {
-                                if(item.label.split(' - ')[0].toLowerCase() == elem.val().toLowerCase()){
-                                    elem.prev().val( item.value );
-                                    elem.addClass('linkFound');
-                                }
+                    setTimeout(function() {
+                        $('input[class*="_link"]').on('focusout', function(event){
+                            $(this).removeClass('linkFound');
+                            $(this).prev().val('');
+                            var url = ($(this).is('input[class*="series"]') ?  '/ajax.json?type=game&term=' : '/ajax.json?type=developer&term=')+$(this).val();
+                            var elem = $(this);
+                            $.getJSON(url, function(data){
+                                $.each(data, function(i, item) {
+                                    if(item.label.split(' - ')[0].toLowerCase() == elem.val().toLowerCase()){
+                                        elem.prev().val( item.value );
+                                        elem.addClass('linkFound');
+                                    }
+                                });
                             });
                         });
-                    });
-
+                    }, 500);
                 }else if(page == 'developer'){
                     addField($('#addFieldButton'), 'only_label:External Links');
                     var select_elem = $('div.newFieldsDiv').find('.newField:last');

@@ -23,22 +23,19 @@ $(document).ready(function() {
             $(this).val($(this).val().replace("\n", "\\n"));
         });
 
-        /*
         event.preventDefault();
 
-        var $form = $( this ),
-            term = $form.find( 'input[name="s"]' ).val(),
-            url = $form.attr( 'action' );
-
-        $.post( url, { s: term },
+        $.post( $('form').attr('action'), $('form').serialize(),
             function( data ) {
-                var content = $( data ).find( '#content' );
-                $( "#result" ).empty().append( content );
+                var content = $( data ).find( '#error_explanation' );
+                if(content.length > 0){
+                    $('#error_explanation').remove();
+                    $('form').append( content );
+                }else{
+                    window.location = $('form').attr('action');
+                }
             }
         );
-        $('#notification').fadeIn(500).delay(3000).fadeOut(500);
-        */
-        return true;
     });
 
 });
