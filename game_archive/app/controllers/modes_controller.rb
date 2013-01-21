@@ -1,5 +1,5 @@
 class ModesController < ApplicationController
-  before_filter :authenticate_user!, except: [:index, :show]
+  before_filter :authenticate_admin!
   
   # GET /modes
   # GET /modes.json
@@ -38,7 +38,12 @@ class ModesController < ApplicationController
   def edit
     @mode = Mode.find(params[:id])
   end
-
+  
+  # GET /modes/1/join
+  def join
+    @mode = Mode.find(params[:id])
+  end
+  
   # POST /modes
   def create
     @mode = Mode.new(params[:mode])
@@ -54,6 +59,24 @@ class ModesController < ApplicationController
   # PUT /modes/1
   def update
     @mode = Mode.find(params[:id])
+		
+	if params[:new_modes]
+		params[:new_modes].strip!
+		@join_mode =  Mode.find_by_name(params[:new_modes])
+		@game = @mode.games
+		if @join_mode
+			@game.all.each do |g|
+				if(not g.modes.include?(@join_mode))
+					g.modes << @join_mode
+				end
+			end
+			@mode.destroy
+		else
+			@mode.name = params[:new_modes]
+			@mode.save
+		end		
+	end
+	
     respond_to do |format|
       if @mode.update_attributes(params[:mode])
         format.html { redirect_to @mode, notice: 'Mode was successfully updated.' }

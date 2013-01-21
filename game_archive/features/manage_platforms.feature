@@ -4,7 +4,7 @@ Feature: Manage Platforms
   I want to add and maintain platforms
 
 Background:
-Given I am signed in as User
+  Given I am signed in as Admin 
   
 Scenario: show all platforms
   Given I have platforms named PC
@@ -21,3 +21,9 @@ Scenario: edit platform
   And I am on the edit page of the platform
   When I update the platform
   Then I should see the new values of Platform
+  
+Scenario: join platform
+  Given I have a platform named Computer
+  And I am on the join page of the platform
+  When I write the platform named PC
+  Then I should not see the old platform

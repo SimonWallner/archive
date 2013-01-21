@@ -1,6 +1,6 @@
 class Mode < ActiveRecord::Base
   attr_accessible :description, :name
-  validates :name, :presence => true
+  validates :name, :presence => true, :uniqueness => true
   has_and_belongs_to_many :games
   
     def Mode.create_from_string(modes_string)
@@ -17,7 +17,7 @@ class Mode < ActiveRecord::Base
       g.strip!
       if g.length > 0 && (not Mode.exists?(:name => g))
         logger.debug "new mode: " + g
-        new_mode = Mode.new :name => g
+        new_mode = Mode.new :name => g, :description =>''
         new_mode.save
         modes_to_return << new_mode
       else

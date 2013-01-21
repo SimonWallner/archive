@@ -1,0 +1,28 @@
+<h1><%=  @tag.name %></h1>
+
+<%= form_for(@tag) do |f| %>
+  <% if @tag.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@tag.errors.count, "error") %> prohibited this tag from being saved:</h2>
+
+      <ul>
+      <% @tag.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">	
+    <%= f.label 'Join to ' %><br />
+    <script type="text/javascript">var tagTags = ["<%= Tag.all.collect {|x| x.name}.join('", "').html_safe%>"];</script>
+    <%= text_field_tag 'new_tags'%>
+    <br/>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
+
+<%= link_to 'Show', @tag %> |
+<%= link_to 'Back', tags_path %>

@@ -81,6 +81,10 @@ Given /^I am on the edit page of the genre$/ do
   visit_genre_edit_page @genre
 end
 
+Given /^I am on the join page of the genre$/ do
+  visit_genre_join_page @genre
+end
+
 ## modes
 Given /^I am on the mode create page$/ do
   visit_mode_creation_page
@@ -92,6 +96,10 @@ end
 
 Given /^I am on the edit page of the mode$/ do
   visit_mode_edit_page @mode
+end
+
+Given /^I am on the join page of the mode$/ do
+  visit_mode_join_page @mode
 end
 
 ## tags
@@ -107,6 +115,10 @@ Given /^I am on the edit page of the tag$/ do
   visit_tag_edit_page @tag
 end
 
+Given /^I am on the join page of the tag$/ do
+  visit_tag_join_page @tag
+end
+
 ## platforms
 Given /^I am on the platform create page$/ do
   visit_platform_creation_page
@@ -120,6 +132,10 @@ Given /^I am on the edit page of the platform$/ do
   visit_platform_edit_page @platform
 end
 
+Given /^I am on the join page of the platform$/ do
+  visit_platform_join_page @platform
+end
+
 ## media
 Given /^I am on the medium create page$/ do
   visit_media_creation_page
@@ -131,6 +147,10 @@ end
 
 Given /^I am on the edit page of the medium$/ do
   visit_media_edit_page @medium
+end
+
+Given /^I am on the join page of the medium$/ do
+  visit_media_join_page @medium
 end
 
 ## users

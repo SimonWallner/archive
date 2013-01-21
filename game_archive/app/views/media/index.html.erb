@@ -2,22 +2,23 @@
 
 <table>
   <tr>
-    <th>Name</th>
-    <th></th>
-    <th></th>
-    <th></th>
+	<td><b>Name</b></td>
+	<td></td>
+	<td></td>
+	<td></td>
   </tr>
 
 <% @media.each do |medium| %>
   <tr>
-    <td><%= medium.name %></td>
-    <td><%= link_to 'Show', medium %></td>
+    <td><%= link_to medium.name, medium %></td>
+    <td><%= link_to 'Join', join_medium_path(medium) %></td>
     <td><%= link_to 'Edit', edit_medium_path(medium) %></td>
-    <td><%= link_to 'Destroy', medium, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    <td><%= link_to 'Delete', medium, method: :delete, data: { confirm: 'Are you sure?' } %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
 
-<%= link_to 'New Medium', new_medium_path %>
+<%= link_to 'New Medium', new_medium_path %> |
+<%= link_to 'Back', tokenlists_path %>

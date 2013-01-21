@@ -4,7 +4,7 @@ Feature: Manage Genres
   I want to create, update and view genres
   
 Background:
-Given I am signed in as User
+  Given I am signed in as Admin 
 
 Scenario: show all genres
   Given I have genres named Indie, Shooter
@@ -21,3 +21,9 @@ Scenario: edit genre
   And I am on the edit page of the genre
   When I update the genre
   Then I should see the new values
+  
+Scenario: join genre
+  Given I have a genre named Shoter
+  And I am on the join page of the genre
+  When I write the genre named Shooter
+  Then I should not see the old genre

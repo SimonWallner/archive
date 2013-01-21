@@ -1,13 +1,13 @@
 Given /^I have genres named (.+)$/ do |names|
   @genres = Array.new
   names.split(', ').each do |t|
-    FactoryGirl.create :genre, name: t
+    FactoryGirl.create :genre, name: t, :description =>''
     @genres << t
   end
 end
 
 Given /^I have a genre named (.+)$/ do |name|
-  @genre = FactoryGirl.create :genre, name: name
+  @genre = FactoryGirl.create :genre, name: name, :description =>''
 end
 
 
@@ -31,8 +31,6 @@ Then /^I should see "(.+)" in the list of genres$/ do |genres|
     end
 end
 
-
-
 Then /^I should see the genres$/ do
   @genres.each do |g|
     page.should have_content(g)
@@ -51,4 +49,12 @@ end
 Then /^I should see the created genre$/ do
   page.should have_content(@genre.name)
   page.should have_content(@genre.description)
+end
+
+When /^I write the genre named (.+)$/ do |name|
+  fill_in("new_genres", :with => name)
+end
+
+Then /^I should not see the old genre$/ do
+    page.should_not have_content(@genre)
 end

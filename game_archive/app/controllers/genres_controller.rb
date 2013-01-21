@@ -1,5 +1,5 @@
 class GenresController < ApplicationController
-  before_filter :authenticate_user!, except: [:index, :show]
+  before_filter :authenticate_admin!
 
   # GET /genres
   # GET /genres.json
@@ -38,7 +38,12 @@ class GenresController < ApplicationController
   def edit
     @genre = Genre.find(params[:id])
   end
-
+  
+  # GET /genres/1/join
+  def join
+    @genre = Genre.find(params[:id])
+  end
+  
   # POST /genres
   def create
     @genre = Genre.new(params[:genre])
@@ -54,6 +59,24 @@ class GenresController < ApplicationController
   # PUT /genres/1
   def update
     @genre = Genre.find(params[:id])
+	
+	if params[:new_genres]
+		params[:new_genres].strip!
+		@join_genre =  Genre.find_by_name(params[:new_genres])
+		@game = @genre.games
+		if @join_genre
+			@game.all.each do |g|
+				if(not g.genres.include?(@join_genre))
+					g.genres << @join_genre
+				end
+			end
+			@genre.destroy
+		else
+			@genre.name = params[:new_genres]
+			@genre.save
+		end		
+	end
+	
     respond_to do |format|
       if @genre.update_attributes(params[:genre])
         format.html { redirect_to @genre }

@@ -1,5 +1,6 @@
 class PlatformsController < ApplicationController
-  before_filter :authenticate_user!, except: [:index, :show]
+  before_filter :authenticate_admin!
+  
   # GET /platforms
   # GET /platforms.json
   def index
@@ -37,7 +38,12 @@ class PlatformsController < ApplicationController
   def edit
     @platform = Platform.find(params[:id])
   end
-
+  
+  # GET /platforms/1/join
+  def join
+    @platform = Platform.find(params[:id])
+  end
+  
   # POST /platforms
   def create
     @platform = Platform.new(params[:platform])
@@ -53,6 +59,24 @@ class PlatformsController < ApplicationController
   # PUT /platforms/1
   def update
     @platform = Platform.find(params[:id])
+		
+	if params[:new_platforms]
+		params[:new_platforms].strip!
+		@join_platform =  Platform.find_by_name(params[:new_platforms])
+		@game = @platform.games
+		if @join_platform
+			@game.all.each do |g|
+				if(not g.platforms.include?(@join_platform))
+					g.platforms << @join_platform
+				end
+			end
+			@platform.destroy
+		else
+			@platform.name = params[:new_platforms]
+			@platform.save
+		end		
+	end
+	
     respond_to do |format|
       if @platform.update_attributes(params[:platform])
         format.html { redirect_to @platform, notice: 'Platform was successfully updated.' }
