@@ -11,13 +11,23 @@
     </div>
   <% end %>
 
+
+    <% if user_signed_in? %>
+        <% if current_user.admin? %>
+            <div id="versions">
+              <% Game.where(:version_id => @game.version_id).each do |game| %>
+                  <span><%= game.version_number %></span>
+              <% end %>
+            </div>
+        <% end %>
+    <% end %>
+
+
     <div id="all_genres_div" class="all">
       <h3>All Genres</h3>
       <div >
         <% Genre.all.each do |genre| %>
-            <tr>
               <span><%= genre.name %></span>
-            </tr>
         <% end %>
       </div>
     </div>
@@ -25,9 +35,7 @@
       <h3>All Platforms</h3>
       <div >
         <% Platform.all.each do |platform| %>
-            <tr>
               <span><%= platform.name %></span>
-            </tr>
         <% end %>
       </div>
     </div>
@@ -35,9 +43,7 @@
       <h3>All Modes</h3>
       <div >
         <% Mode.all.each do |mode| %>
-            <tr>
               <span><%= mode.name %></span>
-            </tr>
         <% end %>
       </div>
     </div>
@@ -45,9 +51,7 @@
       <h3>All Media</h3>
       <div >
         <% Medium.all.each do |medium| %>
-            <tr>
               <span><%= medium.name %></span>
-            </tr>
         <% end %>
       </div>
     </div>
@@ -55,9 +59,7 @@
       <h3>All Tags</h3>
       <div >
         <% Tag.all.each do |tag| %>
-            <tr>
               <span><%= tag.name %></span>
-            </tr>
         <% end %>
       </div>
     </div>
