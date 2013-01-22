@@ -180,7 +180,6 @@ class GamesController < ApplicationController
     logger.debug 'update video params'
     logger.debug vp
     vhash = @@GAME_VERSIONER.new_video_hash old
-    logger.debug "vhash: #{vhash}"
     vp.each do |k, v|
       id = v[:id].to_i
       v[:id] = vhash[id].to_s
