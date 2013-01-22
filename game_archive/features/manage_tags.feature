@@ -4,7 +4,7 @@ Feature: Manage Tags
   I want to add and maintain tags
 
 Background:
-Given I am signed in as User
+  Given I am signed in as Admin 
 
 Scenario: show all tags
   Given I have tags named BestGame
@@ -21,3 +21,9 @@ Scenario: edit tag
   And I am on the edit page of the tag
   When I update the tag
   Then I should see the new values of Tag
+  
+Scenario: join tag
+  Given I have a tag named BestGame
+  And I am on the join page of the tag
+  When I write the tag named Best Game
+  Then I should not see the old tag

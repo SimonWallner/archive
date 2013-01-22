@@ -1,6 +1,6 @@
 class Tag < ActiveRecord::Base
   attr_accessible :name
-  validates :name, :presence => true
+  validates :name, :presence => true, :uniqueness => true
   has_and_belongs_to_many :games
   
     def Tag.create_from_string(tags_string)

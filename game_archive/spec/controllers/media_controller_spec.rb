@@ -20,7 +20,7 @@ require 'spec_helper'
 
 describe MediaController do
 
-  login_user
+  login_admin
 
   # This should return the minimal set of attributes required to create a valid
   # Medium. As you add validations to Medium, be sure to

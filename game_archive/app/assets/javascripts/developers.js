@@ -23,7 +23,19 @@ $(document).ready(function() {
             $(this).val($(this).val().replace("\n", "\\n"));
         });
 
-        return true;
+        event.preventDefault();
+
+        $.post( $('form').attr('action'), $('form').serialize(),
+            function( data ) {
+                var content = $( data ).find( '#error_explanation' );
+                if(content.length > 0){
+                    $('#error_explanation').remove();
+                    $('form').append( content );
+                }else{
+                    window.location = $('form').attr('action');
+                }
+            }
+        );
     });
 
 });

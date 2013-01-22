@@ -711,7 +711,7 @@ div.all {
 }
 
  ul.tagit li.tagit-choice {
-   z-index : 25;
+   z-index : 0;
  }
 
 #notification {
@@ -765,8 +765,8 @@ img.full_markdown_help {
 .tooltipsy dt:nth-child(n+2) {
   padding-top: 5px;
 }
-select.newField {
-  vertical-align: top;
+.newField {
+  vertical-align: bottom;
 }
 
 div.newFieldsDiv{
@@ -805,6 +805,9 @@ div.newFieldsDiv{
    input[type="text"].mixin {
      width: 40%;
      margin: 2px;
+   }
+   input.linkFound {
+     background-color: #98fb98;
    }
  }
  @media #{$mid-and-below} {

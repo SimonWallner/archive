@@ -20,7 +20,7 @@ require 'spec_helper'
 
 describe PlatformsController do
 
-  login_user
+  login_admin
 
   # This should return the minimal set of attributes required to create a valid
   # Platform. As you add validations to Platform, be sure to

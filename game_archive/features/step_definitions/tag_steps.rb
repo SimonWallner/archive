@@ -43,3 +43,11 @@ end
 Then /^I should see the created tag$/ do
   page.should have_content(@tag.name)
 end
+
+When /^I write the tag named (.+)$/ do |name|
+  fill_in("new_tags", :with => name)
+end
+
+Then /^I should not see the old tag$/ do
+    page.should_not have_content(@tag)
+end

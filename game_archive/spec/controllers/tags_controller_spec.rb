@@ -20,7 +20,7 @@ require 'spec_helper'
 
 describe TagsController do
 
-  login_user
+  login_admin
 
   # This should return the minimal set of attributes required to create a valid
   # Tag. As you add validations to Tag, be sure to

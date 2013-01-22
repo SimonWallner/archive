@@ -71,6 +71,10 @@ end
 def visit_genre_edit_page(genre)
   visit edit_genre_path(genre)
 end
+
+def visit_genre_join_page(genre)
+  visit join_genre_path(genre)
+end
 ## media
 def visit_media_creation_page
   visit new_medium_path
@@ -82,6 +86,10 @@ end
 
 def visit_media_edit_page(medium)
   visit edit_medium_path(medium)
+end
+
+def visit_media_join_page(medium)
+  visit join_medium_path(medium)
 end
 ## modes
 def visit_mode_creation_page
@@ -95,6 +103,10 @@ end
 def visit_mode_edit_page(mode)
   visit edit_mode_path(mode)
 end
+
+def visit_mode_join_page(mode)
+  visit join_mode_path(mode)
+end
 ## platforms
 def visit_platform_creation_page
   visit new_platform_path
@@ -107,6 +119,10 @@ end
 def visit_platform_edit_page(platform)
   visit edit_platform_path(platform)
 end
+
+def visit_platform_join_page(platform)
+  visit join_platform_path(platform)
+end
 ## tags
 def visit_tag_creation_page
   visit new_tag_path
@@ -118,6 +134,10 @@ end
 
 def visit_tag_edit_page(tag)
   visit edit_tag_path(tag)
+end
+
+def visit_tag_join_page(tag)
+  visit join_tag_path(tag)
 end
 ## users
 def visit_user_edit_page

@@ -1,6 +1,6 @@
 class Genre < ActiveRecord::Base
   attr_accessible :description, :name
-  validates :name, :presence => true
+  validates :name, :presence => true, :uniqueness => true
   has_and_belongs_to_many :games
 
   # creates genres from a string
@@ -22,7 +22,7 @@ class Genre < ActiveRecord::Base
       g.strip!
       if g.length > 0 && (not Genre.exists?(:name => g))
         logger.debug "new genre: " + g
-        new_genre = Genre.new :name => g
+        new_genre = Genre.new :name => g, :description =>''
         new_genre.save
         genres_to_return << new_genre
       else

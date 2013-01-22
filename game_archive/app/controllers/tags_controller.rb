@@ -1,6 +1,5 @@
 class TagsController < ApplicationController
-
-  before_filter :authenticate_user!, except: [:index, :show, :get]
+  before_filter :authenticate_admin!
 
   # GET /tags
   # GET /tags.json
@@ -39,7 +38,12 @@ class TagsController < ApplicationController
   def edit
     @tag = Tag.find(params[:id])
   end
-
+  
+  # GET /tags/1/join
+  def join
+    @tag = Tag.find(params[:id])
+  end
+  
   # POST /tags
   def create
     @tag = Tag.new(params[:tag])
@@ -55,6 +59,24 @@ class TagsController < ApplicationController
   # PUT /tags/1
   def update
     @tag = Tag.find(params[:id])
+		
+	if params[:new_tags]
+		params[:new_tags].strip!
+		@join_tag =  Tag.find_by_name(params[:new_tags])
+		@game = @tag.games
+		if @join_tag
+			@game.all.each do |g|
+				if(not g.tags.include?(@join_tag))
+					g.tags << @join_tag
+				end
+			end
+			@tag.destroy
+		else
+			@tag.name = params[:new_tags]
+			@tag.save
+		end		
+	end
+	
     respond_to do |format|
       if @tag.update_attributes(params[:tag])
         format.html { redirect_to @tag, notice: 'Tag was successfully updated.' }

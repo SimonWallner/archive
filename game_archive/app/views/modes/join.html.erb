@@ -1,0 +1,28 @@
+<h1><%=  @mode.name %></h1>
+
+<%= form_for(@mode) do |f| %>
+  <% if @mode.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@mode.errors.count, "error") %> prohibited this mode from being saved:</h2>
+
+      <ul>
+      <% @mode.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">	
+    <%= f.label 'Join to ' %><br />
+    <script type="text/javascript">var modeTags = ["<%= Mode.all.collect {|x| x.name}.join('", "').html_safe%>"];</script>
+    <%= text_field_tag 'new_modes'%>
+    <br/>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
+
+<%= link_to 'Show', @mode %> |
+<%= link_to 'Back', modes_path %>
