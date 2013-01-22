@@ -138,6 +138,8 @@ class GamesController < ApplicationController
           if params[:reportblockcontent] && params[:reportblockcontent][:status]=='0'
             format.html { redirect_to @game,notice: 'Game was reported successfully'}
           else
+            # update video
+            update_video_params params, old
             if @game.update_attributes(params[:game])
               create_add_new_mixed_fields(params[:new_developers], MixedFieldType.find_by_name("Developer"))
               create_add_new_mixed_fields(params[:new_publishers], MixedFieldType.find_by_name("Publisher"))
@@ -171,6 +173,21 @@ class GamesController < ApplicationController
   end
 
   private
+  def update_video_params(params, old)
+    return if params == nil || old == nil
+    vp = params[:game][:videos_attributes]
+    return if vp == nil
+    logger.debug 'update video params'
+    logger.debug vp
+    vhash = @@GAME_VERSIONER.new_video_hash old
+    logger.debug "vhash: #{vhash}"
+    vp.each do |k, v|
+      id = v[:id].to_i
+      v[:id] = vhash[id].to_s
+    end
+    logger.debug 'finished updating video params'
+    logger.debug vp
+  end
   # takes the new_genres_string and the game_params string
   # creates new genres if necessary
   # and augments the game_params with the new genres
