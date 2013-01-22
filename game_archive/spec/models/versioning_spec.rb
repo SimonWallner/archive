@@ -1,4 +1,4 @@
-require 'GameVerisoner'
+require 'spec_helper'
 
 
 describe GameVersioner do
