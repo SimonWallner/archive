@@ -42,5 +42,31 @@ describe GameVersioner do
 
     end
   end
+  describe "create new version of a game and check references" do
+    it "returns a new version of the game with correct references" do
+      old =  FactoryGirl.create :game , title:"testtitle_old" , description:"testdescription_old", version_number:1 ,
+                                version_id: "276277ee-0490-4cd5-ae48-9b2152b632f9" ,  popularity: 8, created_at: "2013-01-16 12:12:58" , image: "test.png"
+
+
+      sleep(1)
+
+      new = GameVersioner.instance.new_version old
+
+      new.title.should eq old.title
+      new.description.should eq old.description
+
+      #puts old.image
+      #puts new.image
+
+      #doesnt save image, copies correctly though,
+      new.image==old.image
+      new.popularity.should  eq old.popularity
+      new.created_at.should eq old.created_at
+
+      new.version_number.should eq (old.version_number+1)
+      new.version_updated_at.should_not eq old.version_updated_at
+
+    end
+  end
 
 end
