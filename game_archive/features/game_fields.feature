@@ -23,8 +23,7 @@ Feature:
     And I enter field with "Userdefined" 
     And I submit it
     Then I should see the saved Game fields
-     
-  
+
    @javascript
   Scenario: add game field with token list
     Given I am on the game creation page
