@@ -48,3 +48,11 @@ Then /^I should see the created mode$/ do
   page.should have_content(@mode.name)
   page.should have_content(@mode.description)
 end
+
+When /^I write the mode named (.+)$/ do |name|
+  fill_in("new_modes", :with => name)
+end
+
+Then /^I should not see the old mode$/ do
+    page.should_not have_content(@mode)
+end

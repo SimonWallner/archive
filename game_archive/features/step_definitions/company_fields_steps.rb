@@ -11,7 +11,6 @@ When /^I enter company field with "(.*?)"$/ do |fill|
     @additionalDefunct = "additionalDefunct"
       sleep(1)
       if fill == "Founded"
-        select(fill, :from => 'newFieldId')
         select(@day, :from => 'day_founded')
         select(@month, :from => 'month_founded')
         fill_in "year_founded", :with => @year

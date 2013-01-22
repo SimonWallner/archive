@@ -43,3 +43,11 @@ end
 Then /^I should see the created medium$/ do
   page.should have_content(@medium.name)
 end
+
+When /^I write the medium named (.+)$/ do |name|  
+  fill_in("new_medias", :with => name)
+end
+
+Then /^I should not see the old medium$/ do
+    page.should_not have_content(@medium)
+end

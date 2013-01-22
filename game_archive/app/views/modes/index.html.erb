@@ -2,24 +2,23 @@
 
 <table>
   <tr>
-    <th>Name</th>
-    <th>Description</th>
-    <th></th>
-    <th></th>
-    <th></th>
+	<td><b>Name</b></td>
+	<td></td>
+	<td></td>
+	<td></td>
   </tr>
 
 <% @modes.each do |mode| %>
   <tr>
-    <td><%= mode.name %></td>
-    <td><%= mode.description %></td>
-    <td><%= link_to 'Show', mode %></td>
+    <td><%= link_to mode.name, mode %></td>
+    <td><%= link_to 'Join', join_mode_path(mode) %></td>
     <td><%= link_to 'Edit', edit_mode_path(mode) %></td>
-    <td><%= link_to 'Destroy', mode, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    <td><%= link_to 'Delete', mode, method: :delete, data: { confirm: 'Are you sure?' } %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
 
-<%= link_to 'New Mode', new_mode_path %>
+<%= link_to 'New Mode', new_mode_path %> |
+<%= link_to 'Back', tokenlists_path %>

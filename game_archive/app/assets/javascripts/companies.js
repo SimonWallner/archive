@@ -50,6 +50,23 @@ $(document).ready(function() {
             locationstring = '[' + locationstring.substr(0,locationstring.length-1) + ']';
             $('#new_locations').val(locationstring);
 
-            return true;
+            //escape linebreacks from json inputs
+            $('[id^="new_"]').each(function(){
+                $(this).val($(this).val().replace("\n", "\\n"));
+            });
+
+            event.preventDefault();
+
+            $.post( $('form').attr('action'), $('form').serialize(),
+                function( data ) {
+                    var content = $( data ).find( '#error_explanation' );
+                    if(content.length > 0){
+                        $('#error_explanation').remove();
+                        $('form').append( content );
+                    }else{
+                        window.location = $('form').attr('action');
+                    }
+                }
+            );
         });
 });

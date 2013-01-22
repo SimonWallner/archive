@@ -26,9 +26,14 @@ GameArchive::Application.routes.draw do
 		end
 	end 
 
-	resources :genres
+  #merge conflicts here coming from head
 
-	resources :developers, :except => :destroy do
+
+	#resources :genres
+  #resources :developers, :except => :destroy do
+
+	resources :developers do
+
 		member do
 			get 'report'
 			get 'block'
@@ -46,15 +51,36 @@ GameArchive::Application.routes.draw do
 		end
 	end 
 	
-	resources :reportblockcontents, only: [:index, :destroy]
+  resources :reportblockcontents, only: [:index, :destroy]
 
-  resources :tags
-
-  resources :media
-
-  resources :modes
-
-  resources :platforms
+	resources :tokenlists, only: [:index]
+	
+	resources :genres do
+  		member do
+			get 'join'
+		end
+	end
+	resources :tags do
+  		member do
+			get 'join'
+		end
+	end
+	resources :media do
+  		member do
+			get 'join'
+		end
+	end		
+	resources :modes do
+   		member do
+			get 'join'
+		end
+	end
+	resources :platforms do
+  		member do
+			get 'join'
+		end
+	end	
+	
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

@@ -1,0 +1,28 @@
+<h1><%=  @genre.name %></h1>
+
+<%= form_for(@genre) do |f| %>
+  <% if @genre.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@genre.errors.count, "error") %> prohibited this genre from being saved:</h2>
+
+      <ul>
+      <% @genre.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">	
+    <%= f.label 'Join to ' %><br />
+    <script type="text/javascript">var genreTags = ["<%= Genre.all.collect {|x| x.name}.join('", "').html_safe%>"];</script>
+    <%= text_field_tag 'new_genres'%>
+    <br/>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
+
+<%= link_to 'Show', @genre %> |
+<%= link_to 'Back', genres_path %>

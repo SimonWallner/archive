@@ -17,7 +17,25 @@ $(document).ready(function() {
         userdefstring = '[' + userdefstring.substr(0,userdefstring.length-1) + ']';
 
         $('#new_fields').val(userdefstring);
-        return true;
+
+        //escape linebreacks from json inputs
+        $('[id^="new_"]').each(function(){
+            $(this).val($(this).val().replace("\n", "\\n"));
+        });
+
+        event.preventDefault();
+
+        $.post( $('form').attr('action'), $('form').serialize(),
+            function( data ) {
+                var content = $( data ).find( '#error_explanation' );
+                if(content.length > 0){
+                    $('#error_explanation').remove();
+                    $('form').append( content );
+                }else{
+                    window.location = $('form').attr('action');
+                }
+            }
+        );
     });
 
 });

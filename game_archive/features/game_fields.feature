@@ -46,7 +46,7 @@ Feature:
     When I enter valid game data 
     And I enter field of Release Dates without day
     And I submit it
-    Then I should see error for day
+    Then I should not see an error
     
     
   @javascript

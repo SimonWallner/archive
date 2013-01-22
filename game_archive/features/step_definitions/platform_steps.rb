@@ -43,3 +43,11 @@ end
 Then /^I should see the created platform$/ do
   page.should have_content(@platform.name)
 end
+
+When /^I write the platform named (.+)$/ do |name|
+  fill_in("new_platforms", :with => name)
+end
+
+Then /^I should not see the old platform$/ do
+    page.should_not have_content(@platform)
+end
