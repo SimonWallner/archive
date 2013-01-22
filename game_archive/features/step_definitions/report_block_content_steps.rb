@@ -114,6 +114,54 @@ When /^I enter the (.*) detail page$/ do |type|
   end 
 end
 
+When /^I report the game$/ do
+	visit '/games/1/'
+	URI.parse(current_url).path.should == "/games/1/"
+	click_link_or_button 'Report'
+	@report_reason="Reason"
+	@report_email="test@example.com"
+    fill_in("reportblockcontent_reason", :with => @report_reason)
+	fill_in("reportblockcontent_email", :with => @report_email)
+	click_link_or_button 'Report Game'
+end
+
+When /^I lock the game$/ do
+	visit_game_page @givenGame
+	URI.parse(current_url).path.should == "/games/1"
+	click_link_or_button "Block"
+	@report_reason="Reason"
+    fill_in("reportblockcontent_reason", :with => @report_reason)
+	choose ("reportblockcontent_status_2")
+	click_link_or_button "Save"
+end
+
+When /^I block the game$/ do
+	visit_game_page @givenGame
+	URI.parse(current_url).path.should == "/games/1"
+	click_link_or_button "Block"
+	@report_reason="Reason"
+    fill_in("reportblockcontent_reason", :with => @report_reason)
+	choose ("reportblockcontent_status_1")
+	click_link_or_button "Save"
+end
+
+When /^I unblock the game$/ do
+	visit_game_page @givenGame
+	URI.parse(current_url).path.should == "/games/1"
+	click_link_or_button "Remove Block"
+	click_link_or_button "Remove Block"
+end
+
+Then /^there should be an email sent to the admin with valid information$/ do
+	@newEmail = User.find_by_admin(true)
+	mail_sent? :to => @newEmail, :subject => "Report content notification"
+end
+
+Then /^there should not be an email sent to the admin$/ do
+	@newEmail = User.find_by_admin(true)
+	not mail_sent? :to => @newEmail, :subject => "Report content notification"
+end
+
 Then /^I should not see deleted (.*)$/ do |type|
     if type == 'game'
 		page.should_not have_content(@givenGame)
@@ -123,6 +171,10 @@ Then /^I should not see deleted (.*)$/ do |type|
 		page.should_not have_content(@givenCompany)
 	end 
 	end 
+end
+
+Given /^there is an administrator admin$/ do
+	create_admin_user({})
 end
 
 
