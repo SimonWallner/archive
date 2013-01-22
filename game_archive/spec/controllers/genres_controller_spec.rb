@@ -20,7 +20,7 @@ require 'spec_helper'
 
 describe GenresController do
 
-  login_user
+  login_admin
 
   # This should return the minimal set of attributes required to create a valid
   # Genre. As you add validations to Genre, be sure to
