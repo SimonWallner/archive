@@ -6,6 +6,23 @@ class GameVersioner < Versioner
     @@instance
   end
 
+  def new_video_hash(old)
+    newest = current_version old
+    hash = Hash.new
+    ovs = Array.new(old.videos)
+    nvs = Array.new(newest.videos)
+    ovs.each do |ov|
+      nvs.each do |nv|
+        if nv.embedcode == ov.embedcode
+          hash[ov.id] = nv.id
+          nvs.delete nv
+          break
+        end
+      end
+    end
+    return hash
+  end
+
   protected
   # needs to be overridden in subclass
   # returns the active record model class object
