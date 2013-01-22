@@ -26,9 +26,16 @@ class GamesController < ApplicationController
     @game = @@GAME_VERSIONER.current_version some_version
 
     # redirect to other page if game is not newest version
-    if @game != some_version
+    if @game != some_version and !params[:version]
       redirect_to @game
       return
+    else
+      if params[:version]
+        @game = Game.where(:version_id => @game.version_id, :version_number => params[:version]).first!
+        if params[:makecurrent]
+          @@GAME_VERSIONER.revert_to_this @game
+        end
+      end
     end
 
 	  @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(0,@game.id)
