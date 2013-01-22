@@ -72,7 +72,9 @@ GameArchive::Application.routes.draw do
   		member do
 			get 'join'
 		end
-	end	
+  end
+
+  resources :about, only: [:index]
 	
   # The priority is based upon order of creation:
   # first created -> highest priority.
