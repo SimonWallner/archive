@@ -50,8 +50,10 @@ function loadfields(jsonurl){
                 for (var x = 0; x < val.length; x++){
                     addConcreteField(select_elem, false, false, true);
                     $('#year_release_date'+(x+1)).val(val[x].year);
-                    $('#month_release_date'+(x+1)).val(val[x].month);
-                    $('#day_release_date'+(x+1)).val(val[x].day);
+                    if(val[x].month)
+                        $('#month_release_date'+(x+1)).val(val[x].month);
+                    if(val[x].day)
+                        $('#day_release_date'+(x+1)).val(val[x].day);
                     $('#text_release_date'+(x+1)).val(val[x].additional_info);
                 }
                 addConcreteField(select_elem, false, false, true);
@@ -214,8 +216,10 @@ function loadfields(jsonurl){
 
                 addConcreteField(select_elem, false, false, true);
                 $('#year_'+i).val(val.year);
-                $('#month_'+i).val(val.month);
-                $('#day_'+i).val(val.day);
+                if(val.month)
+                    $('#month_'+i).val(val.month);
+                if(val.day)
+                    $('#day_'+i).val(val.day);
                 $('#text_'+i).val(val.additional_info);
             }
         });
