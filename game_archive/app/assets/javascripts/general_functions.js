@@ -1,12 +1,12 @@
 // jsonurl = url zum json renderer der  anzuzeigenden seite
 // geht das json durch und fügt alle felder entsprechend hinzu
+
+// bestimmen der möglichen fields und in welcher seite man sich befindet
+var gamefields = ["Aggregate Scores","Review Scores","Userdefined"];
+var companyfields = ["Defunct","Userdefined"];
+var developersfields = ["Userdefined"];
 function loadfields(jsonurl){
-    // bestimmen der möglichen fields und in welcher seite man sich befindet
-    var gamefields = ["Developer","Publisher","Distributor","Credits","Platform",
-                      "Release Dates","Mode","Media","External Links","Aggregate Scores",
-                      "Review Scores","Genres","Tags","Series","Userdefined"];
-    var companyfields = ["Official Name","Location","Founded","Defunct","External Links","Userdefined"];
-    var developersfields = ["External Links","Userdefined"];
+
     var usedfields;
     var page = '';
     var devs;
