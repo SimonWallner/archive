@@ -25,9 +25,18 @@ class DevelopersController < ApplicationController
     @developer = @@DEVELOPER_VERSIONER.current_version some_version
 
     # redirect to other page if game is not newest version
-    if @developer != some_version
+    if @developer != some_version and !params[:version]
       redirect_to @developer
       return
+    else
+      if params[:version]
+        @developer = Developer.where(:version_id => @developer.version_id, :version_number => params[:version]).first!
+        if params[:makecurrent]
+          @@DEVELOPER_VERSIONER.revert_to_this @developer
+          redirect_to @developer
+          return
+        end
+      end
     end
 
 	@reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(1,@developer.id)
