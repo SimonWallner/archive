@@ -16,6 +16,7 @@
 //= require tag-it.js
 //= require tooltipsy.min.js
 //= require at_autocomplete.js
+//= require jquery.form.js
 //= require notification.js
 //= require videoembed.js
 //= require general_functions.js
