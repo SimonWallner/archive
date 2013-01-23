@@ -27,7 +27,10 @@ class Reportblockcontent < ActiveRecord::Base
 			new_report.save
 			
 			# send notification mail to admin
-			Reportmailer.report(ctype, cid, reason).deliver
+			@recipients = User.find_by_admin(true)
+			if not @recipients.nil?
+				Reportmailer.report(@recipients, ctype, cid, reason).deliver
+			end
 		end
 	end
   end
