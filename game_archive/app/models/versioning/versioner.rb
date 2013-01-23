@@ -67,8 +67,8 @@ class Versioner
   # reverts to this version
   # for additional behaviour override revert_additional_behaviour
   def revert_to_this(obj)
-    old_last = obj.current_version
-    reverted = new_version old_last
+    old_last = current_version obj
+    reverted = new_version obj
 
     revert_additional_behaviour_before_save obj, old_last, reverted
 
