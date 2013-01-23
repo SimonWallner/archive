@@ -476,9 +476,13 @@ div.text {
 }
 
  
-div.fact-box {  
-  
- 
+div.fact-box {
+  .fact {
+    div:first-child {
+      font-weight: bold;
+    }
+  }
+
   @media #{$large-and-up} {
     width: 32%;
     display: inline;

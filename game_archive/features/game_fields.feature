@@ -7,6 +7,7 @@ Feature:
     Given I am signed in as User
    
 
+    @ne
   @javascript
   Scenario: add game field data with valid data
     Given I am on the game creation page
@@ -24,6 +25,7 @@ Feature:
     And I submit it
     Then I should see the saved Game fields
 
+    @ne
    @javascript
   Scenario: add game field with token list
     Given I am on the game creation page
