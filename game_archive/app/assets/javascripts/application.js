@@ -147,8 +147,8 @@ var help =
              '">'
 };
 
-$(document).ready(function() {
-    $("textarea[id*='_description']").parent().append( help.full );
-    $(".newhelp").tooltipsy({delay: 600}).removeClass("newhelp");
-    $(".all").hide();
-});
+// $(document).ready(function() {
+//     $("textarea[id*='_description']").parent().append( help.full );
+//     $(".newhelp").tooltipsy({delay: 600}).removeClass("newhelp");
+//     $(".all").hide();
+// });

@@ -648,8 +648,6 @@ a.tagit-close:hover span {
   height: 0;
 }
 
-
-
 .field {
   .field-label {
     &>div:first-child {
@@ -661,6 +659,26 @@ a.tagit-close:hover span {
       font-size:0.8em;
     }
   }
+}
+
+.field-help {
+	color: $middleGrey;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 0.9em;
+	p {
+		margin-bottom: 0.2em;
+	}
+	
+	span.code {
+		display: inline-block;
+		font-family: 'PT Mono';
+		background-color: $lightGrey;
+		border-radius: 0.2em;
+		padding-left: 0.3em;
+		padding-right: 0.3em;
+		color: black;
+		font-size: 0.95em;
+	}
 }
 
 .radiobutton {
@@ -769,38 +787,43 @@ img.full_markdown_help {
   vertical-align: bottom;
 }
 
-div.newFieldsDiv{
-  width: 50%;
-  input{
-    width: 100%;
-  }
-  textarea{
-    width: 100%;
-  }
-  input.year{
-    width: 3em;
-  }
-  div.release_dates_div {
-    input{
-      width: auto;
-    }
-    input.year{
-      width: 3em;
-    }
-  }
+div.newFieldsDiv {
+	width: 100%;
+	input{
+		width: 100%;
+	}
+  
+	textarea {
+    	width: 100%;
+	}
+
+	input.year {
+		width: 3em;
+	}
+	
+	div.release_dates_div {
+		input{
+			width: auto;
+		}
+		
+		input.year{
+			width: 3em;
+		}
+ 	}
 }
- @media #{$mid-and-below} {
-   div.newFieldsDiv{
-     width: 100%;
-   }
- }
+
+@media #{$mid-and-below} {
+	div.newFieldsDiv{
+		width: 100%;
+	}
+}
 
  .field {
    input[type="text"]{
      width: 50%;
    }
    textarea{
-     width: 50%;
+     width: 100%;
    }
    input[type="text"].mixin {
      width: 40%;
