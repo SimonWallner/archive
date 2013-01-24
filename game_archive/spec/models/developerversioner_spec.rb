@@ -50,7 +50,7 @@ describe DeveloperVersioner do
 
       sleep(1)
 
-      new = DeveloperVersioner.instance.new_version old
+      new = DeveloperVersioner.instance.new_version old, nil
 
       new.name.should eq old.name
       new.description.should eq old.description

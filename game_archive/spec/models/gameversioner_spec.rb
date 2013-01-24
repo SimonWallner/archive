@@ -50,7 +50,7 @@ describe GameVersioner do
 
       sleep(1)
 
-      new = GameVersioner.instance.new_version old
+      new = GameVersioner.instance.new_version old, nil
 
       new.title.should eq old.title
       new.description.should eq old.description
