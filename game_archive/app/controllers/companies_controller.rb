@@ -26,12 +26,20 @@ class CompaniesController < ApplicationController
     some_version = Company.find(params[:id])
     @company = @@COMPANY_VERSIONER.current_version some_version
 
-    # redirect to other page if company is not newest version
-    if @company != some_version
+    # redirect to other page if game is not newest version
+    if @company != some_version and !params[:version]
       redirect_to @company
       return
+    else
+      if params[:version]
+        @company = Company.where(:version_id => @company.version_id, :version_number => params[:version]).first!
+        if params[:makecurrent]
+          @@COMPANY_VERSIONER.revert_to_this @company
+          redirect_to @company
+          return
+        end
+      end
     end
-
 
 	  @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(2, @company.id)
 	  if @company.popularity == nil

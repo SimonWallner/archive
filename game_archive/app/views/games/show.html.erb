@@ -11,16 +11,16 @@
   </div>
   <h1><%= @game.title %></h1>
 
-  <% if user_signed_in? %>
-      <% if current_user.admin? %>
+  <% if user_signed_in? and current_user.admin? %>
           <div id="versions">
             <span>Versioning: </span>
             <% Game.where(:version_id => @game.version_id).each do |game| %>
                 <span><%= link_to game.version_number, game_path(:version => game.version_number) %></span>
             <% end %>
-            <span><%= link_to "make current version", game_path(:version => @game.version_number, :makecurrent => true) %></span>
+            <% if params[:version] %>
+                <span><%= link_to "make current version", game_path(:version => @game.version_number, :makecurrent => true) %></span>
+            <% end %>
           </div>
-      <% end %>
   <% end %>
 
   <div class="fact-box">

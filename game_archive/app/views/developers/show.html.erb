@@ -1,5 +1,18 @@
 <div class="developer">
   <h1><%=  @developer.name %></h1>
+
+  <% if user_signed_in? and current_user.admin? %>
+      <div id="versions">
+        <span>Versioning: </span>
+        <% Developer.where(:version_id => @developer.version_id).each do |developer| %>
+            <span><%= link_to developer.version_number, developer_path(:version => developer.version_number) %></span>
+        <% end %>
+        <% if params[:version] %>
+            <span><%= link_to "make current version", developer_path(:version => @developer.version_number, :makecurrent => true) %></span>
+        <% end %>
+      </div>
+  <% end %>
+
   <div class="fact-box">
 
     <%=
