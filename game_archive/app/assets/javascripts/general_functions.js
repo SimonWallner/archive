@@ -1,12 +1,12 @@
 // jsonurl = url zum json renderer der  anzuzeigenden seite
 // geht das json durch und fügt alle felder entsprechend hinzu
+
+// bestimmen der möglichen fields und in welcher seite man sich befindet
+var gamefields = ["Aggregate Scores","Review Scores","Userdefined"];
+var companyfields = ["Defunct","Userdefined"];
+var developersfields = ["Userdefined"];
 function loadfields(jsonurl){
-    // bestimmen der möglichen fields und in welcher seite man sich befindet
-    var gamefields = ["Developer","Publisher","Distributor","Credits","Platform",
-                      "Release Dates","Mode","Media","External Links","Aggregate Scores",
-                      "Review Scores","Genres","Tags","Series","Userdefined"];
-    var companyfields = ["Official Name","Location","Founded","Defunct","External Links","Userdefined"];
-    var developersfields = ["External Links","Userdefined"];
+
     var usedfields;
     var page = '';
     var devs;
@@ -50,8 +50,10 @@ function loadfields(jsonurl){
                 for (var x = 0; x < val.length; x++){
                     addConcreteField(select_elem, false, false, true);
                     $('#year_release_date'+(x+1)).val(val[x].year);
-                    $('#month_release_date'+(x+1)).val(val[x].month);
-                    $('#day_release_date'+(x+1)).val(val[x].day);
+                    if(val[x].month)
+                        $('#month_release_date'+(x+1)).val(val[x].month);
+                    if(val[x].day)
+                        $('#day_release_date'+(x+1)).val(val[x].day);
                     $('#text_release_date'+(x+1)).val(val[x].additional_info);
                 }
                 addConcreteField(select_elem, false, false, true);
@@ -214,8 +216,10 @@ function loadfields(jsonurl){
 
                 addConcreteField(select_elem, false, false, true);
                 $('#year_'+i).val(val.year);
-                $('#month_'+i).val(val.month);
-                $('#day_'+i).val(val.day);
+                if(val.month)
+                    $('#month_'+i).val(val.month);
+                if(val.day)
+                    $('#day_'+i).val(val.day);
                 $('#text_'+i).val(val.additional_info);
             }
         });
