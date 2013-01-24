@@ -125,7 +125,7 @@ class GamesController < ApplicationController
           Reportblockcontent.create_from_string(0,@game.id, params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
         else
           old = @game
-          @game = @@GAME_VERSIONER.new_version old
+          @game = @@GAME_VERSIONER.new_version old, params
           create_add_new_token(params[:new_genres], params[:new_platforms], params[:new_medias], params[:new_modes], params[:new_tags])
           create_add_new_release_dates(params[:new_release_dates])
           Field.create_add_new_fields(@game, params[:new_fields])
@@ -147,8 +147,8 @@ class GamesController < ApplicationController
           if params[:reportblockcontent] && params[:reportblockcontent][:status]=='0'
             format.html { redirect_to @game,notice: 'Game was reported successfully'}
           else
-            # update video
-            update_video_params params, old
+            # update all params which might be outdated due to versioning
+            update_params params, old
             if @game.update_attributes(params[:game])
               create_add_new_mixed_fields(params[:new_developers], MixedFieldType.find_by_name("Developer"))
               create_add_new_mixed_fields(params[:new_publishers], MixedFieldType.find_by_name("Publisher"))
@@ -182,6 +182,10 @@ class GamesController < ApplicationController
   end
 
   private
+  def update_params(params, old)
+    update_video_params params, old
+  end
+
   def update_video_params(params, old)
     return if params == nil || old == nil
     vp = params[:game][:videos_attributes]

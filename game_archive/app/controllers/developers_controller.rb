@@ -114,7 +114,7 @@ class DevelopersController < ApplicationController
           Reportblockcontent.create_from_string(1,@developer.id, params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
         else
           old = @developer
-          @developer = @@DEVELOPER_VERSIONER.new_version old
+          @developer = @@DEVELOPER_VERSIONER.new_version old, params
           Field.create_add_new_fields(@developer, params[:new_fields])
         end
       else

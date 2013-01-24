@@ -30,7 +30,7 @@ class CompanyVersioner < Versioner
 
   #adds additional behaviour to the new_version method
   # override in sublass if wanted
-  def new_version_additional_behaviour_before_save(old, new)
+  def new_version_additional_behaviour_before_save(old, new, params)
     new.name = old.name
     new.description = old.description
     new.official_name = old.official_name
@@ -59,7 +59,7 @@ class CompanyVersioner < Versioner
 
   # adds additional behaviour to the new_version method after saving the record
   # override in sublass if wanted
-  def new_version_additional_behaviour_after_save(old, new)
+  def new_version_additional_behaviour_after_save(old, new, params)
     # change report/block/delete
     change_rbc old, new, 2
     mixed_fields_reference_update old, new

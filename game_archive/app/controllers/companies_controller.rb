@@ -120,7 +120,7 @@ class CompaniesController < ApplicationController
           Reportblockcontent.create_from_string(2,@company.id, params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
         else
           old = @company
-          @company = @@COMPANY_VERSIONER.new_version old
+          @company = @@COMPANY_VERSIONER.new_version old, params
           Location.create_add_new_locations(@company, params["new_locations"])
           add_founded(params)
           add_defunct(params)

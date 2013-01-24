@@ -68,7 +68,7 @@ class Versioner
   # for additional behaviour override revert_additional_behaviour
   def revert_to_this(obj)
     old_last = current_version obj
-    reverted = new_version obj
+    reverted = new_version obj, nil
 
     revert_additional_behaviour_before_save obj, old_last, reverted
 
@@ -81,17 +81,17 @@ class Versioner
 
   # copies the current state and saves the new version
   # returns the new version
-  def new_version(old)
+  def new_version(old, params)
     new = model_class.new
     new.version_id = old.version_id
     new.version_author_id = old.version_author_id
     # version number
     new.version_number = ( current_version(old).version_number + 1 )
 
-    new_version_additional_behaviour_before_save old, new
+    new_version_additional_behaviour_before_save old, new, params
     new.version_updated_at = Time.now
     new.save
-    new_version_additional_behaviour_after_save old, new
+    new_version_additional_behaviour_after_save old, new, params
     return new
   end
 
@@ -122,12 +122,12 @@ class Versioner
 
   # adds additional behaviour to the new_version method before saving the record
   # override in sublass if wanted
-  def new_version_additional_behaviour_before_save(old, new)
+  def new_version_additional_behaviour_before_save(old, new, params)
   end
 
   # adds additional behaviour to the new_version method after saving the record
   # override in sublass if wanted
-  def new_version_additional_behaviour_after_save(old, new)
+  def new_version_additional_behaviour_after_save(old, new, params)
   end
 
   def change_rbc(old, new, content_type)
