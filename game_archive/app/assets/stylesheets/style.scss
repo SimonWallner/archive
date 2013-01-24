@@ -648,17 +648,52 @@ a.tagit-close:hover span {
   height: 0;
 }
 
-.field {
-  .field-label {
-    &>div:first-child {
-      font-size: 1em;
-      width: 25em;
-    }
 
-    &>div {
-      font-size:0.8em;
-    }
-  }
+.field {
+	margin-bottom: 1em;
+	
+	.field-label {
+		div {
+			font-size:0.8em;
+			
+			&:first-child {
+	     		font-size: 1em;
+				width: 25em;
+			}
+		}
+	}
+	
+	input[type="text"]{
+		width: 50%;
+	}
+
+   	textarea {
+		width: 100%;
+	}
+
+	input[type="text"].mixin {
+		width: 40%;
+		margin: 2px;
+   }
+
+	input.linkFound {
+		background-color: #98fb98;
+	}
+	
+	@media #{$mid-and-below} {
+		input[type="text"]{
+			width: 100%;
+		}
+
+		textarea{
+			width: 100%;
+		}
+
+		input[type="text"].mixin {
+			width: 40%;
+			margin: 2px;
+		}
+	}
 }
 
 .field-help {
@@ -783,8 +818,8 @@ img.full_markdown_help {
 .tooltipsy dt:nth-child(n+2) {
   padding-top: 5px;
 }
-.newField {
-  vertical-align: bottom;
+.addedField {
+	margin-bottom: 1em;
 }
 
 div.newFieldsDiv {
@@ -818,35 +853,8 @@ div.newFieldsDiv {
 	}
 }
 
- .field {
-   input[type="text"]{
-     width: 50%;
-   }
-   textarea{
-     width: 100%;
-   }
-   input[type="text"].mixin {
-     width: 40%;
-     margin: 2px;
-   }
-   input.linkFound {
-     background-color: #98fb98;
-   }
- }
- @media #{$mid-and-below} {
-   .field {
-     input[type="text"]{
-       width: 100%;
-     }
-     textarea{
-       width: 100%;
-     }
-     input[type="text"].mixin {
-       width: 40%;
-       margin: 2px;
-     }
-   }
- }
+
+
 
 input.year{
   width: 3em;
@@ -860,9 +868,13 @@ form.edit_game label, form.new_game label,form.edit_company label,form.new_compa
   font-weight: normal;
 }
 
-#profilepicfields input[type="checkbox"]{
-  width: 2%;
+
+img.thumb {
+	display: block;
+	margin-top: 5px;
+	margin-bottom: 5px;
 }
+
 
 table{
   border-collapse:collapse;

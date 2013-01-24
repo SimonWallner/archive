@@ -53,12 +53,12 @@
     </div>
 
   <div class="field">
-    <%= f.label :title, "Game Title: "%><br />
+    <%= f.label :title, 'Game Title: '%><br />
     <%= f.text_field :title %>
   </div>
   
   <div class="field">
-    <%= f.label :description, "Game Description: "%><br />
+    <%= f.label :description, 'Game Description: '%><br />
 	<div class="field-help">
 		<p>
 			You can use simplified markup to structure the text. <strong>Headings</strong> are created by prefixing a line with <span class="code">#</span>. <span class="code"># First Heading</span> or <span class="code">## Second Heagin</span> and so forth. <strong>Paragraphs</strong> are automatically created by inserting new-lines in the text and text can be <strong>emphasised</strong> or set in <strong>bold face</strong> with <span class="code">*emphasis*</span> and <span class="code">**bold face**</span>. <strong>Lists</strong> are created with <span class="code">* list item</span> or <span class="code">1. list item</span>. You can add <strong>cross references</strong> to other articles by typing the <span class="code">@</span> character followed by the first letters of the article you want to link to. You can also manually add <strong>links</strong> in the following form <span class="code">[Description](url)</span> e.g. <span class="code">[Wikipedia](http://www.wikipedia.org/)</span>
@@ -68,28 +68,24 @@
   </div>
   <div class="field">
 
-    <%= f.label :image, 'Choose game picture' %><br />
+    <%= f.label :image, 'Teaser Image: ' %><span class="field-help">This image is shown on the overview page and on top of this article.</span><br />
     <div class="field" id="profilepicfields">
-
+		Currently selected image:
       <% imguploader = ImageUploader.new %>
           <% if not @game.image_url == imguploader.default_url %>
-          <%= f.label :image, (File.basename f.object.image_url.to_s)%><br/>
-          <%=
-                image_tag f.object.image_url.to_s, :class => 'thumb'
+          <%= f.label :image, (File.basename f.object.image_url.to_s)%>
+          <%= image_tag f.object.image_url.to_s, :class => 'thumb rounded' %>
 
-          %>
-
-          <br/><%= f.label :remove_image, "remove game picture?" %>
-          <%= f.check_box :remove_image %> <br/>
-          <%end  %> <br/>
-      <%= f.file_field :image %>   <br/>  <br/>
-
+		  <%= f.label :remove_image, "Remove teaser image?" %>
+          <%= f.check_box :remove_image %><br/>
+          <%end  %>
+	Upload new teaser image: <%= f.file_field :image %>
   </div>
     <div class="field" >
       <!-- iterate through all the available videos for a game and create a field for them
       <f.text_area :video mit id!? > <remove button>
    end   -->
-      <%= f.label 'Post Video Embed links here (youtube or vimeo)' %><br /><br />
+      <%= f.label 'Embed Videos: ' %><span class="field-help">Embed YouTube of Vimeo videos by pasting the video url in the below field. CLick the "Add Video" link to add videos.</span>
       <div id="videos" >
         <%= f.fields_for :videos do |builder| %>
             <%= render :partial => 'video_fields', :locals => {:builder => builder} %>
@@ -98,7 +94,7 @@
       </div><br/>
     </div>
     <div class="field">
-      <%= f.label 'Upload Screenshots' %><br /><br />
+      <%= f.label 'Screenshots: ' %><br/>
       <div id="screenshots" >
         <%= f.fields_for :screenshots do |builder| %>
             <%= render :partial => 'screenshot_fields', :locals => {:builder => builder} %>
