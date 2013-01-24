@@ -6,24 +6,6 @@ class GameVersioner < Versioner
     @@instance
   end
 
-  def new_screenshot_hash(old)
-    newest = current_version old
-    hash = Hash.new
-    oss = Array.new old.screenshots
-    nss = Array.new newest.screenshots
-    oss.each do |os|
-      puts os.image
-      nss.each do |ns|
-        if ns.image == os.image
-          hash[os.id] = ns.id
-          nss.delete ns
-          break
-        end
-      end
-    end
-    return hash
-  end
-
   def new_video_hash(old)
     newest = current_version old
     hash = Hash.new
@@ -39,6 +21,24 @@ class GameVersioner < Versioner
       end
     end
     return hash
+  end
+
+  # returns the mixed fields with the current version
+  def current_version_mixed_fields(mfs)
+    return if mfs == nil
+    g_hash = Hash.new
+    ret_array = Array.new
+    mfs.each do |mf|
+      g = g_hash[mf.game.version_id]
+      if g == nil
+        g = current_version mf.game
+        g_hash[mf.game.version_id] = g
+      end
+      if mf.game_id == g.id
+        ret_array.push mf
+      end
+    end
+    ret_array
   end
 
   protected

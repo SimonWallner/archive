@@ -2,6 +2,8 @@ module ApplicationHelper
 	require 'redcarpet'
 
 	PREDEFINED_FIELDS = ["External Links", "Aggregate Scores", "Review Scores"]
+
+  @@GAME_VERSIONER = GameVersioner.instance
 	
 	# amount displayed featured entries
 	def getAmountFeatured()
@@ -55,14 +57,17 @@ module ApplicationHelper
   # object can be game, company, developer
   # type can be each MixedFieldType name (as symbols) or :all
   def get_mixed_fields(object, type)
+    puts 'get_mixed_fields'
     if type == nil || object == nil
       return Array.new
     end
     mf = object.mixed_fields
     if type == :all
-      return mf
+      return @@GAME_VERSIONER.current_version_mixed_fields mf
     end
-    return mf.find_all {|i| i.mixed_field_type.name == type.to_s }
+    mfs =  mf.find_all {|i| i.mixed_field_type.name == type.to_s }
+    # filter old versions and return the filtered set
+    return @@GAME_VERSIONER.current_version_mixed_fields mfs
   end
 
   def get_field(object, name)

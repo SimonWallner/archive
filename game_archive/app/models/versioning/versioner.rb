@@ -23,9 +23,7 @@ class Versioner
   end
 
   def current_versions_from_collection(collection)
-    if collection == nil
-      return
-    end
+    return if collection == nil
 
     hash = Hash.new
     ret = Array.new
@@ -49,11 +47,15 @@ class Versioner
     ret
   end
 
+  # returns the mixed fields with the current version
+  # should be overridden in subclass in order to define which field should be just in the newest version
+  def current_version_mixed_fields(mfs)
+    mfs
+  end
+
   # returns the most current version of this object
   def current_version(obj)
-    if obj == nil
-      return
-    end
+    return if obj == nil
     max_ver = nil
     # iterate through all games with certain object id, choose the version with the highest version id.
     model_class.find_all_by_version_id(obj.version_id).each do |v|
@@ -133,9 +135,7 @@ class Versioner
   def change_rbc(old, new, content_type)
     # report block content
     rbc = Reportblockcontent.find_all_by_content_type_and_content_id(content_type, old.id)
-    if rbc == nil
-      return
-    end
+    return if rbc == nil
     rbc.each do |rbc|
       cp = rbc.copy_without_references
       cp.content_id = new.id
