@@ -33,7 +33,7 @@ class GamesController < ApplicationController
       if params[:version]
         @game = Game.where(:version_id => @game.version_id, :version_number => params[:version]).first!
         if params[:makecurrent]
-          @@GAME_VERSIONER.revert_to_this @game
+          @game = @@GAME_VERSIONER.revert_to_this @game
           redirect_to @game
           return
         end

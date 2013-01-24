@@ -68,8 +68,8 @@ class CompanyVersioner < Versioner
   def mixed_fields_reference_update(old, new)
     # mixed fields
     old.mixed_fields.each do |mf|
-      nmf.company_id = new.id
-      nmf.save
+      mf.company_id = new.id
+      mf.save
     end
   end
 end

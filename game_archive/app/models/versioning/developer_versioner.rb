@@ -55,8 +55,8 @@ class DeveloperVersioner < Versioner
   def mixed_fields_reference_update(old, new)
     # mixed fields
     old.mixed_fields.each do |mf|
-      nmf.developer_id = new.id
-      nmf.save
+      mf.developer_id = new.id
+      mf.save
     end
   end
 end
