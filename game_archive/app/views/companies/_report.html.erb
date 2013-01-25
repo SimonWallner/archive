@@ -12,11 +12,11 @@
   <% end %>
   
 			<div class="field">
-				<%=  f.label :reason %><br />
-				<%=  text_field( :reportblockcontent, :reason)%>
+				<%=  f.label :reason, 'Reason for this Report' %><br />
+				<%=  text_area( :reportblockcontent, :reason)%>
 			</div> 
 			<div class="field">
-				<%=  f.label :email %><br />
+				<%=  f.label :email, 'Email Address (optional)' %><br />
 				<%=  text_field( :reportblockcontent, :email)%>
 			</div>  			
 			<%= text_field( :reportblockcontent, :status, :value => 0, :style => "display:none")  %>	

@@ -17,6 +17,7 @@ $redBright: $red * 1.2;
 $redDark: $red * 0.8;
 
 $borderRadius: 4px;
+$font-size: 14px;
 
 /*
  * media query sizes: 
@@ -48,7 +49,7 @@ $large-and-up: "screen and (min-width: 700px)";
  */
 #responsiveHelper {
 	visibility: hidden;
-/*	opacity: 0.5;*/
+	opacity: 0.5;
 	position: fixed;
 	top: 0px;
 	left: 0px;
@@ -130,7 +131,7 @@ $large-and-up: "screen and (min-width: 700px)";
 }
 
 body {
-	font-size: 14px;
+	font-size: $font-size;
 	font-family: 'Bitter';
 	font-style: normal;
 	font-weight: 400;
@@ -278,10 +279,9 @@ h1,
 h2 {
   font-family: 'League Gothic';
   text-transform: uppercase;
-  font-size: 3.5em;
+  font-size: 4.5em;
   color: $darkGrey;
   margin-top: 1em;
-        margin-bottom:0.2em;
 
   &:first-child {
     margin-top: 0.5em;
@@ -462,39 +462,87 @@ div.text {
     width: 64%;
   }
 
+	ol, ul {
+		list-style-position: inside;
+		margin-bottom: 1em;
+	}
+	
     ul {
       list-style: disc;
       margin-left: 1.5em;
            
     }
     
-    ol{list-style-type:decimal; }
+    ol {list-style-type: decimal; }
 
-    h3{
-      padding-bottom:1em;
-    }
+	h1, h2, h3, h4, h5, h6 {
+		font-family: 'Bitter';
+		font-size: 1.5em;
+	}
+	
+	h2 {
+		font-size: 1.2em;
+	}
+	
+	h3, h4, h5, h6 {
+		font-size: 1em;
+	}
 }
 
  
-div.fact-box {  
-  
- 
-  @media #{$large-and-up} {
-    width: 32%;
-    display: inline;
-    float: right;
-  }
-  
-  @media #{$mid-and-below} {
-    img {
-      float: right;
-      width: 33%;
-    }
+div.fact-box {
+	margin-bottom: $font-size;
 	
-	p {
-		margin-bottom: 1em;
+	img {
+		margin-bottom: 14px;
+		float: clear;
 	}
-  }
+	
+	@media #{$large-and-up} {
+		width: 32%;
+		float: right;
+	}
+
+	@media #{$mid-and-below} {
+		img {
+			float: right;
+			width: 33%;
+			margin-left: $font-size;
+		}
+	}
+	
+	@media #{$tiny-and-below} {
+		img {
+			float: none;
+			width: 60%;
+			display: block;
+		    margin-left: auto;
+		    margin-right: auto
+		}
+	}
+	
+
+	
+	.label {
+		font-weight: 900;
+	}
+	
+	ul {
+		display: inline;
+	}
+	
+	li {
+		display: inline;
+		&:after {
+			content: ","
+		}
+		
+		&:last-child {
+			&:after {
+				content: ""
+			}
+		}
+	}
 }
 
 div.game {
@@ -524,9 +572,6 @@ div.game {
   }
 }
 
-img.portrait {
-  margin-bottom: 14px;
-}
 span.forceWrap {
   word-wrap: break-word;
 }
@@ -603,74 +648,72 @@ a.tagit-close:hover span {
   height: 0;
 }
 
-// column layout
-.layout-container {
-  margin-top:2em;
-  margin-bottom:2em;
-  overflow: auto;
-  width:100%;
-  height:100%;
-
-  .column-left {
-    float:left;
-  }
-
-  .column-right {
-    float:right;
-  }
-}
-
-.two-thirds {
-  width:66%;
-}
-
-.one-third {
-  width:34%;
-}
-
-#games-list {
-  margin-top:1em;
-  width:100%;
-
-
-  li {
-    padding-top:0.2em;
-    padding-bottom:0.2em;
-    padding-left:0.5em;
-    padding-right:0.5em;
-    ul {
-      overflow:auto;
-
-      li:first-child {
-        width:50%;
-      }
-
-      li {
-        float:left;
-      }
-    }
-  }
-
-  &>li:nth-child(odd) {
-    background:rgb(245, 245, 245);
-  }
-
-  .game-title {
-    width:100%;
-  }
-}
 
 .field {
-  .field-label {
-    &>div:first-child {
-      font-size: 1em;
-      width: 25em;
-    }
+	margin-bottom: 1em;
+	
+	.field-label {
+		div {
+			font-size:0.8em;
+			
+			&:first-child {
+	     		font-size: 1em;
+				width: 25em;
+			}
+		}
+	}
+	
+	input[type="text"]{
+		width: 50%;
+	}
 
-    &>div {
-      font-size:0.8em;
-    }
-  }
+   	textarea {
+		width: 100%;
+	}
+
+	input[type="text"].mixin {
+		width: 40%;
+		margin: 2px;
+   }
+
+	input.linkFound {
+		background-color: #98fb98;
+	}
+	
+	@media #{$mid-and-below} {
+		input[type="text"]{
+			width: 100%;
+		}
+
+		textarea{
+			width: 100%;
+		}
+
+		input[type="text"].mixin {
+			width: 40%;
+			margin: 2px;
+		}
+	}
+}
+
+.field-help {
+	color: $middleGrey;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 0.9em;
+	p {
+		margin-bottom: 0.2em;
+	}
+	
+	span.code {
+		display: inline-block;
+		font-family: 'PT Mono';
+		background-color: $lightGrey;
+		border-radius: 0.2em;
+		padding-left: 0.3em;
+		padding-right: 0.3em;
+		color: black;
+		font-size: 0.95em;
+	}
 }
 
 .radiobutton {
@@ -688,7 +731,6 @@ a.tagit-close:hover span {
 }
 // Listing of all available tags
 div.all {
-
    position: fixed;
    top: 10px;
    right: 10px;
@@ -776,65 +818,43 @@ img.full_markdown_help {
 .tooltipsy dt:nth-child(n+2) {
   padding-top: 5px;
 }
-.newField {
-  vertical-align: bottom;
+.addedField {
+	margin-bottom: 1em;
 }
 
-div.newFieldsDiv{
-  width: 50%;
-  input{
-    width: 100%;
-  }
-  textarea{
-    width: 100%;
-  }
-  input.year{
-    width: 3em;
-  }
-  div.release_dates_div {
-    input{
-      width: auto;
-    }
-    input.year{
-      width: 3em;
-    }
-  }
-}
- @media #{$mid-and-below} {
-   div.newFieldsDiv{
-     width: 100%;
-   }
- }
+div.newFieldsDiv {
+	width: 100%;
+	input{
+		width: 100%;
+	}
+  
+	textarea {
+    	width: 100%;
+	}
 
- .field {
-   input[type="text"]{
-     width: 50%;
-   }
-   textarea{
-     width: 50%;
-   }
-   input[type="text"].mixin {
-     width: 40%;
-     margin: 2px;
-   }
-   input.linkFound {
-     background-color: #98fb98;
-   }
- }
- @media #{$mid-and-below} {
-   .field {
-     input[type="text"]{
-       width: 100%;
-     }
-     textarea{
-       width: 100%;
-     }
-     input[type="text"].mixin {
-       width: 40%;
-       margin: 2px;
-     }
-   }
- }
+	input.year {
+		width: 3em;
+	}
+	
+	div.release_dates_div {
+		input{
+			width: auto;
+		}
+		
+		input.year{
+			width: 3em;
+		}
+ 	}
+}
+
+@media #{$mid-and-below} {
+	div.newFieldsDiv{
+		width: 100%;
+	}
+}
+
+
+
 
 input.year{
   width: 3em;
@@ -848,9 +868,13 @@ form.edit_game label, form.new_game label,form.edit_company label,form.new_compa
   font-weight: normal;
 }
 
-#profilepicfields input[type="checkbox"]{
-  width: 2%;
+
+img.thumb {
+	display: block;
+	margin-top: 5px;
+	margin-bottom: 5px;
 }
+
 
 table{
   border-collapse:collapse;

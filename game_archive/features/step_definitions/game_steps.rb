@@ -58,9 +58,7 @@ end
 #   Scenarios: update game's page
 
 When /^I follow the game edit link$/ do
-  within(".game") do
     click_link_or_button "Edit"
-  end
 end
 
 When /^I change the game's data and submit it$/ do
@@ -74,7 +72,6 @@ end
 Then /^I should see the updated game content$/ do
   page.should have_content(@update_game_title)
   page.should have_content(@update_game_description)
- 
 end
 
 

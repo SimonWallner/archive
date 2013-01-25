@@ -18,8 +18,8 @@ def add_embedcode(embedcode)
   click_link_or_button('Add Video')
   sleep(0.2)
   within(:css, "#videos") do
-    alltextareas =  page.all(:css, "textarea")
-    alltextareas.last.set embedcode
+    allInputFields =  page.all(:css, 'input[type="text"]')
+    allInputFields.last.set embedcode
 
   end
 

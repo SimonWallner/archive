@@ -22,133 +22,38 @@
 //= require screenshot.js
 
 var help =
-     {'full' :
-         '<img style="width: 32px; height: 32px; margin-left: 20px; margin-right: 20px;" class="full_markdown_help newhelp" alt="Help" src="/assets/help.png" title="' +
-             '<dl>\n' +
-             '<dt>PARAGRAPHS and LINE BREAKS</dt>\n' +
-             '<dd>A paragraph is simply one or more consecutive lines of text, separated by one or more blank lines.</br>\n' +
-             'When you do want to insert a <br /> break tag using Markdown, you end a line with two or more spaces, then type return.</dd>\n' +
-
-             '<dt>HEADERS</dt>\n' +
-             '<dd># This is an H1</br>\n' +
-             '###### This is an H6</dd>\n' +
-
-             '<dt>BLOCKQUOTES</dt>\n' +
-             '<dd>Email-style > characters genereate blockquotes. It looks best if you hard wrap the text and put a > before every line:</br>\n' +
-             '> This is a blockquote.</br>\n' +
-             '> > This is nested blockquote.</br>\n' +
-             '> Back to the first level.</dd>\n' +
-
-             '<dt>LISTS</dt>\n' +
-             '<dd>Unordered lists use *, +, - and ordered lists use numbers folloewed by periods:</br>\n' +
-             '*   Red</br>\n' +
-             '1.  Bird</dd>\n' +
-
-             '<dt>CODE BLOCKS and INLINE CODE</dt> \n' +
-             '<dd>To produce a code block, simply indent every line of the block by at least 4 spaces or 1 tab. To indicate inline code, wrap it with backtick quotes (`). </br>\n' +
-             '    This is a code block.</br> \n' +
-             'Use the `printf()` function.</dd> \n' +
-
-             '<dt>HORIZONTAL RULES</dt>\n' +
-             '<dd>You can produce a horizontal rule tag by placing three or more hyphens ---, asterisks ***, or underscores ___ on a line by themselves</dd>\n' +
-
-             '<dt>LINKS</dt>\n' +
-             '<dd>This is [an example](http://example.com/ &quot;Title&quot;) inline link.</br>\n' +
-             'To reference on a game, developer or company use the @ symbol followed by the starting of the searched name.</dd>\n' +
-
-             '<dt>EMPHASIS and STRONG</dt>\n' +
-             '<dd>Asterisks (*) and underscores (_) are indicators of emphasis. Double *’s or _’s will be displayed bold.</br>\n' +
-             '<em>*emphasis*</em> <em>_emphasis_</em> <strong>**strong**</strong> <strong>__strong__</strong></dd>\n' +
-             '</dl>' +
-             '">',
-     'defunct' :
-          '<img style="width: 32px; height: 32px; margin-left: 20px; margin-right: 20px;" class="full_markdown_help newhelp" alt="Help" src="/assets/help.png" title="' +
-             '<dl>\n' +
-             '<dt>DEFUNCT</dt>\n' +
-             '</dl>' +
-             '">',
+     {'defunct' :
+          ': <span class="field-help">Date the studio/organisation became defunct and an optional reason (e.g. merged with XY, ...)',
      'founded' :
-         '<img style="width: 32px; height: 32px; margin-left: 20px; margin-right: 20px;" class="full_markdown_help newhelp" alt="Help" src="/assets/help.png" title="' +
-             '<dl>\n' +
-             '<dt>Founded</dt>\n' +
-             '</dl>' +
-             '">',
+         ': <span class="field-help">Founding date of this studio/organisation.</span>',
      'official name' :
-         '<img style="width: 32px; height: 32px; margin-left: 20px; margin-right: 20px;" class="full_markdown_help newhelp" alt="Help" src="/assets/help.png" title="' +
-             '<dl>\n' +
-             '<dt>External Links was du willst</dt>\n' +
-             '</dl>' +
-             '">',
+         ': <span class="field-help">Official name of the studio/organisation.</span>',
      'locations' :
-         '<img style="width: 32px; height: 32px; margin-left: 20px; margin-right: 20px;" class="full_markdown_help newhelp" alt="Help" src="/assets/help.png" title="' +
-             '<dl>\n' +
-             '<dt>External Links was du willst</dt>\n' +
-             '</dl>' +
-             '">',
+         ': <span class="field-help">Comma separated list of locations where this studio/organisation is or has been active.</span>',
      'userdefined' :
-          '<img style="width: 32px; height: 32px; margin-left: 20px; margin-right: 20px;" class="full_markdown_help newhelp" alt="Help" src="/assets/help.png" title="' +
-             '<dl>\n' +
-             '<dt>Userdef</dt>\n' +
-             '</dl>' +
-             '">',
+          ': <span class="field-help">Userdefined field to add additional categories and data that does not match any of the other fields.</span>',
      'external links' :
-         '<img style="width: 32px; height: 32px; margin-left: 20px; margin-right: 20px;" class="full_markdown_help newhelp" alt="Help" src="/assets/help.png" title="' +
-             '<dl>\n' +
-             '<dt>externals</dt>\n' +
-             '</dl>' +
-             '">',
+         ': <span class="field-help">Links to external websites using the simplified markup syntax. <span class="code">[description](http://example.com)</span>',
      'developer' :
-         '<img style="width: 32px; height: 32px; margin-left: 20px; margin-right: 20px;" class="full_markdown_help newhelp" alt="Help" src="/assets/help.png" title="' +
-             '<dl>\n' +
-             '<dt>Dev</dt>\n' +
-             '</dl>' +
-             '">',
+         ': <span class="field-help">Developers that contributed to this game. Add a developer\'s name and and optional role (e.g. Artist, Lead Programmer, ...). If the developer is found in the databse the field turns green.</span>',
      'publisher' :
-         '<img style="width: 32px; height: 32px; margin-left: 20px; margin-right: 20px;" class="full_markdown_help newhelp" alt="Help" src="/assets/help.png" title="' +
-             '<dl>\n' +
-             '<dt>Publisher</dt>\n' +
-             '</dl>' +
-             '">',
+         ': <span class="field-help">Publishers of the game and additional optional information (e.g. publishing platform, region, ...).</span>',
      'distributor' :
-          '<img style="width: 32px; height: 32px; margin-left: 20px; margin-right: 20px;" class="full_markdown_help newhelp" alt="Help" src="/assets/help.png" title="' +
-             '<dl>\n' +
-             '<dt>dist</dt>\n' +
-             '</dl>' +
-             '">',
+          ': <span class="field-help">Distributors of the game and additional optional information (e.g. distribution medium, region, ...).</span>',
      'credits' :
-         '<img style="width: 32px; height: 32px; margin-left: 20px; margin-right: 20px;" class="full_markdown_help newhelp" alt="Help" src="/assets/help.png" title="' +
-             '<dl>\n' +
-             '<dt>credits</dt>\n' +
-             '</dl>' +
-             '">',
+         ': <span class="field-help">Additional credits with optional information (e.g. localisation, marketing, testing, ...).</span>',
      'release dates' :
-         '<img style="width: 32px; height: 32px; margin-left: 20px; margin-right: 20px;" class="full_markdown_help newhelp" alt="Help" src="/assets/help.png" title="' +
-             '<dl>\n' +
-             '<dt>dates</dt>\n' +
-             '</dl>' +
-             '">',
+         ': <span class="field-help">Release dates with additional optional information (e.g. platform, region, ...).</span>',
      'series' :
-         '<img style="width: 32px; height: 32px; margin-left: 20px; margin-right: 20px;" class="full_markdown_help newhelp" alt="Help" src="/assets/help.png" title="' +
-             '<dl>\n' +
-             '<dt>Serie</dt>\n' +
-             '</dl>' +
-             '">',
+         ': <span class="field-help">Prequels/sequels or other games in a series with additional optional information (e.g. prequel, sequel, spin-off, ...).</span>',
      'review scores' :
-         '<img style="width: 32px; height: 32px; margin-left: 20px; margin-right: 20px;" class="full_markdown_help newhelp" alt="Help" src="/assets/help.png" title="' +
-             '<dl>\n' +
-             '<dt>reviews</dt>\n' +
-             '</dl>' +
-             '">',
+         ': <span class="field-help">Individual review scores. Please also link to the review <span class="code">[description](http://example.com)</span></span>',
      'aggregate scores' :
-         '<img style="width: 32px; height: 32px; margin-left: 20px; margin-right: 20px;" class="full_markdown_help newhelp" alt="Help" src="/assets/help.png" title="' +
-             '<dl>\n' +
-             '<dt>scores</dt>\n' +
-             '</dl>' +
-             '">'
+         ': <span class="field-help">Aggregated review scores. Please also link to the score aggregator <span class="code">[description](http://example.com)</span></span>'
 };
 
-$(document).ready(function() {
-    $("textarea[id*='_description']").parent().append( help.full );
-    $(".newhelp").tooltipsy({delay: 600}).removeClass("newhelp");
-    $(".all").hide();
-});
+// $(document).ready(function() {
+//     $("textarea[id*='_description']").parent().append( help.full );
+//     $(".newhelp").tooltipsy({delay: 600}).removeClass("newhelp");
+//     $(".all").hide();
+// });

@@ -1,9 +1,9 @@
 <% mfs = get_mixed_fields(object, type) %>
 <% if mfs.any? %>
 	<div class="fact">
-		<div>
+		<span class="label">
 		  <%= label.to_s %>:
-		</div>
+		</span>
 		<ul>
 			<% mfs.each do |mf| %>
 		        <li>
