@@ -1,7 +1,7 @@
 <% if current_user.admin %>
 	<% Reportblockcontent.all.each do |reportblockcontent| %>
 		<% if reportblockcontent.status ==0 %>
-			<h1>Reported Contents</h1>
+			<h1>Reported Content</h1>
 			<table cellpadding="40">
 			<tr>
 			<td><b>Content Name</b></td>
@@ -45,7 +45,7 @@
 <% end %>
 	<% Reportblockcontent.all.each do |reportblockcontent| %>
 		<% if reportblockcontent.status ==4 %>
-			<h1>Deleted Contents</h1>
+			<h1>Deleted Content</h1>
 			<table cellpadding="40">
 			<tr>
 			<td><b>Content Name</b></td>

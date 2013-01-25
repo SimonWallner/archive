@@ -166,7 +166,7 @@ ActiveRecord::Schema.define(:version => 20130113152519) do
   add_index "mixed_fields", ["developer_id"], :name => "index_mixed_fields_on_developer_id"
   add_index "mixed_fields", ["game_id"], :name => "index_mixed_fields_on_game_id"
   add_index "mixed_fields", ["mixed_field_type_id"], :name => "index_mixed_fields_on_mixed_field_type_id"
-  add_index "mixed_fields", ["series_game_id"], :name => "mf_series_game_index"
+  add_index "mixed_fields", ["series_game_id"], :name => "index_mixed_fields_on_series_game_id"
 
   create_table "modes", :force => true do |t|
     t.string   "name"

@@ -1,16 +1,11 @@
 <% if object.any? %>
     <div class="fact">
-      <div>
+      <span class="label">
         <%= label.to_s %>:
-      </div>
+      </span>
       <ul>
         <% object.each do |f| %>
-            <li>
-              <%= f.name %>
-              <% if f.additional_info != nil %>
-                - <%= f.additional_info %>
-              <% end %>
-            </li>
+            <li><%= f.name %><% if f.additional_info != nil %> - <%= f.additional_info %><% end %></li>
         <% end %>
       </ul>
     </div>
