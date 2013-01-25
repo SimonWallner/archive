@@ -32,7 +32,7 @@ class DevelopersController < ApplicationController
       if params[:version]
         @developer = Developer.where(:version_id => @developer.version_id, :version_number => params[:version]).first!
         if params[:makecurrent]
-          @@DEVELOPER_VERSIONER.revert_to_this @developer
+          @developer = @@DEVELOPER_VERSIONER.revert_to_this @developer
           redirect_to @developer
           return
         end

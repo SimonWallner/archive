@@ -63,11 +63,11 @@ module ApplicationHelper
     end
     mf = object.mixed_fields
     if type == :all
+      #return mf
       return @@GAME_VERSIONER.current_version_mixed_fields mf
     end
     mfs =  mf.find_all {|i| i.mixed_field_type.name == type.to_s }
-    # filter old versions and return the filtered set
-    return @@GAME_VERSIONER.current_version_mixed_fields mfs
+    return mfs
   end
 
   def get_field(object, name)

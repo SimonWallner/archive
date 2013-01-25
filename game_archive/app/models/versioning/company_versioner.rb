@@ -25,7 +25,6 @@ class CompanyVersioner < Versioner
   def revert_additional_behaviour_after_save(revert_to, current_newest, new)
     # change report/block/delete
     change_rbc current_newest, new, 2
-    mixed_fields_reference_update revert_to, new
   end
 
   #adds additional behaviour to the new_version method

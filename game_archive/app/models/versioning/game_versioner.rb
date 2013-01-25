@@ -60,8 +60,6 @@ class GameVersioner < Versioner
   def revert_additional_behaviour_after_save(revert_to, current_newest, new)
     # change report/block/delete
     change_rbc current_newest, new, 0
-    copy_mixed_fields revert_to, new
-    mixed_fields_update_series_references revert_to, new
   end
 
   #adds additional behaviour to the new_version method
@@ -133,14 +131,13 @@ class GameVersioner < Versioner
       nmf = mf.dup
       nmf.game_id = new.id
       nmf.save
+      puts "omf: #{mf.id} nmf: #{nmf.id}"
     end
   end
 
   def mixed_fields_update_series_references(old, new)
     smf = MixedField.where(:series_game_id => old.id)
-    if smf == nil
-      return
-    end
+    return if smf == nil
 
     smf.each do |smfe|
       smfe.series_game_id = new.id

@@ -34,7 +34,7 @@ class CompaniesController < ApplicationController
       if params[:version]
         @company = Company.where(:version_id => @company.version_id, :version_number => params[:version]).first!
         if params[:makecurrent]
-          @@COMPANY_VERSIONER.revert_to_this @company
+          @company = @@COMPANY_VERSIONER.revert_to_this @company
           redirect_to @company
           return
         end
