@@ -20,7 +20,7 @@ $(document).ready(function() {
 
         //escape linebreacks from json inputs
         $('[id^="new_"]').each(function(){
-            $(this).val($(this).val().replace("\n", "\\n"));
+            $(this).val($(this).val().replace(/\n/g, "\\n"));
         });
 
         event.preventDefault();
