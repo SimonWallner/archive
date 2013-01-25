@@ -131,7 +131,6 @@ class GameVersioner < Versioner
       nmf = mf.dup
       nmf.game_id = new.id
       nmf.save
-      puts "omf: #{mf.id} nmf: #{nmf.id}"
     end
   end
 
