@@ -203,7 +203,7 @@ Then /^I should see data (?:for|from) the old version (?:of|in) the (.+)$/ do |t
       upload_to_path = "uploads/game/image/" + id + "/top_game_" + @new_filename
       page.should_not have_selector("img[src$='#{upload_to_path}']")
 
-      upload_to_path = "uploads/game/image/" + ((id.to_i-1).to_s) + "/top_game" + @old_filename
+      upload_to_path = "uploads/game/image/" + ((id.to_i-1).to_s) + "/top_game_" + @old_filename
       page.should have_selector("img[src$='/#{upload_to_path}']")
 
     elsif type == "reverted game"

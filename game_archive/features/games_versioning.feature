@@ -22,7 +22,6 @@ Feature: As an administrator,
     When I follow the link to the previous version of the game
     Then I should see data for the old version of the game
 
-
   @javascript
   Scenario: revert to previous version and compare changed content
     Given I have two different versions with different data for a game
