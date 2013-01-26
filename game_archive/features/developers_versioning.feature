@@ -15,11 +15,11 @@ Feature: As an administrator,
     Then I should have the next version for the given developer
     And I should see the link for the next version in the list of versions
 
-
+  @javascript
   Scenario: compare changed content  between versions of a developer page
-    Given I have two different versions with different data for the developer Hans
+    Given I have two different versions with different data for a developer
     And I am on the detail page of the given developer
-    When I follow the link to the previous version
-    Then I should see different data
+    When I follow the link to the previous version of the developer
+    Then I should see different data for the old version of the developer
 
 

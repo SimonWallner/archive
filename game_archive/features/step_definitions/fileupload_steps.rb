@@ -23,7 +23,6 @@ Then /^I should see the picture on the details page of the (.+)$/ do |type|
     #id =   Developer.find_by_name(@new_name).id.to_s
     id = (DeveloperVersioner.instance.current_version Developer.find_by_name(@new_name)).id.to_s
 
-    puts id
    version = "tiled_4x"
     upload_to_path = "uploads/developer/image/" + id + "/loudspeaker.png"
 
