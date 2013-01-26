@@ -120,8 +120,8 @@ Given /^I am signed in as (.+)$/ do |role|
   case role
     when 'Admin'
       create_admin_user({})
-	when 'Blocked'
-	  create_blocked_user({})
+    when 'Blocked'
+      create_blocked_user({})
     else
       create_confirmed_user({})
   end

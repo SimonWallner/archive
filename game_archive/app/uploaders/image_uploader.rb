@@ -47,13 +47,15 @@ class ImageUploader < CarrierWave::Uploader::Base
 
    #Create different versions of your uploaded files:
    version :tiled_2x do
-     process :resize_to_fill=> [339, 170]
+     # double image size
+     # process :resize_to_fill=> [339, 170]
+     process :resize_to_fill=> [678, 340]
    end
    version :tiled_4x do
-     process :resize_to_fill=> [166, 166]
+     process :resize_to_fill=> [332, 332]
    end
    version :top_game do
-     process :resize_to_fill=> [688 , 350]
+     process :resize_to_fill=> [1356 , 700]
    end
 
 
