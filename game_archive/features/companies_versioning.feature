@@ -6,14 +6,14 @@ Feature: As an administrator,
     Given I am signed in as Admin
 
 
-#  Scenario: successfully create a new version of a company
-#    Given I have a company BowserCo
-#    And I have a certain version number for the given company
-#    And I am on the edit page of the given company
-#    When I fill in the fields with valid details for a company
-#    And I submit it
-#    Then I should have the next version for the given company
-#    And I should see the link for the next version in the list of versions
+  Scenario: successfully create a new version of a company
+    Given I have a company BowserCo
+    And I have a certain version number for the given company
+    And I am on the edit page of the given company
+    When I fill in the fields with valid details for a company
+    And I submit it
+    Then I should have the next version for the given company
+    And I should see the link for the next version in the list of versions
 
   @javascript
   Scenario: compare changed content  between versions of a company
