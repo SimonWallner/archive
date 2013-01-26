@@ -194,15 +194,28 @@ Then /^I should see data (?:for|from) the old version (?:of|in) the (.+)$/ do |t
     end
 
 
-  elsif type == "game"
+  elsif (type == "game") or (type == "reverted game")
 
     id = (GameVersioner.instance.current_version Game.find_by_title(@old_name)).id.to_s
 
-    upload_to_path = "uploads/"+ type +"/image/" + id + "/top_game_" + @new_filename
-    page.should_not have_selector("img[src$='#{upload_to_path}']")
+    if type == "game"
 
-    upload_to_path = "uploads/"+ type +"/image/" + ((id.to_i-1).to_s) + "/top_game_" + @old_filename
-    page.should have_selector("img[src$='/#{upload_to_path}']")
+      upload_to_path = "uploads/game/image/" + id + "/top_game_" + @new_filename
+      page.should_not have_selector("img[src$='#{upload_to_path}']")
+
+      upload_to_path = "uploads/game/image/" + ((id.to_i-1).to_s) + "/top_game" + @old_filename
+      page.should have_selector("img[src$='/#{upload_to_path}']")
+
+    elsif type == "reverted game"
+
+      upload_to_path = "uploads/game/image/" + ((id.to_i-1).to_s ) + "/top_game_" + @new_filename
+      page.should_not have_selector("img[src$='#{upload_to_path}']")
+
+      upload_to_path = "uploads/game/image/" + id.to_s + "/top_game_" + @old_filename
+      page.should have_selector("img[src$='/#{upload_to_path}']")
+
+    end
+
 
     page.should_not have_content @new_developer
     page.should have_content @old_developer
@@ -226,7 +239,6 @@ Then /^I should see data (?:for|from) the old version (?:of|in) the (.+)$/ do |t
     page.should have_content @old_media
 
 
-
   end
 end
 
@@ -245,7 +257,7 @@ Then /^I should see a newly created version in the version links for a (.+)$/ do
       page.should have_link((@company_new.version_number+1).to_s)
 
     elsif type == "game"
-      page.should have_link((@company_new.version_number+1).to_s)
+      page.should have_link((@game_new.version_number+1).to_s)
 
     end
   end
