@@ -5,7 +5,6 @@ class CompaniesController < ApplicationController
   before_filter only: [:edit, :show] { |c| c.block_content_visitor 2 } 
   before_filter only: [:edit] { |c| c.block_content_user 2 }
   before_filter :authenticate_admin!, only: [:block]
-  #before_filter :blocked_user!, except: [:index, :show, :report, :update]
   
   # GET /companies
   # GET /companies.json
@@ -138,16 +137,6 @@ class CompaniesController < ApplicationController
 				redirect_to root_path, notice: 'you need to be registered and signed up in order to access this page'
 			end	    
 	  end
-    end
-  end
-
-  # DELETE /companies/1
-  def destroy
-    @company = Company.find(params[:id])
-    @company.destroy
-
-    respond_to do |format|
-      format.html { redirect_to companies_url }
     end
   end
 

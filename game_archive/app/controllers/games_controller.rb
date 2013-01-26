@@ -149,17 +149,7 @@ class GamesController < ApplicationController
 	  end
     end
   end
-
-  # DELETE /games/1
-  def destroy
-    @game = Game.find(params[:id])
-    @game.destroy
-
-    respond_to do |format|
-      format.html { redirect_to games_url }
-    end
-  end
-
+  
   private
   # takes the new_genres_string and the game_params string
   # creates new genres if necessary

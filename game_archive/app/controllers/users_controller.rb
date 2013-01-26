@@ -1,10 +1,11 @@
 class UsersController < ApplicationController
+
+	before_filter :authenticate_admin!
+	
   def manage
-	authenticate_admin!
   end
   
   def update
-	authenticate_admin!
 	respond_to do |format| 
 		# search for user
 		if params[:user_email] != ''

@@ -3,7 +3,6 @@ class DevelopersController < ApplicationController
   before_filter only: [:edit, :show] { |c| c.block_content_visitor 1 } 
   before_filter only: [:edit] { |c| c.block_content_user 1 }
   before_filter :authenticate_admin!, only: [:block]
-  #before_filter :blocked_user!, except: [:index, :show, :report, :update]
   
   # GET /developers
   # GET /developers.json
@@ -129,16 +128,6 @@ class DevelopersController < ApplicationController
 				redirect_to root_path, notice: 'you need to be registered and signed up in order to access this page'
 			end	    
 	  end
-    end
-  end
-
-  # DELETE /developers/1
-  def destroy
-    @developer = Developer.find(params[:id])
-    @developer.destroy
-
-    respond_to do |format|
-      format.html { redirect_to developers_url }
     end
   end
 end
