@@ -134,7 +134,7 @@ When /^I follow the link to the previous version of the (.+)$/ do |type|
 
 end
 
-Then /^I should see different data for the old version of the (.+)$/ do |type|
+Then /^I should see data (?:for|from) the old version (?:of|in) the (.+)$/ do |type|
 
   page.should_not have_content @new_description
   page.should have_content @old_description
@@ -142,31 +142,56 @@ Then /^I should see different data for the old version of the (.+)$/ do |type|
   page.should_not have_link @new_external_link_name
   page.should have_link @old_external_link_name
 
-  if type == "developer"
+  if (type == "developer") or (type == "reverted developer")
 
     id = (DeveloperVersioner.instance.current_version Developer.find_by_name(@old_name)).id.to_s
 
-    upload_to_path = "uploads/"+ type +"/image/" + id + "/" + @new_filename
+    if type == "developer"
+
+    upload_to_path = "uploads/developer/image/" + id + "/" + @new_filename
     page.should_not have_selector("img[src$='#{upload_to_path}']")
 
-    upload_to_path = "uploads/"+ type +"/image/" + ((id.to_i-1).to_s) + "/" + @old_filename
-    page.should have_selector("img[src$='/#{upload_to_path}']")
+    upload_to_path_prev = "uploads/developer/image/" + ((id.to_i-1).to_s ) + "/" + @old_filename
 
-  elsif type == "company"
+    elsif type == "reverted developer"
+
+
+      upload_to_path = "uploads/developer/image/" + (id.to_i-1).to_s+ "/" + @new_filename
+      page.should_not have_selector("img[src$='#{upload_to_path}']")
+
+      upload_to_path_prev = "uploads/developer/image/" + id.to_s + "/" + @old_filename
+
+    end
+
+    page.should have_selector("img[src$='/#{upload_to_path_prev}']")
+
+  elsif (type == "company") or (type == "reverted company")
 
     id = (CompanyVersioner.instance.current_version Company.find_by_name(@old_name)).id.to_s
-
-    upload_to_path = "uploads/"+ type +"/image/" + id + "/" + @new_filename
-    page.should_not have_selector("img[src$='#{upload_to_path}']")
-
-    upload_to_path = "uploads/"+ type +"/image/" + ((id.to_i-1).to_s) + "/" + @old_filename
-    page.should have_selector("img[src$='/#{upload_to_path}']")
 
     page.should_not have_content @new_official_name
     page.should have_content @old_official_name
 
     page.should_not have_content (@new_day +"." +@new_month+"." + @new_year)
     page.should have_content (@old_day +"." +@old_month+"." + @old_year)
+
+    if type == "company"
+
+      upload_to_path = "uploads/company/image/" + id + "/" + @new_filename
+      page.should_not have_selector("img[src$='#{upload_to_path}']")
+
+      upload_to_path = "uploads/company/image/" + ((id.to_i-1).to_s) + "/" + @old_filename
+      page.should have_selector("img[src$='/#{upload_to_path}']")
+
+    elsif type == "reverted company"
+
+      upload_to_path = "uploads/company/image/" + ((id.to_i-1).to_s ) + "/" + @new_filename
+      page.should_not have_selector("img[src$='#{upload_to_path}']")
+
+      upload_to_path = "uploads/company/image/" + id.to_s + "/" + @old_filename
+      page.should have_selector("img[src$='/#{upload_to_path}']")
+
+    end
 
 
   elsif type == "game"
@@ -203,4 +228,27 @@ Then /^I should see different data for the old version of the (.+)$/ do |type|
 
 
   end
+end
+
+
+When /^I revert to the previous version$/ do
+  click_link "make current version"
+end
+
+Then /^I should see a newly created version in the version links for a (.+)$/ do |type|
+  within(:css, "#versions") do
+    if type == "developer"
+
+      page.should have_link((@developer_new.version_number+1).to_s)
+
+    elsif type == "company"
+      page.should have_link((@company_new.version_number+1).to_s)
+
+    elsif type == "game"
+      page.should have_link((@company_new.version_number+1).to_s)
+
+    end
+  end
+
+
 end

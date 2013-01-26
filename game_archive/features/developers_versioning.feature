@@ -20,6 +20,16 @@ Feature: As an administrator,
     Given I have two different versions with different data for a developer
     And I am on the detail page of the given developer
     When I follow the link to the previous version of the developer
-    Then I should see different data for the old version of the developer
+    Then I should see data for the old version of the developer
+
+  @javascript
+  Scenario: revert to previous version and compare changed content
+    Given I have two different versions with different data for a developer
+    And I am on the detail page of the given developer
+    When I follow the link to the previous version of the developer
+    And I revert to the previous version
+    Then I should see a newly created version in the version links for a developer
+    And I should see data from the old version in the reverted developer
+
 
 
