@@ -11,47 +11,6 @@
     </div>
   <% end %>
 
-    <div id="all_genres_div" class="all">
-      <h3>All Genres</h3>
-      <div >
-        <% Genre.all.each do |genre| %>
-              <span><%= genre.name %></span>
-        <% end %>
-      </div>
-    </div>
-    <div id="all_platform_div" class="all">
-      <h3>All Platforms</h3>
-      <div >
-        <% Platform.all.each do |platform| %>
-              <span><%= platform.name %></span>
-        <% end %>
-      </div>
-    </div>
-    <div id="all_mode_div" class="all">
-      <h3>All Modes</h3>
-      <div >
-        <% Mode.all.each do |mode| %>
-              <span><%= mode.name %></span>
-        <% end %>
-      </div>
-    </div>
-    <div id="all_media_div" class="all">
-      <h3>All Media</h3>
-      <div >
-        <% Medium.all.each do |medium| %>
-              <span><%= medium.name %></span>
-        <% end %>
-      </div>
-    </div>
-    <div id="all_tags_div" class="all">
-      <h3>All Tags</h3>
-      <div >
-        <% Tag.all.each do |tag| %>
-              <span><%= tag.name %></span>
-        <% end %>
-      </div>
-    </div>
-
   <div class="field">
     <%= f.label :title, 'Game Title: '%><br />
     <%= f.text_field :title %>
@@ -108,60 +67,39 @@
     <%= submit_tag "Add Field", :type => 'button', :id => 'addFieldButton' ,
       :onclick => 'addField(this,gamefields);'
   %>
-  </div>
-    <!--
-  <div class="field">
-    <div class="field-label">
-      Developers
-    </div>
-    <%= text_field_tag 'new_developers' %>
-  </div>
 
-    <div class="field">
-      <div class="field-label">
-        Publisher
-      </div>
-      <%= text_field_tag 'new_publishers' %>
-    </div>
+      <span class="field-help" id="all_genres">
+      available:
+        <% Genre.all.each do |genre| %>
+              <span><%= genre.name %></span>
+        <% end %>
+    </span>
+    <span id="all_platform" class="field-help">
+      available:
+      <% Platform.all.each do |platform| %>
+              <span><%= platform.name %></span>
+        <% end %>
+    </span>
+    <span id="all_mode" class="field-help">
+      available:
+      <% Mode.all.each do |mode| %>
+              <span><%= mode.name %></span>
+        <% end %>
+    </span>
+    <span id="all_media" class="field-help">
+      available:
+      <% Medium.all.each do |medium| %>
+              <span><%= medium.name %></span>
+        <% end %>
+    </span>
+    <span id="all_tags" class="field-help">
+      available:
+      <% Tag.all.each do |tag| %>
+              <span><%= tag.name %></span>
+        <% end %>
+    </span>
 
-    <div class="field">
-      <div class="field-label">
-        Distributor
-      </div>
-      <%= text_field_tag 'new_distributors' %>
-    </div>
-
-    <div class="field">
-      <div class="field-label">
-        Credits
-      </div>
-      <%= text_field_tag 'new_credits' %>
-    </div>
-
-    <div class="field">
-      <div class="field-label">
-        Release Dates
-      </div>
-      <%= text_field_tag 'new_release_dates' %>
-    </div>
-
-    <div class="field">
-      <div class="field-label">
-        Series
-      </div>
-      <%= text_field_tag 'new_series' %>
-    </div>
-
-    <div class="field">
-      <div class="field-label">
-        New Fields
-      </div>
-      <%= text_field_tag 'new_fields' %>
-    </div>
--->
-    </div>
-
-  <div class="actions">
+      <div class="actions">
     <%= f.submit %>
   </div>
 

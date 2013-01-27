@@ -278,6 +278,7 @@ function addConcreteField(select_element, deletecurrent, value, onload){
     }else if($.inArray(field_name,['platform','mode','media', 'genres', 'tags']) >= 0){              // tokenlists
         $.getJSON('/ajax.json?type=all&field='+field_name, function(data){
             var availableTags = data;
+            $(select_element).parent().append($('#all_'+field_name));
             $(select_element).parent().append('<input id="'+input_field_name+'" name="'+input_field_name+'" type="text" value="' +
                 (value ? value : '') + '">');
             $('#'+input_field_name).tagit({caseSensitive: false, availableTags: availableTags, allowSpaces: true});
