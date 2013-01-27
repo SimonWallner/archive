@@ -150,19 +150,4 @@ describe GamesController do
     end
   end
 
-  describe "DELETE destroy" do
-    it "destroys the requested game" do
-      game = Game.create! valid_attributes
-      expect {
-        delete :destroy, {:id => game.to_param}
-      }.to change(Game, :count).by(-1)
-    end
-
-    it "redirects to the games list" do
-      game = Game.create! valid_attributes
-      delete :destroy, {:id => game.to_param}
-      response.should redirect_to(games_url)
-    end
-  end
-
 end

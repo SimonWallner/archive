@@ -150,19 +150,4 @@ describe DevelopersController do
     end
   end
 
-  describe "DELETE destroy" do
-    it "destroys the requested developer" do
-      developer = Developer.create! valid_attributes
-      expect {
-        delete :destroy, {:id => developer.to_param}
-      }.to change(Developer, :count).by(-1)
-    end
-
-    it "redirects to the developers list" do
-      developer = Developer.create! valid_attributes
-      delete :destroy, {:id => developer.to_param}
-      response.should redirect_to(developers_url)
-    end
-  end
-
 end
