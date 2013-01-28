@@ -39,7 +39,6 @@
           <%= f.check_box :remove_image %><br/>
           <%end  %>
 	Upload new teaser image: <%= f.file_field :image %>
-    </div>
   </div>
     <div class="field" >
       <!-- iterate through all the available videos for a game and create a field for them
@@ -63,7 +62,7 @@
       </div>
     </div>
 
-
+    <div>
   <div class="newFieldsDiv"><script type="text/javascript">loadfields('<%= begin game_url rescue new_game_url end %>.json');</script></div>
     <%= submit_tag "Add Field", :type => 'button', :id => 'addFieldButton' ,
       :onclick => 'addField(this,gamefields);'
@@ -100,8 +99,9 @@
         <% end %>
     </span>
 
-    <div class="actions">
+      <div class="actions">
     <%= f.submit %>
-    </div>
+  </div>
+</div></div>
 
 <% end %>
