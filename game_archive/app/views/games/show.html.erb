@@ -34,31 +34,31 @@
 		  <strong>Genre</strong>:
 		  <% @game.genres.each do |genre| %>
 			  <%= genre.name%>
-		  <% end %></br>
+		  <% end %><br/>
 	  <% end %>
 	  <% if @game.platforms.any? %>
 		  <strong>Platform</strong>:
 		  <% @game.platforms.each do |platform| %>
 			  <%= platform.name%>
-		  <% end %></br>
+		  <% end %><br/>
 	  <% end %>
 	  <% if @game.modes.any? %>
 		  <strong>Mode</strong>:
 		  <% @game.modes.each do |mode| %>
 			  <%= mode.name%>
-		  <% end %></br>
+		  <% end %><br/>
 	  <% end %> 
 	  <% if @game.media.any? %>
 		  <strong>Media</strong>:
 		  <% @game.media.each do |medium| %>
 			  <%= medium.name%>
-		  <% end %></br>
+		  <% end %><br/>
 	  <% end %> 
 	  <% if @game.tags.any? %>
 		  <strong>Tag</strong>:
 		  <% @game.tags.each do |tag| %>
 			  <%= tag.name%>
-		  <% end %></br>
+		  <% end %><br/>
 	  <% end %>
       <%= render :template => "facts/_standard", :locals => { :object => @game, :label => "External Links" } %>
       <%= render :template => "facts/_standard", :locals => { :object => @game, :label => "Aggregate Scores" } %>
@@ -74,6 +74,9 @@
 
 
   <div class="clear"></div>
+    <% if @game.videos != nil && (not @game.videos.empty?) %>
+        <h2>Videos</h2>
+	<% end %>
     <% for video in @game.videos %>
       <div class="media rounded">
             <%=h @str = embed_video(video.embedcode)
@@ -85,6 +88,9 @@
 
     <% end %>
 
+    <% if @game.screenshots != nil && (not @game.screenshots.empty?) %>
+        <h2>Screenshots</h2>
+    <% end %>
     <% @game.screenshots.each do |screenshot| %>
          <div class = "media rounded"><%=  image_tag screenshot.image_url.to_s %></div>
 
