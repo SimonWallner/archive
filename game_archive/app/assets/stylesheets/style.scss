@@ -491,7 +491,13 @@ div.text {
 
  
 div.fact-box {
-	margin-bottom: $font-size;
+  .fact {
+    div:first-child {
+      font-weight: bold;
+    }
+  }
+
+  margin-bottom: $font-size;
 	
 	img {
 		margin-bottom: 14px;

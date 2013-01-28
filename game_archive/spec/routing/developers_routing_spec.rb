@@ -27,9 +27,9 @@ describe DevelopersController do
       put("/developers/1").should route_to("developers#update", :id => "1")
     end
 
-    it "routes to #destroy" do
-      delete("/developers/1").should route_to("developers#destroy", :id => "1")
-    end
+    #it "routes to #destroy" do
+    #  delete("/developers/1").should route_to("developers#destroy", :id => "1")
+    #end
 
   end
 end

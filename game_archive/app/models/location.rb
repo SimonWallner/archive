@@ -41,4 +41,12 @@ class Location < ActiveRecord::Base
       object.locations.push f
     end
   end
+
+  def dup
+    d = Location.new
+    d.additional_info = self.additional_info
+    d.name = self.name
+    d.company_id = self.company_id
+    return d
+  end
 end

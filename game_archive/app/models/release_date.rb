@@ -63,7 +63,14 @@ class ReleaseDate < ActiveRecord::Base
     end
 return 1
 
-  end   
-  
-  
+    end
+
+  def copy_without_references
+    clone = ReleaseDate.new
+    clone.year = self.year
+    clone.month = self.month
+    clone.day = self.day
+    clone.additional_info = self.additional_info
+    return clone
+  end
 end

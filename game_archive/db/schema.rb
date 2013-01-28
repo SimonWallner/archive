@@ -11,17 +11,26 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121213160247) do
+ActiveRecord::Schema.define(:version => 20130113152519) do
 
   create_table "companies", :force => true do |t|
     t.string   "name"
     t.text     "description"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
     t.string   "image"
     t.string   "official_name"
     t.integer  "popularity"
+<<<<<<< HEAD
+=======
+    t.string   "version_id"
+    t.integer  "version_number"
+    t.datetime "version_updated_at"
+    t.integer  "version_author_id"
+>>>>>>> versioning
   end
+
+  add_index "companies", ["version_id"], :name => "index_companies_on_version_id"
 
   create_table "company_defuncts", :force => true do |t|
     t.integer  "company_id"
@@ -49,11 +58,17 @@ ActiveRecord::Schema.define(:version => 20121213160247) do
   create_table "developers", :force => true do |t|
     t.string   "name"
     t.text     "description"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
     t.string   "image"
     t.integer  "popularity"
+    t.string   "version_id"
+    t.integer  "version_number"
+    t.datetime "version_updated_at"
+    t.integer  "version_author_id"
   end
+
+  add_index "developers", ["version_id"], :name => "index_developers_on_version_id"
 
   create_table "fields", :force => true do |t|
     t.string   "name"
@@ -72,11 +87,17 @@ ActiveRecord::Schema.define(:version => 20121213160247) do
   create_table "games", :force => true do |t|
     t.string   "title"
     t.text     "description"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
     t.string   "image"
     t.integer  "popularity"
+    t.string   "version_id"
+    t.integer  "version_number"
+    t.datetime "version_updated_at"
+    t.integer  "version_author_id"
   end
+
+  add_index "games", ["version_id"], :name => "index_games_on_version_id"
 
   create_table "games_genres", :id => false, :force => true do |t|
     t.integer "game_id"

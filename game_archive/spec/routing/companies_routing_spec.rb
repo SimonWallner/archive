@@ -27,9 +27,9 @@ describe CompaniesController do
       put("/companies/1").should route_to("companies#update", :id => "1")
     end
 
-    it "routes to #destroy" do
-      delete("/companies/1").should route_to("companies#destroy", :id => "1")
-    end
+    #it "routes to #destroy" do
+    #  delete("/companies/1").should route_to("companies#destroy", :id => "1")
+    #end
 
   end
 end

@@ -12,15 +12,14 @@
 	We are still in an early prototyping stage, and user accounts are only issued manually. If you want to become a contributor, please send us an <a href="mailto:simon@gamelab.at">email</a>.
 </p>
 
-
 <h1>Games</h1>
 
-<% game = Game.order("RANDOM()").first %>
-<% Game.order("RANDOM()").each do |game| %>
+<% game = GameVersioner.instance.current_version Game.order("RANDOM()").first %>
+<% (GameVersioner.instance.current_versions_from_collection Game.order("RANDOM()")).each do |game| %>
 	<% @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(0,game.id)%>
 	<% if game != nil%>
 		<% if (@reportblockcontent)%>
-				<% if (@reportblockcontent.status !=4)%>				
+				<% if (@reportblockcontent.status !=4)%>
 					<% if !user_signed_in?%>
 						<% if (@reportblockcontent.status !=1)%>
 							<div class="rounded game-teaser-large">
@@ -31,7 +30,7 @@
 									</div>
 								</a>
 							</div>
-							<% break %>	
+							<% break %>
 						<% end %>
 					<% else%>
 						<div class="rounded game-teaser-large">
@@ -42,7 +41,7 @@
 								</div>
 							</a>
 						</div>
-						<% break %>	
+						<% break %>
 					<% end %>
 				<% end %>
 		<% else%>
@@ -60,13 +59,13 @@
 <% end %>
 
 <div>
-	<% games = Game.find(:all, :limit => getAmountFeatured, :order => 'created_at DESC')[0..7] %>
-	<% games.concat(Game.find(:all, :limit => getAmountFeatured, :order => 'popularity DESC')[0..7]) %>
-	<% games = games.uniq %>
+	<% games = (GameVersioner.instance.current_versions_from_collection Game.all(:order => 'created_at DESC'))[0..7] %>
+	<% games.concat((GameVersioner.instance.current_versions_from_collection Game.all(:order => 'popularity DESC'))[0..7]) %>
+	<% games = GameVersioner.instance.current_versions_from_collection games.uniq %>
 	<% games[0..7].each do |game| %>
 	<% @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(0,game.id)%>
 		<% if @reportblockcontent%>
-			<% if (@reportblockcontent.status !=4)%>				
+			<% if (@reportblockcontent.status !=4)%>
 				<% if !user_signed_in?%>
 					<% if (@reportblockcontent.status !=1)%>
 						<div class="tiled_2x">
@@ -106,9 +105,9 @@
 
 <h1>Studios & Organisations</h1>
 <div>
-	<% coms = Company.find(:all, :limit => getAmountFeatured, :order => 'created_at DESC')[0..7] %>
-	<% coms.concat(Company.find(:all, :limit => getAmountFeatured, :order => 'popularity DESC')[0..7]) %>
-	<% coms = coms.uniq %>
+	<% coms = ( CompanyVersioner.instance.current_versions_from_collection Company.all(:order => 'created_at DESC') )[0..7] %>
+	<% coms.concat(( CompanyVersioner.instance.current_versions_from_collection Company.all(:order => 'popularity DESC') )[0..7]) %>
+	<% coms = CompanyVersioner.instance.current_versions_from_collection coms.uniq %>
 	<% coms[0..7].each do |com| %>
 		<% @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(2,com.id)%>
 		<% if @reportblockcontent%>
@@ -156,7 +155,7 @@
 <!-- <div class="companies_random">
 <h3>Did you already know...</h3>
 	<div>
-		<% com = Company.order("RANDOM()").first %>
+		<% com = CompanyVersioner.instance.current_version (Company.order("RANDOM()").first) %>
 		<% if com != nil %>
 			<div class="tiled_2x">
 			<a href="/companies/<%= com.id %>">
@@ -176,9 +175,9 @@
 <h1>Developers</h1>
 
 <div>
-	<% devs = Developer.find(:all, :limit => getAmountFeatured, :order => 'created_at DESC')[0..7] %>
-	<% devs.concat(Developer.find(:all, :limit => getAmountFeatured, :order => 'popularity DESC')[0..7]) %>
-	<% devs = devs.uniq %>
+	<% devs = (DeveloperVersioner.instance.current_versions_from_collection Developer.all(:order => 'created_at DESC'))[0..7] %>
+	<% devs.concat((DeveloperVersioner.instance.current_versions_from_collection Developer.all(:order => 'popularity DESC'))[0..7]) %>
+	<% devs = DeveloperVersioner.instance.current_versions_from_collection devs.uniq %>
 	<% devs[0..7].each do |dev| %>
 		<% @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(1,dev.id)%>
 		<% if @reportblockcontent%>
@@ -224,7 +223,7 @@
 <!-- <div class="developers_random">
 <h3>Did you already know...</h3>
 <div>
-	<% dev = Developer.order("RANDOM()").first %>
+	<% dev = DeveloperVersioner.instance.current_version Developer.order("RANDOM()").first %>
 	<% if dev != nil %>
 		<div class="tiled_4x">
 		<a href="/developers/<%= dev.id %>">

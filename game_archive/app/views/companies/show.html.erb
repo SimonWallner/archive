@@ -1,5 +1,18 @@
 <div class="company">
   <h1><%=  @company.name %></h1>
+
+  <% if user_signed_in? and current_user.admin? %>
+      <div id="versions">
+        <span>Versioning: </span>
+        <% Company.where(:version_id => @company.version_id).each do |company| %>
+            <span><%= link_to company.version_number, company_path(:version => company.version_number) %></span>
+        <% end %>
+        <% if params[:version] %>
+            <span><%= link_to "make current version", company_path(:version => @company.version_number, :makecurrent => true) %></span>
+        <% end %>
+      </div>
+  <% end %>
+
   <div class="fact-box">
     <%=
 

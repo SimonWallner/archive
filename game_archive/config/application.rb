@@ -68,6 +68,7 @@ module GameArchive
     config.generators do |g|
       g.view_specs false
       g.helper_specs false
+      g.model_specs true
     end
 
     # for heroku deployment
@@ -76,6 +77,8 @@ module GameArchive
 
     # passwords won't be written to log files
     config.filter_parameters += [:password, :password_confirmation]
+
+    config.autoload_paths += %W(#{config.root}/app/models/versioning)
 
   end
 end

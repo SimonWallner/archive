@@ -38,6 +38,8 @@ describe DevelopersController do
     {}
   end
 
+  DEVELOPER_VERSIONER = DeveloperVersioner.instance
+
   describe "GET index" do
     it "assigns all developers as @developers" do
       developer = Developer.create! valid_attributes
@@ -109,7 +111,7 @@ describe DevelopersController do
   describe "PUT update" do
     describe "with valid params" do
       it "updates the requested developer" do
-        developer = Developer.create! valid_attributes
+        developer = FactoryGirl.create :developer
         # Assuming there are no other developers in the database, this
         # specifies that the Developer created on the previous line
         # receives the :update_attributes message with whatever params are
@@ -119,21 +121,21 @@ describe DevelopersController do
       end
 
       it "assigns the requested developer as @developer" do
-        developer = Developer.create! valid_attributes
+        developer = FactoryGirl.create :developer
         put :update, {:id => developer.to_param, :developer => valid_attributes}
-        assigns(:developer).should eq(developer)
+        assigns(:developer).should eq(DEVELOPER_VERSIONER.current_version developer)
       end
 
       it "redirects to the developer" do
-        developer = Developer.create! valid_attributes
+        developer = FactoryGirl.create :developer
         put :update, {:id => developer.to_param, :developer => valid_attributes}
-        response.should redirect_to(developer)
+        response.should redirect_to(DEVELOPER_VERSIONER.current_version developer)
       end
     end
 
     describe "with invalid params" do
       it "assigns the developer as @developer" do
-        developer = Developer.create! valid_attributes
+        developer = FactoryGirl.create :developer
         # Trigger the behavior that occurs when invalid params are submitted
         Developer.any_instance.stub(:save).and_return(false)
         put :update, {:id => developer.to_param, :developer => {}}
@@ -141,7 +143,7 @@ describe DevelopersController do
       end
 
       it "re-renders the 'edit' template" do
-        developer = Developer.create! valid_attributes
+        developer = FactoryGirl.create :developer
         # Trigger the behavior that occurs when invalid params are submitted
         Developer.any_instance.stub(:save).and_return(false)
         put :update, {:id => developer.to_param, :developer => {}}
@@ -150,4 +152,18 @@ describe DevelopersController do
     end
   end
 
+  #describe "DELETE destroy" do
+  #  it "destroys the requested developer" do
+  #    developer = Developer.create! valid_attributes
+  #    expect {
+  #      delete :destroy, {:id => developer.to_param}
+  #    }.to change(Developer, :count).by(-1)
+  #  end
+
+  #  it "redirects to the developers list" do
+  #    developer = Developer.create! valid_attributes
+  #    delete :destroy, {:id => developer.to_param}
+  #    response.should redirect_to(developers_url)
+  #  end
+  #end
 end

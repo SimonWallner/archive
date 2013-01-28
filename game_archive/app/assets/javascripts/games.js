@@ -65,7 +65,7 @@ $(document).ready(function() {
 
         event.preventDefault();
 
-        $.post( $('form').attr('action'), $('form').serialize(),
+        $(this).ajaxSubmit(
             function( data ) {
                 var content = $( data ).find( '#error_explanation' );
                 if(content.length > 0){

@@ -5,8 +5,11 @@
       end
   %>
 
-   <br/>
-	Select image to upload: <span class="field-help">(.jpg, .png, 400kb max)</span><br/><%= builder.file_field :image %><br />
+	Select image to upload: <span class="field-help">(.jpg, .png, 400kb max)</span><br/>
+  <%= if not builder.object.image_url
+        builder.file_field :image
+      end
+  %><br />
   <%= link_to_remove_screenshot_fields "remove" , builder %>
 </p>
 

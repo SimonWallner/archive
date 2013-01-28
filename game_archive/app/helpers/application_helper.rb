@@ -2,6 +2,8 @@ module ApplicationHelper
 	require 'redcarpet'
 
 	PREDEFINED_FIELDS = ["External Links", "Aggregate Scores", "Review Scores"]
+
+  @@GAME_VERSIONER = GameVersioner.instance
 	
 	# amount displayed featured entries
 	def getAmountFeatured()
@@ -12,7 +14,7 @@ module ApplicationHelper
 		rndr = CustomLinkRenderer.new(:filter_html => true, :no_images => true, :hard_wrap => true)
 		markdown = Redcarpet::Markdown.new(rndr, :space_after_headers => true, :autolink => true)
 		markdown.render(text).html_safe
-	end
+  end
 
   class CustomLinkRenderer < Redcarpet::Render::HTML
       def link(link, title, alt_text)
@@ -55,14 +57,17 @@ module ApplicationHelper
   # object can be game, company, developer
   # type can be each MixedFieldType name (as symbols) or :all
   def get_mixed_fields(object, type)
+    #puts 'get_mixed_fields'
     if type == nil || object == nil
       return Array.new
     end
     mf = object.mixed_fields
     if type == :all
-      return mf
+      #return mf
+      return @@GAME_VERSIONER.current_version_mixed_fields mf
     end
-    return mf.find_all {|i| i.mixed_field_type.name == type.to_s }
+    mfs =  mf.find_all {|i| i.mixed_field_type.name == type.to_s }
+    return mfs
   end
 
   def get_field(object, name)

@@ -38,9 +38,11 @@ describe CompaniesController do
     {}
   end
 
+  COMPANY_VERSIONER = CompanyVersioner.instance
+
   describe "GET index" do
     it "assigns all companies as @companies" do
-      company = Company.create! valid_attributes
+      company = FactoryGirl.create :company
       get :index, {}
       assigns(:companies).should eq([company])
     end
@@ -48,7 +50,7 @@ describe CompaniesController do
 
   describe "GET show" do
     it "assigns the requested company as @company" do
-      company = Company.create! valid_attributes
+      company = FactoryGirl.create :company
       get :show, {:id => company.to_param}
       assigns(:company).should eq(company)
     end
@@ -63,7 +65,7 @@ describe CompaniesController do
 
   describe "GET edit" do
     it "assigns the requested company as @company" do
-      company = Company.create! valid_attributes
+      company = FactoryGirl.create :company
       get :edit, {:id => company.to_param}
       assigns(:company).should eq(company)
     end
@@ -109,7 +111,7 @@ describe CompaniesController do
   describe "PUT update" do
     describe "with valid params" do
       it "updates the requested company" do
-        company = Company.create! valid_attributes
+        company = FactoryGirl.create :company
         # Assuming there are no other companies in the database, this
         # specifies that the Company created on the previous line
         # receives the :update_attributes message with whatever params are
@@ -119,21 +121,21 @@ describe CompaniesController do
       end
 
       it "assigns the requested company as @company" do
-        company = Company.create! valid_attributes
+        company = FactoryGirl.create :company
         put :update, {:id => company.to_param, :company => valid_attributes}
-        assigns(:company).should eq(company)
+        assigns(:company).should eq(COMPANY_VERSIONER.current_version company)
       end
 
       it "redirects to the company" do
-        company = Company.create! valid_attributes
+        company = FactoryGirl.create :company
         put :update, {:id => company.to_param, :company => valid_attributes}
-        response.should redirect_to(company)
+        response.should redirect_to(COMPANY_VERSIONER.current_version company)
       end
     end
 
     describe "with invalid params" do
       it "assigns the company as @company" do
-        company = Company.create! valid_attributes
+        company = FactoryGirl.create :company
         # Trigger the behavior that occurs when invalid params are submitted
         Company.any_instance.stub(:save).and_return(false)
         put :update, {:id => company.to_param, :company => {}}
@@ -141,7 +143,7 @@ describe CompaniesController do
       end
 
       it "re-renders the 'edit' template" do
-        company = Company.create! valid_attributes
+        company = FactoryGirl.create :company
         # Trigger the behavior that occurs when invalid params are submitted
         Company.any_instance.stub(:save).and_return(false)
         put :update, {:id => company.to_param, :company => {}}
@@ -150,4 +152,18 @@ describe CompaniesController do
     end
   end
 
+  #describe "DELETE destroy" do
+  #  it "destroys the requested company" do
+  #    company = Company.create! valid_attributes
+  #    expect {
+  #      delete :destroy, {:id => company.to_param}
+  #    }.to change(Company, :count).by(-1)
+  #  end
+
+  #  it "redirects to the companies list" do
+  #    company = Company.create! valid_attributes
+  #    delete :destroy, {:id => company.to_param}
+  #    response.should redirect_to(companies_url)
+  #  end
+  #end
 end

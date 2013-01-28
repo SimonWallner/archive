@@ -1,4 +1,5 @@
 class Game < ActiveRecord::Base
+
   acts_as_indexed :fields => [:description, :title]
   require 'file_size_validator'
 
@@ -16,6 +17,7 @@ class Game < ActiveRecord::Base
 
   has_many :screenshots, :dependent => :destroy
   accepts_nested_attributes_for :screenshots, :reject_if => lambda { |a| a[:image].blank? }, :allow_destroy => true
+
   has_and_belongs_to_many :genres
 
   has_and_belongs_to_many :platforms
@@ -34,5 +36,4 @@ class Game < ActiveRecord::Base
   def as_json(options = {})
     super(:include => [{:mixed_fields => {:include => [:mixed_field_type, :company, :developer, :series_game]}}, :release_dates, :fields, :genres, :platforms, :media, :modes, :tags ])
   end
-
 end

@@ -11,6 +11,18 @@
   </div>
   <h1><%= @game.title %></h1>
 
+  <% if user_signed_in? and current_user.admin? %>
+          <div id="versions">
+            <span>Versioning: </span>
+            <% Game.where(:version_id => @game.version_id).each do |game| %>
+                <span><%= link_to game.version_number, game_path(:version => game.version_number) %></span>
+            <% end %>
+            <% if params[:version] %>
+                <span><%= link_to "make current version", game_path(:version => @game.version_number, :makecurrent => true) %></span>
+            <% end %>
+          </div>
+  <% end %>
+
   <div class="fact-box">
       <%= render :template => "facts/_mixed_field", :locals => { :type => :Developer, :object => @game, :label => "Developer" } %>
       <%= render :template => "facts/_mixed_field", :locals => { :type => :Publisher, :object => @game, :label => "Publisher" } %>

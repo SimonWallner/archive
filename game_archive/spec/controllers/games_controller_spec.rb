@@ -38,6 +38,8 @@ describe GamesController do
     {}
   end
 
+  GAME_VERSIONER = GameVersioner.instance
+
   describe "GET index" do
     it "assigns all games as @games" do
       game = Game.create! valid_attributes
@@ -109,7 +111,7 @@ describe GamesController do
   describe "PUT update" do
     describe "with valid params" do
       it "updates the requested game" do
-        game = Game.create! valid_attributes
+        game = FactoryGirl.create :game
         # Assuming there are no other games in the database, this
         # specifies that the Game created on the previous line
         # receives the :update_attributes message with whatever params are
@@ -118,22 +120,22 @@ describe GamesController do
         put :update, {:id => game.to_param, :game => {'these' => 'params'}}
       end
 
-      it "assigns the requested game as @game" do
-        game = Game.create! valid_attributes
+      it "assigns the newest version of the requested game as @game" do
+        game = FactoryGirl.create :game
         put :update, {:id => game.to_param, :game => valid_attributes}
-        assigns(:game).should eq(game)
+        assigns(:game).should eq(GAME_VERSIONER.current_version game)
       end
 
-      it "redirects to the game" do
-        game = Game.create! valid_attributes
+      it "redirects to the new version of the game" do
+        game = FactoryGirl.create :game
         put :update, {:id => game.to_param, :game => valid_attributes}
-        response.should redirect_to(game)
+        response.should redirect_to(GAME_VERSIONER.current_version game)
       end
     end
 
     describe "with invalid params" do
       it "assigns the game as @game" do
-        game = Game.create! valid_attributes
+        game = FactoryGirl.create :game
         # Trigger the behavior that occurs when invalid params are submitted
         Game.any_instance.stub(:save).and_return(false)
         put :update, {:id => game.to_param, :game => {}}
@@ -141,7 +143,7 @@ describe GamesController do
       end
 
       it "re-renders the 'edit' template" do
-        game = Game.create! valid_attributes
+        game = FactoryGirl.create :game
         # Trigger the behavior that occurs when invalid params are submitted
         Game.any_instance.stub(:save).and_return(false)
         put :update, {:id => game.to_param, :game => {}}
@@ -149,5 +151,20 @@ describe GamesController do
       end
     end
   end
+
+  #describe "DELETE destroy" do
+  #  it "destroys the requested game" do
+  #    game = Game.create! valid_attributes
+  #    expect {
+  #      delete :destroy, {:id => game.to_param}
+  #    }.to change(Game, :count).by(-1)
+  #  end
+
+  #  it "redirects to the games list" do
+  #    game = Game.create! valid_attributes
+  #    delete :destroy, {:id => game.to_param}
+  #    response.should redirect_to(games_url)
+  #  end
+  #end
 
 end

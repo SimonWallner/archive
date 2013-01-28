@@ -3,11 +3,15 @@ class GamesController < ApplicationController
   before_filter only: [:edit, :show] { |c| c.block_content_visitor 0 }
   before_filter only: [:edit] { |c| c.block_content_user 0 } 
   before_filter :authenticate_admin!, only: [:block]
+
+  #before_filter :blocked_user!, except: [:index, :show, :report, :update]
+   @@GAME_VERSIONER = GameVersioner.instance
+
   
   # GET /games
   # GET /games.json
   def index
-    @games = Game.all
+    @games = @@GAME_VERSIONER.all_current_versions
 
     respond_to do |format|
       format.html # index.html.erb
@@ -18,13 +22,30 @@ class GamesController < ApplicationController
   # GET /games/1
   # GET /games/1.json
   def show
-    @game = Game.find(params[:id])
-	@reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(0,params[:id])
-	if @game.popularity == nil
-		@game.popularity = 0
-		@game.save
-	end
-	@game.increment!(:popularity)
+    some_version = Game.find(params[:id])
+    @game = @@GAME_VERSIONER.current_version some_version
+
+    # redirect to other page if game is not newest version
+    if @game != some_version and !params[:version]
+      redirect_to @game
+      return
+    else
+      if params[:version]
+        @game = Game.where(:version_id => @game.version_id, :version_number => params[:version]).first!
+        if params[:makecurrent]
+          @game = @@GAME_VERSIONER.revert_to_this @game
+          redirect_to @game
+          return
+        end
+      end
+    end
+
+	  @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(0,@game.id)
+	  if @game.popularity == nil
+		  @game.popularity = 0
+		  @game.save
+	  end
+	  @game.increment!(:popularity)
 
     respond_to do |format|
       format.html # show.html.erb
@@ -46,35 +67,38 @@ class GamesController < ApplicationController
   # GET /games/1/edit
   def edit
     @genres = Genre.all
-    @game = Game.find(params[:id])
+    @game = @@GAME_VERSIONER.current_version Game.find(params[:id])
   end
   
    # GET /games/1/report
   def report
-	@reportblockcontent =Reportblockcontent.new
-    @game = Game.find(params[:id])	
+    @game = @@GAME_VERSIONER.current_version Game.find(params[:id])
+    @reportblockcontent =Reportblockcontent.new
   end
   
   # GET /games/1/block
   def block
-	@reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(0,params[:id])
-    @game = Game.find(params[:id])	
+    @game = @@GAME_VERSIONER.current_version Game.find(params[:id])
+    return if @game == nil
+    @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(0,@game.id)
   end
   
   # GET /games/1/delete
   def delete
-	@reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(0,params[:id])
-    @game = Game.find(params[:id])	
+    @game = @@GAME_VERSIONER.current_version Game.find(params[:id])
+    return if @game == nil
+    @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(0,@game.id)
   end
   
   # POST /games
   def create
     @game = Game.new(params[:game])
+    @@GAME_VERSIONER.add_versioning_to_new_object @game, current_user
+
 	  @game.popularity = 0
     create_add_new_token(params[:new_genres], params[:new_platforms], params[:new_medias], params[:new_modes], params[:new_tags])
     create_add_new_release_dates(params[:new_release_dates])
     Field.create_add_new_fields(@game, params[:new_fields])
-
 
 	respond_to do |format|
       if @game.save
@@ -93,64 +117,90 @@ class GamesController < ApplicationController
 
   # PUT /games/1
   def update
-    @game = Game.find(params[:id])
+    @game = @@GAME_VERSIONER.current_version Game.find(params[:id])
 
     if current_user
-	  if !current_user.blocked		
-		if (params[:reportblockcontent])
-			Reportblockcontent.create_from_string(0,params[:id], params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
-		else 
-			create_add_new_token(params[:new_genres], params[:new_platforms], params[:new_medias], params[:new_modes], params[:new_tags])
-			create_add_new_release_dates(params[:new_release_dates])
-			Field.create_add_new_fields(@game, params[:new_fields])
-		end
-	  else
-		if params[:reportblockcontent]&& params[:reportblockcontent][:status]=='0'
-			Reportblockcontent.create_from_string(0,params[:id], params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
-		end
-	  end
-	else
-		if params[:reportblockcontent]&& params[:reportblockcontent][:status]=='0'
-			Reportblockcontent.create_from_string(0,params[:id], params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
-		end	
+      if !current_user.blocked
+        if (params[:reportblockcontent])
+          Reportblockcontent.create_from_string(0,@game.id, params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
+        else
+          old = @game
+          @game = @@GAME_VERSIONER.new_version old, params
+          create_add_new_token(params[:new_genres], params[:new_platforms], params[:new_medias], params[:new_modes], params[:new_tags])
+          create_add_new_release_dates(params[:new_release_dates])
+          Field.create_add_new_fields(@game, params[:new_fields])
+        end
+      else
+        if params[:reportblockcontent]&& params[:reportblockcontent][:status]=='0'
+          Reportblockcontent.create_from_string(0,@game.id, params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
+        end
+      end
+    else
+        if params[:reportblockcontent]&& params[:reportblockcontent][:status]=='0'
+          Reportblockcontent.create_from_string(0,@game.id, params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
+        end
     end
 
     respond_to do |format|
       if current_user
-	    if !current_user.blocked
-		  if @game.update_attributes(params[:game])
-			create_add_new_mixed_fields(params[:new_developers], MixedFieldType.find_by_name("Developer"))
-			create_add_new_mixed_fields(params[:new_publishers], MixedFieldType.find_by_name("Publisher"))
-			create_add_new_mixed_fields(params[:new_distributors], MixedFieldType.find_by_name("Distributor"))
-			create_add_new_mixed_fields(params[:new_credits], MixedFieldType.find_by_name("Credits"))
-			create_add_new_mixed_fields(params[:new_series], MixedFieldType.find_by_name("Series"))
-
-			if params[:reportblockcontent] && params[:reportblockcontent][:status]=='0'
-			  format.html { redirect_to @game,notice: 'Game was reported successfully'}
-			else
-			  format.html { redirect_to @game}
-			end
-		  else
-			format.html { render action: "edit" }
-		  end
-		else
-			if params[:reportblockcontent] && params[:reportblockcontent][:status]=='0'
-				format.html { redirect_to @game,notice: 'Game was reported successfully'}
-			else
-				format.html { redirect_to @game,notice: 'you have been blocked, reason: ' + current_user.note}
-			end
-		end
-	  else 
-			if params[:reportblockcontent] && params[:reportblockcontent][:status]=='0'
-				format.html { redirect_to @game,notice: 'Game was reported successfully'}
-			else
-				redirect_to root_path, notice: 'you need to be registered and signed up in order to access this page'
-			end	    
-	  end
+        if !current_user.blocked
+          if params[:reportblockcontent] && params[:reportblockcontent][:status]=='0'
+            format.html { redirect_to @game,notice: 'Game was reported successfully'}
+          else
+            # update all params which might be outdated due to versioning
+            update_params params, old
+            if @game.update_attributes(params[:game])
+              create_add_new_mixed_fields(params[:new_developers], MixedFieldType.find_by_name("Developer"))
+              create_add_new_mixed_fields(params[:new_publishers], MixedFieldType.find_by_name("Publisher"))
+              create_add_new_mixed_fields(params[:new_distributors], MixedFieldType.find_by_name("Distributor"))
+              create_add_new_mixed_fields(params[:new_credits], MixedFieldType.find_by_name("Credits"))
+              create_add_new_mixed_fields(params[:new_series], MixedFieldType.find_by_name("Series"))
+              format.html { redirect_to @game}
+            else
+              # delete newest version
+              old.add_errors @game.errors
+              @game.destroy
+              @game = old
+              format.html { render action: "edit" }
+            end
+          end
+        else
+          if params[:reportblockcontent] && params[:reportblockcontent][:status]=='0'
+            format.html { redirect_to @game,notice: 'Game was reported successfully'}
+          else
+            format.html { redirect_to @game,notice: 'you have been blocked, reason: ' + current_user.note}
+          end
+        end
+      else
+        if params[:reportblockcontent] && params[:reportblockcontent][:status]=='0'
+          format.html { redirect_to @game,notice: 'Game was reported successfully'}
+        else
+          redirect_to root_path, notice: 'you need to be registered and signed up in order to access this page'
+        end
+	    end
     end
   end
-  
+
   private
+  def update_params(params, old)
+    update_video_params params, old
+  end
+
+  def update_video_params(params, old)
+    return if params == nil || old == nil
+    vp = params[:game][:videos_attributes]
+    return if vp == nil
+    logger.debug 'update video params'
+    logger.debug vp
+    vhash = @@GAME_VERSIONER.new_video_hash old
+    vp.each do |k, v|
+      id = v[:id].to_i
+      v[:id] = vhash[id].to_s
+    end
+    logger.debug 'finished updating video params'
+    logger.debug vp
+  end
+
   # takes the new_genres_string and the game_params string
   # creates new genres if necessary
   # and augments the game_params with the new genres

@@ -5,11 +5,14 @@ class CompaniesController < ApplicationController
   before_filter only: [:edit, :show] { |c| c.block_content_visitor 2 } 
   before_filter only: [:edit] { |c| c.block_content_user 2 }
   before_filter :authenticate_admin!, only: [:block]
+  #before_filter :blocked_user!, except: [:index, :show, :report, :update]
+
+  @@COMPANY_VERSIONER = CompanyVersioner.instance
   
   # GET /companies
   # GET /companies.json
   def index
-    @companies = Company.all
+    @companies = @@COMPANY_VERSIONER.all_current_versions
 
     respond_to do |format|
       format.html # index.html.erb
@@ -20,13 +23,30 @@ class CompaniesController < ApplicationController
   # GET /companies/1
   # GET /companies/1.json
   def show
-    @company = Company.find(params[:id])
-	@reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(2,params[:id])
-	if @company.popularity == nil 
-		@company.popularity = 0
-		@company.save
-	end
-	@company.increment!(:popularity)
+    some_version = Company.find(params[:id])
+    @company = @@COMPANY_VERSIONER.current_version some_version
+
+    # redirect to other page if game is not newest version
+    if @company != some_version and !params[:version]
+      redirect_to @company
+      return
+    else
+      if params[:version]
+        @company = Company.where(:version_id => @company.version_id, :version_number => params[:version]).first!
+        if params[:makecurrent]
+          @company = @@COMPANY_VERSIONER.revert_to_this @company
+          redirect_to @company
+          return
+        end
+      end
+    end
+
+	  @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(2, @company.id)
+	  if @company.popularity == nil
+		  @company.popularity = 0
+		  @company.save
+	  end
+	  @company.increment!(:popularity)
 
     respond_to do |format|
       format.html # show.html.erb
@@ -47,30 +67,34 @@ class CompaniesController < ApplicationController
 
   # GET /companies/1/edit
   def edit
-    @company = Company.find(params[:id])
+    @company = @@COMPANY_VERSIONER.current_version Company.find(params[:id])
   end
 
   # GET /companies/1/report
   def report
-	@reportblockcontent =Reportblockcontent.new
-    @company = Company.find(params[:id])	
+    @company = @@COMPANY_VERSIONER.current_version Company.find(params[:id])
+    @reportblockcontent =Reportblockcontent.new
   end
   
   # GET /companies/1/block
   def block
-	@reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(2,params[:id])
-    @company = Company.find(params[:id])
+    @company = @@COMPANY_VERSIONER.current_version Company.find(params[:id])
+    return if @company == nil
+    @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(2, @company.id)
   end
   
   # GET /companies/1/delete
   def delete
-	@reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(2,params[:id])
-    @company = Company.find(params[:id])
+    @company = @@COMPANY_VERSIONER.current_version Company.find(params[:id])
+    return if @company == nil
+    @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(2, @company.id)
   end
   
   # POST /companies
   def create
     @company = Company.new(params[:company])
+    @@COMPANY_VERSIONER.add_versioning_to_new_object @company, current_user
+
 	  @company.popularity = 0
 
     Location.create_add_new_locations(@company, params["new_locations"])
@@ -88,55 +112,61 @@ class CompaniesController < ApplicationController
 
   # PUT /companies/1
   def update
-    @company = Company.find(params[:id])
+    @company = @@COMPANY_VERSIONER.current_version Company.find(params[:id])
 	
     if current_user
-	  if !current_user.blocked		
-		if (params[:reportblockcontent])
-			Reportblockcontent.create_from_string(2,params[:id], params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
-		else 
-			Location.create_add_new_locations(@company, params["new_locations"])
-			add_founded(params)
-			add_defunct(params)
-			Field.create_add_new_fields(@company, params[:new_fields])
-		end
-	  else
-		if params[:reportblockcontent]&& params[:reportblockcontent][:status]=='0'
-			Reportblockcontent.create_from_string(2,params[:id], params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
-		end
-	  end
-	else
-		if params[:reportblockcontent]&& params[:reportblockcontent][:status]=='0'
-			Reportblockcontent.create_from_string(2,params[:id], params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
-		end	
+      if !current_user.blocked
+        if (params[:reportblockcontent])
+          Reportblockcontent.create_from_string(2,@company.id, params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
+        else
+          old = @company
+          @company = @@COMPANY_VERSIONER.new_version old, params
+          Location.create_add_new_locations(@company, params["new_locations"])
+          add_founded(params)
+          add_defunct(params)
+          Field.create_add_new_fields(@company, params[:new_fields])
+        end
+      else
+        if params[:reportblockcontent]&& params[:reportblockcontent][:status]=='0'
+          Reportblockcontent.create_from_string(2,@company.id, params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
+        end
+      end
+    else
+      if params[:reportblockcontent]&& params[:reportblockcontent][:status]=='0'
+        Reportblockcontent.create_from_string(2,@company.id, params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
+      end
     end
 	
     respond_to do |format|
       if current_user
-	    if !current_user.blocked
-		  if @company.update_attributes(params[:company])
-			if params[:reportblockcontent] && params[:reportblockcontent][:status]=='0'
-				format.html { redirect_to @company,notice: 'Company was reported successfully'}
-			else
-			  format.html { redirect_to @company}
-			end
-		  else
-			format.html { render action: "edit" }
-		  end
-		else
-			if params[:reportblockcontent] && params[:reportblockcontent][:status]=='0'
-				format.html { redirect_to @company,notice: 'Company was reported successfully'}
-			else
-				format.html { redirect_to @company,notice: 'you have been blocked, reason: ' + current_user.note}
-			end
-		end
-	  else 
-			if params[:reportblockcontent] && params[:reportblockcontent][:status]=='0'
-				format.html { redirect_to @company,notice: 'Company was reported successfully'}
-			else
-				redirect_to root_path, notice: 'you need to be registered and signed up in order to access this page'
-			end	    
-	  end
+        if !current_user.blocked
+          if params[:reportblockcontent] && params[:reportblockcontent][:status]=='0'
+            format.html { redirect_to @company,notice: 'Company was reported successfully'}
+          else
+            if @company.update_attributes(params[:company])
+              format.html { redirect_to @company}
+            else
+              # delete newest version created
+              old.add_errors @company.errors
+              @company.destroy
+              @company = old
+              format.html { render action: "edit" }
+            end
+          end
+        else
+          if params[:reportblockcontent] && params[:reportblockcontent][:status]=='0'
+            format.html { redirect_to @company,notice: 'Company was reported successfully'}
+          else
+            format.html { redirect_to @company,notice: 'you have been blocked, reason: ' + current_user.note}
+          end
+        end
+      else
+        if params[:reportblockcontent] && params[:reportblockcontent][:status]=='0'
+          format.html { redirect_to @company,notice: 'Company was reported successfully'}
+        else
+          redirect_to root_path, notice: 'you need to be registered and signed up in order to access this page'
+        end
+      end
     end
   end
 

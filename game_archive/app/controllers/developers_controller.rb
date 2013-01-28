@@ -3,11 +3,14 @@ class DevelopersController < ApplicationController
   before_filter only: [:edit, :show] { |c| c.block_content_visitor 1 } 
   before_filter only: [:edit] { |c| c.block_content_user 1 }
   before_filter :authenticate_admin!, only: [:block]
+  #before_filter :blocked_user!, except: [:index, :show, :report, :update]
+
+  @@DEVELOPER_VERSIONER = DeveloperVersioner.instance
   
   # GET /developers
   # GET /developers.json
   def index
-    @developers = Developer.all
+    @developers = @@DEVELOPER_VERSIONER.all_current_versions
 
     respond_to do |format|
       format.html # index.html.erb
@@ -18,8 +21,25 @@ class DevelopersController < ApplicationController
   # GET /developers/1
   # GET /developers/1.json
   def show
-    @developer = Developer.find(params[:id])
-	@reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(1,params[:id])
+    some_version = Developer.find(params[:id])
+    @developer = @@DEVELOPER_VERSIONER.current_version some_version
+
+    # redirect to other page if game is not newest version
+    if @developer != some_version and !params[:version]
+      redirect_to @developer
+      return
+    else
+      if params[:version]
+        @developer = Developer.where(:version_id => @developer.version_id, :version_number => params[:version]).first!
+        if params[:makecurrent]
+          @developer = @@DEVELOPER_VERSIONER.revert_to_this @developer
+          redirect_to @developer
+          return
+        end
+      end
+    end
+
+	@reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(1,@developer.id)
 	if @developer.popularity == nil 
 		@developer.popularity = 0
 		@developer.save
@@ -45,30 +65,34 @@ class DevelopersController < ApplicationController
 
   # GET /developers/1/edit
   def edit
-    @developer = Developer.find(params[:id])
+    @developer = @@DEVELOPER_VERSIONER.current_version Developer.find(params[:id])
   end
 
    # GET /developers/1/report
   def report
-	@reportblockcontent =Reportblockcontent.new
-    @developer = Developer.find(params[:id])	
+    @developer = @@DEVELOPER_VERSIONER.current_version Developer.find(params[:id])
+    @reportblockcontent =Reportblockcontent.new
   end
   
   # GET /developers/1/block
   def block
-	@reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(1,params[:id])
-    @developer = Developer.find(params[:id])
+    @developer = @@DEVELOPER_VERSIONER.current_version Developer.find(params[:id])
+    return if @developer == nil
+    @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(1, @developer.id)
   end
   
   # GET /developers/1/delete
   def delete
-	@reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(1,params[:id])
-    @developer = Developer.find(params[:id])
+    @developer = @@DEVELOPER_VERSIONER.current_version Developer.find(params[:id])
+    return if @developer == nil
+    @reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(1,@developer.id)
   end
   
   # POST /developers
   def create
     @developer = Developer.new(params[:developer])
+    @@DEVELOPER_VERSIONER.add_versioning_to_new_object @developer, current_user
+
 	  @developer.popularity = 0
     Field.create_add_new_fields(@developer, params[:new_fields])
     respond_to do |format|
@@ -82,52 +106,58 @@ class DevelopersController < ApplicationController
 
   # PUT /developers/1
   def update
-    @developer = Developer.find(params[:id])
+    @developer = @@DEVELOPER_VERSIONER.current_version Developer.find(params[:id])
 
     if current_user
-	  if !current_user.blocked		
-		if (params[:reportblockcontent])
-			Reportblockcontent.create_from_string(1,params[:id], params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
-		else 
-			Field.create_add_new_fields(@developer, params[:new_fields])
-		end
-	  else
-		if params[:reportblockcontent]&& params[:reportblockcontent][:status]=='0'
-			Reportblockcontent.create_from_string(1,params[:id], params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
-		end
-	  end
-	else
-		if params[:reportblockcontent]&& params[:reportblockcontent][:status]=='0'
-			Reportblockcontent.create_from_string(1,params[:id], params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
-		end	
+      if !current_user.blocked
+        if (params[:reportblockcontent])
+          Reportblockcontent.create_from_string(1,@developer.id, params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
+        else
+          old = @developer
+          @developer = @@DEVELOPER_VERSIONER.new_version old, params
+          Field.create_add_new_fields(@developer, params[:new_fields])
+        end
+      else
+        if params[:reportblockcontent]&& params[:reportblockcontent][:status]=='0'
+          Reportblockcontent.create_from_string(1, @developer.id, params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
+        end
+      end
+    else
+      if params[:reportblockcontent]&& params[:reportblockcontent][:status]=='0'
+        Reportblockcontent.create_from_string(1, @developer.id, params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
+      end
     end
 	  
     respond_to do |format|
       if current_user
-	    if !current_user.blocked
-		  if @developer.update_attributes(params[:developer])
-			if params[:reportblockcontent] && params[:reportblockcontent][:status]=='0'
-			  format.html { redirect_to @developer,notice: 'Developer was reported successfully'}
-			else
-			  format.html { redirect_to @developer}
-			end
-		  else
-			format.html { render action: "edit" }
-		  end
-		else
-			if params[:reportblockcontent] && params[:reportblockcontent][:status]=='0'
-				format.html { redirect_to @developer,notice: 'Developer was reported successfully'}
-			else
-				format.html { redirect_to @developer,notice: 'you have been blocked, reason: ' + current_user.note}
-			end
-		end
-	  else 
-			if params[:reportblockcontent] && params[:reportblockcontent][:status]=='0'
-				format.html { redirect_to @developer,notice: 'Developer was reported successfully'}
-			else
-				redirect_to root_path, notice: 'you need to be registered and signed up in order to access this page'
-			end	    
-	  end
+        if !current_user.blocked
+          if params[:reportblockcontent] && params[:reportblockcontent][:status]=='0'
+            format.html { redirect_to @developer,notice: 'Developer was reported successfully'}
+          else
+            if @developer.update_attributes(params[:developer])
+              format.html { redirect_to @developer}
+            else
+              # delete newest version
+              old.add_errors @developer.errors
+              @developer.destroy
+              @developer = old
+              format.html { render action: "edit" }
+            end
+          end
+        else
+          if params[:reportblockcontent] && params[:reportblockcontent][:status]=='0'
+            format.html { redirect_to @developer,notice: 'Developer was reported successfully'}
+          else
+            format.html { redirect_to @developer,notice: 'you have been blocked, reason: ' + current_user.note}
+          end
+        end
+      else
+        if params[:reportblockcontent] && params[:reportblockcontent][:status]=='0'
+          format.html { redirect_to @developer,notice: 'Developer was reported successfully'}
+        else
+          redirect_to root_path, notice: 'you need to be registered and signed up in order to access this page'
+        end
+      end
     end
   end
 end

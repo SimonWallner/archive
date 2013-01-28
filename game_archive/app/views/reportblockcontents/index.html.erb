@@ -1,4 +1,5 @@
 <% if current_user.admin %>
+    <h1>Manage Reported/Deleted Content</h1>
 	<% Reportblockcontent.all.each do |reportblockcontent| %>
 		<% if reportblockcontent.status ==0 %>
 			<h1>Reported Content</h1>

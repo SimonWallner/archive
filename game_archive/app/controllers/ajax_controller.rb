@@ -5,17 +5,17 @@ class AjaxController < ApplicationController
     if params[:term]
       if params[:type]
         if params[:type] == 'developer'
-          @devs = Developer.where("name LIKE ?", "#{params[:term]}%")
+          @devs = DeveloperVersioner.instance.current_versions_from_collection Developer.where("name LIKE ?", "#{params[:term]}%")
           @devs.collect! do |dev|
             {:value => '@dev:' + dev.id.to_s + ':additional-info,', :label => dev.name + ' - Developer'}
           end
-          @comps = Company.where("name LIKE ?", "#{params[:term]}%")
+          @comps = CompanyVersioner.instance.current_versions_from_collection Company.where("name LIKE ?", "#{params[:term]}%")
           @comps.collect! do |comp|
             {:value => '@comp:' + comp.id.to_s + ':additional-info,', :label => comp.name + ' - Company'}
           end
           @tags = @devs.concat(@comps)
         elsif params[:type] == 'game'
-          @games = Game.where("title LIKE ?", "#{params[:term]}%")
+          @games = GameVersioner.instance.current_versions_from_collection Game.where("title LIKE ?", "#{params[:term]}%")
           @games.collect! do |game|
             {:value => '@game:' + game.id.to_s + ':additional-info,', :label => game.title + ' - Game'}
           end
@@ -23,15 +23,15 @@ class AjaxController < ApplicationController
         end
       else
 
-        @devs = Developer.where("name LIKE ?", "#{params[:term]}%")
+        @devs = DeveloperVersioner.instance.current_versions_from_collection Developer.where("name LIKE ?", "#{params[:term]}%")
         @devs.collect! do |dev|
           {:value => '[' + dev.name + '](' + developer_path(dev) + ')', :label => dev.name + ' - Developer'}
         end
-        @games = Game.where("title LIKE ?", "#{params[:term]}%")
+        @games = GameVersioner.instance.current_versions_from_collection Game.where("title LIKE ?", "#{params[:term]}%")
         @games.collect! do |game|
           {:value => '[' + game.title + '](' + game_path(game) + ')', :label => game.title + ' - Game'}
         end
-        @comps = Company.where("name LIKE ?", "#{params[:term]}%")
+        @comps = CompanyVersioner.instance.current_versions_from_collection Company.where("name LIKE ?", "#{params[:term]}%")
         @comps.collect! do |comp|
           {:value => '[' + comp.name + '](' + company_path(comp) + ')', :label => comp.name + ' - Company'}
         end
