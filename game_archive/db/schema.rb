@@ -21,13 +21,10 @@ ActiveRecord::Schema.define(:version => 20130113152519) do
     t.string   "image"
     t.string   "official_name"
     t.integer  "popularity"
-<<<<<<< HEAD
-=======
     t.string   "version_id"
     t.integer  "version_number"
     t.datetime "version_updated_at"
     t.integer  "version_author_id"
->>>>>>> versioning
   end
 
   add_index "companies", ["version_id"], :name => "index_companies_on_version_id"
