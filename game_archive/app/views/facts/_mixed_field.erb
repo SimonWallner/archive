@@ -2,35 +2,35 @@
 <% if mfs.any? %>
 	<div class="fact">
 		<span class="label">
-		  <%= label.to_s %>:
+			<%= label.to_s %>:
 		</span>
 		<ul>
 			<% mfs.each do |mf| %>
-		        <li>
-		            <% if mf.developer != nil %>
-		                <%= link_to mf.developer.name, developer_path(mf.developer) %>
-		            <% elsif mf.company != nil %>
-		                <%= link_to mf.company.name, company_path(mf.company) %>
-		            <% elsif mf.series_game != nil %>
-		              <%= link_to mf.series_game.title, game_path(mf.series_game) %>
-			          <% mf.series_game.release_dates.each do |rd| %>
-			            <%
-			                if rd == nil
-			                    next
-			            %>
-				        <% else %>
-				            (<%= rd.year %>)
-					        <% break %>
-				        <% end %>
-				      <% end %>
-		            <% elsif mf.not_found != nil %>
-		                <%= mf.not_found %>
-		            <% end %>
-		            <% if mf.additional_info != nil %>
-		                &nbsp;-&nbsp;<%= mf.additional_info %>
-		            <% end %>
-		          </li>
-		    <% end %>
-	    </ul>
+				<li>
+					<% if mf.developer != nil %>
+							<%= link_to mf.developer.name, developer_path(mf.developer) %>
+					<% elsif mf.company != nil %>
+							<%= link_to mf.company.name, company_path(mf.company) %>
+					<% elsif mf.series_game != nil %>
+						<%= link_to mf.series_game.title, game_path(mf.series_game) %>
+					<% mf.series_game.release_dates.each do |rd| %>
+						<%
+								if rd == nil
+										next
+						%>
+					<% else %>
+							(<%= rd.year %>)
+						<% break %>
+					<% end %>
+				<% end %>
+					<% elsif mf.not_found != nil %>
+							<%= mf.not_found %>
+					<% end %>
+					<% if mf.additional_info != nil %>
+							&nbsp;-&nbsp;<%= mf.additional_info %>
+					<% end %>
+				</li>
+			<% end %>
+		</ul>
 	</div>
 <% end %>

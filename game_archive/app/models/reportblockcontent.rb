@@ -1,6 +1,7 @@
 class Reportblockcontent < ActiveRecord::Base
   attr_accessible :admin_id, :content_id, :content_type, :email, :reason, :status
- 
+
+#  XXX make propper polymirphic association
   belongs_to :games
   belongs_to :developers
   belongs_to :companies

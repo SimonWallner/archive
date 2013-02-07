@@ -1,10 +1,11 @@
 class ReportblockcontentsController < ApplicationController
   before_filter :authenticate_admin!
     
-  #def index
-   # @reportblockcontents = Reportblockcontent.all
-  #end
-  
+  def index
+    @reportblockcontents = Reportblockcontent.all
+	puts "========================== for the lulz ============================"
+  end
+   
   
  # def destroy
   #  @reportblockcontents = Reportblockcontent.find(params[:id])

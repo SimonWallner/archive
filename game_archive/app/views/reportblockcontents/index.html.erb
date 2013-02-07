@@ -19,25 +19,23 @@
 		<% if reportblockcontent.status ==0 %>
 			<% if reportblockcontent.content_type ==0 %>
 				<td><a href="/games/<%= reportblockcontent.content_id %>"><div><%= Game.find(reportblockcontent.content_id).title %></div></a></td>
-			<% else if  reportblockcontent.content_type ==1 %>
+			<% elsif  reportblockcontent.content_type ==1 %>
 				<td><a href="/developers/<%= reportblockcontent.content_id %>"><div><%= Developer.find(reportblockcontent.content_id).name %></div></a></td>
-			<% else if  reportblockcontent.content_type ==2 %>
+			<% elsif  reportblockcontent.content_type ==2 %>
 				<td><a href="/companies/<%= reportblockcontent.content_id %>"><div><%= Company.find(reportblockcontent.content_id).name %></div></a></td>
 			<% end %>
-			<% end %>
-			<% end %>
+
 			<td><%= reportblockcontent.reason %></td>
 			<td><%= mail_to reportblockcontent.email %></td>
 		
 			<% if reportblockcontent.content_type ==0 %>
 				<td><%= link_to 'Block', block_game_path(reportblockcontent.content_id) %></td>
-			<% else if  reportblockcontent.content_type ==1 %>
+			<% elsif  reportblockcontent.content_type ==1 %>
 				<td><%= link_to 'Block', block_developer_path(reportblockcontent.content_id) %></td>
-			<% else if  reportblockcontent.content_type ==2 %>
+			<% elsif  reportblockcontent.content_type ==2 %>
 				<td><%= link_to 'Block', block_company_path(reportblockcontent.content_id) %></td>
 			<% end %>
-			<% end %>
-			<% end %>
+
 			<td><%= link_to 'Destroy', reportblockcontent, method: :delete, confirm: 'Are you sure?', :action => "destroy"%></td>
 		<% end %>
 	  </tr>
@@ -61,24 +59,22 @@
 		<% if reportblockcontent.status ==4 %>
 			<% if reportblockcontent.content_type ==0 %>
 				<td><a href="/games/<%= reportblockcontent.content_id %>"><div><%= Game.find(reportblockcontent.content_id).title %></div></a></td>
-			<% else if  reportblockcontent.content_type ==1 %>
+			<% elsif  reportblockcontent.content_type ==1 %>
 				<td><a href="/developers/<%= reportblockcontent.content_id %>"><div><%= Developer.find(reportblockcontent.content_id).name %></div></a></td>
-			<% else if  reportblockcontent.content_type ==2 %>
+			<% elsif  reportblockcontent.content_type ==2 %>
 				<td><a href="/companies/<%= reportblockcontent.content_id %>"><div><%= Company.find(reportblockcontent.content_id).name %></div></a></td>
 			<% end %>
-			<% end %>
-			<% end %>
+
 			<td><%= reportblockcontent.reason %></td>
 		
 			<% if reportblockcontent.content_type ==0 %>
 				<td><%= link_to 'Undelete', delete_game_path(reportblockcontent.content_id) %></td>
-			<% else if  reportblockcontent.content_type ==1 %>
+			<% elsif  reportblockcontent.content_type ==1 %>
 				<td><%= link_to 'Undelete', block_developer_path(reportblockcontent.content_id) %></td>
-			<% else if  reportblockcontent.content_type ==2 %>
+			<% elsif  reportblockcontent.content_type ==2 %>
 				<td><%= link_to 'Undelete', block_company_path(reportblockcontent.content_id) %></td>
 			<% end %>
-			<% end %>
-			<% end %>
+
 		<% end %>
 	  </tr>
 	<% end %>
@@ -104,17 +100,16 @@
 				<td><a href="/games/<%= reportblockcontent.content_id %>"><div><%= Game.find(reportblockcontent.content_id).title %></div></a></td>
 				<td><%= reportblockcontent.reason %></td>
 				<td><%= link_to 'Remove Block', block_game_path(reportblockcontent.content_id) %></td>
-			<% else if  reportblockcontent.content_type ==1 %>
+			<% elsif  reportblockcontent.content_type ==1 %>
 				<td><a href="/developers/<%= reportblockcontent.content_id %>"><div><%= Developer.find(reportblockcontent.content_id).name %></div></a></td>
 				<td><%= reportblockcontent.reason %></td>
 				<td><%= link_to 'Remove Block', block_developer_path(reportblockcontent.content_id) %></td>
-			<% else if  reportblockcontent.content_type ==2 %>
+			<% elsif  reportblockcontent.content_type ==2 %>
 				<td><a href="/companies/<%= reportblockcontent.content_id %>"><div><%= Company.find(reportblockcontent.content_id).name %></div></a></td>
 				<td><%= reportblockcontent.reason %></td>
 				<td><%= link_to 'Remove Block', block_company_path(reportblockcontent.content_id) %></td>				
 			<% end %>
-			<% end %>
-			<% end %>
+
 		<% end %>
 	  </tr>
 	<% end %>
@@ -140,17 +135,16 @@
 				<td><a href="/games/<%= reportblockcontent.content_id %>"><div><%= Game.find(reportblockcontent.content_id).title %></div></a></td>
 				<td><%= reportblockcontent.reason %></td>
 				<td><%= link_to 'Remove Lock', block_game_path(reportblockcontent.content_id) %></td>
-			<% else if  reportblockcontent.content_type ==1 %>
+			<% elsif  reportblockcontent.content_type ==1 %>
 				<td><a href="/developers/<%= reportblockcontent.content_id %>"><div><%= Developer.find(reportblockcontent.content_id).name %></div></a></td>
 				<td><%= reportblockcontent.reason %></td>
 				<td><%= link_to 'Remove Lock', block_developer_path(reportblockcontent.content_id) %></td>
-			<% else if  reportblockcontent.content_type ==2 %>
+			<% elsif  reportblockcontent.content_type ==2 %>
 				<td><a href="/companies/<%= reportblockcontent.content_id %>"><div><%= Company.find(reportblockcontent.content_id).name %></div></a></td>
 				<td><%= reportblockcontent.reason %></td>
 				<td><%= link_to 'Remove Lock', block_company_path(reportblockcontent.content_id) %></td>				
 			<% end %>
-			<% end %>
-			<% end %>
+
 		<% end %>
 	  </tr>
 	<% end %>
