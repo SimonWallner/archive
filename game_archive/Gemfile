@@ -11,14 +11,29 @@ gem 'sqlite3'
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'sass-rails',   '~> 3.2.3'
-  #gem 'coffee-rails', '~> 3.2.1'
+	gem 'sass-rails',		'~> 3.2.3'
+	#gem 'coffee-rails', '~> 3.2.1'
 
-  # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-  # gem 'therubyracer', :platforms => :ruby
+	# See https://github.com/sstephenson/execjs#readme for more supported runtimes
+	# gem 'therubyracer', :platforms => :ruby
 
-  gem 'uglifier', '>= 1.0.3'
+	gem 'uglifier', '>= 1.0.3'
 end
+
+
+group :development do
+	gem 'guard-rspec'
+	gem 'guard-cucumber'
+	
+	# guard fs listeners
+	gem 'rb-inotify', :require => false
+	gem 'rb-fsevent', :require => false
+	gem 'rb-fchange', :require => false
+	# add growl support
+	gem 'growl', :require => false
+end
+
+
 
 gem 'jquery-rails'
 gem 'mini_magick'
@@ -64,4 +79,4 @@ gem "devise_invitable", "~> 1.0.0"
 gem "acts_as_indexed", "~> 0.8.1"
 
 # json
-gem "json"
+gem "json", '~> 1.7.5'
