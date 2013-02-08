@@ -1,5 +1,5 @@
 class GamesController < ApplicationController
-	before_filter :authenticate_user!, except: [:index, :show, :report, :update]
+	before_filter :authenticate_user!, except: [:index, :show, :report]
 	before_filter only: [:edit, :show] { |c| c.block_content_visitor 0 }
 	before_filter only: [:edit] { |c| c.block_content_user 0 } 
 	before_filter :authenticate_admin!, only: [:block]
@@ -18,6 +18,13 @@ class GamesController < ApplicationController
 			format.json { render json: @games }
 		end
 	end
+	
+	# GET /games/1/version/1
+	def show_version
+		needle = Game.find(params[:id])
+		@game = Game.where(:version_id => needle.version_id, :version_number => params[:version]).first!
+		render "show"
+	end
 
 	# GET /games/1
 	# GET /games/1.json
@@ -25,22 +32,17 @@ class GamesController < ApplicationController
 		some_version = Game.find(params[:id])
 		@game = @@GAME_VERSIONER.current_version some_version
 
-		# redirect to other page if game is not newest version
-		if @game != some_version and !params[:version]
-			redirect_to @game
-			return
-		else
-			if params[:version]
-				@game = Game.where(:version_id => @game.version_id, :version_number => params[:version]).first!
-				if params[:makecurrent]
-					@game = @@GAME_VERSIONER.revert_to_this @game
-					redirect_to @game
-					return
-				end
-			end
-		end
 
-		@reportblockcontent = Reportblockcontent.find_by_content_type_and_content_id(0, @game.id)
+			# if params[:version]
+			# 	if params[:makecurrent]
+			# 		@game = @@GAME_VERSIONER.revert_to_this @game
+			# 		redirect_to @game
+			# 		return
+			# 	end
+			# end
+
+
+		# @reportblockcontent = Reportblockcontent.find_by_content_type_and_content_id(0, @game.id)
 		
 		if @game.popularity == nil
 			@game.popularity = 0

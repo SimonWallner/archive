@@ -27,9 +27,13 @@ describe GamesController do
       put("/games/1").should route_to("games#update", :id => "1")
     end
 
-    #it "routes to #destroy" do
-    #  delete("/games/1").should route_to("games#destroy", :id => "1")
-    #end
+	it "routes a specific version to #show_version" do
+		get("games/1/version/2").should route_to("games#show_version", :id => "1", :version => "2")
+	end
+	
+	it "routes to a put on a specific version to #make_current" do
+		put("games/1/version/2").should route_to("games#make_current", :id => "1", :version => "2")
+	end
 
   end
 end

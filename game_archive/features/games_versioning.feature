@@ -3,26 +3,32 @@ Feature: As an administrator,
   I want game pages to be versioned and restorable.
 
   Background:
-    Given I am signed in as Admin
+    Given I am signed in as User
 
 
-  Scenario: successfully create a new version of a game
+  Scenario: New version should be created when the game article is edited
     Given I have a game Tetris
-    And I have a certain version number for the given game
-    And I am on the edit page of the given game
-    When I fill in the fields with valid details for a game
-    And I submit it
-    Then I should have the next version for the given game
-    And I should see the link for the next version in the list of versions
+		When I edit the game article
+    Then I should be on the game article page showing the new version
 
-#  @javascript
-#  Scenario: compare changed content  between versions of a game
-#    Given I have two different versions with different data for a game
-#    And I am on the detail page of the game
-#    When I follow the link to the previous version of the game
-#    Then I should see data for the old version of the game
+	Scenario: Always show current version of game.
+		Given I have 3 versions of the game Tetris
+		When I visit the game article with an id from an older version
+		Then I should see the current version of the game
 
-#  @javascript
+	Scenario: View a specific game version
+		Given I have 3 versions of the game Tetris
+		When I visit the game page for a specific version
+		Then I should see this version of the game article
+		
+	Scenario: Show current Version number
+		Given I have 3 versions of the game Tetris
+		When I visit the game article page
+		Then I should see the current version number
+
+
+
+
 #  Scenario: revert to previous version and compare changed content
 #    Given I have two different versions with different data for a game
 #    And I am on the detail page of the game
