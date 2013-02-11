@@ -87,18 +87,19 @@
 	<% if user_signed_in? %>
 		<div id="versions">
 			Version shown: <span id="current-version"><%= @game.version_number %></span>,  
-				<% if params[:version] %>
-						<%= link_to "restore this version", game_path(:version => @game.version_number, :makecurrent => true) %>
+				<% if @show_restore %>
+					<%= link_to "restore this version", restore_game_version_path(@game.id, @game.version_number), :method => :post %>
 				<% end %>
 			<br/>
 			available versions:
 			<ul>
-				<% Game.where(:version_id => @game.version_id).each do |game| %>
-						<li><%= link_to game.version_number, game_version_path(@game.id, game.version_number) %></li>
+				<% @versions.each do |game| %>
+					<li><%= link_to game.version_number, game_version_path(@game.id, game.version_number) %></li>
 				<% end %>
 			</ul><br/>
 		</div>
 	<% end %>
+	
 
 <% if user_signed_in? %>
 	<% if current_user.admin %>

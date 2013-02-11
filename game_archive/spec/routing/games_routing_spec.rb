@@ -31,8 +31,8 @@ describe GamesController do
 		get("games/1/version/2").should route_to("games#show_version", :id => "1", :version => "2")
 	end
 	
-	it "routes to a put on a specific version to #make_current" do
-		put("games/1/version/2").should route_to("games#make_current", :id => "1", :version => "2")
+	it "routes a POST on a specific version to #restore_version" do
+		post("games/1/version/2").should route_to("games#restore_version", :id => "1", :version => "2")
 	end
 
   end

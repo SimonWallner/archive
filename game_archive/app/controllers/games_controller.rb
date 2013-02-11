@@ -23,7 +23,18 @@ class GamesController < ApplicationController
 	def show_version
 		needle = Game.find(params[:id])
 		@game = Game.where(:version_id => needle.version_id, :version_number => params[:version]).first!
+		@versions = Game.where :version_id => @game.version_id
+		@show_restore = true;
 		render "show"
+	end
+
+	# POST /games/1/version/2
+	def restore_version
+		needle = Game.find(params[:id])
+		@game = Game.where(:version_id => needle.version_id, :version_number => params[:version]).first!
+		
+		@new_version = @@GAME_VERSIONER.revert_to_this @game
+		redirect_to @new_version
 	end
 
 	# GET /games/1
@@ -31,15 +42,8 @@ class GamesController < ApplicationController
 	def show
 		some_version = Game.find(params[:id])
 		@game = @@GAME_VERSIONER.current_version some_version
-
-
-			# if params[:version]
-			# 	if params[:makecurrent]
-			# 		@game = @@GAME_VERSIONER.revert_to_this @game
-			# 		redirect_to @game
-			# 		return
-			# 	end
-			# end
+		@versions = Game.where :version_id => @game.version_id
+		@show_restore = false;
 
 
 		# @reportblockcontent = Reportblockcontent.find_by_content_type_and_content_id(0, @game.id)

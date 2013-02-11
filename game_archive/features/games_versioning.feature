@@ -29,22 +29,22 @@ Feature: As an administrator,
 	Scenario: Show links to available Versions
 		Given I have 3 versions of the game Tetris
 		When I visit the game article page
-		Then I shoudl see links to all available versions
+		Then I should see links to all available versions
 		
 	Scenario: Follow version link to a given game article version
 		Given I have 3 versions of the game Tetris
 		When I visit the game article page
 		And I follow the link to another version
 		Then I should see this version of the game article
-
-
-
-
-#  Scenario: revert to previous version and compare changed content
-#    Given I have two different versions with different data for a game
-#    And I am on the detail page of the game
-#    When I follow the link to the previous version of the game
-#    And I revert to the previous version
-#    Then I should see a newly created version in the version links for a game
-#    And I should see data from the old version in the reverted game
-
+		
+	Scenario: Show link to restore version on the article page for a specific version
+		Given I have 3 versions of the game Tetris
+		When I visit the game page for a specific version
+		Then I should see a link to restore this version
+	
+	@javascript
+	Scenario: Restore a certain version
+		Given I have 3 versions of the game Tetris
+		When I visit the game page for a specific version
+		And follow the restore link
+		Then I should be on the game article page showing the restored version

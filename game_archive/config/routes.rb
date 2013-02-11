@@ -43,7 +43,7 @@ GameArchive::Application.routes.draw do
 		end
 	end 
 	get "games/:id/version/:version" => "games#show_version", :as => "game_version"
-	put "games/:id/version/:version" => "games#make_current"
+	post "games/:id/version/:version" => "games#restore_version", :as => "restore_game_version"
 
 	
 	resources :reportblockcontents, only: [:index, :destroy]

@@ -35,8 +35,14 @@ When /^I edit the game article$/ do
 end
 
 Then /^I should be on the game article page showing the new version$/ do
+	within '#current-version' do
+  		page.should have_content @givenGame.version_number + 1
+	end
+end
 
-  	page.should have_content @givenGame.version_number + 1
+Then /^I should be on the game article page showing the restored version$/ do
+	URI.parse(current_url).path.should == game_path(@givenGames.last.id+1)
+	page.should have_content @specific_version.title
 end
 
 When /^I visit the game article page$/ do
@@ -56,13 +62,27 @@ Then /^I should see the current version number$/ do
 	end
 end
 
-Then /^I shoudl see links to all available versions$/ do
+Then /^I should see links to all available versions$/ do
 	within '#versions' do
 		@givenGames.each do |game|
 	  		page.should have_link game.version_number.to_s
 		end
 	end
 end
+
+Then /^I should see a link to restore this version$/ do
+	within '#versions' do
+		page.should have_link "restore this version"
+	end
+end
+
+When /^follow the restore link$/ do
+	within '#versions' do
+		click_link 'restore this version'
+	end
+end
+
+
 
 Given /^I have a screenshot to the given game$/ do
 
