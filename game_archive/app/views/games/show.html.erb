@@ -1,101 +1,105 @@
 <div class="game">
-  <div class="media rounded">
-    <%=
-        imguploader = ImageUploader.new
-        if not @game.image_url == imguploader.default_url
-            image_tag @game.image_url(:top_game).to_s
-        end
+	<div class="media rounded">
+		<%=
+				imguploader = ImageUploader.new
+				if not @game.image_url == imguploader.default_url
+						image_tag @game.image_url(:top_game).to_s
+				end
 
-    %>
+		%>
 
-  </div>
-  <h1><%= @game.title %></h1>
+	</div>
+	<h1><%= @game.title %></h1>
 
-  <% if user_signed_in? %>
-          <div id="versions">
-            <span>Versioning: </span>
-            <% Game.where(:version_id => @game.version_id).each do |game| %>
-                <span><%= link_to game.version_number, game_path(:version => game.version_number) %></span>
-            <% end %>
-            <% if params[:version] %>
-                <span><%= link_to "make current version", game_path(:version => @game.version_number, :makecurrent => true) %></span>
-            <% end %>
-          </div>
-  <% end %>
+	<div class="fact-box">
+			<%= render :template => "facts/_mixed_field", :locals => { :type => :Developer, :object => @game, :label => "Developer" } %>
+			<%= render :template => "facts/_mixed_field", :locals => { :type => :Publisher, :object => @game, :label => "Publisher" } %>
+			<%= render :template => "facts/_mixed_field", :locals => { :type => :Distributor, :object => @game, :label => "Distributor" } %>
+			<%= render :template => "facts/_mixed_field", :locals => { :type => :Credits, :object => @game, :label => "Credits" } %>
+			<%= render :template => "facts/_dates", :locals => { :object => @game.release_dates, :label => "Release Dates" } %>
+			<%= render :template => "facts/_mixed_field", :locals => { :type => :Series, :object => @game, :label => "Series" } %>
+		<% if @game.genres.any? %>
+			<strong>Genre</strong>:
+			<% @game.genres.each do |genre| %>
+				<%= genre.name%>
+			<% end %><br/>
+		<% end %>
+		<% if @game.platforms.any? %>
+			<strong>Platform</strong>:
+			<% @game.platforms.each do |platform| %>
+				<%= platform.name%>
+			<% end %><br/>
+		<% end %>
+		<% if @game.modes.any? %>
+			<strong>Mode</strong>:
+			<% @game.modes.each do |mode| %>
+				<%= mode.name%>
+			<% end %><br/>
+		<% end %> 
+		<% if @game.media.any? %>
+			<strong>Media</strong>:
+			<% @game.media.each do |medium| %>
+				<%= medium.name%>
+			<% end %><br/>
+		<% end %> 
+		<% if @game.tags.any? %>
+			<strong>Tag</strong>:
+			<% @game.tags.each do |tag| %>
+				<%= tag.name%>
+			<% end %><br/>
+		<% end %>
+			<%= render :template => "facts/_standard", :locals => { :object => @game, :label => "External Links" } %>
+			<%= render :template => "facts/_standard", :locals => { :object => @game, :label => "Aggregate Scores" } %>
+			<%= render :template => "facts/_standard", :locals => { :object => @game, :label => "Review Scores" } %>
+			<%= render :template => "facts/_user_defined", :locals => { :object => @game } %>
+	</div>
 
-  <div class="fact-box">
-      <%= render :template => "facts/_mixed_field", :locals => { :type => :Developer, :object => @game, :label => "Developer" } %>
-      <%= render :template => "facts/_mixed_field", :locals => { :type => :Publisher, :object => @game, :label => "Publisher" } %>
-      <%= render :template => "facts/_mixed_field", :locals => { :type => :Distributor, :object => @game, :label => "Distributor" } %>
-      <%= render :template => "facts/_mixed_field", :locals => { :type => :Credits, :object => @game, :label => "Credits" } %>
-      <%= render :template => "facts/_dates", :locals => { :object => @game.release_dates, :label => "Release Dates" } %>
-      <%= render :template => "facts/_mixed_field", :locals => { :type => :Series, :object => @game, :label => "Series" } %>
-	  <% if @game.genres.any? %>
-		  <strong>Genre</strong>:
-		  <% @game.genres.each do |genre| %>
-			  <%= genre.name%>
-		  <% end %><br/>
-	  <% end %>
-	  <% if @game.platforms.any? %>
-		  <strong>Platform</strong>:
-		  <% @game.platforms.each do |platform| %>
-			  <%= platform.name%>
-		  <% end %><br/>
-	  <% end %>
-	  <% if @game.modes.any? %>
-		  <strong>Mode</strong>:
-		  <% @game.modes.each do |mode| %>
-			  <%= mode.name%>
-		  <% end %><br/>
-	  <% end %> 
-	  <% if @game.media.any? %>
-		  <strong>Media</strong>:
-		  <% @game.media.each do |medium| %>
-			  <%= medium.name%>
-		  <% end %><br/>
-	  <% end %> 
-	  <% if @game.tags.any? %>
-		  <strong>Tag</strong>:
-		  <% @game.tags.each do |tag| %>
-			  <%= tag.name%>
-		  <% end %><br/>
-	  <% end %>
-      <%= render :template => "facts/_standard", :locals => { :object => @game, :label => "External Links" } %>
-      <%= render :template => "facts/_standard", :locals => { :object => @game, :label => "Aggregate Scores" } %>
-      <%= render :template => "facts/_standard", :locals => { :object => @game, :label => "Review Scores" } %>
-      <%= render :template => "facts/_user_defined", :locals => { :object => @game } %>
-  </div>
+	<div class="text">
+		<%= markdown(@game.description) %>
 
-  <div class="text">
-    <%= markdown(@game.description) %>
-
-  </div>
+	</div>
 
 
 
-  <div class="clear"></div>
-    <% if @game.videos != nil && (not @game.videos.empty?) %>
-        <h2>Videos</h2>
+	<div class="clear"></div>
+		<% if @game.videos != nil && (not @game.videos.empty?) %>
+				<h2>Videos</h2>
 	<% end %>
-    <% for video in @game.videos %>
-      <div class="media rounded">
-            <%=h @str = embed_video(video.embedcode)
-               if @str
-                 @str.html_safe
-               end
-            %>
-      </div>
+		<% for video in @game.videos %>
+			<div class="media rounded">
+						<%=h @str = embed_video(video.embedcode)
+							 if @str
+								 @str.html_safe
+							 end
+						%>
+			</div>
 
-    <% end %>
+		<% end %>
 
-    <% if @game.screenshots != nil && (not @game.screenshots.empty?) %>
-        <h2>Screenshots</h2>
-    <% end %>
-    <% @game.screenshots.each do |screenshot| %>
-         <div class = "media rounded"><%=  image_tag screenshot.image_url.to_s %></div>
+		<% if @game.screenshots != nil && (not @game.screenshots.empty?) %>
+				<h2>Screenshots</h2>
+		<% end %>
+		<% @game.screenshots.each do |screenshot| %>
+				 <div class = "media rounded"><%=	 image_tag screenshot.image_url.to_s %></div>
+		<% end%>
+	</div>
 
-       <% end%>
-  </div>
+	<% if user_signed_in? %>
+		<div id="versions">
+			Version shown: <span id="current-version"><%= @game.version_number %></span>,  
+				<% if params[:version] %>
+						<%= link_to "restore this version", game_path(:version => @game.version_number, :makecurrent => true) %>
+				<% end %>
+			<br/>
+			available versions:
+			<ul>
+				<% Game.where(:version_id => @game.version_id).each do |game| %>
+						<li><%= link_to game.version_number, game_version_path(@game.id, game.version_number) %></li>
+				<% end %>
+			</ul><br/>
+		</div>
+	<% end %>
+
 <% if user_signed_in? %>
 	<% if current_user.admin %>
 		<%= link_to 'Edit', edit_game_path(@game) %> |
@@ -144,7 +148,7 @@
 		<% end %>
 	<% end %>
 
-  <%= link_to 'Back', games_path %>
+	<%= link_to 'Back', games_path %>
 
 </div>
 

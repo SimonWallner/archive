@@ -551,6 +551,28 @@ div.fact-box {
 	}
 }
 
+div#versions {
+	margin-bottom: 1em;
+	background-color: $lightGrey * 1.2;
+	border-radius: 2px;
+	
+	ul, li {
+		display: inline;
+	}
+	
+	li {
+		&:after {
+			content: ', ';
+		}
+		&:last-child {
+			&:after {
+				content: '';
+			};
+		}
+	}
+	
+}
+
 div.game {
   div.teaser {
     margin-top: 2.2em;

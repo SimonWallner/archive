@@ -24,6 +24,7 @@ end
 group :development do
 	gem 'guard-rspec'
 	gem 'guard-cucumber'
+	gem 'guard-livereload'
 	
 	# guard fs listeners
 	gem 'rb-inotify', :require => false
