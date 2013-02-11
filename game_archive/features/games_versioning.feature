@@ -25,6 +25,17 @@ Feature: As an administrator,
 		Given I have 3 versions of the game Tetris
 		When I visit the game article page
 		Then I should see the current version number
+		
+	Scenario: Show links to available Versions
+		Given I have 3 versions of the game Tetris
+		When I visit the game article page
+		Then I shoudl see links to all available versions
+		
+	Scenario: Follow version link to a given game article version
+		Given I have 3 versions of the game Tetris
+		When I visit the game article page
+		And I follow the link to another version
+		Then I should see this version of the game article
 
 
 

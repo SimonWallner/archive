@@ -40,11 +40,28 @@ Then /^I should be on the game article page showing the new version$/ do
 end
 
 When /^I visit the game article page$/ do
-  visit game_path(@givenGames.last)
+	visit game_path(@givenGames.last)
+end
+
+When /^I follow the link to another version$/ do
+	within '#versions' do
+		@specific_version = @givenGames[@givenGames.length/2.floor]
+		click_link @specific_version.version_number.to_s
+	end
 end
 
 Then /^I should see the current version number$/ do
-  page.should have_content @givenGames.length
+	within '#current-version' do
+		page.should have_content @givenGames.length
+	end
+end
+
+Then /^I shoudl see links to all available versions$/ do
+	within '#versions' do
+		@givenGames.each do |game|
+	  		page.should have_link game.version_number.to_s
+		end
+	end
 end
 
 Given /^I have a screenshot to the given game$/ do
