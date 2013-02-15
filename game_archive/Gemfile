@@ -34,6 +34,9 @@ group :development do
 	gem 'growl', :require => false
 end
 
+group :production do
+	gem 'passenger', '~> 3.0.19s'
+end
 
 
 gem 'jquery-rails'
