@@ -17,7 +17,9 @@ Feature: Report Content
 		Given I have a game Tetris
 		And I am on the report content page
 		When I fill in the report and submit it
-		Then The game should be reported
+		Then I should be on the game article page
+		And I should see a thank you notice
+		And The game should be reported
 		
 		  # 
 		  # 

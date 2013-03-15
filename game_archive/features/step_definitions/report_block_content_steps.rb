@@ -173,6 +173,13 @@ Given /^there is an administrator admin$/ do
 	create_admin_user({})
 end
 
+Then /^I should be on the game article page$/ do
+  	URI.parse(current_url).path.should == game_path(@givenGame)
+end
+
+Then /^I should see a thank you notice$/ do
+  page.should have_content("Thank you")
+end
 
 
 
