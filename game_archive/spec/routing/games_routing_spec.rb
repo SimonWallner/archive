@@ -1,39 +1,46 @@
 require "spec_helper"
 
 describe GamesController do
-  describe "routing" do
+	describe "routing" do
 
-    it "routes to #index" do
-      get("/games").should route_to("games#index")
-    end
+		it "routes to #index" do
+			get("/games").should route_to("games#index")
+		end
 
-    it "routes to #new" do
-      get("/games/new").should route_to("games#new")
-    end
+		it "routes to #new" do
+			get("/games/new").should route_to("games#new")
+		end
 
-    it "routes to #show" do
-      get("/games/1").should route_to("games#show", :id => "1")
-    end
+		it "routes to #show" do
+			get("/games/1").should route_to("games#show", :id => "1")
+		end
 
-    it "routes to #edit" do
-      get("/games/1/edit").should route_to("games#edit", :id => "1")
-    end
+		it "routes to #edit" do
+			get("/games/1/edit").should route_to("games#edit", :id => "1")
+		end
 
-    it "routes to #create" do
-      post("/games").should route_to("games#create")
-    end
+		it "routes to #create" do
+			post("/games").should route_to("games#create")
+		end
 
-    it "routes to #update" do
-      put("/games/1").should route_to("games#update", :id => "1")
-    end
+		it "routes to #update" do
+			put("/games/1").should route_to("games#update", :id => "1")
+		end
 
-	it "routes a specific version to #show_version" do
-		get("games/1/version/2").should route_to("games#show_version", :id => "1", :version => "2")
-	end
+		it "routes a specific version to #show_version" do
+			get("games/1/version/2").should route_to("games#show_version", :id => "1", :version => "2")
+		end
 	
-	it "routes a POST on a specific version to #restore_version" do
-		post("games/1/version/2").should route_to("games#restore_version", :id => "1", :version => "2")
+		it "routes a POST on a specific version to #restore_version" do
+			post("games/1/version/2").should route_to("games#restore_version", :id => "1", :version => "2")
+		end
+	
+		it "routes to the content reporting form" do
+			get("games/1/report").should route_to("games#new_report", :id => "1")
+		end
+	
+		it 'routes to #create_report' do
+			post("games/1/report").should route_to("games#create_report", :id => "1")
+		end
 	end
-
-  end
 end

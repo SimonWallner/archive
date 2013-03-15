@@ -1,5 +1,5 @@
 class GamesController < ApplicationController
-	before_filter :authenticate_user!, except: [:index, :show, :report]
+	before_filter :authenticate_user!, except: [:index, :show, :new_report, :create_report]
 	before_filter only: [:edit, :show] { |c| c.block_content_visitor 0 }
 	before_filter only: [:edit] { |c| c.block_content_user 0 } 
 	before_filter :authenticate_admin!, only: [:block]
@@ -182,6 +182,24 @@ class GamesController < ApplicationController
 				redirect_to root_path, notice: 'you need to be registered and signed up in order to access this page'
 			end
 		end
+	end
+
+	# GET games/1/report
+	def new_report
+		@report = Reportblockcontent.new
+	end
+	
+	# POST games/1/report
+	def create_report		
+		# XXX Refactor using polymorphic model
+		report = Reportblockcontent.new(params[:report])
+		report.content_id = params[:id]
+		report.content_type = 0 # it's a game
+		report.status = 0 # it's a report
+		report.save
+		
+		# Reportblockcontent.create_from_string(0, params[:id], params[:report][:reason], 0, params[:reportblockcontent][:email], nil)
+		redirect_to game_path(params[:id]), notice: "Thank you for your report!"
 	end
 
 	private
