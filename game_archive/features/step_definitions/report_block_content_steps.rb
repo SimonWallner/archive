@@ -216,6 +216,10 @@ When /^I visit the admin's report section$/ do
 	visit reportblockcontents_path
 end
 
+Given /^I am in the admin's report section$/ do
+  visit reportblockcontents_path
+end
+
 Then /^I should see the reports with their details$/ do
 	@givenGames.each do |game|
 		page.should have_content(game.title)
@@ -228,7 +232,25 @@ Then /^I should see the reports with their details$/ do
 end
 
 Then /^I should be redirected to the landing page$/ do
-  URI.parse(current_url).path.should == root_path
+	URI.parse(current_url).path.should == root_path
 end
 
+When /^I delete on of these reports$/ do
+	@report = @reports[2]
+
+	# make the delete link a button maybe?
+	# otherwise have to us js text :(
+	follow "#delete-#{@report.id}"
+	
+end
+
+Then /^that report should be deleted$/ do
+	Reportblockcontents.find(@report.id).should be_nil
+	
+	@reports.each do |rep|
+		if (rep != report)
+			Reportblockcontents.find(rep.id).should_not be_nil
+		end
+	end
+end
 

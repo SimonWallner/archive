@@ -31,62 +31,17 @@ Feature: Report Content
 		Given I am not signed in as Admin
 		When I visit the admin's report section
 		Then I should be redirected to the landing page
-		And I should see a access denied notice
+		And I should see an access denied notice
 
-		Scenario: Show reports only to administrators not normal users
-			Given I am signed in as User
-			When I visit the admin's report section
-			Then I should be redirected to the landing page
-			And I should see an access denied notice
+	Scenario: Show reports only to administrators not normal users
+		Given I am signed in as User
+		When I visit the admin's report section
+		Then I should be redirected to the landing page
+		And I should see an access denied notice
 		
-		  # 
-		  # 
-		  # Scenario: User report game's page with valid data
-		  #   Given I am signed in as User
-		  # 		And I have a game Tetris
-		  #   And I am on the detail page of the game
-		  #   When I follow the Report content link
-		  #   And I fill in the fields of Game reportblockcontent with valid details and submit it
-		  #   Then I should be on the detail page of the given game
-		  # 
-		  # Scenario: User report game's page with valid data
-		  #   Given I am not signed in
-		  # 		And I have a game Tetris
-		  #   And I am on the detail page of the game
-		  #   When I follow the Report content link
-		  #   And I fill in the fields of Game reportblockcontent with valid details and submit it
-		  #   Then I should be on the detail page of the given game
-		  # 
-		  # Scenario: User report developer's page with valid data
-		  #   Given I am signed in as User
-		  # 		And I have a developer Leela
-		  #   And I am on the detail page of the given developer
-		  #   When I follow the Report content link
-		  #   And I fill in the fields of Developer reportblockcontent with valid details and submit it
-		  #   Then I should be on the detail page of the given developer
-		  # 
-		  # Scenario: User report developer's page with valid data
-		  #   Given I am not signed in
-		  # 		And I have a developer Leela
-		  #   And I am on the detail page of the given developer
-		  #   When I follow the Report content link
-		  #   And I fill in the fields of Developer reportblockcontent with valid details and submit it
-		  #   Then I should be on the detail page of the given developer
-		  # 	
-		  # Scenario: User report company's page with valid data
-		  #   Given I am signed in as User
-		  # 		And I have a company Leela
-		  #   And I am on the detail page of the given company
-		  #   When I follow the Report content link
-		  #   And I fill in the fields of Company reportblockcontent with valid details and submit it
-		  #   Then I should be on the detail page of the given company
-		  # 
-		  # Scenario: User report company's page with valid data
-		  #   Given I am not signed in
-		  # 		And I have a company Leela
-		  #   And I am on the detail page of the given company
-		  #   When I follow the Report content link
-		  #   And I fill in the fields of Company reportblockcontent with valid details and submit it
-		  #   Then I should be on the detail page of the given company
-		  # 	
-		
+	Scenario: Remove content report
+		Given I am signed in as Admin
+		And I have a few reports for games
+		And I am in the admin's report section
+		When I delete on of these reports
+		Then that report should be deleted
