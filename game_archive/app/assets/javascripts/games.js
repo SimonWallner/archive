@@ -1,5 +1,5 @@
 $(document).ready(function() {
-   $('form').append(
+   $('form#edit-game').append(
         '<input type="hidden" name="new_release_dates" id="new_release_dates" value="" />'+
         '<input type="hidden" name="new_developers" id="new_developers" value="" />' +
         '<input type="hidden" name="new_credits" id="new_credits" value="" />' +
@@ -9,7 +9,7 @@ $(document).ready(function() {
         '<input type="hidden" name="new_series" id="new_series" value="" />'
    );
 
-    $('form').submit(function () {
+    $('form#edit-game').submit(function () {
         var anzdates = $('[id^="year_release_date"]').length;
         var datestring = '';
         for(var i = 1; i<=anzdates; i++){
