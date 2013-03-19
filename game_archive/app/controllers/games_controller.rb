@@ -77,14 +77,14 @@ class GamesController < ApplicationController
 	 # GET /games/1/report
 	def report
 		@game = @@GAME_VERSIONER.current_version Game.find(params[:id])
-		@reportblockcontent =Reportblockcontent.new
+		@reportblockcontent = Reportblockcontent.new
 	end
 	
 	# GET /games/1/block
 	def block
 		@game = @@GAME_VERSIONER.current_version Game.find(params[:id])
 		return if @game == nil
-		@reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(0,@game.id)
+		@reportblockcontent = Reportblockcontent.find_by_content_type_and_content_id(0,@game.id)
 	end
 	
 	# GET /games/1/delete
@@ -167,7 +167,8 @@ class GamesController < ApplicationController
 		report.status = 0 # it's a report
 		report.save
 
-		redirect_to :action => "show", :id => params[:id], :notice => "Thank you for submitting the report!"
+		flash[:alert] = "Thank you for submitting the report!"
+		redirect_to :action => "show", :id => params[:id] 
 	end
 
 	private

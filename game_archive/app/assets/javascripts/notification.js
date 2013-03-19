@@ -1,3 +1,3 @@
 $(function(){
-    $('#notification').fadeIn(500).delay(3000).fadeOut(500);
+    $('#notification').delay(5000).fadeOut(500);
 });
