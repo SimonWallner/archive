@@ -3,7 +3,6 @@ class ReportblockcontentsController < ApplicationController
     
   def index
     @reportblockcontents = Reportblockcontent.all
-	puts "========================== for the lulz ============================"
   end
    
   

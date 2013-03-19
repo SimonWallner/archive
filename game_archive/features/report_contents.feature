@@ -21,6 +21,18 @@ Feature: Report Content
 		And I should see a thank you notice
 		And The game should be reported
 		
+	Scenario: List game reports in the admin's report section
+		Given I am signed in as Admin 
+		And I have a few reports for games
+		When I visit the admin's report section
+		Then I should see the reports with their details
+	
+	# Scenario: Show reports only to administrators
+	# 	Given I am not signed in as Admin
+	# 	When I visit the admin's report section
+	# 	Then I should be redirected to the landing page
+	# 	And I should see access denied notice
+		
 		  # 
 		  # 
 		  # Scenario: User report game's page with valid data

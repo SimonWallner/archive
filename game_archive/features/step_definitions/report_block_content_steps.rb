@@ -189,6 +189,40 @@ Then /^The game should be reported$/ do
 	reportblockcontent.email.should eql(@reporterEmail)
 end
 
+Given /^I have a few reports for games$/ do
+	@givenGames = Array.new
+	@reports = Array.new
+	content_type = 0 # i.e. a game
+	status = 0 # report
+	
+	for i in 1..5.to_i
+  		game = FactoryGirl.create :game,
+			title: "random title: #{SecureRandom.uuid.to_s}",
+			version_id: "someVersionID", version_number: i
+		@givenGames.push(game)
+		
+		@reports.push(FactoryGirl.create :reportblockcontent,
+			content_type: content_type, status: status, content_id: game.id,
+			reason: "random reason: #{SecureRandom.uuid.to_s}",
+			email: "#{SecureRandom.uuid.to_s}@example.com")
+	end
+end
+
+When /^I visit the admin's report section$/ do
+	visit reportblockcontents_path
+end
+
+Then /^I should see the reports with their details$/ do
+	@givenGames.each do |game|
+		page.should have_content(game.title)
+	end
+	
+	@reports.each do |report|
+		page.should have_content(report.reason)
+		page.should have_link(report.email, :href => "mailto:#{report.email}")
+	end
+end
+
 
 
 
