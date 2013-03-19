@@ -181,6 +181,14 @@ Then /^I should see a thank you notice$/ do
   page.should have_content("Thank you")
 end
 
+Then /^The game should be reported$/ do
+	contentType = 0; # game
+  	reportblockcontent = Reportblockcontent.find_by_content_type_and_content_id(contentType, @givenGame.id)
+	reportblockcontent.should_not be_nil
+	reportblockcontent.reason.should eql(@reportReason)
+	reportblockcontent.email.should eql(@reporterEmail)
+end
+
 
 
 

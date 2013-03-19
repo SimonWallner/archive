@@ -19,24 +19,23 @@ class ApplicationController < ActionController::Base
   end
   
   def block_content_visitor (type)
-	@reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(type,params[:id])
+	@reportblockcontent = Reportblockcontent.find_by_content_type_and_content_id(type,params[:id])
 	if (@reportblockcontent)
 		if current_user.nil?
-			if (@reportblockcontent.status== 1)
+			if (@reportblockcontent.status == 1)
 				if @reportblockcontent.reason
 					flash[:alert] = "The content has been blocked due to: " + @reportblockcontent.reason
 				else
 					flash[:alert] = "The content has been blocked."
 				end
 				redirect_to root_path
-			else if (@reportblockcontent.status== 4)
-								if @reportblockcontent.reason
+			elsif (@reportblockcontent.status == 4)
+				if @reportblockcontent.reason
 					flash[:alert] = "The content has been deleted due to: " + @reportblockcontent.reason
 				else
 					flash[:alert] = "The content has been deleted."
 				end
 				redirect_to root_path
-			end
 			end
 		end
 	end
