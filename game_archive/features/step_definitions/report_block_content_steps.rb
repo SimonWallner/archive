@@ -181,6 +181,10 @@ Then /^I should see a thank you notice$/ do
   page.should have_content("Thank you")
 end
 
+Then /^I should see an access denied notice$/ do
+  page.should have_content("Access Denied!")
+end
+
 Then /^The game should be reported$/ do
 	contentType = 0; # game
   	reportblockcontent = Reportblockcontent.find_by_content_type_and_content_id(contentType, @givenGame.id)
@@ -223,6 +227,8 @@ Then /^I should see the reports with their details$/ do
 	end
 end
 
-
+Then /^I should be redirected to the landing page$/ do
+  URI.parse(current_url).path.should == root_path
+end
 
 

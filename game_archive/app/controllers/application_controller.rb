@@ -3,7 +3,11 @@ class ApplicationController < ActionController::Base
   protected
   
   def authenticate_admin!
-	(current_user.nil?) ? redirect_to(root_path) : (redirect_to(root_path) unless current_user.admin?)
+	if (!current_user || !current_user.admin?)
+		flash[:alert] = "Access Denied! You must be signed in as administrator to view this page!"
+		redirect_to root_path
+	end
+	# (current_user.nil?) ? redirect_to(root_path) : (redirect_to(root_path) unless current_user.admin?)
   end
   
   def authenticate_inviter!

@@ -27,11 +27,17 @@ Feature: Report Content
 		When I visit the admin's report section
 		Then I should see the reports with their details
 	
-	# Scenario: Show reports only to administrators
-	# 	Given I am not signed in as Admin
-	# 	When I visit the admin's report section
-	# 	Then I should be redirected to the landing page
-	# 	And I should see access denied notice
+	Scenario: Show reports only to administrators not visitors
+		Given I am not signed in as Admin
+		When I visit the admin's report section
+		Then I should be redirected to the landing page
+		And I should see a access denied notice
+
+		Scenario: Show reports only to administrators not normal users
+			Given I am signed in as User
+			When I visit the admin's report section
+			Then I should be redirected to the landing page
+			And I should see an access denied notice
 		
 		  # 
 		  # 

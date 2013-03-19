@@ -390,3 +390,7 @@ end
 When /^I visit the new game page$/ do
 	visit_game_creation_page
 end
+
+Given /^I am not signed in as Admin$/ do
+  visit destroy_user_session_path
+end
