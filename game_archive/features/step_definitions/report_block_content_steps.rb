@@ -240,16 +240,16 @@ When /^I delete on of these reports$/ do
 
 	# make the delete link a button maybe?
 	# otherwise have to us js text :(
-	follow "#delete-#{@report.id}"
+	click_on "delete-#{@report.id}"
 	
 end
 
 Then /^that report should be deleted$/ do
-	Reportblockcontents.find(@report.id).should be_nil
+	expect{Reportblockcontent.find(@report.id)}.to raise_error
 	
 	@reports.each do |rep|
-		if (rep != report)
-			Reportblockcontents.find(rep.id).should_not be_nil
+		if (rep != @report)
+			Reportblockcontent.find(rep.id).should_not be_nil
 		end
 	end
 end
