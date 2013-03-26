@@ -163,8 +163,8 @@ class GamesController < ApplicationController
 		# XXX Refactor using polymorphic model
 		report = Reportblockcontent.new(params[:report])
 		report.content_id = params[:id]
-		report.content_type = 0 # it's a game
-		report.status = 0 # it's a report
+		report.content_type = Reportblockcontent::GAME # it's a game
+		report.status = Reportblockcontent::REPORT # it's a report
 		report.save
 
 		flash[:alert] = "Thank you for submitting the report!"

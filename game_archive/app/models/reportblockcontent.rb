@@ -8,7 +8,19 @@ class Reportblockcontent < ActiveRecord::Base
   
 # content_type: 0 => game 	1 => developer 	2 => company
 # status: 		0 => report 1 => block		2 => lock 		3 => clear		4 => delete 
-#
+
+	# content type:
+	GAME = 0
+	DEVELOPER = 1
+	COMPANY = 2
+	
+	# status:
+	REPORT = 0
+	BLOCK = 1
+	LOCK = 2
+	CLEAR = 3
+	DELETE = 4	
+	
   	def Reportblockcontent.create_from_string(ctype, cid, reason, content_status, email, admin_id)
 	@rbcontent = Reportblockcontent.find_all_by_content_type_and_content_id(ctype, cid)
 
