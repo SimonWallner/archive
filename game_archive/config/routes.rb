@@ -19,16 +19,12 @@ GameArchive::Application.routes.draw do
 	resources :companies, :except => :destroy do
 		member do
 			get 'report'
-			get 'block'
-			get 'delete'
 		end
 	end 
 
 	resources :developers, :except => :destroy do
 		member do
 			get 'report'
-			get 'block'
-			get 'delete'
 		end
 	end 
 
@@ -36,8 +32,6 @@ GameArchive::Application.routes.draw do
 		member do
 			get 'report' => 'games#new_report'
 			post 'report' => 'games#create_report'
-			get 'block'
-			get 'delete'	
 		end
 	end 
 	get "games/:id/version/:version" => "games#show_version", :as => "game_version"

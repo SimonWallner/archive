@@ -224,10 +224,10 @@ Then /^I should see the reports with their details$/ do
 	@givenGames.each do |game|
 		page.should have_content(game.title)
 	end
-	
+
 	@reports.each do |report|
 		page.should have_content(report.reason)
-		page.should have_link(report.email, :href => "mailto:#{report.email}")
+		page.should have_link('Email', :href => "mailto:#{report.email}")
 	end
 end
 

@@ -15,11 +15,11 @@ class Reportblockcontent < ActiveRecord::Base
 	COMPANY = 2
 	
 	# status:
-	REPORT = 0
-	BLOCK = 1
-	LOCK = 2
-	CLEAR = 3
-	DELETE = 4	
+	REPORTED = 0
+	BLOCKED = 1
+	LOCKED = 2
+	CLEARED = 3
+	DELETED = 4	
 	
   	def Reportblockcontent.create_from_string(ctype, cid, reason, content_status, email, admin_id)
 	@rbcontent = Reportblockcontent.find_all_by_content_type_and_content_id(ctype, cid)

@@ -5,7 +5,6 @@
 				if not @game.image_url == imguploader.default_url
 						image_tag @game.image_url(:top_game).to_s
 				end
-
 		%>
 
 	</div>
@@ -56,33 +55,31 @@
 
 	<div class="text">
 		<%= markdown(@game.description) %>
-
 	</div>
-
 
 
 	<div class="clear"></div>
-		<% if @game.videos != nil && (not @game.videos.empty?) %>
-				<h2>Videos</h2>
+
+	<% if @game.videos != nil && (not @game.videos.empty?) %>
+		<h2>Videos</h2>
 	<% end %>
-		<% for video in @game.videos %>
-			<div class="media rounded">
-						<%=h @str = embed_video(video.embedcode)
-							 if @str
-								 @str.html_safe
-							 end
-						%>
-			</div>
+	
+	<% for video in @game.videos %>
+		<div class="media rounded">
+			<%=h @str = embed_video(video.embedcode)
+				 if @str
+					 @str.html_safe
+				 end 
+			%>
+		</div>
+	<% end %>
 
-		<% end %>
-
-		<% if @game.screenshots != nil && (not @game.screenshots.empty?) %>
-				<h2>Screenshots</h2>
-		<% end %>
-		<% @game.screenshots.each do |screenshot| %>
-				 <div class = "media rounded"><%=	 image_tag screenshot.image_url.to_s %></div>
-		<% end%>
-	</div>
+	<% if @game.screenshots != nil && (not @game.screenshots.empty?) %>
+		<h2>Screenshots</h2>
+	<% end %>
+	<% @game.screenshots.each do |screenshot| %>
+		 <div class = "media rounded"><%= image_tag screenshot.image_url.to_s %></div>
+	<% end%>
 
 	<% if user_signed_in? %>
 		<div id="versions">
@@ -96,60 +93,16 @@
 				<% @versions.each do |game| %>
 					<li><%= link_to game.version_number, game_version_path(@game.id, game.version_number) %></li>
 				<% end %>
-			</ul><br/>
+			</ul>
 		</div>
 	<% end %>
 	
 
-<% if user_signed_in? %>
-	<% if current_user.admin %>
-		<%= link_to 'Edit', edit_game_path(@game) %> |
-		<% if @reportblockcontent %>
-			<% if @reportblockcontent.status ==1%>
-				<%= link_to 'Remove Block', block_game_path(@game) %> |
-			<% else if @reportblockcontent.status ==2%>
-				<%= link_to 'Remove Lock', block_game_path(@game) %> |
-			<% else%>
-				<%= link_to 'Block', block_game_path(@game) %> |
-			<% end %>
-			<% end %>
-		<% else%>
-			<%= link_to 'Block', block_game_path(@game) %> |
-		<% end %>
-
-		<% else%>
-			<% if @reportblockcontent %>
-				<% if @reportblockcontent.status !=2%>
-					<%= link_to 'Edit', edit_game_path(@game) %> |
-				<% end %>
-				<% if @reportblockcontent.status !=1%>
-					<%= link_to 'Report', report_game_path(@game) %> |
-				<% end %>
-			<% else%>
-				<%= link_to 'Edit', edit_game_path(@game) %> |
-				<%= link_to 'Report', report_game_path(@game) %> |
-			<% end %>
-		<% end %>		
-		<% if @reportblockcontent %>
-			<% if @reportblockcontent.status ==4%>
-				<%= link_to 'Undelete', delete_game_path(@game) %> |
-			<% else%>
-				<%= link_to 'Delete', delete_game_path(@game) %> |
-			<% end%>
-		<% else%>
-			<%= link_to 'Delete', delete_game_path(@game) %> |
-		<% end%>
-	<% else%>
-		<% if @reportblockcontent %>
-			<% if @reportblockcontent.status !=1%>
-				<%= link_to 'Report', report_game_path(@game) %> |
-			<% end %>
-		<% else%>
-			<%= link_to 'Report', report_game_path(@game) %> |
-		<% end %>
+	<% if user_signed_in? %>
+		<%= link_to 'Edit', edit_game_path(@game) %>
+	<% else %>
+		<%= link_to 'Report', report_game_path(@game) %>
 	<% end %>
-
-	<%= link_to 'Back', games_path %>
 
 </div>
 

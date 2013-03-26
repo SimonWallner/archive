@@ -2,7 +2,7 @@ class ReportblockcontentsController < ApplicationController
 	before_filter :authenticate_admin!
 		
 	def index
-		@reportblockcontents = Reportblockcontent.all
+		@reports = Reportblockcontent.where("content_type = ?", Reportblockcontent::REPORTED)
 	end
 	 
 	

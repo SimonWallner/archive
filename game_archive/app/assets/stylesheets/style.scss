@@ -911,15 +911,26 @@ img.thumb {
 }
 
 
-table{
-  border-collapse:collapse;
-  background-color: #f5f5f5;
+table {
+	width: 100%;
+	
+	tr {
+		&:nth-child(odd) {
+			background-color: $lightLightGrey;
+		}
+		&:nth-child(even) {
+			background-color: $lightLightGrey * 1.07;
+		}
+	}
+	tr.header td {
+		font-weight: 900;
+	}
+	
+	td {
+		padding: 3px;
+	}
 }
 
-table, tr, td{
-  border: 1px solid black;
-  padding:5px;
-}
  
 
  

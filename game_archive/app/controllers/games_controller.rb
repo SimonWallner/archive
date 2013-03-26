@@ -74,12 +74,6 @@ class GamesController < ApplicationController
 		@game = @@GAME_VERSIONER.current_version Game.find(params[:id])
 	end
 	
-	 # GET /games/1/report
-	def report
-		@game = @@GAME_VERSIONER.current_version Game.find(params[:id])
-		@reportblockcontent = Reportblockcontent.new
-	end
-	
 	# GET /games/1/block
 	def block
 		@game = @@GAME_VERSIONER.current_version Game.find(params[:id])
@@ -164,7 +158,7 @@ class GamesController < ApplicationController
 		report = Reportblockcontent.new(params[:report])
 		report.content_id = params[:id]
 		report.content_type = Reportblockcontent::GAME # it's a game
-		report.status = Reportblockcontent::REPORT # it's a report
+		report.status = Reportblockcontent::REPORTED # it's a report
 		report.save
 
 		flash[:alert] = "Thank you for submitting the report!"
