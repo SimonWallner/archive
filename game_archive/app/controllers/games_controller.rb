@@ -45,6 +45,11 @@ class GamesController < ApplicationController
 		@versions = Game.where :version_id => @game.version_id
 		@show_restore = false;
 		
+		if @game != some_version
+			redirect_to @game, :status => :moved_permanently
+			return
+		end
+		
 		if @game.popularity == nil
 			@game.popularity = 0
 			@game.save

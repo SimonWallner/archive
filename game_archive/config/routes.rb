@@ -18,9 +18,11 @@ GameArchive::Application.routes.draw do
 
 	resources :companies, :except => :destroy do
 		member do
-			get 'report'
+			get 'report' => 'companies#new_report'
 		end
 	end 
+	get "companies/:id/version/:version" => "companies#show_version", :as => "company_version"
+	post "companies/:id/version/:version" => "companies#restore_version", :as => "restore_company_version"
 
 	resources :developers, :except => :destroy do
 		member do
@@ -36,6 +38,8 @@ GameArchive::Application.routes.draw do
 	end 
 	get "games/:id/version/:version" => "games#show_version", :as => "game_version"
 	post "games/:id/version/:version" => "games#restore_version", :as => "restore_game_version"
+	
+
 
 	
 	resources :reportblockcontents, only: [:index, :destroy]

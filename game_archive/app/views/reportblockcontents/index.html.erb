@@ -13,23 +13,25 @@
 			<% @reports.each do |report| %>
 				<tr>
 					<td>
-						<% if report.content_type == Reportblockcontent::GAME %>
-							<% game = Game.find(report.content_id) %>
-							<%= link_to game.title, game_path(game) %>
-						<% elsif report.content_type == Reportblockcontent::DEVELOPER %>
-							<% dev = Developer.find(report.content_id) %>
-							<%= link_to dev.title, developer_path(game) %>
-						<% elsif report.content_type == Reportblockcontent::COMPANY %>
-							<% company = Company.find(report.content_id) %>
-							<%= link_to company.title, company_path(game) %>
-						<% end %>
+						<%=
+							if report.content_type == Reportblockcontent::GAME
+								game = Game.find(report.content_id)
+								link_to game.title, game_path(game)
+							elsif report.content_type == Reportblockcontent::DEVELOPER
+								dev = Developer.find(report.content_id)
+								link_to dev.title, developer_path(game)
+							elsif report.content_type == Reportblockcontent::COMPANY
+								company = Company.find(report.content_id)
+								link_to company.title, company_path(game)
+							end 
+						%>
 					</td>
 					<td>
 						<%= report.reason %>
 					<td>
-					 	<% if !report.email.empty? %>
-							<%= link_to 'Email', "mailto:#{report.email}" %>
-						<% end %>
+					 	<%= if !report.email.empty?
+							link_to 'Email', "mailto:#{report.email}"
+						end %>
 					</td>
 					<td>
 						<%= link_to 'Delete Report', report, method: :delete, confirm: 'Are you sure you want to delete this report? There is no undo!', :action => "destroy", :id => "delete-#{report.id}" %>

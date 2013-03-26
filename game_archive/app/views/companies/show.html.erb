@@ -1,91 +1,53 @@
 <div class="company">
-  <h1><%=  @company.name %></h1>
+	<h1><%=h @company.name %></h1>
 
-  <% if user_signed_in? and current_user.admin? %>
-      <div id="versions">
-        <span>Versioning: </span>
-        <% Company.where(:version_id => @company.version_id).each do |company| %>
-            <span><%= link_to company.version_number, company_path(:version => company.version_number) %></span>
-        <% end %>
-        <% if params[:version] %>
-            <span><%= link_to "make current version", company_path(:version => @company.version_number, :makecurrent => true) %></span>
-        <% end %>
-      </div>
-  <% end %>
 
-  <div class="fact-box">
-    <%=
 
-         imguploader = ImageUploader.new
+	<div class="fact-box">
+		<%=
+			imguploader = ImageUploader.new
 
-        if not @company.image_url.to_s == imguploader.default_url
+			if not @company.image_url.to_s == imguploader.default_url
+				image_tag @company.image_url.to_s , :class => "media rounded"
+			end
+		%>
 
-            image_tag @company.image_url.to_s , :class => "media rounded"
+		<%= render :template => "facts/_single", :locals => { :fact => @company.official_name, :label => "Official Name" } %>
+		<%= render :template => "facts/_single", :locals => { :fact => format_date(@company.founded), :label => "Founded" } %>
+		<%= render :template => "facts/_single", :locals => { :fact => format_date(@company.defunct), :label => "Defunct" } %>
+		<%= render :template => "facts/_name_addinfo", :locals => { :object => @company.locations, :label => "Locations" } %>
+		<%= render :template => "facts/_standard", :locals => { :object => @company, :label => "External Links" } %>
+		<%= render :template => "facts/_credits", :locals => { :object => @company } %>
+		<%= render :template => "facts/_user_defined", :locals => { :object => @company } %>
+	</div>
 
-        end
-    %>
+	<div class="text">
+		<%= markdown(@company.description) %>
+	</div>
 
-	    <%= render :template => "facts/_single", :locals => { :fact => @company.official_name, :label => "Official Name" } %>
-	    <%= render :template => "facts/_single", :locals => { :fact => format_date(@company.founded), :label => "Founded" } %>
-	    <%= render :template => "facts/_single", :locals => { :fact => format_date(@company.defunct), :label => "Defunct" } %>
-        <%= render :template => "facts/_name_addinfo", :locals => { :object => @company.locations, :label => "Locations" } %>
-        <%= render :template => "facts/_standard", :locals => { :object => @company, :label => "External Links" } %>
-        <%= render :template => "facts/_credits", :locals => { :object => @company } %>
-        <%= render :template => "facts/_user_defined", :locals => { :object => @company } %>
-  </div>
-
-  <div class="text">
-    <%= markdown(@company.description) %>
-  </div>
-
-  <div class="clear"></div>
-  <% if user_signed_in? %>
-	<% if current_user.admin %>
-		<%= link_to 'Edit', edit_company_path(@company) %> |
-		<% if @reportblockcontent %>
-					<% if @reportblockcontent.status ==1%>
-						<%= link_to 'Remove Block', block_company_path(@company) %> |
-					<% else if @reportblockcontent.status ==2%>
-						<%= link_to 'Remove Lock', block_company_path(@company) %> |
-					<% else%>
-						<%= link_to 'Block', block_company_path(@company) %> |
-					<% end %>
-					<% end %>
-			<% else%>
-				<%= link_to 'Block', block_company_path(@company) %> |
-			<% end %>
-		<% else%>
-			<% if @reportblockcontent %>
-				<% if @reportblockcontent.status !=2%>
-					<%= link_to 'Edit', edit_company_path(@company) %> |
+	<% if user_signed_in? %>
+		<div id="versions">
+			Version shown: <span id="current-version"><%= @company.version_number %></span>,  
+				<% if @show_restore %>
+					<%= link_to "restore this version", restore_company_version_path(@company.id, @company.version_number), :method => :post %>
 				<% end %>
-				<% if @reportblockcontent.status !=1%>
-					<%= link_to 'Report', report_company_path(@company) %> |
+			<br/>
+			available versions:
+			<ul>
+				<% Company.where(:version_id => @company.version_id).each do |company| %>
+					<li>
+						<%= link_to company.version_number, company_version_path(company.id, company.version_number) %>
+					</li>
 				<% end %>
-			<% else%>
-				<%= link_to 'Edit', edit_company_path(@company) %> |
-				<%= link_to 'Report', report_company_path(@company) %> |
-			<% end %>
-		<% end %>
-		<% if @reportblockcontent %>
-			<% if @reportblockcontent.status ==4%>
-				<%= link_to 'Undelete', delete_company_path(@company) %> |
-			<% else%>
-				<%= link_to 'Delete', delete_company_path(@company) %> |
-			<% end%>
-		<% else%>
-			<%= link_to 'Delete', delete_company_path(@company) %> |
-		<% end%>
-	<% else%>
-		<% if @reportblockcontent %>
-			<% if @reportblockcontent.status !=1%>
-				<%= link_to 'Report', report_company_path(@company) %> |
-			<% end %>
-		<% else%>
-			<%= link_to 'Report', report_company_path(@company) %> |
-		<% end %>
-	<% end %>	
-	
-  <%= link_to 'Back', companies_path %>
+			</ul>
+		</div>
+	<% end %>
+
+	<div class="clear"></div>
+	<%= if user_signed_in?
+		link_to 'Edit', edit_company_path(@company)
+	else
+		link_to 'Report', report_company_path(@company)
+	end %>
 </div>
 

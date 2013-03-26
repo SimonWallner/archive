@@ -98,11 +98,11 @@
 	<% end %>
 	
 
-	<% if user_signed_in? %>
-		<%= link_to 'Edit', edit_game_path(@game) %>
-	<% else %>
-		<%= link_to 'Report', report_game_path(@game) %>
-	<% end %>
+	<%= if user_signed_in?
+		link_to 'Edit', edit_game_path(@game)
+	else
+		link_to 'Report', report_game_path(@game)
+	end %>
 
 </div>
 

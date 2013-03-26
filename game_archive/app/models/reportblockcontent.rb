@@ -5,9 +5,6 @@ class Reportblockcontent < ActiveRecord::Base
 	belongs_to :games
 	belongs_to :developers
 	belongs_to :companies
-  
-# content_type: 0 => game 	1 => developer 	2 => company
-# status: 		0 => report 1 => block		2 => lock 		3 => clear		4 => delete 
 
 	# content type:
 	GAME = 0
