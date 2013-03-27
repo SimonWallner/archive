@@ -45,3 +45,28 @@ Feature: Report Content
 		And I am in the admin's report section
 		When I delete on of these reports
 		Then that report should be deleted
+		
+# Company Scenarios
+	Scenario: Show report content link on company article
+		Given I have a company AwesomeCorp
+		When I visit the company article page
+		Then I should see a link to the reporting form
+
+	Scenario: Show report form for a company article
+		Given I am on the company article page of AwesomeCorp
+		When I follow the report content link
+		Then I should be on the report article page
+
+	Scenario: Report a company
+		Given I have a company AwesomeCorp
+		And I am on the report content page
+		When I fill in the report and submit it
+		Then I should be on the company article page
+		And I should see a thank you notice
+		And The company should be reported
+	
+	Scenario: List company reports in the admin's report section
+		Given I am signed in as Admin 
+		And I have a few reports for companies
+		When I visit the admin's report section
+		Then I should see the reports with their details

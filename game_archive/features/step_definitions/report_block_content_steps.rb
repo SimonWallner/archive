@@ -1,56 +1,9 @@
-Given /^I have a blocked (.+)$/ do |content|
-
-  if content == "game"
-	@givenGame=FactoryGirl.create :game , title: "Tetris"
-	content_type = 0
-	  @givenReportblockcontent=FactoryGirl.create :reportblockcontent, content_type:content_type ,status:1, content_id:@givenGame.id
-  elsif content == "developer"
-	@givenDeveloper=FactoryGirl.create :developer, name: "Leela"
-    content_type = 1
-	  @givenReportblockcontent=FactoryGirl.create :reportblockcontent, content_type:content_type ,status:1, content_id:@givenDeveloper.id
-  elsif content == "company"
-	@givenCompany=FactoryGirl.create :company, name: "Leela"
-    content_type = 2
-	  @givenReportblockcontent=FactoryGirl.create :reportblockcontent, content_type:content_type ,status:1, content_id:@givenCompany.id
-  end
-end
-
-Given /^I have a locked (.+)$/ do |content|
-
-  if content == "game"
-	@givenGame=FactoryGirl.create :game , title: "Tetris"
-	content_type = 0
-	  @givenReportblockcontent=FactoryGirl.create :reportblockcontent, content_type:content_type ,status:2, content_id:@givenGame.id
-  elsif content == "developer"
-	@givenDeveloper=FactoryGirl.create :developer, name: "Leela"
-    content_type = 1
-	  @givenReportblockcontent=FactoryGirl.create :reportblockcontent, content_type:content_type ,status:2, content_id:@givenDeveloper.id
-  elsif content == "company"
-	@givenCompany=FactoryGirl.create :company, name: "Leela"
-    content_type = 2
-	  @givenReportblockcontent=FactoryGirl.create :reportblockcontent, content_type:content_type ,status:2, content_id:@givenCompany.id
-  end
-end
-
-Given /^I have a deleted (.+)$/ do |content|
-
-  if content == "game"
-	@givenGame=FactoryGirl.create :game , title: "Tetris"
-	content_type = 0
-	  @givenReportblockcontent=FactoryGirl.create :reportblockcontent, content_type:content_type ,status:4, content_id:@givenGame.id
-  elsif content == "developer"
-	@givenDeveloper=FactoryGirl.create :developer, name: "Leela"
-    content_type = 1
-	  @givenReportblockcontent=FactoryGirl.create :reportblockcontent, content_type:content_type ,status:4, content_id:@givenDeveloper.id
-  elsif content == "company"
-	@givenCompany=FactoryGirl.create :company, name: "Leela"
-    content_type = 2
-	  @givenReportblockcontent=FactoryGirl.create :reportblockcontent, content_type:content_type ,status:4, content_id:@givenCompany.id
-  end
-end
-
 Given /^I am on the report content page$/ do
-  visit report_game_path(@givenGame)
+	if (@givenGame)
+		visit report_game_path(@givenGame)
+	elsif (@givenCompany)
+		visit report_company_path(@givenCompany)
+	end
 end
 
 When /^I follow the report content link$/ do
@@ -186,8 +139,16 @@ Then /^I should see an access denied notice$/ do
 end
 
 Then /^The game should be reported$/ do
-	contentType = 0; # game
+	contentType = Reportblockcontent::GAME
   	reportblockcontent = Reportblockcontent.find_by_content_type_and_content_id(contentType, @givenGame.id)
+	reportblockcontent.should_not be_nil
+	reportblockcontent.reason.should eql(@reportReason)
+	reportblockcontent.email.should eql(@reporterEmail)
+end
+
+Then /^The company should be reported$/ do
+  	contentType = Reportblockcontent::COMPANY
+  	reportblockcontent = Reportblockcontent.find_by_content_type_and_content_id(contentType, @givenCompany.id)
 	reportblockcontent.should_not be_nil
 	reportblockcontent.reason.should eql(@reportReason)
 	reportblockcontent.email.should eql(@reporterEmail)
@@ -196,8 +157,8 @@ end
 Given /^I have a few reports for games$/ do
 	@givenGames = Array.new
 	@reports = Array.new
-	content_type = 0 # i.e. a game
-	status = 0 # report
+	content_type = Reportblockcontent::GAME
+	status = Reportblockcontent::REPORTED
 	
 	for i in 1..5.to_i
   		game = FactoryGirl.create :game,
@@ -212,6 +173,25 @@ Given /^I have a few reports for games$/ do
 	end
 end
 
+Given /^I have a few reports for companies$/ do
+	@givenCompanies = Array.new
+	@reports = Array.new
+	content_type = Reportblockcontent::COMPANY
+	status = Reportblockcontent::REPORTED
+	
+	for i in 1..5.to_i
+  		company = FactoryGirl.create :company,
+			name: "random name: #{SecureRandom.uuid.to_s}",
+			version_id: "someVersionID", version_number: i
+		@givenCompanies.push(company)
+		
+		@reports.push(FactoryGirl.create :reportblockcontent,
+			content_type: content_type, status: status, content_id: company.id,
+			reason: "random reason: #{SecureRandom.uuid.to_s}",
+			email: "#{SecureRandom.uuid.to_s}@example.com")
+	end
+end
+
 When /^I visit the admin's report section$/ do
 	visit reportblockcontents_path
 end
@@ -221,10 +201,16 @@ Given /^I am in the admin's report section$/ do
 end
 
 Then /^I should see the reports with their details$/ do
-	@givenGames.each do |game|
-		page.should have_content(game.title)
-	end
-
+	if (@givenGames)
+		@givenGames.each do |game|
+			page.should have_content(game.title)
+		end
+	elsif (@givenCompanies)
+		@givenCompanies.each do |com|
+			page.should have_content(com.name)
+		end
+	end	
+		
 	@reports.each do |report|
 		page.should have_content(report.reason)
 		page.should have_link('Email', :href => "mailto:#{report.email}")

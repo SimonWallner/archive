@@ -166,6 +166,10 @@ Then /^I should see a link to the reporting form$/ do
 end
 
 Then /^I should be on the report article page$/ do
-	URI.parse(current_url).path.should eq(report_game_path(@givenGame))
+	if (@givenGame)
+		URI.parse(current_url).path.should eql(report_game_path(@givenGame))
+	elsif (@givenCompany)
+		URI.parse(current_url).path.should eql(report_company_path(@givenCompany))
+	end
 end
 

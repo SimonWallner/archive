@@ -118,37 +118,28 @@ class GamesController < ApplicationController
 
 	# PUT /games/1
 	def update
-		@game = @@GAME_VERSIONER.current_version Game.find(params[:id])
+		old = @@GAME_VERSIONER.current_version Game.find(params[:id])
 
-		if current_user
-			if !current_user.blocked
-				old = @game
-				@game = @@GAME_VERSIONER.new_version old, params
-				create_add_new_token(params[:new_genres], params[:new_platforms], params[:new_medias], params[:new_modes], params[:new_tags])
-				create_add_new_release_dates(params[:new_release_dates])
-				Field.create_add_new_fields(@game, params[:new_fields])
-			end
-		end
-	
-		if current_user
-			if !current_user.blocked
-				# update all params which might be outdated due to versioning
-				update_params params, old
-				if @game.update_attributes(params[:game])
-					create_add_new_mixed_fields(params[:new_developers], MixedFieldType.find_by_name("Developer"))
-					create_add_new_mixed_fields(params[:new_publishers], MixedFieldType.find_by_name("Publisher"))
-					create_add_new_mixed_fields(params[:new_distributors], MixedFieldType.find_by_name("Distributor"))
-					create_add_new_mixed_fields(params[:new_credits], MixedFieldType.find_by_name("Credits"))
-					create_add_new_mixed_fields(params[:new_series], MixedFieldType.find_by_name("Series"))
-					redirect_to @game
-				else
-					# delete newest version
-					old.add_errors @game.errors
-					@game.destroy
-					@game = old
-					render :action => "edit"
-				end
-			end
+		@game = @@GAME_VERSIONER.new_version old, params
+		create_add_new_token(params[:new_genres], params[:new_platforms], params[:new_medias], params[:new_modes], params[:new_tags])
+		create_add_new_release_dates(params[:new_release_dates])
+		Field.create_add_new_fields(@game, params[:new_fields])
+
+		# update all params which might be outdated due to versioning
+		update_params params, old
+		if @game.update_attributes(params[:game])
+			create_add_new_mixed_fields(params[:new_developers], MixedFieldType.find_by_name("Developer"))
+			create_add_new_mixed_fields(params[:new_publishers], MixedFieldType.find_by_name("Publisher"))
+			create_add_new_mixed_fields(params[:new_distributors], MixedFieldType.find_by_name("Distributor"))
+			create_add_new_mixed_fields(params[:new_credits], MixedFieldType.find_by_name("Credits"))
+			create_add_new_mixed_fields(params[:new_series], MixedFieldType.find_by_name("Series"))
+			redirect_to @game
+		else
+			# delete newest version
+			old.add_errors @game.errors
+			@game.destroy
+			@game = old
+			render :action => "edit"
 		end
 	end
 
@@ -162,8 +153,8 @@ class GamesController < ApplicationController
 		# XXX Refactor using polymorphic model
 		report = Reportblockcontent.new(params[:report])
 		report.content_id = params[:id]
-		report.content_type = Reportblockcontent::GAME # it's a game
-		report.status = Reportblockcontent::REPORTED # it's a report
+		report.content_type = Reportblockcontent::GAME
+		report.status = Reportblockcontent::REPORTED
 		report.save
 
 		flash[:alert] = "Thank you for submitting the report!"

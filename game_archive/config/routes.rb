@@ -19,6 +19,7 @@ GameArchive::Application.routes.draw do
 	resources :companies, :except => :destroy do
 		member do
 			get 'report' => 'companies#new_report'
+			post 'report' => 'companies#create_report'
 		end
 	end 
 	get "companies/:id/version/:version" => "companies#show_version", :as => "company_version"

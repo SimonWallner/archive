@@ -1,7 +1,7 @@
 require "json"
 
 class CompaniesController < ApplicationController
-	before_filter :authenticate_user!, except: [:index, :show, :report, :update]
+	before_filter :authenticate_user!, except: [:index, :show, :report, :update, :new_report, :create_report]
 	before_filter only: [:edit, :show] { |c| c.block_content_visitor 2 } 
 	before_filter only: [:edit] { |c| c.block_content_user 2 }
 	before_filter :authenticate_admin!, only: [:block]
@@ -78,12 +78,6 @@ class CompaniesController < ApplicationController
 	def edit
 		@company = @@COMPANY_VERSIONER.current_version Company.find(params[:id])
 	end
-
-	# GET /companies/1/report
-	def report
-		@company = @@COMPANY_VERSIONER.current_version Company.find(params[:id])
-		@reportblockcontent =Reportblockcontent.new
-	end
 	
 	# GET /companies/1/block
 	def block
@@ -121,63 +115,43 @@ class CompaniesController < ApplicationController
 
 	# PUT /companies/1
 	def update
-		@company = @@COMPANY_VERSIONER.current_version Company.find(params[:id])
-	
-		if current_user
-			if !current_user.blocked
-				if (params[:reportblockcontent])
-					Reportblockcontent.create_from_string(2,@company.id, params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
-				else
-					old = @company
-					@company = @@COMPANY_VERSIONER.new_version old, params
-					Location.create_add_new_locations(@company, params["new_locations"])
-					add_founded(params)
-					add_defunct(params)
-					Field.create_add_new_fields(@company, params[:new_fields])
-				end
-			else
-				if params[:reportblockcontent]&& params[:reportblockcontent][:status]=='0'
-					Reportblockcontent.create_from_string(2,@company.id, params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
-				end
-			end
+		old = @@COMPANY_VERSIONER.current_version Company.find(params[:id])
+
+		@company = @@COMPANY_VERSIONER.new_version old, params
+		Location.create_add_new_locations(@company, params["new_locations"])
+		add_founded(params)
+		add_defunct(params)
+		Field.create_add_new_fields(@company, params[:new_fields])
+
+		if @company.update_attributes(params[:company])
+			redirect_to @company
 		else
-			if params[:reportblockcontent]&& params[:reportblockcontent][:status]=='0'
-				Reportblockcontent.create_from_string(2,@company.id, params[:reportblockcontent][:reason], params[:reportblockcontent][:status], params[:reportblockcontent][:email], nil)#, params[:user][:id])
-			end
-		end
-	
-		respond_to do |format|
-			if current_user
-				if !current_user.blocked
-					if params[:reportblockcontent] && params[:reportblockcontent][:status]=='0'
-						format.html { redirect_to @company,notice: 'Company was reported successfully'}
-					else
-						if @company.update_attributes(params[:company])
-							format.html { redirect_to @company}
-						else
-							# delete newest version created
-							old.add_errors @company.errors
-							@company.destroy
-							@company = old
-							format.html { render action: "edit" }
-						end
-					end
-				else
-					if params[:reportblockcontent] && params[:reportblockcontent][:status]=='0'
-						format.html { redirect_to @company,notice: 'Company was reported successfully'}
-					else
-						format.html { redirect_to @company,notice: 'you have been blocked, reason: ' + current_user.note}
-					end
-				end
-			else
-				if params[:reportblockcontent] && params[:reportblockcontent][:status]=='0'
-					format.html { redirect_to @company,notice: 'Company was reported successfully'}
-				else
-					redirect_to root_path, notice: 'you need to be registered and signed up in order to access this page'
-				end
-			end
+			# delete newest version created
+			old.add_errors @company.errors
+			@company.destroy
+			@company = old
+			render action: "edit"
 		end
 	end
+	
+	# GET games/1/report
+	def new_report
+		@report = Reportblockcontent.new
+	end
+	
+	# POST games/1/report
+	def create_report		
+		# XXX Refactor using polymorphic model
+		report = Reportblockcontent.new(params[:report])
+		report.content_id = params[:id]
+		report.content_type = Reportblockcontent::COMPANY 
+		report.status = Reportblockcontent::REPORTED
+		report.save
+
+		flash[:alert] = "Thank you for submitting the report!"
+		redirect_to :action => "show", :id => params[:id] 
+	end
+	
 
 	def add_founded(params)
 		param_founded = params[:founded]

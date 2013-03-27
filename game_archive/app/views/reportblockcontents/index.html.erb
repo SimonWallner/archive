@@ -19,10 +19,10 @@
 								link_to game.title, game_path(game)
 							elsif report.content_type == Reportblockcontent::DEVELOPER
 								dev = Developer.find(report.content_id)
-								link_to dev.title, developer_path(game)
+								link_to dev.name, developer_path(dev)
 							elsif report.content_type == Reportblockcontent::COMPANY
 								company = Company.find(report.content_id)
-								link_to company.title, company_path(game)
+								link_to company.name, company_path(company)
 							end 
 						%>
 					</td>
