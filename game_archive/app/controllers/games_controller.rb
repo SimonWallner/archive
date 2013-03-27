@@ -79,19 +79,19 @@ class GamesController < ApplicationController
 		@game = @@GAME_VERSIONER.current_version Game.find(params[:id])
 	end
 	
-	# GET /games/1/block
-	def block
-		@game = @@GAME_VERSIONER.current_version Game.find(params[:id])
-		return if @game == nil
-		@reportblockcontent = Reportblockcontent.find_by_content_type_and_content_id(0,@game.id)
-	end
-	
-	# GET /games/1/delete
-	def delete
-		@game = @@GAME_VERSIONER.current_version Game.find(params[:id])
-		return if @game == nil
-		@reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(0,@game.id)
-	end
+	# # GET /games/1/block
+	# def block
+	# 	@game = @@GAME_VERSIONER.current_version Game.find(params[:id])
+	# 	return if @game == nil
+	# 	@reportblockcontent = Reportblockcontent.find_by_content_type_and_content_id(0,@game.id)
+	# end
+	# 
+	# # GET /games/1/delete
+	# def delete
+	# 	@game = @@GAME_VERSIONER.current_version Game.find(params[:id])
+	# 	return if @game == nil
+	# 	@reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(0,@game.id)
+	# end
 	
 	# POST /games
 	def create

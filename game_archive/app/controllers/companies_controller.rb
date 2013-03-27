@@ -80,18 +80,18 @@ class CompaniesController < ApplicationController
 	end
 	
 	# GET /companies/1/block
-	def block
-		@company = @@COMPANY_VERSIONER.current_version Company.find(params[:id])
-		return if @company == nil
-		@reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(2, @company.id)
-	end
-	
-	# GET /companies/1/delete
-	def delete
-		@company = @@COMPANY_VERSIONER.current_version Company.find(params[:id])
-		return if @company == nil
-		@reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(2, @company.id)
-	end
+	# def block
+	# 	@company = @@COMPANY_VERSIONER.current_version Company.find(params[:id])
+	# 	return if @company == nil
+	# 	@reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(2, @company.id)
+	# end
+	# 
+	# # GET /companies/1/delete
+	# def delete
+	# 	@company = @@COMPANY_VERSIONER.current_version Company.find(params[:id])
+	# 	return if @company == nil
+	# 	@reportblockcontent =Reportblockcontent.find_by_content_type_and_content_id(2, @company.id)
+	# end
 	
 	# POST /companies
 	def create
