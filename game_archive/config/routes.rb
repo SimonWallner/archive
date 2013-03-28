@@ -9,10 +9,10 @@ GameArchive::Application.routes.draw do
 	devise_for :users, skip: :registrations
 	devise_scope :user do
 		resource :registration,
-						 only: [:edit, :update],
-						 path: 'users',
-						 controller: 'devise/registrations',
-						 as: :user_registration do
+					 only: [:edit, :update],
+					 path: 'users',
+					 controller: 'devise/registrations',
+					 as: :user_registration do
 		end
 	end
 
@@ -27,9 +27,12 @@ GameArchive::Application.routes.draw do
 
 	resources :developers, :except => :destroy do
 		member do
-			get 'report'
+			get 'report' => 'developers#new_report'
+			post 'report' => 'developers#create_report'
 		end
-	end 
+	end
+	get "developers/:id/version/:version" => "developers#show_version", :as => "developer_version"
+	post "developers/:id/version/:version" => "developers#restore_version", :as => "restore_devloper_version"
 
 	resources :games, :except => :destroy do
 		member do

@@ -146,6 +146,8 @@ class GamesController < ApplicationController
 	# GET games/1/report
 	def new_report
 		@report = Reportblockcontent.new
+		@kind = 'Game'
+		render 'reportblockcontents/new_report'
 	end
 	
 	# POST games/1/report

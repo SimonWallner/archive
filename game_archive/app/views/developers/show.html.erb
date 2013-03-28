@@ -1,88 +1,48 @@
 <div class="developer">
-  <h1><%=  @developer.name %></h1>
+	<h1><%=h @developer.name %></h1>
 
-  <% if user_signed_in? and current_user.admin? %>
-      <div id="versions">
-        <span>Versioning: </span>
-        <% Developer.where(:version_id => @developer.version_id).each do |developer| %>
-            <span><%= link_to developer.version_number, developer_path(:version => developer.version_number) %></span>
-        <% end %>
-        <% if params[:version] %>
-            <span><%= link_to "make current version", developer_path(:version => @developer.version_number, :makecurrent => true) %></span>
-        <% end %>
-      </div>
-  <% end %>
+	<div class="fact-box">
+		<%=
+			imguploader = ImageUploader.new
 
-  <div class="fact-box">
+			if not @developer.image_url == imguploader.default_url
+					image_tag @developer.image_url.to_s, :class => "media rounded"
+			end
+		%>
+		<%= render :template => "facts/_standard", :locals => { :object => @developer, :label => "External Links" } %>
+		<%= render :template => "facts/_credits", :locals => { :object => @developer } %>
+		<%= render :template => "facts/_user_defined", :locals => { :object => @developer } %>
+	</div>
 
-    <%=
-        imguploader = ImageUploader.new
+	<div class="text">
+		<%= markdown(@developer.description) %>
+	</div>
 
-        if not @developer.image_url == imguploader.default_url
-
-            image_tag @developer.image_url.to_s, :class => "media rounded"
-        end
-    %>
-	<%= render :template => "facts/_standard", :locals => { :object => @developer, :label => "External Links" } %>
-    <%= render :template => "facts/_credits", :locals => { :object => @developer } %>
-    <%= render :template => "facts/_user_defined", :locals => { :object => @developer } %>
-  </div>
-
-  <div class="text">
-    <%= markdown(@developer.description) %>
-  </div>
-
-
-
-  <div class="clear"></div>
-   <% if user_signed_in? %>
-	<% if current_user.admin %>
-		<%= link_to 'Edit', edit_developer_path(@developer) %> |
-		<% if @reportblockcontent %>
-					<% if @reportblockcontent.status ==1%>
-						<%= link_to 'Remove Block', block_developer_path(@developer) %> |
-					<% else if @reportblockcontent.status ==2%>
-						<%= link_to 'Remove Lock', block_developer_path(@developer) %> |
-					<% else%>
-						<%= link_to 'Block', block_developer_path(@developer) %> |
-					<% end %>
-					<% end %>
-			<% else%>
-				<%= link_to 'Block', block_developer_path(@developer) %> |
-			<% end %>
-		<% else%>
-			<% if @reportblockcontent %>
-				<% if @reportblockcontent.status !=2%>
-					<%= link_to 'Edit', edit_developer_path(@developer) %> |
-				<% end %>
-				<% if @reportblockcontent.status !=1%>
-					<%= link_to 'Report', report_developer_path(@developer) %> |
-				<% end %>
-			<% else%>
-				<%= link_to 'Edit', edit_developer_path(@developer) %> |
-				<%= link_to 'Report', report_developer_path(@developer) %> |
-			<% end %>
-		<% end %>
-		<% if @reportblockcontent %>
-			<% if @reportblockcontent.status ==4%>
-				<%= link_to 'Undelete', delete_developer_path(@developer) %> |
-			<% else%>
-				<%= link_to 'Delete', delete_developer_path(@developer) %> |
-			<% end%>
-		<% else%>
-			<%= link_to 'Delete', delete_developer_path(@developer) %> |
-		<% end%>
-	<% else%>
-		<% if @reportblockcontent %>
-			<% if @reportblockcontent.status !=1%>
-				<%= link_to 'Report', report_developer_path(@developer) %> |
-			<% end %>
-		<% else%>
-			<%= link_to 'Report', report_developer_path(@developer) %> |
-		<% end %>
-	<% end %> 
 	
-  <%= link_to 'Back', developers_path %>
+	<% if user_signed_in? %>
+		<div id="versions">
+			Version shown: <span id="current-version"><%= @developer.version_number %></span>,  
+				<% if @show_restore %>
+					<%= link_to "restore this version", restore_developer_version_path(@developer.id, @developer.version_number), :method => :post %>
+				<% end %>
+			<br/>
+			available versions:
+			<ul>
+				<% Developer.where(:version_id => @developer.version_id).each do |developer| %>
+					<li>
+						<%= link_to developer.version_number, developer_version_path(developer.id, developer.version_number) %>
+					</li>
+				<% end %>
+			</ul>
+		</div>
+	<% end %>
+
+	<div class="clear"></div>
+	<%= if user_signed_in?
+		link_to 'Edit', edit_developer_path(@developer)
+	else
+		link_to 'Report', report_developer_path(@developer)
+	end %>
 </div>
 
 
