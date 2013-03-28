@@ -40,6 +40,24 @@ class DevelopersController < ApplicationController
 			format.json { render :json => @developer.to_json(:include => [:mixed_fields, :fields ]) }
 		end
 	end
+	
+	# GET /developers/1/version/1
+	def show_version
+		needle = Developer.find(params[:id])
+		@developer = Developer.where(:version_id => needle.version_id, :version_number => params[:version]).first!
+		@developers = Developer.where :version_id => @developer.version_id
+		@show_restore = true;
+		render "show"
+	end
+	
+	# POST /developers/1/version/2
+	def restore_version
+		needle = Developer.find(params[:id])
+		@developer = Developer.where(:version_id => needle.version_id, :version_number => params[:version]).first!
+		
+		@new_version = @@DEVELOPER_VERSIONER.revert_to_this @developer
+		redirect_to @new_version
+	end
 
 	# GET /developers/new
 	# GET /developers/new.json
@@ -82,13 +100,13 @@ class DevelopersController < ApplicationController
 		Field.create_add_new_fields(@developer, params[:new_fields])
 
 		if @developer.update_attributes(params[:developer])
-			format.html { redirect_to @developer}
+			redirect_to @developer
 		else
 			# delete newest version
 			old.add_errors @developer.errors
 			@developer.destroy
 			@developer = old
-			format.html { render action: "edit" }
+			render :edit
 		end
 	end
 	

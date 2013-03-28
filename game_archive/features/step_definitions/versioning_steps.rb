@@ -244,7 +244,7 @@ end
 
 
 When /^I revert to the previous version$/ do
-  click_link "make current version"
+  click_link "restore this version"
 end
 
 Then /^I should see a newly created version in the version links for a (.+)$/ do |type|

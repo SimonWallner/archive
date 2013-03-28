@@ -32,7 +32,7 @@ GameArchive::Application.routes.draw do
 		end
 	end
 	get "developers/:id/version/:version" => "developers#show_version", :as => "developer_version"
-	post "developers/:id/version/:version" => "developers#restore_version", :as => "restore_devloper_version"
+	post "developers/:id/version/:version" => "developers#restore_version", :as => "restore_developer_version"
 
 	resources :games, :except => :destroy do
 		member do
