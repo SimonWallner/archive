@@ -169,10 +169,9 @@ Then /^that report should be deleted$/ do
 end
 
 When /^I report that article$/ do
-	
 	# make sure only one is defined!
 	if ((@givenGame && @givenCompany) || (@givenCompany && @givenDeveloper) || (@givenDeveloper && @givenGame))
-		fail "more than one defined :("
+		fail "more than one of [game, company, developer] defined D:"
 	end
 	
 	if (@givenGame)
@@ -195,7 +194,7 @@ end
 
 Then /^an email with the report should be sent to all administrators$/ do
 	for admin in @admins do
-		# unread_emails_for(admin.email).size.should == 1
+		unread_emails_for(admin.email).size.should == 1
 		open_email(admin.email)
 		current_email.subject.should eql "[Archive] New Content Report!"
 		current_email.body.should have_content "Hello #{admin.firstname}"
