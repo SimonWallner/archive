@@ -168,3 +168,29 @@ Then /^that report should be deleted$/ do
 	end
 end
 
+When /^I report that game$/ do
+	visit game_path(@givenGame)
+    click_link_or_button "Report"
+
+	@reportReason = "Reporting Reason 0kOJ9DQOOvGX7JnXHVRD"
+	@reporterEmail = "TWxZsHG1EFvHaOhe2PIL@example.com"
+
+	fill_in("report_reason", :with => @reportReason)
+	fill_in("report_email", :with => @reporterEmail)
+	click_button "Send Report"
+end
+
+Then /^an email with the report should be sent to all administrators$/ do
+	for admin in @admins do
+		# unread_emails_for(admin.email).size.should == 1
+		open_email(admin.email)
+		current_email.subject.should eql "[Archive] New Content Report!"
+		current_email.body.should have_content "Hello #{admin.firstname}"
+		current_email.body.should have_content @givenGame.title
+		current_email.body.should have_content @reportReason
+		current_email.body.should have_content @reportEmail
+	end
+end
+
+
+

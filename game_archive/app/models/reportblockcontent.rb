@@ -16,7 +16,9 @@ class Reportblockcontent < ActiveRecord::Base
 	BLOCKED = 1
 	LOCKED = 2
 	CLEARED = 3
-	DELETED = 4	
+	DELETED = 4
+	
+	after_save :notify_administrators
 	
   	def Reportblockcontent.create_from_string(ctype, cid, reason, content_status, email, admin_id)
 	@rbcontent = Reportblockcontent.find_all_by_content_type_and_content_id(ctype, cid)
@@ -53,5 +55,13 @@ class Reportblockcontent < ActiveRecord::Base
 		clone.email = self.email
 		clone.content_type = self.content_type
 		return clone
+	end
+	
+	private
+	def notify_administrators
+		admins = User.find_all_by_admin(true)
+		admins.each do |admin|
+			ReportMailer.new_report(admin, self).deliver
+		end
 	end
 end

@@ -392,5 +392,12 @@ When /^I visit the new game page$/ do
 end
 
 Given /^I am not signed in as Admin$/ do
-  visit destroy_user_session_path
+	visit destroy_user_session_path
+end
+
+Given /^there are a few administrators$/ do
+	@admins = Array.new
+	for i in 0..4 do
+		@admins[i] = create_admin_user({firstname: "Admin-#{i}", email: "admin-#{i}@example.com"})
+	end
 end
