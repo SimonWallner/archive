@@ -31,15 +31,15 @@ def submit_any_button
     #puts "Update Game not found"
   end
   begin
-    if find_button("Update Company")
-      click_button "Update Company"
+    if find_button("Update Studio/Organisation Article")
+      click_button "Update Studio/Organisation Article"
     end
   rescue Capybara::ElementNotFound
     #puts "Update Company not found"
   end
   begin
-    if find_button("Create Company")
-      click_button "Create Company"
+    if find_button("Create Studio/Organisation Article")
+      click_button "Create Studio/Organisation Article"
     end
   rescue Capybara::ElementNotFound
     #puts "Create Company not found"
