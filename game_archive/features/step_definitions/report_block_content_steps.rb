@@ -168,8 +168,21 @@ Then /^that report should be deleted$/ do
 	end
 end
 
-When /^I report that game$/ do
-	visit game_path(@givenGame)
+When /^I report that article$/ do
+	
+	# make sure only one is defined!
+	if ((@givenGame && @givenCompany) || (@givenCompany && @givenDeveloper) || (@givenDeveloper && @givenGame))
+		fail "more than one defined :("
+	end
+	
+	if (@givenGame)
+		visit game_path(@givenGame)
+	elsif (@givenCompany)
+		visit company_path(@givenCompany)
+	elsif (@givenDeveloper)
+		visit developer_path(@givenDeveloper)
+	end
+		
     click_link_or_button "Report"
 
 	@reportReason = "Reporting Reason 0kOJ9DQOOvGX7JnXHVRD"
@@ -186,7 +199,15 @@ Then /^an email with the report should be sent to all administrators$/ do
 		open_email(admin.email)
 		current_email.subject.should eql "[Archive] New Content Report!"
 		current_email.body.should have_content "Hello #{admin.firstname}"
-		current_email.body.should have_content @givenGame.title
+
+		if (@givenGame)
+			current_email.body.should have_content @givenGame.title
+		elsif (@givenCompany)
+			current_email.body.should have_content @givenCompany.name
+		elsif (@givenDeveloper)
+			current_email.body.should have_content @givenDeveloper.name
+		end
+
 		current_email.body.should have_content @reportReason
 		current_email.body.should have_content @reportEmail
 	end
