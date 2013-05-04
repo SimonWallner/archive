@@ -24,7 +24,10 @@ class ImageUploader < CarrierWave::Uploader::Base
   # include Sprockets::Helpers::IsolatedHelper
 
   # Choose what kind of storage to use for this uploader:
+  end
 
+  def cache_dir
+    Rails.root.join('public/uploads/tmp')
   end
 
   #Provide a default URL as a default if there hasn't been a file uploaded:

@@ -7,6 +7,10 @@ gem 'rails', '3.2.8'
 
 gem 'sqlite3'
 
+# js something somehting
+gem 'execjs' # pick a suitable js engine, rake needs it
+gem 'therubyracer'
+
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -35,6 +39,7 @@ group :development do
 end
 
 group :production do
+	gem 'mysql2'
 	gem 'passenger', '~> 3.0.19s'
 end
 
@@ -52,7 +57,7 @@ gem 'bcrypt-ruby', '~> 3.0.0'
 #gem 'unicorn'
 
 # Deploy with Capistrano
-# gem 'capistrano'
+gem 'capistrano'
 
 # To use debugger
 # gem 'debugger'
